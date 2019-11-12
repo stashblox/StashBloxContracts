@@ -72,7 +72,7 @@
         "id": 843,
         "nodeType": "ImportDirective",
         "scope": 868,
-        "sourceUnit": 2008,
+        "sourceUnit": 2092,
         "src": "26:41:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -83,7 +83,7 @@
         "id": 844,
         "nodeType": "ImportDirective",
         "scope": 868,
-        "sourceUnit": 2617,
+        "sourceUnit": 2701,
         "src": "68:34:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -97,10 +97,10 @@
               "id": 845,
               "name": "IERC1155Metadata",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2007,
+              "referencedDeclaration": 2091,
               "src": "132:16:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC1155Metadata_$2007",
+                "typeIdentifier": "t_contract$_IERC1155Metadata_$2091",
                 "typeString": "contract IERC1155Metadata"
               }
             },
@@ -115,10 +115,10 @@
               "id": 847,
               "name": "StringUtils",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2616,
+              "referencedDeclaration": 2700,
               "src": "150:11:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StringUtils_$2616",
+                "typeIdentifier": "t_contract$_StringUtils_$2700",
                 "typeString": "contract StringUtils"
               }
             },
@@ -128,8 +128,8 @@
           }
         ],
         "contractDependencies": [
-          2007,
-          2616
+          2091,
+          2700
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -137,8 +137,8 @@
         "id": 867,
         "linearizedBaseContracts": [
           867,
-          2616,
-          2007
+          2700,
+          2091
         ],
         "name": "ERC1155Metadata",
         "nodeType": "ContractDefinition",
@@ -237,7 +237,7 @@
                           "name": "_toHexString",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2615,
+                          "referencedDeclaration": 2699,
                           "src": "446:12:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_uint256_$returns$_t_string_memory_ptr_$",
@@ -274,7 +274,7 @@
                       "name": "_strConcat",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2485,
+                      "referencedDeclaration": 2569,
                       "src": "425:10:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
@@ -378,7 +378,7 @@
             "scope": 867,
             "src": "345:125:4",
             "stateMutability": "view",
-            "superFunction": 2006,
+            "superFunction": 2090,
             "visibility": "external"
           }
         ],
@@ -415,7 +415,7 @@
         "id": 843,
         "nodeType": "ImportDirective",
         "scope": 868,
-        "sourceUnit": 2008,
+        "sourceUnit": 2092,
         "src": "26:41:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -426,7 +426,7 @@
         "id": 844,
         "nodeType": "ImportDirective",
         "scope": 868,
-        "sourceUnit": 2617,
+        "sourceUnit": 2701,
         "src": "68:34:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -440,10 +440,10 @@
               "id": 845,
               "name": "IERC1155Metadata",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2007,
+              "referencedDeclaration": 2091,
               "src": "132:16:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IERC1155Metadata_$2007",
+                "typeIdentifier": "t_contract$_IERC1155Metadata_$2091",
                 "typeString": "contract IERC1155Metadata"
               }
             },
@@ -458,10 +458,10 @@
               "id": 847,
               "name": "StringUtils",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2616,
+              "referencedDeclaration": 2700,
               "src": "150:11:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StringUtils_$2616",
+                "typeIdentifier": "t_contract$_StringUtils_$2700",
                 "typeString": "contract StringUtils"
               }
             },
@@ -471,8 +471,8 @@
           }
         ],
         "contractDependencies": [
-          2007,
-          2616
+          2091,
+          2700
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -480,8 +480,8 @@
         "id": 867,
         "linearizedBaseContracts": [
           867,
-          2616,
-          2007
+          2700,
+          2091
         ],
         "name": "ERC1155Metadata",
         "nodeType": "ContractDefinition",
@@ -580,7 +580,7 @@
                           "name": "_toHexString",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2615,
+                          "referencedDeclaration": 2699,
                           "src": "446:12:4",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_uint256_$returns$_t_string_memory_ptr_$",
@@ -617,7 +617,7 @@
                       "name": "_strConcat",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2485,
+                      "referencedDeclaration": 2569,
                       "src": "425:10:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
@@ -721,7 +721,7 @@
             "scope": 867,
             "src": "345:125:4",
             "stateMutability": "view",
-            "superFunction": 2006,
+            "superFunction": 2090,
             "visibility": "external"
           }
         ],
@@ -737,7 +737,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-08T13:03:47.570Z",
+  "updatedAt": "2019-11-09T01:19:54.056Z",
   "devdoc": {
     "methods": {
       "uri(uint256)": {

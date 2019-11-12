@@ -136,8 +136,7 @@ contract ERC1155 is IERC165, IERC1155
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
-        _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
-        _balances[id][to] = _balances[id][to].add(value);
+        _moveTokens(from, to, id, value);
 
         emit TransferSingle(msg.sender, from, to, id, value);
 
@@ -172,14 +171,7 @@ contract ERC1155 is IERC165, IERC1155
         );
 
         for (uint256 i = 0; i < ids.length; ++i) {
-            uint256 id = ids[i];
-            uint256 value = values[i];
-
-            _balances[id][from] = _balances[id][from].sub(
-                value,
-                "ERC1155: insufficient balance of some token type for transfer"
-            );
-            _balances[id][to] = _balances[id][to].add(value);
+            _moveTokens(from, to, ids[i], values[i]);
         }
 
         emit TransferBatch(msg.sender, from, to, ids, values);
@@ -187,7 +179,10 @@ contract ERC1155 is IERC165, IERC1155
         _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, values, data);
     }
 
-
+    function _moveTokens(address from, address to, uint256 id, uint256 value) internal {
+        _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
+        _balances[id][to] = _balances[id][to].add(value);
+    }
 
     function _doSafeTransferAcceptanceCheck(
         address operator,

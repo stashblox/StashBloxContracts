@@ -205,7 +205,7 @@
         "id": 520,
         "nodeType": "ImportDirective",
         "scope": 659,
-        "sourceUnit": 2617,
+        "sourceUnit": 2701,
         "src": "60:34:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -216,7 +216,7 @@
         "id": 521,
         "nodeType": "ImportDirective",
         "scope": 659,
-        "sourceUnit": 2141,
+        "sourceUnit": 2225,
         "src": "95:30:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -230,10 +230,10 @@
               "id": 522,
               "name": "ERC173",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2140,
+              "referencedDeclaration": 2224,
               "src": "156:6:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC173_$2140",
+                "typeIdentifier": "t_contract$_ERC173_$2224",
                 "typeString": "contract ERC173"
               }
             },
@@ -248,10 +248,10 @@
               "id": 524,
               "name": "StringUtils",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2616,
+              "referencedDeclaration": 2700,
               "src": "164:11:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StringUtils_$2616",
+                "typeIdentifier": "t_contract$_StringUtils_$2700",
                 "typeString": "contract StringUtils"
               }
             },
@@ -261,9 +261,9 @@
           }
         ],
         "contractDependencies": [
-          2140,
-          2159,
-          2616
+          2224,
+          2243,
+          2700
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -271,9 +271,9 @@
         "id": 658,
         "linearizedBaseContracts": [
           658,
-          2616,
-          2140,
-          2159
+          2700,
+          2224,
+          2243
         ],
         "name": "ERC1155Documents",
         "nodeType": "ContractDefinition",
@@ -891,7 +891,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2092,
+                  "referencedDeclaration": 2176,
                   "src": "922:9:2",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1122,10 +1122,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2634,
-                        2635
+                        2718,
+                        2719
                       ],
-                      "referencedDeclaration": 2635,
+                      "referencedDeclaration": 2719,
                       "src": "1178:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1265,10 +1265,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2634,
-                        2635
+                        2718,
+                        2719
                       ],
-                      "referencedDeclaration": 2635,
+                      "referencedDeclaration": 2719,
                       "src": "1279:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1639,7 +1639,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2092,
+                  "referencedDeclaration": 2176,
                   "src": "1158:9:2",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1830,7 +1830,7 @@
                           "name": "_toHexString",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2615,
+                          "referencedDeclaration": 2699,
                           "src": "1637:12:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_uint256_$returns$_t_string_memory_ptr_$",
@@ -1867,7 +1867,7 @@
                       "name": "_strConcat",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2485,
+                      "referencedDeclaration": 2569,
                       "src": "1606:10:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
@@ -2017,7 +2017,7 @@
         "id": 520,
         "nodeType": "ImportDirective",
         "scope": 659,
-        "sourceUnit": 2617,
+        "sourceUnit": 2701,
         "src": "60:34:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2028,7 +2028,7 @@
         "id": 521,
         "nodeType": "ImportDirective",
         "scope": 659,
-        "sourceUnit": 2141,
+        "sourceUnit": 2225,
         "src": "95:30:2",
         "symbolAliases": [],
         "unitAlias": ""
@@ -2042,10 +2042,10 @@
               "id": 522,
               "name": "ERC173",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2140,
+              "referencedDeclaration": 2224,
               "src": "156:6:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ERC173_$2140",
+                "typeIdentifier": "t_contract$_ERC173_$2224",
                 "typeString": "contract ERC173"
               }
             },
@@ -2060,10 +2060,10 @@
               "id": 524,
               "name": "StringUtils",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2616,
+              "referencedDeclaration": 2700,
               "src": "164:11:2",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StringUtils_$2616",
+                "typeIdentifier": "t_contract$_StringUtils_$2700",
                 "typeString": "contract StringUtils"
               }
             },
@@ -2073,9 +2073,9 @@
           }
         ],
         "contractDependencies": [
-          2140,
-          2159,
-          2616
+          2224,
+          2243,
+          2700
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -2083,9 +2083,9 @@
         "id": 658,
         "linearizedBaseContracts": [
           658,
-          2616,
-          2140,
-          2159
+          2700,
+          2224,
+          2243
         ],
         "name": "ERC1155Documents",
         "nodeType": "ContractDefinition",
@@ -2703,7 +2703,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2092,
+                  "referencedDeclaration": 2176,
                   "src": "922:9:2",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -2934,10 +2934,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2634,
-                        2635
+                        2718,
+                        2719
                       ],
-                      "referencedDeclaration": 2635,
+                      "referencedDeclaration": 2719,
                       "src": "1178:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -3077,10 +3077,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        2634,
-                        2635
+                        2718,
+                        2719
                       ],
-                      "referencedDeclaration": 2635,
+                      "referencedDeclaration": 2719,
                       "src": "1279:7:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -3451,7 +3451,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 2092,
+                  "referencedDeclaration": 2176,
                   "src": "1158:9:2",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -3642,7 +3642,7 @@
                           "name": "_toHexString",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2615,
+                          "referencedDeclaration": 2699,
                           "src": "1637:12:2",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_uint256_$returns$_t_string_memory_ptr_$",
@@ -3679,7 +3679,7 @@
                       "name": "_strConcat",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2485,
+                      "referencedDeclaration": 2569,
                       "src": "1606:10:2",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_string_memory_ptr_$_t_string_memory_ptr_$returns$_t_string_memory_ptr_$",
@@ -3799,7 +3799,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-11-08T13:07:57.335Z",
+  "updatedAt": "2019-11-09T01:19:54.050Z",
   "devdoc": {
     "methods": {
       "owner()": {

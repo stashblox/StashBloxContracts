@@ -9,6 +9,20 @@ contract ERC1155Mintable is ERC1155, ERC173 {
 
     // Mapping from token ID to Supply
     mapping (uint256 => uint256) internal _supplies;
+    mapping (address => bool) private _authorizedTokenizers;
+
+    function authorizeTokenizer(address tokenizer) external onlyOwner {
+        _authorizedTokenizers[tokenizer] = true;
+    }
+
+    function revokeTokenizer(address tokenizer) external onlyOwner {
+        _authorizedTokenizers[tokenizer] = false;
+    }
+
+    function isTokenizer(address tokenizer) external view returns (bool) {
+        return _authorizedTokenizers[tokenizer];
+    }
+
 
     /**
      * @dev Function to mint an amount of a token with the given ID.
@@ -20,6 +34,7 @@ contract ERC1155Mintable is ERC1155, ERC173 {
                           address[] calldata recipients,
                           uint256[] calldata values)
     external onlyOwner {
+        require(_authorizedTokenizers[msg.sender], "StashBlox: Unauthorized");
         require(ids.length == recipients.length, "StashBlox: ids and recipients must have same lengths");
         require(recipients.length == values.length, "StashBlox: recipients and values must have same lengths");
         for (uint256 i = 0; i < ids.length; ++i)

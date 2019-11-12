@@ -5,8 +5,9 @@ import '../utils/StringUtils.sol';
 
 contract ERC1155Sellable is ERC1155Mintable {
 
-    uint256 _offerId;
-    uint256 _dealId;
+    uint256 private _offerId;
+    uint256 private _dealId;
+    address private ESCROW_ADDRESS;
 
     struct Offer {
         uint256 id;
@@ -53,6 +54,73 @@ contract ERC1155Sellable is ERC1155Mintable {
     event DealConfirmed(uint256 indexed dealId);
     event DealCancelled(uint256 indexed dealId);
 
+
+    function openOffers(uint256[] calldata tokenIds,
+                        uint256[] calldata amounts,
+                        uint256[] calldata prices, // by unit of id
+                        uint256 priceCurrency,
+                        bool acceptPartial,
+                        address paymentOfficer,
+                        address[] calldata authorizedBuyers) external returns (uint256[] memory offerIds) {
+
+        require((tokenIds.length > 0) &&
+                (amounts.length == tokenIds.length) &&
+                (prices.length == amounts.length),
+                "StashBlox: all list must have same lengths and at least one element");
+
+        for (uint256 i = 0; i < tokenIds.length; ++i)
+            offerIds[i] = _openOffer(tokenIds[i],
+                                     msg.sender,
+                                     amounts[i],
+                                     prices[i],
+                                     priceCurrency,
+                                     acceptPartial,
+                                     paymentOfficer,
+                                     authorizedBuyers);
+
+        return offerIds;
+    }
+
+    function cancelOffers(uint256[] calldata offerIds) external {
+        for (uint256 i = 0; i < offerIds.length; ++i) _cancelOffer(offerIds[i]);
+    }
+
+    function onOffersAccepted(uint256[] calldata offerIds,
+                              address[] calldata buyers,
+                              uint256[] calldata amounts,
+                              uint256[] calldata cancellationPeriods) external returns (uint256[] memory dealIds) {
+
+        require((offerIds.length > 0) &&
+                (buyers.length == offerIds.length) &&
+                (amounts.length == buyers.length) &&
+                (cancellationPeriods.length == amounts.length),
+                "StashBlox: all list must have same lengths and at least one element");
+
+        for (uint256 i = 0; i < offerIds.length; ++i)
+            dealIds[i] = _onOfferAccepted(offerIds[i],
+                                           buyers[i],
+                                           amounts[i],
+                                           cancellationPeriods[i]);
+
+        return dealIds;
+    }
+
+    function confirmDeals(uint256[] calldata dealIds) external {
+        for (uint256 i = 0; i < dealIds.length; ++i) _confirmDeal(dealIds[i]);
+    }
+
+    function onPaymentsCancelled(uint256[] calldata dealIds) external {
+        for (uint256 i = 0; i < dealIds.length; ++i) _onPaymentCancelled(dealIds[i]);
+    }
+
+    function _escrowToken(uint256 id, address from, uint256 amount) internal {
+        _moveTokens(from, ESCROW_ADDRESS, id, amount);
+    }
+
+    function _unescrowToken(uint256 id, address to, uint256 amount) internal {
+        _moveTokens(ESCROW_ADDRESS, to, id, amount);
+    }
+
     function _getOfferId() internal returns (uint) {
         return _offerId++;
     }
@@ -68,8 +136,8 @@ contract ERC1155Sellable is ERC1155Mintable {
     function _openOffer(uint256 tokenId,
                         address from,
                         uint256 amount,
-                        uint256 priceCurrency,
                         uint256 price, // by unit of id
+                        uint256 priceCurrency,
                         bool acceptPartial,
                         address paymentOfficer,
                         address[] memory authorizedBuyers) internal returns (uint256) {
@@ -98,7 +166,8 @@ contract ERC1155Sellable is ERC1155Mintable {
             _offers[newOfferId].authorizedBuyersLength++;
         }
 
-        _balances[tokenId][msg.sender] = _balances[tokenId][msg.sender] - amount;
+        //_balances[tokenId][msg.sender] = _balances[tokenId][msg.sender] - amount;
+        _escrowToken(tokenId, msg.sender, amount);
 
         emit OfferOpened(newOfferId, tokenId, from, amount, priceCurrency, price);
 
@@ -116,7 +185,8 @@ contract ERC1155Sellable is ERC1155Mintable {
         _offers[offerId].open = false;
 
         uint256 remainingBalance = offer.amount - offer.pendingAmount - offer.paidAmount;
-        _balances[offer.tokenId][msg.sender] = _balances[offer.tokenId][msg.sender] + remainingBalance;
+        //_balances[offer.tokenId][msg.sender] = _balances[offer.tokenId][msg.sender] + remainingBalance;
+        _unescrowToken(offer.tokenId, msg.sender, remainingBalance);
 
         emit OfferCancelled(offerId);
     }
@@ -157,7 +227,8 @@ contract ERC1155Sellable is ERC1155Mintable {
         emit OfferAccepted(offerId, newDealId, buyer, amount, endCancellationPeriod);
 
         if (confirmed) {
-            _balances[offer.tokenId][buyer] = _balances[offer.tokenId][buyer] + amount;
+            //_balances[offer.tokenId][buyer] = _balances[offer.tokenId][buyer] + amount;
+            _unescrowToken(offer.tokenId, buyer, amount);
             _offers[offerId].paidAmount = _offers[offerId].paidAmount + amount;
             emit DealConfirmed(newDealId);
         }
@@ -180,7 +251,8 @@ contract ERC1155Sellable is ERC1155Mintable {
         Offer memory offer = _offers[deal.offerId];
 
         _deals[dealId].confirmed = true;
-        _balances[offer.tokenId][deal.buyer] = _balances[offer.tokenId][deal.buyer] + deal.amount;
+        //_balances[offer.tokenId][deal.buyer] = _balances[offer.tokenId][deal.buyer] + deal.amount;
+        _unescrowToken(offer.tokenId, deal.buyer, deal.amount);
         _offers[offer.id].paidAmount = _offers[offer.id].paidAmount + deal.amount;
         _offers[offer.id].pendingAmount = _offers[offer.id].pendingAmount - deal.amount;
 
@@ -208,55 +280,12 @@ contract ERC1155Sellable is ERC1155Mintable {
         emit DealCancelled(dealId);
 
         if (_offers[offer.id].canceled) {
-            _balances[offer.tokenId][offer.from] = _balances[offer.tokenId][offer.from] + deal.amount;
+            //_balances[offer.tokenId][offer.from] = _balances[offer.tokenId][offer.from] + deal.amount;
+            _unescrowToken(offer.tokenId, offer.from, deal.amount);
         } else {
             _offers[offer.id].open = true;
         }
     }
-
-
-
-    // function openOffers(uint256[] calldata tokenIds,
-    //                     uint256[] calldata amounts,
-    //                     uint256[] calldata priceCurrencies,
-    //                     uint256[] calldata prices, // by unit of id
-    //                     bool[] calldata acceptPartials,
-    //                     address paymentOfficer) return (uint256[] offerIds) {
-    //
-    //     require((tokenIds.length > 0) &&
-    //             (amounts.length == ids.length) &&
-    //             (priceCurrencies.length == amounts.length) &&
-    //             (prices.length == priceCurrencies.length) &&
-    //             (acceptPartials.length == prices.length),
-    //             "StashBlox: all list must have same lengths and at least one element");
-    //
-    //     for (uint256 i = 0; i < tokenIds.length; ++i)
-    //         offerIds.push(_openOffer(tokenIds[i],
-    //                                  msg.sender,
-    //                                  amounts[i],
-    //                                  priceCurrencies[i],
-    //                                  prices[i],
-    //                                  acceptPartials[i],
-    //                                  paymentOfficer));
-    //
-    //     return offerIds;
-    // }
-    //
-    // function acceptOffers(uint256[] calldata offerIds,
-    //                       address[] calldata buyers,
-    //                       uint256[] calldata amounts) {
-    //
-    //     for (uint256 i = 0; i < offerIds.length; ++i) {
-    //         require()
-    //     }
-    // }
-    //
-    //
-    //
-    // function cancelOffers(uint256[] calldata offerId) {
-    //
-    // }
-
 
 
 }

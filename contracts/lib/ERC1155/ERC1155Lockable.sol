@@ -6,14 +6,15 @@ import "../ERC173/ERC173.sol";
 contract ERC1155Lockable is ERC1155, ERC173 {
 
     // Mapping for locked tokens
-    mapping (uint256 => bool) private _locks;
+    mapping (uint256 => bool) private _tokenLocks;
+    mapping (address => bool) private _addressLocks;
 
     function lockToken(uint256 id) external onlyOwner {
-        _locks[id] = true;
+        _tokenLocks[id] = true;
     }
 
     function unlockToken(uint256 id) external onlyOwner {
-        _locks[id] = false;
+        _tokenLocks[id] = false;
     }
 
     function isLockedToken(uint256 id) external view returns (bool){
@@ -21,51 +22,30 @@ contract ERC1155Lockable is ERC1155, ERC173 {
     }
 
     function _isLockedToken(uint256 id) internal view returns (bool) {
-        return _locks[id];
+        return _tokenLocks[id];
     }
 
-    modifier requireUnlockedToken(uint256 id) {
-        require(!_isLockedToken(id), "ERC1155Lockable: Token locked");
-        _;
+    function lockAddress(address addr) external onlyOwner {
+        _addressLocks[addr] = true;
     }
 
-    modifier requireUnlockedTokens(uint256[] memory ids) {
-        for (uint256 i = 0; i < ids.length; ++i) {
-            require(!_isLockedToken(ids[i]), "ERC1155Lockable: Token locked");
-        }
-        _;
+    function unlockAddress(address addr) external onlyOwner {
+        _addressLocks[addr] = false;
     }
 
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 id,
-        uint256 value,
-        bytes calldata data
-    )
-        external requireUnlockedToken(id)
-    {
-        ERC1155(this).safeTransferFrom(from, to, id, value, data);
+    function isLockedAddress(address addr) external view returns (bool){
+        return _isLockedAddress(addr);
     }
 
-    function safeBatchTransferFrom(
-        address from,
-        address to,
-        uint256[] calldata ids,
-        uint256[] calldata values,
-        bytes calldata data
-    )
-        external requireUnlockedTokens(ids)
-    {
-        ERC1155(this).safeBatchTransferFrom(from, to, ids, values, data);
+    function _isLockedAddress(address addr) internal view returns (bool) {
+        return _addressLocks[addr];
     }
 
-    /**
-     * @param value String to check
-     * @return True if value is ""
-     */
-    function _isEmptyString(string memory value) internal pure returns (bool) {
-        return bytes(value).length == 0;
+    function _moveTokens(address from, address to, uint256 id, uint256 value) internal {
+        require(!_isLockedToken(id) &&
+                !_isLockedAddress(from) &&
+                !_isLockedAddress(to), "ERC1155Lockable: Locked");
+        super._moveTokens(from, to, id, value);
     }
 
 }
