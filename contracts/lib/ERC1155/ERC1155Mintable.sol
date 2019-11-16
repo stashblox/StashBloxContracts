@@ -2,10 +2,11 @@ pragma solidity ^0.5.12;
 // pragma experimental ABIEncoderV2;
 
 import './ERC1155.sol';
+import './ERC1155Metadata.sol';
 import '../ERC173/ERC173.sol';
 import '../utils/StringUtils.sol';
 
-contract ERC1155Mintable is ERC1155, ERC173 {
+contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
 
     // Mapping from token ID to Supply
     mapping (uint256 => uint256) internal _supplies;
@@ -23,7 +24,6 @@ contract ERC1155Mintable is ERC1155, ERC173 {
         return _authorizedTokenizers[tokenizer];
     }
 
-
     /**
      * @dev Function to mint an amount of a token with the given ID.
      * @param ids ID of the token to be minted
@@ -32,11 +32,13 @@ contract ERC1155Mintable is ERC1155, ERC173 {
      */
     function createTokens(uint256[] calldata ids,
                           address[] calldata recipients,
-                          uint256[] calldata values)
+                          uint256[] calldata values,
+                          uint256[] calldata metadataHashes)
     external onlyOwner {
         require(_authorizedTokenizers[msg.sender], "StashBlox: Unauthorized");
-        require(ids.length == recipients.length, "StashBlox: ids and recipients must have same lengths");
-        require(recipients.length == values.length, "StashBlox: recipients and values must have same lengths");
+        require(ids.length == recipients.length &&
+                recipients.length == values.length &&
+                values.length == metadataHashes.length, "StashBlox: all lists must have same lengths");
         for (uint256 i = 0; i < ids.length; ++i)
             require(_supplies[ids[i]] == 0, "StashBlox: Token already minted");
 
@@ -45,6 +47,7 @@ contract ERC1155Mintable is ERC1155, ERC173 {
             address to = recipients[i];
             uint256 value = values[i];
             _supplies[id] = _supplies[id].add(value);
+            _metadataHashes[id] = metadataHashes[i];
             _balances[id][to] = _balances[id][to].add(value);
             emit TransferSingle(msg.sender, address(0), to, id, value);
             // emit URI(uri, id);
@@ -58,6 +61,4 @@ contract ERC1155Mintable is ERC1155, ERC173 {
     function totalSupply(uint256 id) external view returns (uint256) {
         return _supplies[id];
     }
-
-
 }
