@@ -55,6 +55,25 @@ contract ERC1155Sellable is ERC1155Mintable {
     event DealCancelled(uint256 indexed dealId);
 
 
+    function openOffer(uint256 tokenId,
+                       uint256 amount,
+                       uint256 price, // by unit of id
+                       uint256 priceCurrency,
+                       bool acceptPartial,
+                       address paymentOfficer,
+                       address[] calldata authorizedBuyers) external returns (uint256 offerId) {
+
+        return _openOffer(tokenId,
+                          msg.sender,
+                          amount,
+                          price,
+                          priceCurrency,
+                          acceptPartial,
+                          paymentOfficer,
+                          authorizedBuyers);
+    }
+
+
     function openOffers(uint256[] calldata tokenIds,
                         uint256[] calldata amounts,
                         uint256[] calldata prices, // by unit of id
@@ -81,36 +100,24 @@ contract ERC1155Sellable is ERC1155Mintable {
         return offerIds;
     }
 
-    function cancelOffers(uint256[] calldata offerIds) external {
-        for (uint256 i = 0; i < offerIds.length; ++i) _cancelOffer(offerIds[i]);
+    function cancelOffer(uint256 offerId) external {
+         _cancelOffer(offerId);
     }
 
-    function onOffersAccepted(uint256[] calldata offerIds,
-                              address[] calldata buyers,
-                              uint256[] calldata amounts,
-                              uint256[] calldata cancellationPeriods) external returns (uint256[] memory dealIds) {
+    function onOfferAccepted(uint256 offerId,
+                             address buyer,
+                             uint256 amount,
+                             uint256 cancellationPeriod) external returns (uint256 dealId) {
 
-        require((offerIds.length > 0) &&
-                (buyers.length == offerIds.length) &&
-                (amounts.length == buyers.length) &&
-                (cancellationPeriods.length == amounts.length),
-                "StashBlox: all list must have same lengths and at least one element");
-
-        for (uint256 i = 0; i < offerIds.length; ++i)
-            dealIds[i] = _onOfferAccepted(offerIds[i],
-                                           buyers[i],
-                                           amounts[i],
-                                           cancellationPeriods[i]);
-
-        return dealIds;
+        return _onOfferAccepted(offerId, buyer, amount, cancellationPeriod);
     }
 
-    function confirmDeals(uint256[] calldata dealIds) external {
-        for (uint256 i = 0; i < dealIds.length; ++i) _confirmDeal(dealIds[i]);
+    function confirmDeal(uint256 dealId) external {
+        _confirmDeal(dealId);
     }
 
-    function onPaymentsCancelled(uint256[] calldata dealIds) external {
-        for (uint256 i = 0; i < dealIds.length; ++i) _onPaymentCancelled(dealIds[i]);
+    function onPaymentCancelled(uint256 dealId) external {
+        _onPaymentCancelled(dealId);
     }
 
     function _escrowToken(uint256 id, address from, uint256 amount) internal {
