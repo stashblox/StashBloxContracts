@@ -40,9 +40,11 @@ contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
                           uint256[] calldata values,
                           uint256[] calldata metadataHashes)
     external onlyTokenizer {
+
         require(ids.length == recipients.length &&
                 recipients.length == values.length &&
                 values.length == metadataHashes.length, "StashBlox: all lists must have same lengths");
+
         for (uint256 i = 0; i < ids.length; ++i)
             require(_supplies[ids[i]] == 0, "StashBlox: Token already minted");
 
