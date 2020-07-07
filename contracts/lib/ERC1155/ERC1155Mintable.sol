@@ -21,7 +21,12 @@ contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
     }
 
     function isTokenizer(address tokenizer) external view returns (bool) {
-        return _authorizedTokenizers[tokenizer];
+        return _authorizedTokenizers[tokenizer] || _isOwner();
+    }
+
+    modifier onlyTokenizer() {
+        require(isTokenizer(), "Mintable: caller is not a tokenizer");
+        _;
     }
 
     /**
@@ -34,8 +39,7 @@ contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
                           address[] calldata recipients,
                           uint256[] calldata values,
                           uint256[] calldata metadataHashes)
-    external onlyOwner {
-        require(_authorizedTokenizers[msg.sender], "StashBlox: Unauthorized");
+    external onlyTokenizer {
         require(ids.length == recipients.length &&
                 recipients.length == values.length &&
                 values.length == metadataHashes.length, "StashBlox: all lists must have same lengths");
