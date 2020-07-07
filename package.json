@@ -9,7 +9,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "@google-cloud/storage": "^4.7.0",
     "@truffle/hdwallet-provider": "^1.0.23",
-    "truffle-ledger-provider": "^1.0.1"
+    "globby": "^11.0.0",
+    "js-yaml": "^3.13.1",
+    "sharp": "^0.25.2",
+    "truffle-ledger-provider": "^1.0.1",
+    "web3": "^1.2.2"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.1"
   }
 }

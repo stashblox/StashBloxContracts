@@ -17,11 +17,20 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
+require("@babel/polyfill");
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
+const LedgerWalletProvider = require('truffle-ledger-provider');
 const infuraKey = "7a1a08e92a414279ac6d4d02146245a3";
 const fs = require('fs');
-const mnemonic = fs.readFileSync(".secret").toString().trim();
+//const mnemonic = fs.readFileSync(".secret").toString().trim();
+
+const ledgerOptions = {
+  networkId: 3, // ropsten
+  askConfirm: false,
+  accountsLength: 1,
+  accountsOffset: 0
+};
 
 module.exports = {
   /**
@@ -60,7 +69,8 @@ module.exports = {
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
     ropsten: {
-      provider: () => new HDWalletProvider(mnemonic, 'https://ropsten.infura.io/v3/' + infuraKey),
+      //provider: () => new HDWalletProvider(mnemonic, 'https://ropsten.infura.io/v3/' + infuraKey),
+      provider: () => new LedgerWalletProvider(ledgerOptions, 'https://ropsten.infura.io/v3/' + infuraKey),
       network_id: 3,       // Ropsten's id
       //gas: 5500000,        // Ropsten has a lower block limit than mainnet
       //confirmations: 2,    // # of confs to wait between deployments. (default: 0)
