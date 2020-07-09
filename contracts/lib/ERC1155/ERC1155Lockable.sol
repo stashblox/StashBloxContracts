@@ -41,11 +41,7 @@ contract ERC1155Lockable is ERC1155, ERC173 {
         return _addressLocks[addr];
     }
 
-    function _moveTokens(address from, address to, uint256 id, uint256 value) internal {
-        require(!_isLockedToken(id) &&
-                !_isLockedAddress(from) &&
-                !_isLockedAddress(to), "ERC1155Lockable: Locked");
-        super._moveTokens(from, to, id, value);
+    function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
+        return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to);
     }
-
 }

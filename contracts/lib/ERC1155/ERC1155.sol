@@ -180,6 +180,8 @@ contract ERC1155 is IERC165, IERC1155
     }
 
     function _moveTokens(address from, address to, uint256 id, uint256 value) internal {
+        require(!_isLockedMove(from, to, id), "Locked");
+
         _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
         _balances[id][to] = _balances[id][to].add(value);
     }
