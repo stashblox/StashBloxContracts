@@ -10,6 +10,9 @@ contract ERC1155Metadata is IERC1155Metadata, StringUtils {
 
     mapping (uint256 => uint256) internal _metadataHashes;
 
+
+    event MetadataHashUpdated(uint256 indexed _id, uint256 indexed _hash);
+
     /**
      * @param id Token ID
      * @return URI string
@@ -20,6 +23,11 @@ contract ERC1155Metadata is IERC1155Metadata, StringUtils {
 
     function metadataHash(uint256 id) external view returns (uint256) {
         return _metadataHashes[id];
+    }
+
+    function _updateMetadataHash(uint256 id, uint256 hash) internal {
+         _metadataHashes[id] = hash;
+         emit MetadataHashUpdated(id, hash);
     }
 
 }

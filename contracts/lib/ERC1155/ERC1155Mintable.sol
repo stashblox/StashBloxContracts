@@ -53,11 +53,17 @@ contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
             address to = recipients[i];
             uint256 value = values[i];
             _supplies[id] = _supplies[id].add(value);
-            _metadataHashes[id] = metadataHashes[i];
             _balances[id][to] = _balances[id][to].add(value);
             emit TransferSingle(msg.sender, address(0), to, id, value);
+            _updateMetadataHash(id, metadataHashes[i]);
             // emit URI(uri, id);
         }
+    }
+
+    function updateMetadataHash(uint256 calldata id,
+                                uint256[] calldata metadataHash)
+    external onlyTokenizer {
+        _updateMetadataHash(id, metadataHash);
     }
 
     /**
