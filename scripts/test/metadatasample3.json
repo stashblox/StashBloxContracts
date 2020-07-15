@@ -1,0 +1,34 @@
+{
+    "id": "<tokenID>",
+    "name": "Katsuhiro Otomo Kosuke Kawamura Skateboard deck set AKIRA Dome",
+    "description": "Skateboard Deck",
+    "supply": 1000000,
+    "decimals": 8,
+    "image": "https://<image_storage>/kawamura-skateboard-deck-set-1.jpg",
+    "properties": {
+        "attributes": {
+          "dimension": "82 cm x 20.5cm",
+          "year": 2020,
+          "insured_value": 220,
+          "insured_value_currency": "EUR",
+          "storage_reference": "BDX00010007"
+        },
+        "files": [
+            {
+              "url": "https://<image_storage>/kawamura-skateboard-deck-set-1.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            },
+            {
+              "url": "https://<image_storage>/kawamura-skateboard-deck-set-2.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            },
+            {
+              "url": "https://<image_storage>/kawamura-skateboard-deck-set-3.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            }
+        ]
+    }
+}
