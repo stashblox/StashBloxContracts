@@ -1,0 +1,39 @@
+{
+    "id": "<tokenID>",
+    "name": "Original GucciGhost (SET)",
+    "description": "Set of 4 lithographies by Andrew Trevor",
+    "supply": 1000000,
+    "decimals": 8,
+    "image": "https://<image_storage>/original-gucci-ghost-1.jpg",
+    "properties": {
+        "attributes": {
+          "series_number": "#2/25",
+          "edition_size": "25x4",
+          "dimension": "4 x 76 cm x 76 cm",
+          "paper": "BFK Rives 300 g.",
+          "technique": "4x Lithographs 2 colors printed with Marinoni press lithographic and hand cut.",
+          "signature": "Signed by the artist, numbered and stamped by our publishing house.",
+          "year": 2019,
+          "insured_value": 2500,
+          "insured_value_currency": "EUR",
+          "storage_reference": "BDX00010005"
+        },
+        "files": [
+            {
+              "url": "https://<image_storage>/original-gucci-ghost-1.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            },
+            {
+              "url": "https://<image_storage>/original-gucci-ghost-2.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            },
+            {
+              "url": "https://<image_storage>/original-gucci-ghost-3.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            }
+        ]
+    }
+}
