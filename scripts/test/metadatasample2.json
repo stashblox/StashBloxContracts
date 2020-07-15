@@ -1,0 +1,29 @@
+{
+    "id": "<tokenID>",
+    "name": "KAWS BFF Open Edition Blue",
+    "description": "Vinyl Figure",
+    "supply": 1000000,
+    "decimals": 8,
+    "image": "https://<image_storage>/kaws-bff-blue-1.jpg",
+    "properties": {
+        "attributes": {
+          "dimension": "33 cm",
+          "year": 2017,
+          "insured_value": 400,
+          "insured_value_currency": "EUR",
+          "storage_reference": "BDX00010006"
+        },
+        "files": [
+            {
+              "url": "https://<image_storage>/kaws-bff-blue-1.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            },
+            {
+              "url": "https://<image_storage>/kaws-bff-blue-2.jpg",
+              "hash": "<image_hash>",
+              "type": "image"
+            }
+        ]
+    }
+}
