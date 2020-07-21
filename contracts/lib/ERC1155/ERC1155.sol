@@ -204,7 +204,6 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
               }
             }
         }
-        // could contains doubles
         return result;
     }
 
