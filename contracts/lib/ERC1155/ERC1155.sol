@@ -198,9 +198,13 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
             uint256 id = _tokensByAddress[account][i];
             if (_balances[id][account] > 0) {
               string memory hexID = _toHexString(id);
-              if (!_strContains(hexID, result)) {
-                if (bytes(result).length > 0) result = _strConcat(result, " ");
-                result = _strConcat(result, hexID);
+              if (bytes(result).length > 0) {
+                if (!_strContains(hexID, result)) {
+                  result = _strConcat(result, " ");
+                  result = _strConcat(result, hexID);
+                }
+              } else {
+                result = hexID;
               }
             }
         }
