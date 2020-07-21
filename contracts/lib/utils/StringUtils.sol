@@ -44,4 +44,20 @@ contract StringUtils {
         return string(res);
     }
 
+    function _strContains(string memory what, string memory where) internal pure returns (bool) {
+        bytes memory whatBytes = bytes (what);
+        bytes memory whereBytes = bytes (where);
+
+        for (uint i = 0; i < whereBytes.length - whatBytes.length; i++) {
+            bool flag = true;
+            for (uint j = 0; j < whatBytes.length; j++)
+                if (whereBytes [i + j] != whatBytes [j]) {
+                    flag = false;
+                    break;
+                }
+            if (flag) return true;
+        }
+        return false;
+    }
+
 }
