@@ -1,9 +1,8 @@
 pragma solidity ^0.5.12;
 
-import './ERC1155.sol';
 import "../ERC173/ERC173.sol";
 
-contract ERC1155Lockable is ERC1155, ERC173 {
+contract ERC1155Lockable is ERC173 {
 
     // Mapping for locked tokens
     mapping (uint256 => bool) private _tokenLocks;
@@ -42,6 +41,6 @@ contract ERC1155Lockable is ERC1155, ERC173 {
     }
 
     function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
-        return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to);
+        return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
     }
 }

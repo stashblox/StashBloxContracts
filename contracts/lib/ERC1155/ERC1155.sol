@@ -4,8 +4,9 @@ import "./IERC1155.sol";
 import "./IERC1155Receiver.sol";
 import "../ERC165/IERC165.sol";
 import "../utils/SafeMath.sol";
+import "../utils/StringUtils.sol";
 import "../utils/Address.sol";
-
+import './ERC1155Lockable.sol';
 
 /**
  * @title Standard ERC1155 token
@@ -14,7 +15,7 @@ import "../utils/Address.sol";
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract ERC1155 is IERC165, IERC1155
+contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 {
     bytes4 constant private INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 constant private INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
@@ -24,6 +25,9 @@ contract ERC1155 is IERC165, IERC1155
 
     // Mapping from token ID to account balances
     mapping (uint256 => mapping(address => uint256)) _balances;
+
+    // For each address a list of token IDs. Can contains IDs in double and with zero balance.
+    mapping (address => uint256[]) internal _tokensByAddress;
 
     // Mapping from account to operator approvals
     mapping (address => mapping(address => bool)) private _operatorApprovals;
@@ -180,10 +184,25 @@ contract ERC1155 is IERC165, IERC1155
     }
 
     function _moveTokens(address from, address to, uint256 id, uint256 value) internal {
-        require(!_isLockedMove(from, to, id), "Locked");
+        require(!_isLockedMove(from, to, id, value), "Locked");
 
         _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
+        if (_balances[id][to] == 0) _tokensByAddress[to].push(id);
         _balances[id][to] = _balances[id][to].add(value);
+    }
+
+    function tokensByAddress(address account) public view returns (string memory result) {
+        require(account != address(0), "ERC1155: balance query for the zero address");
+
+        for (uint i = 0; i < _tokensByAddress[account].length; i++) {
+            uint256 id = _tokensByAddress[account][i];
+            if (_balances[id][account] > 0) {
+              result = _strConcat(result, " ");
+              result = _strConcat(result, _toHexString(id));
+            }
+        }
+        // could contains doubles
+        return result;
     }
 
     function _doSafeTransferAcceptanceCheck(

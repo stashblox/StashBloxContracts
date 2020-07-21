@@ -6,7 +6,7 @@ import './ERC1155Metadata.sol';
 import '../ERC173/ERC173.sol';
 import '../utils/StringUtils.sol';
 
-contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
+contract ERC1155Mintable is ERC1155, ERC1155Metadata {
 
     // Mapping from token ID to Supply
     mapping (uint256 => uint256) internal _supplies;
@@ -20,12 +20,16 @@ contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
         _authorizedTokenizers[tokenizer] = false;
     }
 
-    function isTokenizer(address tokenizer) external view returns (bool) {
+    function _isTokenizer(address tokenizer) internal view returns (bool) {
         return _authorizedTokenizers[tokenizer] || _isOwner();
     }
 
+    function isTokenizer(address tokenizer) external view returns (bool) {
+        return _isTokenizer(tokenizer);
+    }
+
     modifier onlyTokenizer() {
-        require(isTokenizer(), "Mintable: caller is not a tokenizer");
+        require(_isTokenizer(msg.sender), "Mintable: caller is not a tokenizer");
         _;
     }
 
@@ -54,14 +58,15 @@ contract ERC1155Mintable is ERC1155, ERC173, ERC1155Metadata {
             uint256 value = values[i];
             _supplies[id] = _supplies[id].add(value);
             _balances[id][to] = _balances[id][to].add(value);
+            _tokensByAddress[to].push(id);
             emit TransferSingle(msg.sender, address(0), to, id, value);
             _updateMetadataHash(id, metadataHashes[i]);
             // emit URI(uri, id);
         }
     }
 
-    function updateMetadataHash(uint256 calldata id,
-                                uint256[] calldata metadataHash)
+    function updateMetadataHash(uint256 id,
+                                uint256 metadataHash)
     external onlyTokenizer {
         _updateMetadataHash(id, metadataHash);
     }
