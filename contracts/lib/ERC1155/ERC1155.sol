@@ -197,9 +197,10 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
           _tokensByAddress[to].push(id);
           _birthdays[id][to] = block.timestamp;
         } else {
-          uint256 currentTokensBirthday = _balances[id][to].mul(_birthdays[id][to]);
-          uint256 newTokensBirthday = value.mul(block.timestamp);
-          uint256 numerator = currentTokensBirthday.add(newTokensBirthday);
+          // calculate the average birthday of the received and hold tokens
+          uint256 holdTokensBirthday = _balances[id][to].mul(_birthdays[id][to]);
+          uint256 receivedTokensBirthday = value.mul(block.timestamp);
+          uint256 numerator = holdTokensBirthday.add(receivedTokensBirthday);
           _birthdays[id][to] = numerator.div(newBalanceTo);
         }
 

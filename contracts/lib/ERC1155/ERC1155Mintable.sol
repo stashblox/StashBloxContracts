@@ -11,6 +11,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     // Mapping from token ID to Supply
     mapping (uint256 => uint256) internal _supplies;
     mapping (address => bool) private _authorizedTokenizers;
+    mapping (uint256 => uint256) internal _storagePrices;
 
     function authorizeTokenizer(address tokenizer) external onlyOwner {
         _authorizedTokenizers[tokenizer] = true;
@@ -38,11 +39,14 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
      * @param ids ID of the token to be minted
      * @param recipients The addresses that will own the minted token
      * @param values Amount of the token to be minted for each recipient
+     * @param metadataHashes Metadata files hashes
+     * @param storagePrices price for 24h storage
      */
     function createTokens(uint256[] calldata ids,
                           address[] calldata recipients,
                           uint256[] calldata values,
-                          uint256[] calldata metadataHashes)
+                          uint256[] calldata metadataHashes,
+                          uint256[] calldata storagePrices)
     external onlyTokenizer {
 
         require(ids.length == recipients.length &&
@@ -56,8 +60,9 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
             uint256 id = ids[i];
             address to = recipients[i];
             uint256 value = values[i];
-            _supplies[id] = _supplies[id].add(value);
-            _balances[id][to] = _balances[id][to].add(value);
+            _supplies[id] = value;
+            _storagePrices[id] = storagePrices[i]
+            _balances[id][to] = value;
             _tokensByAddress[to].push(id);
             emit TransferSingle(msg.sender, address(0), to, id, value);
             _updateMetadataHash(id, metadataHashes[i]);
