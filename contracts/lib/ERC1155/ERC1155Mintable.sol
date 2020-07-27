@@ -61,13 +61,19 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
             address to = recipients[i];
             uint256 value = values[i];
             _supplies[id] = value;
-            _storagePrices[id] = storagePrices[i]
+            _storagePrices[id] = storagePrices[i];
             _balances[id][to] = value;
             _tokensByAddress[to].push(id);
             emit TransferSingle(msg.sender, address(0), to, id, value);
             _updateMetadataHash(id, metadataHashes[i]);
             // emit URI(uri, id);
         }
+    }
+
+    function _storageFees(address account, uint256 id) internal view returns (uint256) {
+        require(account != address(0), "ERC1155: balance query for the zero address");
+        uint256 storageDays = (block.timestamp - _birthdays[id][account]) / 86400;
+        return storageDays * _storagePrices[id];
     }
 
     function updateMetadataHash(uint256 id,
