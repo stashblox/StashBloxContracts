@@ -26,6 +26,9 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     // Mapping from token ID to account balances
     mapping (uint256 => mapping(address => uint256)) _balances;
 
+    // Mapping from token ID to account age
+    mapping (uint256 => mapping(address => uint256)) _birthdays;
+
     // For each address a list of token IDs. Can contains IDs in double and with zero balance.
     mapping (address => uint256[]) internal _tokensByAddress;
 
@@ -170,12 +173,12 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         require(ids.length == values.length, "ERC1155: IDs and values must have same lengths");
         require(to != address(0), "ERC1155: target address must be non-zero");
         require(
-            from == msg.sender || isApprovedForAll(from, msg.sender) == true,
-            "ERC1155: need operator approval for 3rd party transfers"
+          from == msg.sender || isApprovedForAll(from, msg.sender) == true,
+          "ERC1155: need operator approval for 3rd party transfers"
         );
 
         for (uint256 i = 0; i < ids.length; ++i) {
-            _moveTokens(from, to, ids[i], values[i]);
+          _moveTokens(from, to, ids[i], values[i]);
         }
 
         emit TransferBatch(msg.sender, from, to, ids, values);
@@ -187,8 +190,25 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         require(!_isLockedMove(from, to, id, value), "Locked");
 
         _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
-        if (_balances[id][to] == 0) _tokensByAddress[to].push(id);
-        _balances[id][to] = _balances[id][to].add(value);
+
+        uint256 newBalanceTo = _balances[id][to].add(value);
+
+        if (_balances[id][to] == 0) {
+          _tokensByAddress[to].push(id);
+          _birthdays[id][to] = block.number;
+        } else {
+          uint256 currentBirthday = _balances[id][to].mul(_birthdays[id][to]);
+          uint256 newBirthday = value.mul(block.number);
+          uint256 numerator = currentBirthday.add(newBirthday);
+          _birthdays[id][to] = numerator.div(newBalanceTo);
+        }
+
+        _balances[id][to] = newBalanceTo;
+    }
+
+    function birthdayOf(address account, uint256 id) public view returns (uint256) {
+        require(account != address(0), "ERC1155: balance query for the zero address");
+        return _birthdays[id][account];
     }
 
     function tokensByAddress(address account) public view returns (string memory result) {
@@ -210,6 +230,8 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         }
         return result;
     }
+
+
 
     function _doSafeTransferAcceptanceCheck(
         address operator,
