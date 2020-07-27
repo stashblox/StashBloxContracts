@@ -11,7 +11,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     // Mapping from token ID to Supply
     mapping (uint256 => uint256) internal _supplies;
     mapping (address => bool) private _authorizedTokenizers;
-    mapping (uint256 => uint256) internal _storagePrices;
+
 
     function authorizeTokenizer(address tokenizer) external onlyOwner {
         _authorizedTokenizers[tokenizer] = true;
@@ -70,11 +70,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
         }
     }
 
-    function _storageFees(address account, uint256 id) internal view returns (uint256) {
-        require(account != address(0), "ERC1155: balance query for the zero address");
-        uint256 storageDays = (block.timestamp - _birthdays[id][account]) / 86400;
-        return storageDays * _storagePrices[id];
-    }
+    
 
     function updateMetadataHash(uint256 id,
                                 uint256 metadataHash)
