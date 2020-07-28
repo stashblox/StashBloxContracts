@@ -31,8 +31,12 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     // Mapping from token ID to storage price
     mapping (uint256 => uint256) internal _storagePrices;
 
-    // For each address a list of token IDs. Can contains IDs in double and with zero balance.
+    // For each address a list of token IDs. Can contains zero balance.
     mapping (address => uint256[]) internal _tokensByAddress;
+    // For each token a list of addresses. Can contains zero balance.
+    mapping (uint256 => address[]) internal _addressesByToken;
+    // Initialize to true on the first token received, never come back to false.
+    mapping (uint256 => mapping(address => bool)) internal _isHolder;
 
     // Mapping from account to operator approvals
     mapping (address => mapping(address => bool)) private _operatorApprovals;
@@ -204,7 +208,12 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 
         if (_balances[id][to] == 0) {
 
-          _tokensByAddress[to].push(id);
+          if (!_isHolder[id][to]) {
+            _tokensByAddress[to].push(id);
+            _addressesByToken[id].push(to);
+            _isHolder[id][to];
+          }
+
           _birthdays[id][to] = block.timestamp;
 
         } else {
@@ -241,14 +250,27 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         for (uint i = 0; i < _tokensByAddress[account].length; i++) {
             uint256 id = _tokensByAddress[account][i];
             if (_balances[id][account] > 0) {
-              string memory hexID = _toHexString(id);
               if (bytes(result).length > 0) {
-                if (!_strContains(hexID, result)) {
-                  result = _strConcat(result, " ");
-                  result = _strConcat(result, hexID);
-                }
+                result = _strConcat(result, " ");
+                result = _strConcat(result, _toHexString(id));
               } else {
-                result = hexID;
+                result = _toHexString(id);
+              }
+            }
+        }
+        return result;
+    }
+
+    function addressesByToken(uint256 id) public view returns (string memory result) {
+
+        for (uint i = 0; i < _addressesByToken[id].length; i++) {
+            address account = _addressesByToken[id][i];
+            if (_balances[id][account] > 0) {
+              if (bytes(result).length > 0) {
+                result = _strConcat(result, " ");
+                result = _strConcat(result, _toHexString(uint256(account)));
+              } else {
+                result = _toHexString(uint256(account));
               }
             }
         }
