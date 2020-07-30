@@ -12,6 +12,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     mapping (uint256 => uint256) internal _supplies;
     mapping (address => bool) private _authorizedTokenizers;
 
+    event UpdateStoragePrice(address indexed _tokenizer, uint256 _id, uint256 _price);
 
     function authorizeTokenizer(address tokenizer) external onlyOwner {
         _authorizedTokenizers[tokenizer] = true;
@@ -78,6 +79,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
 
     function updateStoragePrice(uint256 id, uint256 newPrice) external onlyTokenizer {
         _storagePricesHistory[id].push([block.timestamp, newPrice]);
+        emit UpdateStoragePrice(msg.sender, id, newPrice);
     }
 
     /**
