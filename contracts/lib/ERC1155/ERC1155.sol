@@ -28,8 +28,9 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 
     // Mapping from token ID to account age
     mapping (uint256 => mapping(address => uint256)) _birthdays;
-    // Mapping from token ID to storage price
-    mapping (uint256 => uint256) internal _storagePrices;
+
+    // Mapping from token ID to list of tuple [timestamp, price]
+    mapping (uint256 => uint256[2][]) internal _storagePricesHistory;
 
     // For each address a list of token IDs. Can contains zero balance.
     mapping (address => uint256[]) internal _tokensByAddress;
@@ -236,8 +237,28 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 
     function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
-        uint256 storageDays = (block.timestamp - _birthdays[id][account]) / 86400;
-        return storageDays * _storagePrices[id] * value;
+
+        uint256 totalPrice = 0;
+        uint256 timeCursor = block.timestamp;
+
+        for (uint i = _storagePricesHistory[id].length - 1; i >= 0; i--) {
+
+          uint256 priceStartAt = _storagePricesHistory[id][i][0];
+          uint256 price = _storagePricesHistory[id][i][1];
+          uint256 storageDays;
+
+          if (_birthdays[id][account] >= priceStartAt) {
+            storageDays = (timeCursor - _birthdays[id][account]) / 86400;
+            break;
+          } else {
+            storageDays = (timeCursor - priceStartAt) / 86400;
+            timeCursor = priceStartAt;
+          }
+          totalPrice += storageDays * price * value;
+
+        }
+
+        return totalPrice;
     }
 
     function storageFees(address account, uint256 id, uint256 value) public view returns (uint256) {

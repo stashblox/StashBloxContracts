@@ -61,7 +61,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
             address to = recipients[i];
             uint256 value = values[i];
             _supplies[id] = value;
-            _storagePrices[id] = storagePrices[i];
+            _storagePricesHistory[id].push([block.timestamp, storagePrices[i]]);
             _balances[id][to] = value;
             _isHolder[id][to] = true;
             _birthdays[id][to] = block.timestamp;
@@ -76,13 +76,8 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
         _updateMetadataHash(id, metadataHash);
     }
 
-    function updateStoragePrice(uint256 id, uint256 coef) external onlyTokenizer {
-        _storagePrices[id] = (_storagePrices[id].mul(coef)).div(10**5); // 1 => 100000
-
-        for (uint i = 0; i < _addressesByToken[id].length; i++) {
-            address account = _addressesByToken[id][i];
-            _birthdays[id][account] = (_birthdays[id][account].mul(coef)).div(10**5);
-        }
+    function updateStoragePrice(uint256 id, uint256 newPrice) external onlyTokenizer {
+        _storagePricesHistory[id].push([block.timestamp, newPrice]);
     }
 
     /**
