@@ -15,7 +15,6 @@ describe("StashBlox", () => {
   const TOKEN_SUPPLY_2 = 200;
   const TOKEN_META_HASH_1 = random();
   const TOKEN_META_HASH_2 = random();
-
   const STORAGE_PRICE_1 = 10;
   const STORAGE_PRICE_2 = 20;
   var STASHBLOX, TOKENS_CREATED_AT, CREATE_TOKEN_RECEIPT;
@@ -70,6 +69,7 @@ describe("StashBlox", () => {
     assert.equal(balance2.valueOf(), TOKEN_SUPPLY_2, "token wasn't in the first account");
   });
 
+
   it("should return correct storage fees", async () => {
     await time.increase(time.duration.years(1)); // travel 365 days ahead
 
@@ -77,7 +77,17 @@ describe("StashBlox", () => {
     const fees1 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
 
     assert.equal(fees1.valueOf(), expectedFees1, "Incorrect fees");
+
+    await STASHBLOX.updateStoragePrice(TOKEN_ID_1, STORAGE_PRICE_1 + 5);
+
+    await time.increase(time.duration.years(1)); // travel 365 days ahead
+
+    const expectedFees2 = expectedFees1 + 365 * (STORAGE_PRICE_1 + 5);
+    const fees2 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
+
+    assert.equal(fees2.valueOf(), expectedFees2, "Incorrect fees");
   });
+
 
   it("should update birthday when tokens arrive", async () => {
     // travel 365 days ahead
@@ -98,12 +108,14 @@ describe("StashBlox", () => {
 
     // 50 tokens since 2 years and 25 since now =>
     // average age = ((50*730) + (25*0))/75 = 486,666 days
-    let expectedAge = (50*730)/75;
+    let expectedAge = (50 * 730) / 75;
     let birthdayAfter = await STASHBLOX.birthdayOf.call(accounts[1], TOKEN_ID_1);
     let actualAge = ((await time.latest()) - birthdayAfter) / 86400;
 
     assert.equal(actualAge.valueOf(), expectedAge, "Incorrect token age");
   });
+
+
 
 
 });
