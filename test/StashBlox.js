@@ -116,6 +116,16 @@ describe("StashBlox", () => {
   });
 
 
+  it("should throw an error when not enough ETH to pay fees", async () => {
+    // travel 365 days ahead
+    await time.increase(time.duration.years(1));
 
+    // try to send 50 tokens to account[2]..
+    await expectRevert(STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, 50, constants.ZERO_BYTES32, {
+      from: accounts[1],
+      value: 0
+    }), "insufficient ETH for transfer fees");
+
+  });
 
 });
