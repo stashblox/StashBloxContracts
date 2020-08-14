@@ -152,11 +152,15 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 
         uint256 feesBalance = msg.value;
         feesBalance = feesBalance - _moveTokens(from, to, id, value, feesBalance);
-        if (feesBalance > 0) msg.sender.transfer(feesBalance);
 
         emit TransferSingle(msg.sender, from, to, id, value);
 
         _doSafeTransferAcceptanceCheck(msg.sender, from, to, id, value, data);
+
+        if (feesBalance > 0) {
+          (bool success, ) = msg.sender.call.value(feesBalance)("");
+          require(success, "Transfer failed.");
+        }
     }
 
     /**
@@ -190,11 +194,15 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         for (uint256 i = 0; i < ids.length; ++i) {
           feesBalance = feesBalance - _moveTokens(from, to, ids[i], values[i], feesBalance);
         }
-        if (feesBalance > 0) msg.sender.transfer(feesBalance);
 
         emit TransferBatch(msg.sender, from, to, ids, values);
 
         _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, values, data);
+
+        if (feesBalance > 0) {
+          (bool success, ) = msg.sender.call.value(feesBalance)("");
+          require(success, "Transfer failed.");
+        }
     }
 
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
