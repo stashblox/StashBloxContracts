@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 
 const { accounts, contract, defaultSender } = require('@openzeppelin/test-environment');
-const { BN, constants, expectEvent, expectRevert, time } = require('@openzeppelin/test-helpers');
+const { BN, constants, expectEvent, expectRevert, time, balance } = require('@openzeppelin/test-helpers');
 
 const random = () => { return new BN(crypto.randomBytes(20).toString('hex')); }
 const bigN = (value) => { return new BN(value); }
@@ -128,6 +128,50 @@ describe("StashBlox", () => {
       value: storageFees - 1
     }), "insufficient ETH for transfer fees");
 
+  });
+
+  it("should increase contract balance with transfer fees", async () => {
+    let contractBalance1 = await balance.current(STASHBLOX.address);
+
+    // travel 365 days ahead
+    await time.increase(time.duration.years(1));
+
+    const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 50);
+
+    // try to send 50 tokens to account[2]..
+    await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, 50, constants.ZERO_BYTES32, {
+      from: accounts[1],
+      value: storageFees
+    });
+
+    let contractBalance2 = await balance.current(STASHBLOX.address);
+    let balanceIncrease =  contractBalance2 - contractBalance1;
+
+    assert.equal(balanceIncrease, storageFees, "Incorrect balance increase");
+  });
+
+  it("should withdraw the correct amount", async () => {
+    let transferAmount = 38;
+    let balance1 = await balance.current(accounts[3]);
+
+    // travel 365 days ahead
+    await time.increase(time.duration.years(1));
+
+    const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, transferAmount);
+
+    // try to send 50 tokens to account[2]..
+    await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, transferAmount, constants.ZERO_BYTES32, {
+      from: accounts[1],
+      value: storageFees
+    });
+
+    await STASHBLOX.withdraw(accounts[3], storageFees);
+
+    let balance2 = await balance.current(accounts[3]);
+    let balanceIncrease =  balance2.sub(balance1);
+    let diff = storageFees.sub(balanceIncrease);
+
+    assert.equal(diff.valueOf(), 0, "Incorrect balance increase");
   });
 
 });

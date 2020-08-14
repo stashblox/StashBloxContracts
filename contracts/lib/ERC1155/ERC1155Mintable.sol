@@ -74,12 +74,20 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     }
 
     function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
-        _updateMetadataHash(id, metadataHash);
+      _updateMetadataHash(id, metadataHash);
     }
 
     function updateStoragePrice(uint256 id, uint256 newPrice) external onlyTokenizer {
-        _storagePricesHistory[id].push([block.timestamp, newPrice]);
-        emit UpdateStoragePrice(msg.sender, id, newPrice);
+      _storagePricesHistory[id].push([block.timestamp, newPrice]);
+      emit UpdateStoragePrice(msg.sender, id, newPrice);
+    }
+
+    function withdraw(address to, uint256 amount) external onlyOwner {
+      uint256 currentBalance = address(this).balance;
+      if (currentBalance >= amount) {
+        (bool success, ) = to.call.value(amount)("");
+        require(success, "Withdrawal failed.");
+      }
     }
 
     /**
