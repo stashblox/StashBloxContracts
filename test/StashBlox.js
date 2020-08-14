@@ -130,6 +130,7 @@ describe("StashBlox", () => {
 
   });
 
+
   it("should increase contract balance with transfer fees", async () => {
     let contractBalance1 = await balance.current(STASHBLOX.address);
 
@@ -149,6 +150,7 @@ describe("StashBlox", () => {
 
     assert.equal(balanceIncrease, storageFees, "Incorrect balance increase");
   });
+
 
   it("should withdraw the correct amount", async () => {
     let transferAmount = 38;
@@ -172,6 +174,49 @@ describe("StashBlox", () => {
     let diff = storageFees.sub(balanceIncrease);
 
     assert.equal(diff.valueOf(), 0, "Incorrect balance increase");
+  });
+
+
+  it("should transfer in batch", async () => {
+    let transferAmount = 25;
+
+    // travel 365 days ahead
+    await time.increase(time.duration.years(1));
+
+    const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, transferAmount);
+    // try to send 50 tokens to account[2]
+    await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, transferAmount, constants.ZERO_BYTES32, {
+      from: accounts[1],
+      value: storageFees
+    });
+
+    // travel 365 days ahead
+    await time.increase(time.duration.years(1));
+
+    const storageFees1 = await STASHBLOX.storageFees.call(accounts[2], TOKEN_ID_1, transferAmount);
+    const storageFees2 = await STASHBLOX.storageFees.call(accounts[2], TOKEN_ID_2, transferAmount);
+
+    let providedFees = storageFees1.add(storageFees2);
+    await expectRevert(STASHBLOX.safeBatchTransferFrom(accounts[2],
+                                                       accounts[3],
+                                                       [TOKEN_ID_1, TOKEN_ID_2],
+                                                       [transferAmount, transferAmount],
+                                                       constants.ZERO_BYTES32,
+                                                       {from: accounts[2], value: providedFees.sub(bigN(1))}),
+                                                       "insufficient ETH for transfer fees");
+
+    await STASHBLOX.safeBatchTransferFrom(accounts[2],
+                                          accounts[3],
+                                          [TOKEN_ID_1, TOKEN_ID_2],
+                                          [transferAmount, transferAmount],
+                                          constants.ZERO_BYTES32,
+                                          {from: accounts[2], value: storageFees1 + storageFees2});
+
+    const balance1 = await STASHBLOX.balanceOf.call(accounts[3], TOKEN_ID_1);
+    assert.equal(balance1.valueOf(), transferAmount, "Token not received");
+
+    const balance2 = await STASHBLOX.balanceOf.call(accounts[3], TOKEN_ID_2);
+    assert.equal(balance2.valueOf(), transferAmount, "Token not received");
   });
 
 });
