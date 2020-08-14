@@ -41,7 +41,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
      * @param recipients The addresses that will own the minted token
      * @param values Amount of the token to be minted for each recipient
      * @param metadataHashes Metadata files hashes
-     * @param storagePrices price for 24h storage
+     * @param storagePrices price for one minute storage
      */
     function createTokens(uint256[] calldata ids,
                           address[] calldata recipients,

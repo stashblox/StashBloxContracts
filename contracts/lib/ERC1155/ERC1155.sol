@@ -245,16 +245,16 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 
           uint256 priceStartAt = _storagePricesHistory[id][i][0];
           uint256 price = _storagePricesHistory[id][i][1];
-          uint256 storageDays;
+          uint256 storageMinutes;
 
           if (_birthdays[id][account] >= priceStartAt) {
-            storageDays = (timeCursor - _birthdays[id][account]) / 86400;
-            totalPrice += storageDays * price * value;
+            storageMinutes = (timeCursor - _birthdays[id][account]) / 60;
+            totalPrice += storageMinutes * price * value;
             break;
           } else {
-            storageDays = (timeCursor - priceStartAt) / 86400;
+            storageMinutes = (timeCursor - priceStartAt) / 60;
             timeCursor = priceStartAt;
-            totalPrice += storageDays * price * value;
+            totalPrice += storageMinutes * price * value;
           }
         }
 
