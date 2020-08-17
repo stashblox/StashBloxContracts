@@ -240,7 +240,7 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 
     function birthdayOf(address account, uint256 id) public view returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
-        return _birthdays[id][account];
+        return _balances[id][account] == 0 ? 0 : _birthdays[id][account];
     }
 
     function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
