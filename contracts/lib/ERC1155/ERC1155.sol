@@ -30,7 +30,10 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     mapping (uint256 => mapping(address => uint256)) _birthdays;
 
     // Mapping from token ID to list of tuple [timestamp, price]
-    mapping (uint256 => uint256[2][]) internal _storagePricesHistory;
+    mapping (uint256 => uint256[2][]) internal _storageCostHistory;
+
+    // price on one storage credit in wei
+    uint256 storageCreditPrice = 1000;
 
     // For each address a list of token IDs. Can contains zero balance.
     mapping (address => uint256[]) internal _tokensByAddress;
@@ -246,29 +249,29 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
 
-        uint256 totalPrice = 0;
+        uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
 
-        for (uint i = _storagePricesHistory[id].length - 1; i >= 0; i--) {
+        for (uint i = _storageCostHistory[id].length - 1; i >= 0; i--) {
 
-          uint256 priceStartAt = _storagePricesHistory[id][i][0];
-          uint256 price = _storagePricesHistory[id][i][1];
+          uint256 costStartAt = _storageCostHistory[id][i][0];
+          uint256 cost = (_storageCostHistory[id][i][1] * storageCreditPrice) / 10 ^ 8;
           uint256 storageDays;
 
-          if (_birthdays[id][account] >= priceStartAt) {
+          if (_birthdays[id][account] >= costStartAt) {
             storageDays = (timeCursor - _birthdays[id][account]) / 86400;
             if (storageDays == 0) storageDays = 1;
-            totalPrice += storageDays * price * value;
+            totalCost += storageDays * cost * value;
             break;
           } else {
-            storageDays = (timeCursor - priceStartAt) / 86400;
+            storageDays = (timeCursor - costStartAt) / 86400;
             if (storageDays == 0) storageDays = 1;
-            timeCursor = priceStartAt;
-            totalPrice += storageDays * price * value;
+            timeCursor = costStartAt;
+            totalCost += storageDays * cost * value;
           }
         }
 
-        return totalPrice;
+        return totalCost;
     }
 
     function storageFees(address account, uint256 id, uint256 value) public view returns (uint256) {

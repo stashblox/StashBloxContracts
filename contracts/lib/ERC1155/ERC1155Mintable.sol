@@ -12,7 +12,8 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     mapping (uint256 => uint256) internal _supplies;
     mapping (address => bool) private _authorizedTokenizers;
 
-    event UpdateStoragePrice(address indexed _tokenizer, uint256 _id, uint256 _price);
+    event UpdateStorageCost(address indexed _tokenizer, uint256 _id, uint256 _cost);
+    event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
 
     function authorizeTokenizer(address tokenizer) external onlyOwner {
         _authorizedTokenizers[tokenizer] = true;
@@ -41,13 +42,13 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
      * @param recipients The addresses that will own the minted token
      * @param values Amount of the token to be minted for each recipient
      * @param metadataHashes Metadata files hashes
-     * @param storagePrices price for 24h storage
+     * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
      */
     function createTokens(uint256[] calldata ids,
                           address[] calldata recipients,
                           uint256[] calldata values,
                           uint256[] calldata metadataHashes,
-                          uint256[] calldata storagePrices)
+                          uint256[] calldata storageCreditCost)
     external onlyTokenizer {
 
         require(ids.length == recipients.length &&
@@ -62,7 +63,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
             address to = recipients[i];
             uint256 value = values[i];
             _supplies[id] = value;
-            _storagePricesHistory[id].push([block.timestamp, storagePrices[i]]);
+            _storageCostHistory[id].push([block.timestamp, storageCreditCost[i]]);
             _balances[id][to] = value;
             _isHolder[id][to] = true;
             _birthdays[id][to] = block.timestamp;
@@ -77,9 +78,14 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
       _updateMetadataHash(id, metadataHash);
     }
 
-    function updateStoragePrice(uint256 id, uint256 newPrice) external onlyTokenizer {
-      _storagePricesHistory[id].push([block.timestamp, newPrice]);
-      emit UpdateStoragePrice(msg.sender, id, newPrice);
+    function updateStorageCreditPrice(uint256 newPrice) external onlyTokenizer {
+      storageCreditPrice = newPrice;
+      emit UpdateStorageCreditPrice(msg.sender, newPrice);
+    }
+
+    function updateStorageCost(uint256 id, uint256 newCost) external onlyTokenizer {
+      _storageCostHistory[id].push([block.timestamp, newCost]);
+      emit UpdateStorageCost(msg.sender, id, newCost);
     }
 
     function withdraw(address to, uint256 amount) external onlyOwner {

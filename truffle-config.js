@@ -17,6 +17,15 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
+
+ // [ ledger
+ //   '0x0D07b689A8052958dDC7Da09CB6A118D25797D57',
+ //   '0xEd8F313fa7ABDcb249bffAF64C25738e748bdb66',
+ //   '0x6fD8C8bF20DcB63e40d30059a4d9f601f4f46Ab0',
+ //   '0xB12DE9916cD5a6b87315a6C239345EcA5DfBfb5a',
+ //   '0x9cb1E5DB8D27dC8af5e3E1c703aa306dFE4FB0db'
+ // ]
+
 require("@babel/polyfill");
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
@@ -27,8 +36,8 @@ const fs = require('fs');
 
 const ledgerOptions = {
   networkId: 3, // ropsten
-  askConfirm: false,
-  accountsLength: 1,
+  askConfirm: true,
+  accountsLength: 5,
   accountsOffset: 0
 };
 
