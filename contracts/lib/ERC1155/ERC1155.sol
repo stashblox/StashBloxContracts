@@ -255,7 +255,7 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         for (uint i = _storageCostHistory[id].length - 1; i >= 0; i--) {
 
           uint256 costStartAt = _storageCostHistory[id][i][0];
-          uint256 cost = (_storageCostHistory[id][i][1] * storageCreditPrice) / 10 ^ 8;
+          uint256 cost = (_storageCostHistory[id][i][1] * storageCreditPrice) / 10**8;
           uint256 storageDays;
 
           if (_birthdays[id][account] >= costStartAt) {

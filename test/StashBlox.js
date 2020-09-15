@@ -15,18 +15,22 @@ describe("StashBlox", () => {
   const TOKEN_SUPPLY_2 = 200;
   const TOKEN_META_HASH_1 = random();
   const TOKEN_META_HASH_2 = random();
-  const STORAGE_PRICE_1 = 10;
-  const STORAGE_PRICE_2 = 20;
+  const STORAGE_CREDIT_PRICE = 10
+  const STORAGE_COST_1 = 1; // means 1 credit
+  const STORAGE_COST_2 = 2; // means 2 credit
   var STASHBLOX, TOKENS_CREATED_AT, CREATE_TOKEN_RECEIPT;
 
   beforeEach(async function () {
     STASHBLOX = await StashBloxClass.new();
 
+    await STASHBLOX.updateStorageCreditPrice(STORAGE_CREDIT_PRICE);
+
+
     CREATE_TOKEN_RECEIPT = await STASHBLOX.createTokens([TOKEN_ID_1, TOKEN_ID_2],
                                                         [accounts[1], accounts[2]],
                                                         [TOKEN_SUPPLY_1, TOKEN_SUPPLY_2], // supplies
                                                         [TOKEN_META_HASH_1, TOKEN_META_HASH_1],
-                                                        [STORAGE_PRICE_1, STORAGE_PRICE_2]); // storage price WEI
+                                                        [STORAGE_COST_1 * 10**8, STORAGE_COST_2 * 10**8]); // storage price WEI
     //console.log(CREATE_TOKEN_RECEIPT.logs[0].args);
 
     TOKENS_CREATED_AT = await time.latest();
@@ -73,16 +77,17 @@ describe("StashBlox", () => {
   it("should return correct storage fees", async () => {
     await time.increase(time.duration.years(1)); // travel 365 days ahead
 
-    const expectedFees1 = 365 * STORAGE_PRICE_1;
+    const expectedFees1 = 365 * STORAGE_COST_1 * STORAGE_CREDIT_PRICE;
     const fees1 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
 
+    console.log(fees1.toString())
     assert.equal(fees1.valueOf(), expectedFees1, "Incorrect fees");
 
-    await STASHBLOX.updateStoragePrice(TOKEN_ID_1, STORAGE_PRICE_1 + 5);
+    await STASHBLOX.updateStorageCost(TOKEN_ID_1, (STORAGE_COST_1 + 5) * 10**8);
 
     await time.increase(time.duration.years(1)); // travel 365 days ahead
 
-    const expectedFees2 = expectedFees1 + 365 * (STORAGE_PRICE_1 + 5);
+    const expectedFees2 = expectedFees1 + 365 * (STORAGE_COST_1 + 5) * STORAGE_CREDIT_PRICE;
     const fees2 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
 
     assert.equal(fees2.valueOf(), expectedFees2, "Incorrect fees");
