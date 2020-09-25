@@ -36,7 +36,7 @@ const fs = require('fs');
 
 const ledgerOptions = {
   networkId: 3, // ropsten
-  askConfirm: true,
+  askConfirm: false,
   accountsLength: 5,
   accountsOffset: 0
 };

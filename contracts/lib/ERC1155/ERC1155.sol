@@ -35,6 +35,11 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     // price on one storage credit in wei
     uint256 storageCreditPrice = 1000;
 
+    // For each token a list of addresses receiving transfer fees
+    mapping (uint256 => address[]) internal _feesRecipients;
+    // For each token a list of percentage, each one for the corresponding _feesRecipients index
+    mapping (uint256 => uint256[]) internal _feesRecipientsPercentage;
+
     // For each address a list of token IDs. Can contains zero balance.
     mapping (address => uint256[]) internal _tokensByAddress;
     // For each token a list of addresses. Can contains zero balance.

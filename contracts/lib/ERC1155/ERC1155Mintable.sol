@@ -12,6 +12,12 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     mapping (uint256 => uint256) internal _supplies;
     mapping (address => bool) private _authorizedTokenizers;
 
+    // default values for token batch creation
+    uint256 defaultSupply;
+    uint256 defaultStorageCreditCost;
+    address[] defaultFeesRecipients;
+    uint256[] defaultFeesRecipientsPercentage;
+
     event UpdateStorageCost(address indexed _tokenizer, uint256 _id, uint256 _cost);
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
 
@@ -36,41 +42,94 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
         _;
     }
 
+    function _createToken(address recipient,
+                         uint256 id,
+                         uint256 supply,
+                         uint256 metadataHash,
+                         uint256 storageCreditCost,
+                         address[] memory feesRecipients,
+                         uint256[] memory feesRecipientsPercentage)
+    internal {
+
+        require(_supplies[id] == 0, "StashBlox: Token already minted");
+        require(supply > 0, "StashBlox: supply should be greater than 0");
+        require(storageCreditCost > 0, "StashBlox: storageCreditCost should be greater than 0");
+        require(feesRecipients.length > 0, "StashBlox: need at least one feesRecipients");
+        require(feesRecipients.length == feesRecipientsPercentage.length, "StashBlox: invalid feesRecipientsPercentage length");
+
+        uint256 totalPercentage = 0;
+        for (uint256 i = 0; i < feesRecipientsPercentage.length; ++i) {
+            totalPercentage += feesRecipientsPercentage[i];
+            require(feesRecipientsPercentage[i] > 0, "StashBlox: feesRecipientsPercentage should be greater than 0");
+        }
+        require(totalPercentage == 10000, "StashBlox: Total of feesRecipientsPercentage must be equal to 10000");
+
+        _isHolder[id][recipient] = true;
+        _tokensByAddress[recipient].push(id);
+        _supplies[id] = supply;
+        _balances[id][recipient] = supply;
+        _updateMetadataHash(id, metadataHash);
+        _birthdays[id][recipient] = block.timestamp;
+        _storageCostHistory[id].push([block.timestamp, storageCreditCost]);
+        _feesRecipients[id] = feesRecipients;
+        _feesRecipientsPercentage[id] = feesRecipientsPercentage;
+
+        emit TransferSingle(msg.sender, address(0), recipient, id, supply);
+        // emit URI(uri, id);
+    }
+
     /**
      * @dev Function to mint an amount of a token with the given ID.
-     * @param ids ID of the token to be minted
-     * @param recipients The addresses that will own the minted token
-     * @param values Amount of the token to be minted for each recipient
-     * @param metadataHashes Metadata files hashes
+     * @param recipient The address that will own the minted tokens
+     * @param id ID of the token to be minted
+     * @param supply Amount of the token to be minted
+     * @param metadataHash Metadata file hash
      * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
+     * @param feesRecipients list of addresses receiving transfer fees
+     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients index
      */
-    function createTokens(uint256[] calldata ids,
-                          address[] calldata recipients,
-                          uint256[] calldata values,
-                          uint256[] calldata metadataHashes,
-                          uint256[] calldata storageCreditCost)
+    function createToken(address recipient,
+                         uint256 id,
+                         uint256 supply,
+                         uint256 metadataHash,
+                         uint256 storageCreditCost,
+                         address[] calldata feesRecipients,
+                         uint256[] calldata feesRecipientsPercentage)
+    external onlyTokenizer {
+        _createToken(recipient,
+                     id,
+                     supply,
+                     metadataHash,
+                     storageCreditCost,
+                     feesRecipients,
+                     feesRecipientsPercentage);
+    }
+
+    function setCreateTokensDefaultValues(uint256 supply,
+                                          uint256 storageCreditCost,
+                                          address[] calldata feesRecipients,
+                                          uint256[] calldata feesRecipientsPercentage)
     external onlyTokenizer {
 
-        require(ids.length == recipients.length &&
-                recipients.length == values.length &&
-                values.length == metadataHashes.length, "StashBlox: all lists must have same lengths");
+        defaultSupply = supply;
+        defaultStorageCreditCost = storageCreditCost;
+        defaultFeesRecipients = feesRecipients;
+        defaultFeesRecipientsPercentage = feesRecipientsPercentage;
+    }
 
-        for (uint256 i = 0; i < ids.length; ++i)
-            require(_supplies[ids[i]] == 0, "StashBlox: Token already minted");
+    function createTokens(address recipient,
+                          uint256[] calldata ids,
+                          uint256[] calldata metadataHashes)
+    external onlyTokenizer {
 
         for (uint256 i = 0; i < ids.length; ++i) {
-            uint256 id = ids[i];
-            address to = recipients[i];
-            uint256 value = values[i];
-            _supplies[id] = value;
-            _storageCostHistory[id].push([block.timestamp, storageCreditCost[i]]);
-            _balances[id][to] = value;
-            _isHolder[id][to] = true;
-            _birthdays[id][to] = block.timestamp;
-            _tokensByAddress[to].push(id);
-            emit TransferSingle(msg.sender, address(0), to, id, value);
-            _updateMetadataHash(id, metadataHashes[i]);
-            // emit URI(uri, id);
+            _createToken(recipient,
+                         ids[i],
+                         defaultSupply,
+                         metadataHashes[i],
+                         defaultStorageCreditCost,
+                         defaultFeesRecipients,
+                         defaultFeesRecipientsPercentage);
         }
     }
 
