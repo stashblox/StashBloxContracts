@@ -39,8 +39,8 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     mapping (uint256 => address[]) internal _feesRecipients;
     // For each token a list of percentage, each one for the corresponding _feesRecipients index
     mapping (uint256 => uint256[]) internal _feesRecipientsPercentage;
-    // Balances of each fees recipients
-    mapping (address => uint256) internal _feesRecipientsBalances;
+    // Balances ETH for fees recipients and callbacks
+    mapping (address => uint256) internal _ETHBalances;
 
     // For each address a list of token IDs. Can contains zero balance.
     mapping (address => uint256[]) internal _tokensByAddress;
@@ -248,7 +248,7 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         for (uint256 i = 0; i < _feesRecipients[id].length; ++i) {
           address feesRecipient = _feesRecipients[id][i];
           uint256 feesRecipientsPercentage = _feesRecipientsPercentage[id][i];
-          _feesRecipientsBalances[feesRecipient] += fees.mul(feesRecipientsPercentage).div(10000);
+          _ETHBalances[feesRecipient] += (fees.mul(feesRecipientsPercentage)).div(10000);
         }
 
         return fees;
