@@ -149,9 +149,10 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
 
     function withdraw(address to, uint256 amount) external onlyOwner {
       uint256 currentBalance = address(this).balance;
-      if (currentBalance >= amount) {
+      if (_feesRecipientsBalances[to] >= amount) {
         (bool success, ) = to.call.value(amount)("");
         require(success, "Withdrawal failed.");
+        _feesRecipientsBalances[to] -= amount;
       }
     }
 
