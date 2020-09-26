@@ -13,16 +13,19 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     mapping (address => bool) private _authorizedTokenizers;
 
     // Minimum holding to propose a callback
-    uint256 minHoldingForCallback = 8000; // 80%
+
     // list of callback propositions
     // _callbackPropositions[tokenID][proposer] = [priceForEachToken, ETHAmountEscrowed]
     mapping (uint256 => mapping(address => uint256[2])) _callbackPropositions;
+    // Minimum holding to propose a callback for each token
+    mapping (uint256 => uint256) _minHoldingForCallback;
 
     // default values for token batch creation
     uint256 defaultSupply;
     uint256 defaultStorageCreditCost;
     address[] defaultFeesRecipients;
     uint256[] defaultFeesRecipientsPercentage;
+    uint256 defaultMinHoldingForCallback = 8000; // 80%
 
     event UpdateStorageCost(address indexed _tokenizer, uint256 _id, uint256 _cost);
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
@@ -57,6 +60,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
                          uint256 supply,
                          uint256 metadataHash,
                          uint256 storageCreditCost,
+                         uint256 minHoldingForCallback,
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage)
     internal {
@@ -64,6 +68,8 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
         require(_supplies[id] == 0, "StashBlox: Token already minted");
         require(supply > 0, "StashBlox: supply should be greater than 0");
         require(storageCreditCost > 0, "StashBlox: storageCreditCost should be greater than 0");
+        require(minHoldingForCallback > 0, "StashBlox: minHoldingForCallback should be greater than 0");
+        require(minHoldingForCallback <= 10000, "StashBlox: minHoldingForCallback should be lower or equal than 10000");
         require(feesRecipients.length > 0, "StashBlox: need at least one feesRecipients");
         require(feesRecipients.length == feesRecipientsPercentage.length, "StashBlox: invalid feesRecipientsPercentage length");
 
@@ -81,6 +87,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
         _updateMetadataHash(id, metadataHash);
         _birthdays[id][recipient] = block.timestamp;
         _storageCostHistory[id].push([block.timestamp, storageCreditCost]);
+        _minHoldingForCallback[id] = minHoldingForCallback;
         _feesRecipients[id] = feesRecipients;
         _feesRecipientsPercentage[id] = feesRecipientsPercentage;
 
@@ -95,6 +102,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
      * @param supply Amount of the token to be minted
      * @param metadataHash Metadata file hash
      * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
+     * @param minHoldingForCallback minimum holding to propose a callback
      * @param feesRecipients list of addresses receiving transfer fees
      * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
      */
@@ -103,6 +111,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
                          uint256 supply,
                          uint256 metadataHash,
                          uint256 storageCreditCost,
+                         uint256 minHoldingForCallback,
                          address[] calldata feesRecipients,
                          uint256[] calldata feesRecipientsPercentage)
     external onlyTokenizer {
@@ -111,6 +120,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
                      supply,
                      metadataHash,
                      storageCreditCost,
+                     minHoldingForCallback,
                      feesRecipients,
                      feesRecipientsPercentage);
     }
@@ -119,17 +129,20 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
      * @dev Set default values for batch token creation.
      * @param supply Amount of the token to be minted
      * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
+     * @param minHoldingForCallback minimum holding to propose a callback
      * @param feesRecipients list of addresses receiving transfer fees
      * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
      */
     function setCreateTokensDefaultValues(uint256 supply,
                                           uint256 storageCreditCost,
+                                          uint256 minHoldingForCallback,
                                           address[] calldata feesRecipients,
                                           uint256[] calldata feesRecipientsPercentage)
     external onlyTokenizer {
 
         defaultSupply = supply;
         defaultStorageCreditCost = storageCreditCost;
+        defaultMinHoldingForCallback = minHoldingForCallback;
         defaultFeesRecipients = feesRecipients;
         defaultFeesRecipientsPercentage = feesRecipientsPercentage;
     }
@@ -151,6 +164,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
                          defaultSupply,
                          metadataHashes[i],
                          defaultStorageCreditCost,
+                         defaultMinHoldingForCallback,
                          defaultFeesRecipients,
                          defaultFeesRecipientsPercentage);
         }
@@ -189,7 +203,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
       require(_supplies[id] > 0, "StashBlox: Unknown token.");
       require(price > 0, "StashBlox: Price must be greater than 0.");
 
-      uint256 minHolding = (_supplies[id].mul(minHoldingForCallback)).div(10000);
+      uint256 minHolding = (_supplies[id].mul(_minHoldingForCallback[id])).div(10000);
       require(_balances[id][msg.sender] >= minHolding, "StashBlox: insufficient balance to propose a callback.");
 
       uint256 callbackAmount = _supplies[id].sub(_balances[id][msg.sender]);
@@ -230,7 +244,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
 
       require(price > 0, "StashBlox: callback proposition not found.");
 
-      uint256 minHolding = (_supplies[id].mul(minHoldingForCallback)).div(10000);
+      uint256 minHolding = (_supplies[id].mul(_minHoldingForCallback[id])).div(10000);
       require(_balances[id][msg.sender] >= minHolding, "StashBlox: insufficient balance to execute the callback.");
 
       uint256 callbackAmount = _supplies[id].sub(_balances[id][msg.sender]);
