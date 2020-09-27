@@ -79,6 +79,10 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         return _balances[id][account];
     }
 
+    function ethBalanceOf(address account) public view returns (uint256) {
+        return _ETHBalances[account];
+    }
+
     /**
         @dev Get the balance of multiple account/token pairs.
 

@@ -6,6 +6,7 @@ const { BN, constants, expectEvent, expectRevert, time, balance } = require('@op
 const random = () => { return new BN(crypto.randomBytes(20).toString('hex')); }
 const bigN = (value) => { return new BN(value); }
 const StashBloxClass = contract.fromArtifact('StashBlox');
+const StashBloxCallbackClass = contract.fromArtifact('StashBloxCallback');
 
 describe("StashBlox", () => {
 
@@ -15,22 +16,40 @@ describe("StashBlox", () => {
   const TOKEN_SUPPLY_2 = 200;
   const TOKEN_META_HASH_1 = random();
   const TOKEN_META_HASH_2 = random();
-  const STORAGE_CREDIT_PRICE = 10
+  const STORAGE_CREDIT_PRICE = 10;
   const STORAGE_COST_1 = 1; // means 1 credit
   const STORAGE_COST_2 = 2; // means 2 credit
   var STASHBLOX, TOKENS_CREATED_AT, CREATE_TOKEN_RECEIPT;
+  const MIN_HOLDING_FOR_CALLBACK = 8000;
+  const FEES_RECIPIENT_1 = accounts[6];
+  const FEES_RECIPIENT_2 = accounts[7];
+  const FEES_RECIPIENT_PERCENTAGE_1 = 7500;
+  const FEES_RECIPIENT_PERCENTAGE_2 = 2500;
+
 
   beforeEach(async function () {
-    STASHBLOX = await StashBloxClass.new();
+    STASHBLOX_CALLBACK = await StashBloxCallbackClass.new();
+    STASHBLOX = await StashBloxClass.new(STASHBLOX_CALLBACK.address);
 
     await STASHBLOX.updateStorageCreditPrice(STORAGE_CREDIT_PRICE);
 
+    CREATE_TOKEN_RECEIPT_1 = await STASHBLOX.createToken(accounts[1],
+                                                          TOKEN_ID_1,
+                                                          TOKEN_SUPPLY_1,
+                                                          TOKEN_META_HASH_1,
+                                                          STORAGE_COST_1 * 10**8,
+                                                          MIN_HOLDING_FOR_CALLBACK,
+                                                          [FEES_RECIPIENT_1, FEES_RECIPIENT_2],
+                                                          [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2]); // storage price WEI
 
-    CREATE_TOKEN_RECEIPT = await STASHBLOX.createTokens([TOKEN_ID_1, TOKEN_ID_2],
-                                                        [accounts[1], accounts[2]],
-                                                        [TOKEN_SUPPLY_1, TOKEN_SUPPLY_2], // supplies
-                                                        [TOKEN_META_HASH_1, TOKEN_META_HASH_1],
-                                                        [STORAGE_COST_1 * 10**8, STORAGE_COST_2 * 10**8]); // storage price WEI
+    CREATE_TOKEN_RECEIPT_2 = await STASHBLOX.createToken(accounts[2],
+                                                          TOKEN_ID_2,
+                                                          TOKEN_SUPPLY_2,
+                                                          TOKEN_META_HASH_2,
+                                                          STORAGE_COST_2 * 10**8,
+                                                          MIN_HOLDING_FOR_CALLBACK,
+                                                          [FEES_RECIPIENT_1, FEES_RECIPIENT_2],
+                                                          [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2]); // storage price WEI
     //console.log(CREATE_TOKEN_RECEIPT.logs[0].args);
 
     TOKENS_CREATED_AT = await time.latest();
@@ -38,7 +57,7 @@ describe("StashBlox", () => {
 
 
   it("should emit TransferSingle on token creation", async () => {
-    expectEvent(CREATE_TOKEN_RECEIPT, "TransferSingle", {
+    expectEvent(CREATE_TOKEN_RECEIPT_1, "TransferSingle", {
       _operator: defaultSender,
       _from: constants.ZERO_ADDRESS,
       _to: accounts[1],
@@ -46,7 +65,7 @@ describe("StashBlox", () => {
       _value: bigN(100)
     });
 
-    expectEvent(CREATE_TOKEN_RECEIPT, "TransferSingle", {
+    expectEvent(CREATE_TOKEN_RECEIPT_2, "TransferSingle", {
       _operator: defaultSender,
       _from: constants.ZERO_ADDRESS,
       _to: accounts[2],
@@ -80,7 +99,7 @@ describe("StashBlox", () => {
     const expectedFees1 = 365 * STORAGE_COST_1 * STORAGE_CREDIT_PRICE;
     const fees1 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
 
-    console.log(fees1.toString())
+    //console.log(fees1.toString())
     assert.equal(fees1.valueOf(), expectedFees1, "Incorrect fees");
 
     await STASHBLOX.updateStorageCost(TOKEN_ID_1, (STORAGE_COST_1 + 5) * 10**8);
@@ -158,13 +177,21 @@ describe("StashBlox", () => {
 
 
   it("should withdraw the correct amount", async () => {
+
+    let ethBalance = await STASHBLOX.ethBalanceOf.call(FEES_RECIPIENT_1);
+    assert.equal(ethBalance.valueOf(), 0, "Incorrect ETH balance");
+
     let transferAmount = 38;
-    let balance1 = await balance.current(accounts[3]);
+    let balance1 = await balance.current(FEES_RECIPIENT_1);
 
     // travel 365 days ahead
     await time.increase(time.duration.years(1));
 
     const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, transferAmount);
+    const storageGain1  = storageFees * 0.75;
+    const storageGain2  = storageFees * 0.25;
+    //console.log("storageGain1", storageGain1.toString())
+
 
     // try to send 50 tokens to account[2]..
     await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, transferAmount, constants.ZERO_BYTES32, {
@@ -172,13 +199,18 @@ describe("StashBlox", () => {
       value: storageFees
     });
 
-    await STASHBLOX.withdraw(accounts[3], storageFees);
+    ethBalance = await STASHBLOX.ethBalanceOf.call(FEES_RECIPIENT_1);
+    assert.equal(ethBalance.toString(), storageGain1.toString(), "Incorrect balance increase");
+    ethBalance = await STASHBLOX.ethBalanceOf.call(FEES_RECIPIENT_2);
+    assert.equal(ethBalance.toString(), storageGain2.toString(), "Incorrect balance increase");
 
-    let balance2 = await balance.current(accounts[3]);
+    await STASHBLOX.withdraw(FEES_RECIPIENT_1, storageGain1);
+
+    let balance2 = await balance.current(FEES_RECIPIENT_1);
     let balanceIncrease =  balance2.sub(balance1);
-    let diff = storageFees.sub(balanceIncrease);
+    //console.log("balanceIncrease", balanceIncrease.toString())
 
-    assert.equal(diff.valueOf(), 0, "Incorrect balance increase");
+    assert.equal(balanceIncrease.toString(), storageGain1.toString(), "Incorrect balance increase");
   });
 
 

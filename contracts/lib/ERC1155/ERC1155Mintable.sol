@@ -125,11 +125,10 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     }
 
     function withdraw(address to, uint256 amount) external onlyOwner {
-      if (_ETHBalances[to] >= amount) {
-        (bool success, ) = to.call.value(amount)("");
-        require(success, "StashBlox: Withdrawal failed.");
-        _ETHBalances[to] -= amount;
-      }
+      require(_ETHBalances[to] >= amount, "StashBlox: Insufficient balance.");
+      (bool success, ) = to.call.value(amount)("");
+      require(success, "StashBlox: Withdrawal failed.");
+      _ETHBalances[to] -= amount;
     }
 
     /**
