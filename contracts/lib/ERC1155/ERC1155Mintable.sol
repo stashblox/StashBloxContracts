@@ -15,13 +15,6 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
     // Minimum holding to propose a callback for each token
     mapping (uint256 => uint256) _minHoldingForCallback;
 
-    // default values for token batch creation
-    uint256 defaultSupply;
-    uint256 defaultStorageCreditCost;
-    address[] defaultFeesRecipients;
-    uint256[] defaultFeesRecipientsPercentage;
-    uint256 defaultMinHoldingForCallback = 8000; // 80%
-
     event UpdateStorageCost(address indexed _tokenizer, uint256 _id, uint256 _cost);
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
 
@@ -115,51 +108,6 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
                      minHoldingForCallback,
                      feesRecipients,
                      feesRecipientsPercentage);
-    }
-
-    /**
-     * @dev Set default values for batch token creation.
-     * @param supply Amount of the token to be minted
-     * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
-     * @param minHoldingForCallback minimum holding to propose a callback
-     * @param feesRecipients list of addresses receiving transfer fees
-     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
-     */
-    function setCreateTokensDefaultValues(uint256 supply,
-                                          uint256 storageCreditCost,
-                                          uint256 minHoldingForCallback,
-                                          address[] calldata feesRecipients,
-                                          uint256[] calldata feesRecipientsPercentage)
-    external onlyTokenizer {
-
-        defaultSupply = supply;
-        defaultStorageCreditCost = storageCreditCost;
-        defaultMinHoldingForCallback = minHoldingForCallback;
-        defaultFeesRecipients = feesRecipients;
-        defaultFeesRecipientsPercentage = feesRecipientsPercentage;
-    }
-
-    /**
-     * @dev Function to mint token in batch. Default value must be set with setCreateTokensDefaultValues.
-     * @param recipient The address that will own the minted tokens
-     * @param ids list of IDs of the tokens to be minted
-     * @param metadataHashes list of Metadata file hash
-     */
-    function createTokens(address recipient,
-                          uint256[] calldata ids,
-                          uint256[] calldata metadataHashes)
-    external onlyTokenizer {
-
-        for (uint256 i = 0; i < ids.length; ++i) {
-            _createToken(recipient,
-                         ids[i],
-                         defaultSupply,
-                         metadataHashes[i],
-                         defaultStorageCreditCost,
-                         defaultMinHoldingForCallback,
-                         defaultFeesRecipients,
-                         defaultFeesRecipientsPercentage);
-        }
     }
 
     function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
