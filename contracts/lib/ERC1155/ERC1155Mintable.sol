@@ -131,11 +131,11 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
       _ETHBalances[to] -= amount;
     }
 
-    /**
-     * @param id Token ID
-     * @return Token supply
-     */
-    function totalSupply(uint256 id) external view returns (uint256) {
-        return _supplies[id];
-    }
+    // /**
+    //  * @param id Token ID
+    //  * @return Token supply
+    //  */
+    // function totalSupply(uint256 id) external view returns (uint256) {
+    //     return _supplies[id];
+    // }
 }

@@ -76,10 +76,11 @@ describe("StashBlox", () => {
 
 
   it("should update birthday on token creation", async () => {
-    let birthday1 = await STASHBLOX.birthdayOf.call(accounts[1], TOKEN_ID_1);
+
+    let birthday1 = await STASHBLOX._birthdays(TOKEN_ID_1, accounts[1]);
     assert.equal(birthday1.toString(), TOKENS_CREATED_AT.toString(), "Birthday is not correct")
 
-    let birthday2 = await STASHBLOX.birthdayOf.call(accounts[2], TOKEN_ID_2);
+    let birthday2 = await STASHBLOX._birthdays(TOKEN_ID_2, accounts[2]);
     assert.equal(birthday2.toString(), TOKENS_CREATED_AT.toString(), "Birthday is not correct")
   });
 
@@ -133,7 +134,7 @@ describe("StashBlox", () => {
     // 50 tokens since 2 years and 25 since now =>
     // average age = ((50*730) + (25*0))/75 = 486,666 days
     let expectedAge = (50 * 730) / 75;
-    let birthdayAfter = await STASHBLOX.birthdayOf.call(accounts[1], TOKEN_ID_1);
+    let birthdayAfter = await STASHBLOX._birthdays(TOKEN_ID_1, accounts[1]);
     let actualAge = ((await time.latest()) - birthdayAfter) / 86400;
 
     assert.equal(actualAge.valueOf(), expectedAge, "Incorrect token age");
@@ -178,7 +179,7 @@ describe("StashBlox", () => {
 
   it("should withdraw the correct amount", async () => {
 
-    let ethBalance = await STASHBLOX.ethBalanceOf.call(FEES_RECIPIENT_1);
+    let ethBalance = await STASHBLOX._ETHBalances(FEES_RECIPIENT_1);
     assert.equal(ethBalance.valueOf(), 0, "Incorrect ETH balance");
 
     let transferAmount = 38;
@@ -199,9 +200,9 @@ describe("StashBlox", () => {
       value: storageFees
     });
 
-    ethBalance = await STASHBLOX.ethBalanceOf.call(FEES_RECIPIENT_1);
+    ethBalance = await STASHBLOX._ETHBalances(FEES_RECIPIENT_1);
     assert.equal(ethBalance.toString(), storageGain1.toString(), "Incorrect balance increase");
-    ethBalance = await STASHBLOX.ethBalanceOf.call(FEES_RECIPIENT_2);
+    ethBalance = await STASHBLOX._ETHBalances(FEES_RECIPIENT_2);
     assert.equal(ethBalance.toString(), storageGain2.toString(), "Incorrect balance increase");
 
     await STASHBLOX.withdraw(FEES_RECIPIENT_1, storageGain1);

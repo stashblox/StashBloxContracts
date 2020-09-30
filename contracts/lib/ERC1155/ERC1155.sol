@@ -6,7 +6,8 @@ import "../ERC165/IERC165.sol";
 import "../utils/SafeMath.sol";
 import "../utils/StringUtils.sol";
 import "../utils/Address.sol";
-import './ERC1155Lockable.sol';
+// import './ERC1155Lockable.sol';
+import "../ERC173/ERC173.sol";
 
 /**
  * @title Standard ERC1155 token
@@ -15,7 +16,7 @@ import './ERC1155Lockable.sol';
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
+contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
 {
     bytes4 constant private INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 constant private INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
@@ -27,7 +28,7 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     mapping (uint256 => mapping(address => uint256)) _balances;
 
     // Mapping from token ID to account age
-    mapping (uint256 => mapping(address => uint256)) _birthdays;
+    mapping (uint256 => mapping(address => uint256)) public _birthdays;
 
     // Mapping from token ID to list of tuple [timestamp, price]
     mapping (uint256 => uint256[2][]) internal _storageCostHistory;
@@ -40,17 +41,19 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     // For each token a list of percentage, each one for the corresponding _feesRecipients index
     mapping (uint256 => uint256[]) internal _feesRecipientsPercentage;
     // Balances ETH for fees recipients and callbacks
-    mapping (address => uint256) internal _ETHBalances;
+    mapping (address => uint256) public _ETHBalances;
 
     // For each address a list of token IDs. Can contains zero balance.
-    mapping (address => uint256[]) internal _tokensByAddress;
+    mapping (address => uint256[]) public _tokensByAddress;
     // For each token a list of addresses. Can contains zero balance.
-    mapping (uint256 => address[]) internal _addressesByToken;
+    mapping (uint256 => address[]) public _addressesByToken;
     // Initialize to true on the first token received, never come back to false.
     mapping (uint256 => mapping(address => bool)) internal _isHolder;
 
     // Mapping from account to operator approvals
     mapping (address => mapping(address => bool)) private _operatorApprovals;
+
+    mapping (uint256 => bool) public _locked;
 
     /**
      * @notice Query if a contract implements an interface
@@ -79,9 +82,9 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         return _balances[id][account];
     }
 
-    function ethBalanceOf(address account) public view returns (uint256) {
-        return _ETHBalances[account];
-    }
+    // function ethBalanceOf(address account) public view returns (uint256) {
+    //     return _ETHBalances[account];
+    // }
 
     /**
         @dev Get the balance of multiple account/token pairs.
@@ -220,7 +223,7 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
     }
 
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
-        require(!_isLockedMove(from, to, id, value), "Locked");
+        //require(!_locked[id], "Locked");
 
         fees = _storageFees(from, id, value);
         require(feesBalance >= fees, "ERC1155: insufficient ETH for transfer fees");
@@ -258,10 +261,10 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         return fees;
     }
 
-    function birthdayOf(address account, uint256 id) public view returns (uint256) {
-        require(account != address(0), "ERC1155: balance query for the zero address");
-        return _balances[id][account] == 0 ? 0 : _birthdays[id][account];
-    }
+    // function birthdayOf(address account, uint256 id) public view returns (uint256) {
+    //     require(account != address(0), "ERC1155: balance query for the zero address");
+    //     return _balances[id][account] == 0 ? 0 : _birthdays[id][account];
+    // }
 
     function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
@@ -295,38 +298,38 @@ contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
         return _storageFees(account, id, value);
     }
 
-    function tokensByAddress(address account) public view returns (string memory result) {
-        require(account != address(0), "ERC1155: balance query for the zero address");
-
-        for (uint i = 0; i < _tokensByAddress[account].length; i++) {
-            uint256 id = _tokensByAddress[account][i];
-            if (_balances[id][account] > 0) {
-              if (bytes(result).length > 0) {
-                result = _strConcat(result, " ");
-                result = _strConcat(result, _toHexString(id));
-              } else {
-                result = _toHexString(id);
-              }
-            }
-        }
-        return result;
-    }
-
-    function addressesByToken(uint256 id) public view returns (string memory result) {
-
-        for (uint i = 0; i < _addressesByToken[id].length; i++) {
-            address account = _addressesByToken[id][i];
-            if (_balances[id][account] > 0) {
-              if (bytes(result).length > 0) {
-                result = _strConcat(result, " ");
-                result = _strConcat(result, _toHexString(uint256(account)));
-              } else {
-                result = _toHexString(uint256(account));
-              }
-            }
-        }
-        return result;
-    }
+    // function tokensByAddress(address account) public view returns (string memory result) {
+    //     require(account != address(0), "ERC1155: balance query for the zero address");
+    //
+    //     for (uint i = 0; i < _tokensByAddress[account].length; i++) {
+    //         uint256 id = _tokensByAddress[account][i];
+    //         if (_balances[id][account] > 0) {
+    //           if (bytes(result).length > 0) {
+    //             result = _strConcat(result, " ");
+    //             result = _strConcat(result, _toHexString(id));
+    //           } else {
+    //             result = _toHexString(id);
+    //           }
+    //         }
+    //     }
+    //     return result;
+    // }
+    //
+    // function addressesByToken(uint256 id) public view returns (string memory result) {
+    //
+    //     for (uint i = 0; i < _addressesByToken[id].length; i++) {
+    //         address account = _addressesByToken[id][i];
+    //         if (_balances[id][account] > 0) {
+    //           if (bytes(result).length > 0) {
+    //             result = _strConcat(result, " ");
+    //             result = _strConcat(result, _toHexString(uint256(account)));
+    //           } else {
+    //             result = _toHexString(uint256(account));
+    //           }
+    //         }
+    //     }
+    //     return result;
+    // }
 
 
 
