@@ -6,8 +6,8 @@ import "../ERC165/IERC165.sol";
 import "../utils/SafeMath.sol";
 import "../utils/StringUtils.sol";
 import "../utils/Address.sol";
-// import './ERC1155Lockable.sol';
-import "../ERC173/ERC173.sol";
+import './ERC1155Lockable.sol';
+//import "../ERC173/ERC173.sol";
 
 /**
  * @title Standard ERC1155 token
@@ -16,7 +16,7 @@ import "../ERC173/ERC173.sol";
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
+contract ERC1155 is IERC165, IERC1155, ERC1155Lockable, StringUtils
 {
     bytes4 constant private INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 constant private INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
@@ -52,13 +52,6 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
 
     // Mapping from account to operator approvals
     mapping (address => mapping(address => bool)) private _operatorApprovals;
-
-    mapping (uint256 => bool) public _locked;
-
-    modifier unlocked(uint256 id) {
-        require(!_locked[id]);
-        _;
-    }
 
     /**
      * @notice Query if a contract implements an interface
@@ -227,8 +220,9 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
         }
     }
 
-    function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal unlocked(id) returns (uint256 fees) {
+    function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
         //require(!_locked[id], "Locked");
+        require(!_isLockedMove(from, to, id, value), "Locked");
 
         fees = _storageFees(from, id, value);
         require(feesBalance >= fees, "ERC1155: insufficient ETH for transfer fees");
