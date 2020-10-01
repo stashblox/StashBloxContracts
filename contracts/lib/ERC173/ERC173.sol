@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.7.1;
 
 import "./IERC173.sol";
 /**
@@ -13,19 +13,17 @@ import "./IERC173.sol";
 contract ERC173 is IERC173 {
     address private _owner;
 
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
      */
-    constructor () internal {
+    constructor () {
         _transferOwnership(msg.sender);
     }
 
     /**
      * @dev Returns the address of the current owner.
      */
-    function owner() public view returns (address) {
+    function owner() public view override returns (address) {
         return _owner;
     }
 
@@ -41,7 +39,7 @@ contract ERC173 is IERC173 {
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
      * Can only be called by the current owner.
      */
-    function transferOwnership(address newOwner) public onlyOwner {
+    function transferOwnership(address newOwner) public override onlyOwner {
         _transferOwnership(newOwner);
     }
 

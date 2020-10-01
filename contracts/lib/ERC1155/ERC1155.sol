@@ -1,4 +1,4 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.7.1;
 
 import "./IERC1155.sol";
 import "./IERC1155Receiver.sol";
@@ -55,12 +55,17 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
 
     mapping (uint256 => bool) public _locked;
 
+    modifier unlocked(uint256 id) {
+        require(!_locked[id]);
+        _;
+    }
+
     /**
      * @notice Query if a contract implements an interface
      * @param _interfaceID  The interface identifier, as specified in ERC-165
      * @return `true` if the contract implements `_interfaceID` and
      */
-    function supportsInterface(bytes4 _interfaceID) external view returns (bool) {
+    function supportsInterface(bytes4 _interfaceID) external pure override returns (bool) {
       if (_interfaceID == INTERFACE_SIGNATURE_ERC165 ||
           _interfaceID == INTERFACE_SIGNATURE_ERC1155) {
         return true;
@@ -77,7 +82,7 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
         @param id ID of the token
         @return The account's balance of the token type requested
      */
-    function balanceOf(address account, uint256 id) public view returns (uint256) {
+    function balanceOf(address account, uint256 id) public view override returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
         return _balances[id][account];
     }
@@ -101,7 +106,7 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
     )
         public
         view
-        returns (uint256[] memory)
+        override returns (uint256[] memory)
     {
         require(accounts.length == ids.length, "ERC1155: accounts and IDs must have same lengths");
 
@@ -126,7 +131,7 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
      * @param operator address to set the approval
      * @param approved representing the status of the approval to be set
      */
-    function setApprovalForAll(address operator, bool approved) external {
+    function setApprovalForAll(address operator, bool approved) external override {
         require(msg.sender != operator, "ERC1155: cannot set approval status for self");
         _operatorApprovals[msg.sender][operator] = approved;
         emit ApprovalForAll(msg.sender, operator, approved);
@@ -138,7 +143,7 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
         @param operator  Address of authorized operator
         @return           True if the operator is approved, false if not
     */
-    function isApprovedForAll(address account, address operator) public view returns (bool) {
+    function isApprovedForAll(address account, address operator) public view override returns (bool) {
         return _operatorApprovals[account][operator];
     }
 
@@ -159,7 +164,7 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
         uint256 value,
         bytes calldata data
     )
-        external payable
+        external payable override
     {
         require(to != address(0), "ERC1155: target address must be non-zero");
         require(
@@ -175,7 +180,7 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
         _doSafeTransferAcceptanceCheck(msg.sender, from, to, id, value, data);
 
         if (feesBalance > 0) {
-          (bool success, ) = msg.sender.call.value(feesBalance)("");
+          (bool success, ) = msg.sender.call{value: feesBalance}("");
           require(success, "Transfer failed.");
         }
     }
@@ -198,7 +203,7 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
         uint256[] calldata values,
         bytes calldata data
     )
-        external payable
+        external payable override
     {
         require(ids.length == values.length, "ERC1155: IDs and values must have same lengths");
         require(to != address(0), "ERC1155: target address must be non-zero");
@@ -217,12 +222,12 @@ contract ERC1155 is IERC165, IERC1155, ERC173, StringUtils
         _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, values, data);
 
         if (feesBalance > 0) {
-          (bool success, ) = msg.sender.call.value(feesBalance)("");
+          (bool success, ) = msg.sender.call{value: feesBalance}("");
           require(success, "Transfer failed.");
         }
     }
 
-    function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
+    function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal unlocked(id) returns (uint256 fees) {
         //require(!_locked[id], "Locked");
 
         fees = _storageFees(from, id, value);

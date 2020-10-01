@@ -1,4 +1,4 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.7.1;
 
 import '../ERC1155/IERC1155Metadata.sol';
 import '../utils/StringUtils.sol';
@@ -17,7 +17,7 @@ contract ERC1155Metadata is IERC1155Metadata, StringUtils {
      * @param id Token ID
      * @return URI string
      */
-    function uri(uint256 id) external view returns (string memory) {
+    function uri(uint256 id) external pure override returns (string memory) {
         return _strConcat(BASE_URI, _toHexString(id));
     }
 

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.7.1;
 // pragma experimental ABIEncoderV2;
 
 import './ERC1155.sol';
@@ -50,13 +50,20 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
                          uint256[] memory feesRecipientsPercentage)
     internal {
 
-        require(_supplies[id] == 0, "StashBlox: Token already minted");
-        require(supply > 0, "StashBlox: supply should be greater than 0");
-        require(storageCreditCost > 0, "StashBlox: storageCreditCost should be greater than 0");
-        require(minHoldingForCallback > 0, "StashBlox: minHoldingForCallback should be greater than 0");
-        require(minHoldingForCallback <= 10000, "StashBlox: minHoldingForCallback should be lower or equal than 10000");
-        require(feesRecipients.length > 0, "StashBlox: need at least one feesRecipients");
-        require(feesRecipients.length == feesRecipientsPercentage.length, "StashBlox: invalid feesRecipientsPercentage length");
+        // require(_supplies[id] == 0, "StashBlox: Token already minted");
+        // require(supply > 0, "StashBlox: supply should be greater than 0");
+        // require(storageCreditCost > 0, "StashBlox: storageCreditCost should be greater than 0");
+        // require(minHoldingForCallback > 0, "StashBlox: minHoldingForCallback should be greater than 0");
+        // require(minHoldingForCallback <= 10000, "StashBlox: minHoldingForCallback should be lower or equal than 10000");
+        // require(feesRecipients.length > 0, "StashBlox: need at least one feesRecipients");
+        // require(feesRecipients.length == feesRecipientsPercentage.length, "StashBlox: invalid feesRecipientsPercentage length");
+        require(_supplies[id] == 0 &&
+                supply > 0 &&
+                storageCreditCost > 0 &&
+                minHoldingForCallback > 0 &&
+                minHoldingForCallback <= 10000 &&
+                feesRecipients.length > 0 &&
+                feesRecipients.length == feesRecipientsPercentage.length, "StashBlox: Invalid arguments");
 
         uint256 totalPercentage = 0;
         for (uint256 i = 0; i < feesRecipientsPercentage.length; ++i) {
@@ -126,7 +133,7 @@ contract ERC1155Mintable is ERC1155, ERC1155Metadata {
 
     function withdraw(address to, uint256 amount) external onlyOwner {
       require(_ETHBalances[to] >= amount, "StashBlox: Insufficient balance.");
-      (bool success, ) = to.call.value(amount)("");
+      (bool success, ) = to.call{value: amount}("");
       require(success, "StashBlox: Withdrawal failed.");
       _ETHBalances[to] -= amount;
     }

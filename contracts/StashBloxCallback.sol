@@ -1,4 +1,4 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.7.1;
 pragma experimental ABIEncoderV2;
 
 import "./lib/ERC173/ERC173.sol";

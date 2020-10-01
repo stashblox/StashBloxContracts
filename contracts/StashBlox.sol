@@ -1,7 +1,8 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.7.1;
 pragma experimental ABIEncoderV2;
 
 import './lib/ERC1155/ERC1155Mintable.sol';
+import "./lib/utils/SafeMath.sol";
 
 contract StashBlox is ERC1155Mintable {
 
@@ -12,6 +13,8 @@ contract StashBlox is ERC1155Mintable {
     event CallbackProposed(uint256 indexed _id, address _proposer, uint256 _price);
     event CallbackRefused(uint256 indexed _id, address _proposer, uint256 _price);
     event CallbackAccepted(uint256 indexed _id, address _proposer, uint256 _price);
+
+    using SafeMath for uint256;
 
     /**
      * @dev Propose to buy the whole supply of a token.

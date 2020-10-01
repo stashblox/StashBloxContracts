@@ -1,4 +1,4 @@
-pragma solidity ^0.5.12;
+pragma solidity ^0.7.1;
 
 /// @title ERC-173 Contract Ownership Standard
 /// @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md
