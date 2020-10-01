@@ -1,5 +1,4 @@
 pragma solidity ^0.7.1;
-pragma experimental ABIEncoderV2;
 
 import './lib/ERC1155/ERC1155Mintable.sol';
 import "./lib/utils/SafeMath.sol";
