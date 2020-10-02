@@ -40,15 +40,6 @@ contract StashBlox is ERC1155, ERC1155Metadata {
         return _isTokenizer(tokenizer);
     }
 
-    /**
-     * @dev Function to update the metadata hash of a token.
-     * @param id The token ID
-     * @param metadataHash The new metadata hash
-     */
-    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
-      _updateMetadataHash(id, metadataHash);
-    }
-
 
     /***************************************
     LOCKS
@@ -105,7 +96,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
 
 
     /***************************************
-    TOKEN CREATION
+    TOKEN CREATION AND MAINTENANCE
     ****************************************/
 
 
@@ -130,34 +121,59 @@ contract StashBlox is ERC1155, ERC1155Metadata {
                          uint256[] memory feesRecipientsPercentage)
     external onlyTokenizer {
 
-        require(_supplies[id] == 0 &&
-                supply > 0 &&
-                storageCreditCost > 0 &&
-                minHoldingForCallback > 0 &&
-                minHoldingForCallback <= 10000 &&
-                feesRecipients.length > 0 &&
-                feesRecipients.length == feesRecipientsPercentage.length, "StashBlox: Invalid arguments");
+        require(_supplies[id] == 0, "StashBlox: Token ID already used");
+        require(supply > 0, "StashBlox: Supply must be greater than 0");
 
-        uint256 totalPercentage = 0;
-        for (uint256 i = 0; i < feesRecipientsPercentage.length; ++i) {
-            totalPercentage += feesRecipientsPercentage[i];
-            require(feesRecipientsPercentage[i] > 0, "StashBlox: feesRecipientsPercentage should be greater than 0");
-        }
-        require(totalPercentage == 10000, "StashBlox: Total of feesRecipientsPercentage must be equal to 10000");
-
-        _isHolder[id][recipient] = true;
-        _tokensByAddress[recipient].push(id);
         _supplies[id] = supply;
-        _balances[id][recipient] = supply;
+
+        _setNewBalance(recipient, id, supply);
         _updateMetadataHash(id, metadataHash);
-        _birthdays[id][recipient] = block.timestamp;
-        _storageCostHistory[id].push([block.timestamp, storageCreditCost]);
-        _minHoldingForCallback[id] = minHoldingForCallback;
-        _feesRecipients[id] = feesRecipients;
-        _feesRecipientsPercentage[id] = feesRecipientsPercentage;
+        _updateStorageCost(id, storageCreditCost);
+        _updateMinHoldingForCallback(id, minHoldingForCallback);
+        _updateFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
 
         emit TransferSingle(msg.sender, address(0), recipient, id, supply);
         // emit URI(uri, id);
+    }
+
+    /**
+     * @dev Function to update the metadata hash of a token.
+     * @param id The token ID
+     * @param metadataHash The new metadata hash
+     */
+    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
+      _updateMetadataHash(id, metadataHash);
+    }
+
+    /**
+     * @dev Function to update the storage cost of a token for one day, expressed in "storage credit".
+     * @param id The token ID
+     * @param newCost The new storage cost
+     */
+    function updateStorageCost(uint256 id, uint256 newCost) external onlyTokenizer {
+        _updateStorageCost(id, newCost);
+    }
+
+    /**
+     * @dev Function to update the minimum holding to propose a callback.
+     * @param id The token ID
+     * @param newMinHoldingForCallback The new minimum holding
+     */
+    function updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) external onlyTokenizer {
+        _updateMinHoldingForCallback(id, newMinHoldingForCallback);
+    }
+
+    /**
+     * @dev Function to update the minimum holding to propose a callback.
+     * @param id The token ID
+     * @param newFeesRecipients list of addresses receiving transfer fees
+     * @param newFeesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
+     */
+    function updateFeesRecipients(uint256 id,
+                                  address[] memory newFeesRecipients,
+                                  uint256[] memory newFeesRecipientsPercentage)
+    external onlyTokenizer {
+      _updateFeesRecipients(id, newFeesRecipients, newFeesRecipientsPercentage);
     }
 
 
@@ -173,16 +189,6 @@ contract StashBlox is ERC1155, ERC1155Metadata {
     function updateStorageCreditPrice(uint256 newPrice) external onlyTokenizer {
         storageCreditPrice = newPrice;
         emit UpdateStorageCreditPrice(msg.sender, newPrice);
-    }
-
-    /**
-     * @dev Function to update the storage cost of a token for one day, expressed in "storage credit".
-     * @param id The token ID
-     * @param newCost The new storage cost
-     */
-    function updateStorageCost(uint256 id, uint256 newCost) external onlyTokenizer {
-        _storageCostHistory[id].push([block.timestamp, newCost]);
-        emit UpdateStorageCost(msg.sender, id, newCost);
     }
 
     /**

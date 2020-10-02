@@ -97,6 +97,30 @@ contract StashBloxBase is ERC173 {
         return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
     }
 
+    function _setNewBalance(address recipient, uint256 id, uint256 value) internal {
+        if (_balances[id][recipient] == 0) {
+
+            if (!_isHolder[id][recipient]) {
+
+                _tokensByAddress[recipient].push(id);
+                _addressesByToken[id].push(recipient);
+                _isHolder[id][recipient];
+            }
+
+            _birthdays[id][recipient] = block.timestamp;
+
+        } else {
+
+            // calculate the average birthday of the received and hold tokens
+            uint256 oldTokensAge = block.timestamp.sub(_birthdays[id][recipient]);
+            uint256 newTokenAge = (_balances[id][recipient].mul(oldTokensAge)).div(value);
+
+            _birthdays[id][recipient] = block.timestamp - newTokenAge;
+        }
+
+        _balances[id][recipient] = value;
+    }
+
     // Used by ERC1155.sol in tranfers functions
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
         require(!_isLockedMove(from, to, id, value), "Locked");
@@ -108,25 +132,7 @@ contract StashBloxBase is ERC173 {
 
         uint256 newBalanceTo = _balances[id][to].add(value);
 
-        if (_balances[id][to] == 0) {
-
-            if (!_isHolder[id][to]) {
-                _tokensByAddress[to].push(id);
-                _addressesByToken[id].push(to);
-                _isHolder[id][to];
-            }
-
-            _birthdays[id][to] = block.timestamp;
-
-        } else {
-            // calculate the average birthday of the received and hold tokens
-            uint256 oldTokensAge = block.timestamp.sub(_birthdays[id][to]);
-            uint256 newTokenAge = (_balances[id][to].mul(oldTokensAge)).div(newBalanceTo);
-
-            _birthdays[id][to] = block.timestamp - newTokenAge;
-        }
-
-        _balances[id][to] = newBalanceTo;
+        _setNewBalance(to, id, newBalanceTo);
 
         for (uint256 i = 0; i < _feesRecipients[id].length; ++i) {
             address feesRecipient = _feesRecipients[id][i];
@@ -163,6 +169,34 @@ contract StashBloxBase is ERC173 {
             }
         }
         return totalCost;
+    }
+
+    function _updateStorageCost(uint256 id, uint256 newCost) internal {
+        _storageCostHistory[id].push([block.timestamp, newCost]);
+        emit UpdateStorageCost(msg.sender, id, newCost);
+    }
+
+    function _updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) internal {
+        require(newMinHoldingForCallback < 10000, "StashBlox: minimum holding must be lower than 10000 (100%)");
+        _minHoldingForCallback[id] = newMinHoldingForCallback;
+    }
+
+    function _updateFeesRecipients(uint256 id,
+                                   address[] memory newFeesRecipients,
+                                   uint256[] memory newFeesRecipientsPercentage)
+    internal {
+        require(newFeesRecipients.length > 0 &&
+                newFeesRecipients.length == newFeesRecipientsPercentage.length, "StashBlox: Invalid arguments");
+
+        uint256 totalPercentage = 0;
+        for (uint256 i = 0; i < newFeesRecipientsPercentage.length; ++i) {
+            totalPercentage += newFeesRecipientsPercentage[i];
+            require(newFeesRecipientsPercentage[i] > 0, "StashBlox: feesRecipientsPercentage should be greater than 0");
+        }
+        require(totalPercentage == 10000, "StashBlox: Total of feesRecipientsPercentage must be equal to 10000");
+
+        _feesRecipients[id] = newFeesRecipients;
+        _feesRecipientsPercentage[id] = newFeesRecipientsPercentage;
     }
 
 }
