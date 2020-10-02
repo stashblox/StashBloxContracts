@@ -994,7 +994,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-02T16:06:25.433Z",
+  "updatedAt": "2020-10-02T16:16:09.336Z",
   "devdoc": {
     "details": "ERC-1155 interface for accepting safe transfers.",
     "kind": "dev",

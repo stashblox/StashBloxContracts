@@ -6,7 +6,6 @@ const { BN, constants, expectEvent, expectRevert, time, balance } = require('@op
 const random = () => { return new BN(crypto.randomBytes(20).toString('hex')); }
 const bigN = (value) => { return new BN(value); }
 const StashBloxClass = contract.fromArtifact('StashBlox');
-const StashBloxCallbackClass = contract.fromArtifact('StashBloxCallback');
 
 describe("StashBlox", () => {
 
@@ -27,9 +26,27 @@ describe("StashBlox", () => {
   const FEES_RECIPIENT_PERCENTAGE_2 = 2500;
 
 
+  const transferTokens = async (params) => {
+    const balanceFromBefore = await STASHBLOX.balanceOf.call(params.from, params.tokenID);
+    const balanceToBefore = await STASHBLOX.balanceOf.call(params.to, params.tokenID);
+    const storageFees = await STASHBLOX.storageFees.call(params.from, params.tokenID, params.amount);
+
+    // try to send 50 tokens to account[2]..
+    await STASHBLOX.safeTransferFrom(params.from, params.to, params.tokenID, params.amount, constants.ZERO_BYTES32, {
+      from: params.from,
+      value: storageFees
+    });
+
+    const balanceFromAfter = await STASHBLOX.balanceOf.call(params.from, params.tokenID);
+    const balanceToAfter = await STASHBLOX.balanceOf.call(params.to, params.tokenID);
+
+    assert.equal(balanceFromBefore.sub(balanceFromAfter).toString(), params.amount.toString(), "Incorrect balance");
+    assert.equal(balanceToAfter.sub(balanceToBefore).toString(), params.amount.toString(), "Incorrect balance");
+  }
+
+
   beforeEach(async function () {
-    STASHBLOX_CALLBACK = await StashBloxCallbackClass.new();
-    STASHBLOX = await StashBloxClass.new(STASHBLOX_CALLBACK.address);
+    STASHBLOX = await StashBloxClass.new();
 
     await STASHBLOX.updateStorageCreditPrice(STORAGE_CREDIT_PRICE);
 
@@ -119,16 +136,20 @@ describe("StashBlox", () => {
     await time.increase(time.duration.years(1));
 
     // send 50 tokens to account[2]..
-    await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, 50, constants.ZERO_BYTES32, {
+    await transferTokens({
       from: accounts[1],
-      value:200000
+      to: accounts[2],
+      tokenID: TOKEN_ID_1,
+      amount: 50
     });
 
     // ...and get 25 back one year later
     await time.increase(time.duration.years(1)); // travel 365 days ahead
-    await STASHBLOX.safeTransferFrom(accounts[2], accounts[1], TOKEN_ID_1, 25, constants.ZERO_BYTES32, {
+    await transferTokens({
       from: accounts[2],
-      value:200000
+      to: accounts[1],
+      tokenID: TOKEN_ID_1,
+      amount: 25
     });
 
     // 50 tokens since 2 years and 25 since now =>
@@ -165,9 +186,11 @@ describe("StashBlox", () => {
     const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 50);
 
     // try to send 50 tokens to account[2]..
-    await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, 50, constants.ZERO_BYTES32, {
+    await transferTokens({
       from: accounts[1],
-      value: storageFees
+      to: accounts[2],
+      tokenID: TOKEN_ID_1,
+      amount: 50
     });
 
     let contractBalance2 = await balance.current(STASHBLOX.address);
@@ -195,9 +218,11 @@ describe("StashBlox", () => {
 
 
     // try to send 50 tokens to account[2]..
-    await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, transferAmount, constants.ZERO_BYTES32, {
+    await transferTokens({
       from: accounts[1],
-      value: storageFees
+      to: accounts[2],
+      tokenID: TOKEN_ID_1,
+      amount: transferAmount
     });
 
     ethBalance = await STASHBLOX._ETHBalances(FEES_RECIPIENT_1);
@@ -265,13 +290,13 @@ describe("StashBlox", () => {
     for (var i = 1; i <= 3; i++) {
       let transferAmount = i * 3;
       totalTransfered += transferAmount;
-      let storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, transferAmount);
-      await STASHBLOX.safeTransferFrom(accounts[1], accounts[i + 1], TOKEN_ID_1, transferAmount, constants.ZERO_BYTES32, {
+
+      await transferTokens({
         from: accounts[1],
-        value: storageFees
+        to: accounts[i + 1],
+        tokenID: TOKEN_ID_1,
+        amount: transferAmount
       });
-      balance = await STASHBLOX.balanceOf.call(accounts[i + 1], TOKEN_ID_1);
-      assert.equal(balance.valueOf(), transferAmount, "Token not received");
 
       ethBalance1[i + 1] = await STASHBLOX._ETHBalances(accounts[i + 1]);
     }
@@ -318,13 +343,13 @@ describe("StashBlox", () => {
     for (var i = 1; i <= 3; i++) {
       let transferAmount = i * 3;
       totalTransfered += transferAmount;
-      let storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, transferAmount);
-      await STASHBLOX.safeTransferFrom(accounts[1], accounts[i + 1], TOKEN_ID_1, transferAmount, constants.ZERO_BYTES32, {
+
+      await transferTokens({
         from: accounts[1],
-        value: storageFees
+        to: accounts[i + 1],
+        tokenID: TOKEN_ID_1,
+        amount: transferAmount
       });
-      balance = await STASHBLOX.balanceOf.call(accounts[i + 1], TOKEN_ID_1);
-      assert.equal(balance.valueOf(), transferAmount, "Token not received");
 
       ethBalance1[i + 1] = await STASHBLOX._ETHBalances(accounts[i + 1]);
     }
