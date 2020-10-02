@@ -137,6 +137,7 @@ contract StashBloxBase is ERC173 {
         return fees;
     }
 
+    // Calculate transaction fees
     function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
 
