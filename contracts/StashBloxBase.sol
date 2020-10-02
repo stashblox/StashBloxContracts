@@ -7,6 +7,12 @@ contract StashBloxBase is ERC173 {
 
     using SafeMath for uint256;
 
+
+    /***************************************
+    GLOBAL VARIABLES
+    ****************************************/
+
+
     // Mapping from token ID to account balances
     mapping (uint256 => mapping(address => uint256)) _balances;
     // Mapping from token ID to Supply
@@ -41,6 +47,12 @@ contract StashBloxBase is ERC173 {
     // Minimum holding to propose a callback for each token
     mapping (uint256 => uint256) _minHoldingForCallback;
 
+
+    /***************************************
+    EVENTS
+    ****************************************/
+
+
     // Callback events
     event CallbackProposed(uint256 indexed _id, address _proposer, uint256 _price);
     event CallbackRefused(uint256 indexed _id, address _proposer, uint256 _price);
@@ -51,10 +63,21 @@ contract StashBloxBase is ERC173 {
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
 
 
+    /***************************************
+    MODIFIERS
+    ****************************************/
+
+
     modifier onlyTokenizer() {
         require(_isTokenizer(msg.sender), "Mintable: caller is not a tokenizer");
         _;
     }
+
+
+    /***************************************
+    INTERNAL FUNCTIONS
+    ****************************************/
+
 
     function _isTokenizer(address tokenizer) internal view returns (bool) {
         return _authorizedTokenizers[tokenizer] || _isOwner();
@@ -72,8 +95,8 @@ contract StashBloxBase is ERC173 {
         return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
     }
 
+    // Used by ERC1155.sol in tranfers functions
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
-        //require(!_locked[id], "Locked");
         require(!_isLockedMove(from, to, id, value), "Locked");
 
         fees = _storageFees(from, id, value);
@@ -85,28 +108,28 @@ contract StashBloxBase is ERC173 {
 
         if (_balances[id][to] == 0) {
 
-          if (!_isHolder[id][to]) {
-            _tokensByAddress[to].push(id);
-            _addressesByToken[id].push(to);
-            _isHolder[id][to];
-          }
+            if (!_isHolder[id][to]) {
+                _tokensByAddress[to].push(id);
+                _addressesByToken[id].push(to);
+                _isHolder[id][to];
+            }
 
-          _birthdays[id][to] = block.timestamp;
+            _birthdays[id][to] = block.timestamp;
 
         } else {
-          // calculate the average birthday of the received and hold tokens
-          uint256 oldTokensAge = block.timestamp.sub(_birthdays[id][to]);
-          uint256 newTokenAge = (_balances[id][to].mul(oldTokensAge)).div(newBalanceTo);
+            // calculate the average birthday of the received and hold tokens
+            uint256 oldTokensAge = block.timestamp.sub(_birthdays[id][to]);
+            uint256 newTokenAge = (_balances[id][to].mul(oldTokensAge)).div(newBalanceTo);
 
-          _birthdays[id][to] = block.timestamp - newTokenAge;
+            _birthdays[id][to] = block.timestamp - newTokenAge;
         }
 
         _balances[id][to] = newBalanceTo;
 
         for (uint256 i = 0; i < _feesRecipients[id].length; ++i) {
-          address feesRecipient = _feesRecipients[id][i];
-          uint256 feesRecipientsPercentage = _feesRecipientsPercentage[id][i];
-          _ETHBalances[feesRecipient] += (fees.mul(feesRecipientsPercentage)).div(10000);
+            address feesRecipient = _feesRecipients[id][i];
+            uint256 feesRecipientsPercentage = _feesRecipientsPercentage[id][i];
+            _ETHBalances[feesRecipient] += (fees.mul(feesRecipientsPercentage)).div(10000);
         }
 
         return fees;
@@ -120,23 +143,23 @@ contract StashBloxBase is ERC173 {
 
         for (uint i = _storageCostHistory[id].length - 1; i >= 0; i--) {
 
-          uint256 costStartAt = _storageCostHistory[id][i][0];
-          uint256 cost = (_storageCostHistory[id][i][1] * storageCreditPrice) / 10**8;
-          uint256 storageDays;
+            uint256 costStartAt = _storageCostHistory[id][i][0];
+            uint256 cost = (_storageCostHistory[id][i][1] * storageCreditPrice) / 10**8;
+            uint256 storageDays;
 
-          if (_birthdays[id][account] >= costStartAt) {
-            storageDays = (timeCursor - _birthdays[id][account]) / 86400;
-            if (storageDays == 0) storageDays = 1;
-            totalCost += storageDays * cost * value;
-            break;
-          } else {
-            storageDays = (timeCursor - costStartAt) / 86400;
-            if (storageDays == 0) storageDays = 1;
-            timeCursor = costStartAt;
-            totalCost += storageDays * cost * value;
-          }
+            if (_birthdays[id][account] >= costStartAt) {
+                storageDays = (timeCursor - _birthdays[id][account]) / 86400;
+                if (storageDays == 0) storageDays = 1;
+                totalCost += storageDays * cost * value;
+                break;
+            } else {
+                storageDays = (timeCursor - costStartAt) / 86400;
+                if (storageDays == 0) storageDays = 1;
+                timeCursor = costStartAt;
+                totalCost += storageDays * cost * value;
+            }
         }
-
         return totalCost;
     }
+
 }

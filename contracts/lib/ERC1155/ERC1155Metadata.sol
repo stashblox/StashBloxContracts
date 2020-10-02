@@ -30,4 +30,8 @@ contract ERC1155Metadata is IERC1155Metadata, StringUtils {
          emit MetadataHashUpdated(id, hash);
     }
 
+    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
+      _updateMetadataHash(id, metadataHash);
+    }
+
 }
