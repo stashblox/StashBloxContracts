@@ -16,7 +16,7 @@ contract StashBloxBase is ERC173 {
 
 
     // Mapping from token ID to account balances
-    mapping (uint256 => mapping(address => uint256)) _balances;
+    mapping (uint256 => mapping(address => uint256)) public _balances;
     // Mapping from token ID to Supply
     mapping (uint256 => uint256) internal _supplies;
     // Mapping from token ID to account age
@@ -77,7 +77,7 @@ contract StashBloxBase is ERC173 {
 
 
     /***************************************
-    INTERNAL FUNCTIONS
+    LOCKS FUNCTIONS
     ****************************************/
 
 
@@ -96,6 +96,12 @@ contract StashBloxBase is ERC173 {
     function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
         return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
     }
+
+
+    /***************************************
+    TOKENS TRANSFER FUNCTIONS
+    ****************************************/
+
 
     function _setNewBalance(address recipient, uint256 id, uint256 value) internal {
         if (_balances[id][recipient] == 0) {
@@ -121,7 +127,7 @@ contract StashBloxBase is ERC173 {
         _balances[id][recipient] = value;
     }
 
-    // Used by ERC1155.sol in tranfers functions
+    // Used by ERC1155.sol in safeTransferFrom and safeTransferFromBatch functions
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
         require(!_isLockedMove(from, to, id, value), "Locked");
 
@@ -170,6 +176,12 @@ contract StashBloxBase is ERC173 {
         }
         return totalCost;
     }
+
+
+    /***************************************
+    TOKENS MAINTENANCE FUNCTIONS
+    ****************************************/
+
 
     function _updateStorageCost(uint256 id, uint256 newCost) internal {
         _storageCostHistory[id].push([block.timestamp, newCost]);

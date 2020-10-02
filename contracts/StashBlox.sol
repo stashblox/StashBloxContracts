@@ -133,7 +133,6 @@ contract StashBlox is ERC1155, ERC1155Metadata {
         _updateFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
 
         emit TransferSingle(msg.sender, address(0), recipient, id, supply);
-        // emit URI(uri, id);
     }
 
     /**
