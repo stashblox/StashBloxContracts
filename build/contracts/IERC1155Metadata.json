@@ -33,14 +33,14 @@
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC1155/IERC1155Metadata.sol",
     "exportedSymbols": {
       "IERC1155Metadata": [
-        2536
+        2111
       ]
     },
-    "id": 2537,
+    "id": 2112,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2526,
+        "id": 2101,
         "literals": [
           "solidity",
           "^",
@@ -48,7 +48,7 @@
           ".1"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:7"
+        "src": "0:23:6"
       },
       {
         "abstract": false,
@@ -56,45 +56,45 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2527,
+          "id": 2102,
           "nodeType": "StructuredDocumentation",
-          "src": "25:73:7",
+          "src": "25:73:6",
           "text": "Note: The ERC-165 identifier for this interface is 0x0e89341c."
         },
         "fullyImplemented": false,
-        "id": 2536,
+        "id": 2111,
         "linearizedBaseContracts": [
-          2536
+          2111
         ],
         "name": "IERC1155Metadata",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "documentation": {
-              "id": 2528,
+              "id": 2103,
               "nodeType": "StructuredDocumentation",
-              "src": "132:259:7",
+              "src": "132:259:6",
               "text": "@notice A distinct Uniform Resource Identifier (URI) for a given token.\n@dev URIs are defined in RFC 3986.\nThe URI may point to a JSON file that conforms to the \"ERC-1155 Metadata URI JSON Schema\".\n@return URI string"
             },
             "functionSelector": "0e89341c",
-            "id": 2535,
+            "id": 2110,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "uri",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2531,
+              "id": 2106,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2530,
+                  "id": 2105,
                   "mutability": "mutable",
                   "name": "_id",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2535,
-                  "src": "409:11:7",
+                  "scope": 2110,
+                  "src": "409:11:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -102,10 +102,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2529,
+                    "id": 2104,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "409:7:7",
+                    "src": "409:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -114,20 +114,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "408:13:7"
+              "src": "408:13:6"
             },
             "returnParameters": {
-              "id": 2534,
+              "id": 2109,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2533,
+                  "id": 2108,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2535,
-                  "src": "445:13:7",
+                  "scope": 2110,
+                  "src": "445:13:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -135,10 +135,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 2532,
+                    "id": 2107,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "445:6:7",
+                    "src": "445:6:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -147,33 +147,33 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "444:15:7"
+              "src": "444:15:6"
             },
-            "scope": 2536,
-            "src": "396:64:7",
+            "scope": 2111,
+            "src": "396:64:6",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2537,
-        "src": "99:363:7"
+        "scope": 2112,
+        "src": "99:363:6"
       }
     ],
-    "src": "0:463:7"
+    "src": "0:463:6"
   },
   "legacyAST": {
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC1155/IERC1155Metadata.sol",
     "exportedSymbols": {
       "IERC1155Metadata": [
-        2536
+        2111
       ]
     },
-    "id": 2537,
+    "id": 2112,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2526,
+        "id": 2101,
         "literals": [
           "solidity",
           "^",
@@ -181,7 +181,7 @@
           ".1"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:7"
+        "src": "0:23:6"
       },
       {
         "abstract": false,
@@ -189,45 +189,45 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2527,
+          "id": 2102,
           "nodeType": "StructuredDocumentation",
-          "src": "25:73:7",
+          "src": "25:73:6",
           "text": "Note: The ERC-165 identifier for this interface is 0x0e89341c."
         },
         "fullyImplemented": false,
-        "id": 2536,
+        "id": 2111,
         "linearizedBaseContracts": [
-          2536
+          2111
         ],
         "name": "IERC1155Metadata",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "documentation": {
-              "id": 2528,
+              "id": 2103,
               "nodeType": "StructuredDocumentation",
-              "src": "132:259:7",
+              "src": "132:259:6",
               "text": "@notice A distinct Uniform Resource Identifier (URI) for a given token.\n@dev URIs are defined in RFC 3986.\nThe URI may point to a JSON file that conforms to the \"ERC-1155 Metadata URI JSON Schema\".\n@return URI string"
             },
             "functionSelector": "0e89341c",
-            "id": 2535,
+            "id": 2110,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "uri",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2531,
+              "id": 2106,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2530,
+                  "id": 2105,
                   "mutability": "mutable",
                   "name": "_id",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2535,
-                  "src": "409:11:7",
+                  "scope": 2110,
+                  "src": "409:11:6",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -235,10 +235,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2529,
+                    "id": 2104,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "409:7:7",
+                    "src": "409:7:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -247,20 +247,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "408:13:7"
+              "src": "408:13:6"
             },
             "returnParameters": {
-              "id": 2534,
+              "id": 2109,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2533,
+                  "id": 2108,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2535,
-                  "src": "445:13:7",
+                  "scope": 2110,
+                  "src": "445:13:6",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -268,10 +268,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 2532,
+                    "id": 2107,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "445:6:7",
+                    "src": "445:6:6",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -280,20 +280,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "444:15:7"
+              "src": "444:15:6"
             },
-            "scope": 2536,
-            "src": "396:64:7",
+            "scope": 2111,
+            "src": "396:64:6",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2537,
-        "src": "99:363:7"
+        "scope": 2112,
+        "src": "99:363:6"
       }
     ],
-    "src": "0:463:7"
+    "src": "0:463:6"
   },
   "compiler": {
     "name": "solc",
@@ -301,7 +301,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-01T11:36:01.047Z",
+  "updatedAt": "2020-10-01T18:51:38.757Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
