@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.7.1;
 
 import '../ERC1155/IERC1155Metadata.sol';
@@ -28,10 +30,6 @@ contract ERC1155Metadata is IERC1155Metadata, StringUtils {
     function _updateMetadataHash(uint256 id, uint256 hash) internal {
          _metadataHashes[id] = hash;
          emit MetadataHashUpdated(id, hash);
-    }
-
-    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
-      _updateMetadataHash(id, metadataHash);
     }
 
 }

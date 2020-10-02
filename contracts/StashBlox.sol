@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 pragma solidity ^0.7.1;
 
 import './lib/ERC1155/ERC1155.sol';
@@ -36,6 +38,15 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      */
     function isTokenizer(address tokenizer) external view returns (bool) {
         return _isTokenizer(tokenizer);
+    }
+
+    /**
+     * @dev Function to update the metadata hash of a token.
+     * @param id The token ID
+     * @param metadataHash The new metadata hash
+     */
+    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
+      _updateMetadataHash(id, metadataHash);
     }
 
 
@@ -166,7 +177,8 @@ contract StashBlox is ERC1155, ERC1155Metadata {
 
     /**
      * @dev Function to update the storage cost of a token for one day, expressed in "storage credit".
-     * @param newPrice The new price
+     * @param id The token ID
+     * @param newCost The new storage cost
      */
     function updateStorageCost(uint256 id, uint256 newCost) external onlyTokenizer {
         _storageCostHistory[id].push([block.timestamp, newCost]);
@@ -306,7 +318,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
     /**
      * @dev Function to get the list of token hold by an address
      * @param account holder address
-     * @return space separated listof IDs
+     * @return result space separated listof IDs
      */
     function tokensByAddress(address account) public view returns (string memory result) {
         require(account != address(0), "ERC1155: balance query for the zero address");
@@ -327,8 +339,8 @@ contract StashBlox is ERC1155, ERC1155Metadata {
 
     /**
      * @dev Function to get the list of token hold by an address
-     * @param account holder address
-     * @return space separated listof IDs
+     * @param id Token ID
+     * @return result space separated list of addresses
      */
     function addressesByToken(uint256 id) public view returns (string memory result) {
 

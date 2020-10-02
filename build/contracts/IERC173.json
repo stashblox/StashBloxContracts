@@ -47,26 +47,27 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md  Note: the ERC-165 identifier for this interface is 0x7f5828d0\",\"events\":{\"OwnershipTransferred(address,address)\":{\"details\":\"This emits when ownership of a contract changes.\"}},\"kind\":\"dev\",\"methods\":{\"owner()\":{\"returns\":{\"_0\":\"The address of the owner.\"}},\"transferOwnership(address)\":{\"params\":{\"_newOwner\":\"The address of the new owner of the contract\"}}},\"title\":\"ERC-173 Contract Ownership Standard\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"owner()\":{\"notice\":\"Get the address of the owner\"},\"transferOwnership(address)\":{\"notice\":\"Set the address of the new owner of the contract\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC173/IERC173.sol\":\"IERC173\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC173/IERC173.sol\":{\"keccak256\":\"0xec8cd1dae157d86f0cd5219a197e87312826a51c2ce8612ef8079a3941b6576d\",\"urls\":[\"bzz-raw://d5654fedfafcfc9f4aba792c0414e367498244ba820d577884b671f15fd1f2c0\",\"dweb:/ipfs/QmXpbEwjk8eASqmwifvwzVWENX9PxMd6SENqgQarvJXx1D\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md  Note: the ERC-165 identifier for this interface is 0x7f5828d0\",\"events\":{\"OwnershipTransferred(address,address)\":{\"details\":\"This emits when ownership of a contract changes.\"}},\"kind\":\"dev\",\"methods\":{\"owner()\":{\"returns\":{\"_0\":\"The address of the owner.\"}},\"transferOwnership(address)\":{\"params\":{\"_newOwner\":\"The address of the new owner of the contract\"}}},\"title\":\"ERC-173 Contract Ownership Standard\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"owner()\":{\"notice\":\"Get the address of the owner\"},\"transferOwnership(address)\":{\"notice\":\"Set the address of the new owner of the contract\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC173/IERC173.sol\":\"IERC173\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC173/IERC173.sol\":{\"keccak256\":\"0x7d35a40f601c5245c540eb35f11a2227389b965acdee1abab1c88c7360c10050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9fb40310238de5d7a8b39154b1baff899f089984f62ed052ec07f86b9d5603ba\",\"dweb:/ipfs/QmQBLGwAEiAFQpJC6d61qgGDi1n93v2eWKAaRABhckNzW3\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.7.1;\n\n/// @title ERC-173 Contract Ownership Standard\n/// @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md\n///  Note: the ERC-165 identifier for this interface is 0x7f5828d0\ninterface IERC173 /* is ERC165 */ {\n    /// @dev This emits when ownership of a contract changes.\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\n\n    /// @notice Get the address of the owner\n    /// @return The address of the owner.\n    function owner() external view returns (address);\n\n    /// @notice Set the address of the new owner of the contract\n    /// @param _newOwner The address of the new owner of the contract\n    function transferOwnership(address _newOwner) external;\n}\n",
+  "source": "// SPDX-License-Identifier: MIT\n\npragma solidity ^0.7.1;\n\n/// @title ERC-173 Contract Ownership Standard\n/// @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md\n///  Note: the ERC-165 identifier for this interface is 0x7f5828d0\ninterface IERC173 /* is ERC165 */ {\n    /// @dev This emits when ownership of a contract changes.\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\n\n    /// @notice Get the address of the owner\n    /// @return The address of the owner.\n    function owner() external view returns (address);\n\n    /// @notice Set the address of the new owner of the contract\n    /// @param _newOwner The address of the new owner of the contract\n    function transferOwnership(address _newOwner) external;\n}\n",
   "sourcePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC173/IERC173.sol",
   "ast": {
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC173/IERC173.sol",
     "exportedSymbols": {
       "IERC173": [
-        2276
+        2427
       ]
     },
-    "id": 2277,
+    "id": 2428,
+    "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2255,
+        "id": 2406,
         "literals": [
           "solidity",
           "^",
@@ -74,7 +75,7 @@
           ".1"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:10"
+        "src": "33:23:9"
       },
       {
         "abstract": false,
@@ -82,15 +83,15 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2256,
+          "id": 2407,
           "nodeType": "StructuredDocumentation",
-          "src": "25:188:10",
+          "src": "58:188:9",
           "text": "@title ERC-173 Contract Ownership Standard\n @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md\n  Note: the ERC-165 identifier for this interface is 0x7f5828d0"
         },
         "fullyImplemented": false,
-        "id": 2276,
+        "id": 2427,
         "linearizedBaseContracts": [
-          2276
+          2427
         ],
         "name": "IERC173",
         "nodeType": "ContractDefinition",
@@ -98,27 +99,27 @@
           {
             "anonymous": false,
             "documentation": {
-              "id": 2257,
+              "id": 2408,
               "nodeType": "StructuredDocumentation",
-              "src": "253:57:10",
+              "src": "286:57:9",
               "text": "@dev This emits when ownership of a contract changes."
             },
-            "id": 2263,
+            "id": 2414,
             "name": "OwnershipTransferred",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2262,
+              "id": 2413,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2259,
+                  "id": 2410,
                   "indexed": true,
                   "mutability": "mutable",
                   "name": "previousOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2263,
-                  "src": "342:29:10",
+                  "scope": 2414,
+                  "src": "375:29:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -126,10 +127,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2258,
+                    "id": 2409,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "342:7:10",
+                    "src": "375:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -140,13 +141,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2261,
+                  "id": 2412,
                   "indexed": true,
                   "mutability": "mutable",
                   "name": "newOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2263,
-                  "src": "373:24:10",
+                  "scope": 2414,
+                  "src": "406:24:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -154,10 +155,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2260,
+                    "id": 2411,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "373:7:10",
+                    "src": "406:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -167,42 +168,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "341:57:10"
+              "src": "374:57:9"
             },
-            "src": "315:84:10"
+            "src": "348:84:9"
           },
           {
             "documentation": {
-              "id": 2264,
+              "id": 2415,
               "nodeType": "StructuredDocumentation",
-              "src": "405:82:10",
+              "src": "438:82:9",
               "text": "@notice Get the address of the owner\n @return The address of the owner."
             },
             "functionSelector": "8da5cb5b",
-            "id": 2269,
+            "id": 2420,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "owner",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2265,
+              "id": 2416,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "506:2:10"
+              "src": "539:2:9"
             },
             "returnParameters": {
-              "id": 2268,
+              "id": 2419,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2267,
+                  "id": 2418,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2269,
-                  "src": "532:7:10",
+                  "scope": 2420,
+                  "src": "565:7:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -210,10 +211,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2266,
+                    "id": 2417,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "532:7:10",
+                    "src": "565:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -223,40 +224,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "531:9:10"
+              "src": "564:9:9"
             },
-            "scope": 2276,
-            "src": "492:49:10",
+            "scope": 2427,
+            "src": "525:49:9",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 2270,
+              "id": 2421,
               "nodeType": "StructuredDocumentation",
-              "src": "547:130:10",
+              "src": "580:130:9",
               "text": "@notice Set the address of the new owner of the contract\n @param _newOwner The address of the new owner of the contract"
             },
             "functionSelector": "f2fde38b",
-            "id": 2275,
+            "id": 2426,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "transferOwnership",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2273,
+              "id": 2424,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2272,
+                  "id": 2423,
                   "mutability": "mutable",
                   "name": "_newOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2275,
-                  "src": "709:17:10",
+                  "scope": 2426,
+                  "src": "742:17:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -264,10 +265,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2271,
+                    "id": 2422,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "709:7:10",
+                    "src": "742:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -277,39 +278,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "708:19:10"
+              "src": "741:19:9"
             },
             "returnParameters": {
-              "id": 2274,
+              "id": 2425,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "736:0:10"
+              "src": "769:0:9"
             },
-            "scope": 2276,
-            "src": "682:55:10",
+            "scope": 2427,
+            "src": "715:55:9",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2277,
-        "src": "213:526:10"
+        "scope": 2428,
+        "src": "246:526:9"
       }
     ],
-    "src": "0:740:10"
+    "src": "33:740:9"
   },
   "legacyAST": {
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/ERC173/IERC173.sol",
     "exportedSymbols": {
       "IERC173": [
-        2276
+        2427
       ]
     },
-    "id": 2277,
+    "id": 2428,
+    "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2255,
+        "id": 2406,
         "literals": [
           "solidity",
           "^",
@@ -317,7 +319,7 @@
           ".1"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:23:10"
+        "src": "33:23:9"
       },
       {
         "abstract": false,
@@ -325,15 +327,15 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "documentation": {
-          "id": 2256,
+          "id": 2407,
           "nodeType": "StructuredDocumentation",
-          "src": "25:188:10",
+          "src": "58:188:9",
           "text": "@title ERC-173 Contract Ownership Standard\n @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md\n  Note: the ERC-165 identifier for this interface is 0x7f5828d0"
         },
         "fullyImplemented": false,
-        "id": 2276,
+        "id": 2427,
         "linearizedBaseContracts": [
-          2276
+          2427
         ],
         "name": "IERC173",
         "nodeType": "ContractDefinition",
@@ -341,27 +343,27 @@
           {
             "anonymous": false,
             "documentation": {
-              "id": 2257,
+              "id": 2408,
               "nodeType": "StructuredDocumentation",
-              "src": "253:57:10",
+              "src": "286:57:9",
               "text": "@dev This emits when ownership of a contract changes."
             },
-            "id": 2263,
+            "id": 2414,
             "name": "OwnershipTransferred",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 2262,
+              "id": 2413,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2259,
+                  "id": 2410,
                   "indexed": true,
                   "mutability": "mutable",
                   "name": "previousOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2263,
-                  "src": "342:29:10",
+                  "scope": 2414,
+                  "src": "375:29:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -369,10 +371,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2258,
+                    "id": 2409,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "342:7:10",
+                    "src": "375:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -383,13 +385,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 2261,
+                  "id": 2412,
                   "indexed": true,
                   "mutability": "mutable",
                   "name": "newOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2263,
-                  "src": "373:24:10",
+                  "scope": 2414,
+                  "src": "406:24:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -397,10 +399,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2260,
+                    "id": 2411,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "373:7:10",
+                    "src": "406:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -410,42 +412,42 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "341:57:10"
+              "src": "374:57:9"
             },
-            "src": "315:84:10"
+            "src": "348:84:9"
           },
           {
             "documentation": {
-              "id": 2264,
+              "id": 2415,
               "nodeType": "StructuredDocumentation",
-              "src": "405:82:10",
+              "src": "438:82:9",
               "text": "@notice Get the address of the owner\n @return The address of the owner."
             },
             "functionSelector": "8da5cb5b",
-            "id": 2269,
+            "id": 2420,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "owner",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2265,
+              "id": 2416,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "506:2:10"
+              "src": "539:2:9"
             },
             "returnParameters": {
-              "id": 2268,
+              "id": 2419,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2267,
+                  "id": 2418,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2269,
-                  "src": "532:7:10",
+                  "scope": 2420,
+                  "src": "565:7:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -453,10 +455,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2266,
+                    "id": 2417,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "532:7:10",
+                    "src": "565:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -466,40 +468,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "531:9:10"
+              "src": "564:9:9"
             },
-            "scope": 2276,
-            "src": "492:49:10",
+            "scope": 2427,
+            "src": "525:49:9",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "documentation": {
-              "id": 2270,
+              "id": 2421,
               "nodeType": "StructuredDocumentation",
-              "src": "547:130:10",
+              "src": "580:130:9",
               "text": "@notice Set the address of the new owner of the contract\n @param _newOwner The address of the new owner of the contract"
             },
             "functionSelector": "f2fde38b",
-            "id": 2275,
+            "id": 2426,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "transferOwnership",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2273,
+              "id": 2424,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2272,
+                  "id": 2423,
                   "mutability": "mutable",
                   "name": "_newOwner",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2275,
-                  "src": "709:17:10",
+                  "scope": 2426,
+                  "src": "742:17:9",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -507,10 +509,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2271,
+                    "id": 2422,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "709:7:10",
+                    "src": "742:7:9",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -520,26 +522,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "708:19:10"
+              "src": "741:19:9"
             },
             "returnParameters": {
-              "id": 2274,
+              "id": 2425,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "736:0:10"
+              "src": "769:0:9"
             },
-            "scope": 2276,
-            "src": "682:55:10",
+            "scope": 2427,
+            "src": "715:55:9",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2277,
-        "src": "213:526:10"
+        "scope": 2428,
+        "src": "246:526:9"
       }
     ],
-    "src": "0:740:10"
+    "src": "33:740:9"
   },
   "compiler": {
     "name": "solc",
@@ -547,7 +549,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-01T18:51:38.774Z",
+  "updatedAt": "2020-10-02T16:06:25.437Z",
   "devdoc": {
     "details": "See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md  Note: the ERC-165 identifier for this interface is 0x7f5828d0",
     "events": {
