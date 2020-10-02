@@ -68,9 +68,9 @@ contract StashBlox is ERC1155Mintable {
       require(price > 0, "StashBlox: callback proposition not found.");
 
       uint256 minHolding = (_supplies[id].mul(_minHoldingForCallback[id])).div(10000);
-      require(_balances[id][msg.sender] >= minHolding, "StashBlox: insufficient balance to execute the callback.");
+      require(_balances[id][proposer] >= minHolding, "StashBlox: insufficient balance to execute the callback.");
 
-      uint256 callbackAmount = _supplies[id].sub(_balances[id][msg.sender]);
+      uint256 callbackAmount = _supplies[id].sub(_balances[id][proposer]);
       uint256 callbackPrice = callbackAmount.mul(price);
       require(escrowedAmount >= callbackPrice, "StashBlox: insufficient escrowed value to execute the callback.");
 
