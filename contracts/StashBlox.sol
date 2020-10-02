@@ -42,6 +42,36 @@ contract StashBlox is ERC1155, ERC1155Metadata {
 
 
     /***************************************
+    MAINTENERS
+    ****************************************/
+
+
+    /**
+     * @dev Function to authorize an address to maintain a token.
+     * @param maintener The authorized address
+     */
+    function authorizeMaintener(uint256 id, address maintener) external onlyOwner {
+        _tokenMainteners[id][maintener] = true;
+    }
+
+    /**
+     * @dev Function to revoke the authorization to maintain a token.
+     * @param maintener The authorized address
+     */
+    function revokeMaintener(uint256 id, address maintener) external onlyOwner {
+        _tokenMainteners[id][maintener] = false;
+    }
+
+    /**
+     * @dev Function to check if an address is authorized to maintain a token.
+     * @param maintener The authorized address
+     */
+    function isMaintener(uint256 id, address maintener) external view returns (bool) {
+        return _isMaintener(id, maintener);
+    }
+
+
+    /***************************************
     LOCKS
     ****************************************/
 
@@ -50,7 +80,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @dev Function to lock a token.
      * @param id The token ID
      */
-    function lockToken(uint256 id) external onlyOwner {
+    function lockToken(uint256 id) external onlyMaintener(id) {
         _tokenLocks[id] = true;
     }
 
@@ -58,7 +88,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @dev Function to unlock a token.
      * @param id The token ID
      */
-    function unlockToken(uint256 id) external onlyOwner {
+    function unlockToken(uint256 id) external onlyMaintener(id) {
         _tokenLocks[id] = false;
     }
 
@@ -132,6 +162,8 @@ contract StashBlox is ERC1155, ERC1155Metadata {
         _updateMinHoldingForCallback(id, minHoldingForCallback);
         _updateFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
 
+        _tokenMainteners[id][msg.sender] = true;
+
         emit TransferSingle(msg.sender, address(0), recipient, id, supply);
     }
 
@@ -140,7 +172,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @param id The token ID
      * @param metadataHash The new metadata hash
      */
-    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
+    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyMaintener(id) {
       _updateMetadataHash(id, metadataHash);
     }
 
@@ -149,7 +181,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @param id The token ID
      * @param newCost The new storage cost
      */
-    function updateStorageCost(uint256 id, uint256 newCost) external onlyTokenizer {
+    function updateStorageCost(uint256 id, uint256 newCost) external onlyMaintener(id) {
         _updateStorageCost(id, newCost);
     }
 
@@ -158,7 +190,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @param id The token ID
      * @param newMinHoldingForCallback The new minimum holding
      */
-    function updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) external onlyTokenizer {
+    function updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) external onlyMaintener(id) {
         _updateMinHoldingForCallback(id, newMinHoldingForCallback);
     }
 
@@ -171,7 +203,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
     function updateFeesRecipients(uint256 id,
                                   address[] memory newFeesRecipients,
                                   uint256[] memory newFeesRecipientsPercentage)
-    external onlyTokenizer {
+    external onlyMaintener(id) {
       _updateFeesRecipients(id, newFeesRecipients, newFeesRecipientsPercentage);
     }
 
@@ -185,7 +217,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @dev Function to update the price of one "storage credit".
      * @param newPrice The new price
      */
-    function updateStorageCreditPrice(uint256 newPrice) external onlyTokenizer {
+    function updateStorageCreditPrice(uint256 newPrice) external onlyOwner {
         storageCreditPrice = newPrice;
         emit UpdateStorageCreditPrice(msg.sender, newPrice);
     }
@@ -233,7 +265,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @param id Token ID
      * @param proposer address of the proposer
      */
-    function refuseCallback(uint256 id, address proposer) external onlyOwner {
+    function refuseCallback(uint256 id, address proposer) external onlyMaintener(id) {
         uint256 price = _callbackPropositions[id][proposer][0];
         uint256 escrowedAmount = _callbackPropositions[id][proposer][1];
 
@@ -252,7 +284,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @param id Token ID
      * @param proposer address of the proposer
      */
-    function acceptCallback(uint256 id, address proposer) external onlyOwner {
+    function acceptCallback(uint256 id, address proposer) external onlyMaintener(id) {
         uint256 price = _callbackPropositions[id][proposer][0];
         uint256 escrowedAmount = _callbackPropositions[id][proposer][1];
 

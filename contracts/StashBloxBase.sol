@@ -46,6 +46,8 @@ contract StashBloxBase is ERC173 {
     mapping (uint256 => mapping(address => uint256[2])) _callbackPropositions;
     // list of addresses authorized to create a token
     mapping (address => bool) _authorizedTokenizers;
+    // List of token mainteners
+    mapping (uint256 => mapping(address => bool)) _tokenMainteners;
     // Minimum holding to propose a callback for each token
     mapping (uint256 => uint256) _minHoldingForCallback;
 
@@ -69,9 +71,21 @@ contract StashBloxBase is ERC173 {
     MODIFIERS
     ****************************************/
 
+    function _isTokenizer(address tokenizer) internal view returns (bool) {
+        return _authorizedTokenizers[tokenizer] || _isOwner();
+    }
 
     modifier onlyTokenizer() {
         require(_isTokenizer(msg.sender), "Mintable: caller is not a tokenizer");
+        _;
+    }
+
+    function _isMaintener(uint256 id, address maintener) internal view returns (bool) {
+        return _tokenMainteners[id][maintener] || _isOwner();
+    }
+
+    modifier onlyMaintener(uint256 id) {
+        require(_isMaintener(id, msg.sender), "Mintable: caller is not a token maintener");
         _;
     }
 
@@ -80,10 +94,6 @@ contract StashBloxBase is ERC173 {
     LOCKS FUNCTIONS
     ****************************************/
 
-
-    function _isTokenizer(address tokenizer) internal view returns (bool) {
-        return _authorizedTokenizers[tokenizer] || _isOwner();
-    }
 
     function _isLockedToken(uint256 id) internal view returns (bool) {
         return _tokenLocks[id];
@@ -102,7 +112,7 @@ contract StashBloxBase is ERC173 {
     TOKENS TRANSFER FUNCTIONS
     ****************************************/
 
-
+    // update balance, lists of holders and token average age of the recipient
     function _setNewBalance(address recipient, uint256 id, uint256 value) internal {
         if (_balances[id][recipient] == 0) {
 
@@ -125,28 +135,6 @@ contract StashBloxBase is ERC173 {
         }
 
         _balances[id][recipient] = value;
-    }
-
-    // Used by ERC1155.sol in safeTransferFrom and safeTransferFromBatch functions
-    function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
-        require(!_isLockedMove(from, to, id, value), "Locked");
-
-        fees = _storageFees(from, id, value);
-        require(feesBalance >= fees, "ERC1155: insufficient ETH for transfer fees");
-
-        _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
-
-        uint256 newBalanceTo = _balances[id][to].add(value);
-
-        _setNewBalance(to, id, newBalanceTo);
-
-        for (uint256 i = 0; i < _feesRecipients[id].length; ++i) {
-            address feesRecipient = _feesRecipients[id][i];
-            uint256 feesRecipientsPercentage = _feesRecipientsPercentage[id][i];
-            _ETHBalances[feesRecipient] += (fees.mul(feesRecipientsPercentage)).div(10000);
-        }
-
-        return fees;
     }
 
     // Calculate transaction fees
@@ -175,6 +163,28 @@ contract StashBloxBase is ERC173 {
             }
         }
         return totalCost;
+    }
+
+    // Used by ERC1155.sol in safeTransferFrom and safeTransferFromBatch functions
+    function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
+        require(!_isLockedMove(from, to, id, value), "Locked");
+
+        fees = _storageFees(from, id, value);
+        require(feesBalance >= fees, "ERC1155: insufficient ETH for transfer fees");
+
+        _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
+
+        uint256 newBalanceTo = _balances[id][to].add(value);
+
+        _setNewBalance(to, id, newBalanceTo);
+
+        for (uint256 i = 0; i < _feesRecipients[id].length; ++i) {
+            address feesRecipient = _feesRecipients[id][i];
+            uint256 feesRecipientsPercentage = _feesRecipientsPercentage[id][i];
+            _ETHBalances[feesRecipient] += (fees.mul(feesRecipientsPercentage)).div(10000);
+        }
+
+        return fees;
     }
 
 
