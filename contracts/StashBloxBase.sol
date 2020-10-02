@@ -9,61 +9,59 @@ contract StashBloxBase is ERC173 {
 
     // Mapping from token ID to account balances
     mapping (uint256 => mapping(address => uint256)) _balances;
-
+    // Mapping from token ID to Supply
+    mapping (uint256 => uint256) internal _supplies;
     // Mapping from token ID to account age
     mapping (uint256 => mapping(address => uint256)) public _birthdays;
-
     // Mapping from token ID to list of tuple [timestamp, price]
     mapping (uint256 => uint256[2][]) internal _storageCostHistory;
-
-    // price on one storage credit in wei
+    // price of one storage credit in wei
     uint256 storageCreditPrice = 1000;
-
     // For each token a list of addresses receiving transfer fees
     mapping (uint256 => address[]) internal _feesRecipients;
     // For each token a list of percentage, each one for the corresponding _feesRecipients index
     mapping (uint256 => uint256[]) internal _feesRecipientsPercentage;
     // Balances ETH for fees recipients and callbacks
     mapping (address => uint256) public _ETHBalances;
-
     // For each address a list of token IDs. Can contains zero balance.
     mapping (address => uint256[]) public _tokensByAddress;
     // For each token a list of addresses. Can contains zero balance.
     mapping (uint256 => address[]) public _addressesByToken;
     // Initialize to true on the first token received, never come back to false.
     mapping (uint256 => mapping(address => bool)) internal _isHolder;
-
-
     // Mapping for locked tokens
-    mapping (uint256 => bool) private _tokenLocks;
-    mapping (address => bool) private _addressLocks;
+    mapping (uint256 => bool) internal _tokenLocks;
+    // Mapping for locked addresses
+    mapping (address => bool) internal _addressLocks;
+    // list of callback propositions
+    // _callbackPropositions[tokenID][proposer] = [priceForEachToken, ETHAmountEscrowed]
+    mapping (uint256 => mapping(address => uint256[2])) _callbackPropositions;
+    // list of addresses authorized to create a token
+    mapping (address => bool) _authorizedTokenizers;
+    // Minimum holding to propose a callback for each token
+    mapping (uint256 => uint256) _minHoldingForCallback;
 
-    function lockToken(uint256 id) external onlyOwner {
-        _tokenLocks[id] = true;
+    // Callback events
+    event CallbackProposed(uint256 indexed _id, address _proposer, uint256 _price);
+    event CallbackRefused(uint256 indexed _id, address _proposer, uint256 _price);
+    event CallbackAccepted(uint256 indexed _id, address _proposer, uint256 _price);
+
+    // Update storage prices events
+    event UpdateStorageCost(address indexed _tokenizer, uint256 _id, uint256 _cost);
+    event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
+
+
+    modifier onlyTokenizer() {
+        require(_isTokenizer(msg.sender), "Mintable: caller is not a tokenizer");
+        _;
     }
 
-    function unlockToken(uint256 id) external onlyOwner {
-        _tokenLocks[id] = false;
-    }
-
-    function isLockedToken(uint256 id) external view returns (bool){
-        return _isLockedToken(id);
+    function _isTokenizer(address tokenizer) internal view returns (bool) {
+        return _authorizedTokenizers[tokenizer] || _isOwner();
     }
 
     function _isLockedToken(uint256 id) internal view returns (bool) {
         return _tokenLocks[id];
-    }
-
-    function lockAddress(address addr) external onlyOwner {
-        _addressLocks[addr] = true;
-    }
-
-    function unlockAddress(address addr) external onlyOwner {
-        _addressLocks[addr] = false;
-    }
-
-    function isLockedAddress(address addr) external view returns (bool){
-        return _isLockedAddress(addr);
     }
 
     function _isLockedAddress(address addr) internal view returns (bool) {
@@ -73,7 +71,6 @@ contract StashBloxBase is ERC173 {
     function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
         return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
     }
-
 
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
         //require(!_locked[id], "Locked");

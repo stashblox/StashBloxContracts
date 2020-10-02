@@ -6,26 +6,7 @@ import "./lib/utils/SafeMath.sol";
 
 contract StashBlox is ERC1155, ERC1155Metadata {
 
-    // list of callback propositions
-    // _callbackPropositions[tokenID][proposer] = [priceForEachToken, ETHAmountEscrowed]
-    mapping (uint256 => mapping(address => uint256[2])) _callbackPropositions;
-
-    event CallbackProposed(uint256 indexed _id, address _proposer, uint256 _price);
-    event CallbackRefused(uint256 indexed _id, address _proposer, uint256 _price);
-    event CallbackAccepted(uint256 indexed _id, address _proposer, uint256 _price);
-
     using SafeMath for uint256;
-
-    // Mapping from token ID to Supply
-    mapping (uint256 => uint256) internal _supplies;
-    mapping (address => bool) private _authorizedTokenizers;
-
-    // Minimum holding to propose a callback for each token
-    mapping (uint256 => uint256) _minHoldingForCallback;
-
-    event UpdateStorageCost(address indexed _tokenizer, uint256 _id, uint256 _cost);
-    event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
-
 
     function authorizeTokenizer(address tokenizer) external onlyOwner {
         _authorizedTokenizers[tokenizer] = true;
@@ -35,20 +16,46 @@ contract StashBlox is ERC1155, ERC1155Metadata {
         _authorizedTokenizers[tokenizer] = false;
     }
 
-    function _isTokenizer(address tokenizer) internal view returns (bool) {
-        return _authorizedTokenizers[tokenizer] || _isOwner();
-    }
-
     function isTokenizer(address tokenizer) external view returns (bool) {
         return _isTokenizer(tokenizer);
     }
 
-    modifier onlyTokenizer() {
-        require(_isTokenizer(msg.sender), "Mintable: caller is not a tokenizer");
-        _;
+    function lockToken(uint256 id) external onlyOwner {
+        _tokenLocks[id] = true;
     }
 
-    function _createToken(address recipient,
+    function unlockToken(uint256 id) external onlyOwner {
+        _tokenLocks[id] = false;
+    }
+
+    function isLockedToken(uint256 id) external view returns (bool){
+        return _isLockedToken(id);
+    }
+
+    function lockAddress(address addr) external onlyOwner {
+        _addressLocks[addr] = true;
+    }
+
+    function unlockAddress(address addr) external onlyOwner {
+        _addressLocks[addr] = false;
+    }
+
+    function isLockedAddress(address addr) external view returns (bool){
+        return _isLockedAddress(addr);
+    }
+
+    /**
+     * @dev Function to mint an amount of a token with the given ID.
+     * @param recipient The address that will own the minted tokens
+     * @param id ID of the token to be minted
+     * @param supply Amount of the token to be minted
+     * @param metadataHash Metadata file hash
+     * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
+     * @param minHoldingForCallback minimum holding to propose a callback
+     * @param feesRecipients list of addresses receiving transfer fees
+     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
+     */
+    function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
                          uint256 metadataHash,
@@ -56,7 +63,7 @@ contract StashBlox is ERC1155, ERC1155Metadata {
                          uint256 minHoldingForCallback,
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage)
-    internal {
+    external onlyTokenizer {
 
         // require(_supplies[id] == 0, "StashBlox: Token already minted");
         // require(supply > 0, "StashBlox: supply should be greater than 0");
@@ -95,35 +102,6 @@ contract StashBlox is ERC1155, ERC1155Metadata {
         // emit URI(uri, id);
     }
 
-    /**
-     * @dev Function to mint an amount of a token with the given ID.
-     * @param recipient The address that will own the minted tokens
-     * @param id ID of the token to be minted
-     * @param supply Amount of the token to be minted
-     * @param metadataHash Metadata file hash
-     * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
-     * @param minHoldingForCallback minimum holding to propose a callback
-     * @param feesRecipients list of addresses receiving transfer fees
-     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
-     */
-    function createToken(address recipient,
-                         uint256 id,
-                         uint256 supply,
-                         uint256 metadataHash,
-                         uint256 storageCreditCost,
-                         uint256 minHoldingForCallback,
-                         address[] calldata feesRecipients,
-                         uint256[] calldata feesRecipientsPercentage)
-    external onlyTokenizer {
-        _createToken(recipient,
-                     id,
-                     supply,
-                     metadataHash,
-                     storageCreditCost,
-                     minHoldingForCallback,
-                     feesRecipients,
-                     feesRecipientsPercentage);
-    }
 
     function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyTokenizer {
       _updateMetadataHash(id, metadataHash);
