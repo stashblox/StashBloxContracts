@@ -55,6 +55,16 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     mapping (uint256 => mapping(address => bool)) _tokenMainteners;
     // Minimum holding to propose a callback for each token
     mapping (uint256 => uint256) _minHoldingForCallback;
+    // Token template for batch creation
+    struct TokenTemplate {
+        address recipient;
+        uint256 supply;
+        uint256[3] transactionFees;
+        address[] feesRecipients;
+        uint256[] feesRecipientsPercentage;
+        uint256 minHoldingForCallback;
+    }
+    mapping(uint256 => TokenTemplate) _tokenTemplates;
 
 
     /***************************************
@@ -199,9 +209,32 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
 
     /***************************************
-    TOKENS MAINTENANCE FUNCTIONS
+    TOKENS CREATION AND MAINTENANCE FUNCTIONS
     ****************************************/
 
+    function _createToken(address recipient,
+                          uint256 id,
+                          uint256 supply,
+                          uint256 metadataHash,
+                          uint256[3] memory transactionFees,
+                          address[] memory feesRecipients,
+                          uint256[] memory feesRecipientsPercentage,
+                          uint256 minHoldingForCallback)
+    internal {
+
+        require(_supplies[id] == 0, "StashBlox: Token ID already used");
+        require(supply > 0, "StashBlox: Supply must be greater than 0");
+
+        _supplies[id] = supply;
+
+        _setNewBalance(recipient, id, supply);
+        _updateMetadataHash(id, metadataHash);
+        _updateTransactionFees(id, transactionFees);
+        _updateFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
+        _updateMinHoldingForCallback(id, minHoldingForCallback);
+
+        _tokenMainteners[id][msg.sender] = true;
+    }
 
     function _updateMetadataHash(uint256 id, uint256 hash) internal {
          _metadataHashes[id] = hash;
