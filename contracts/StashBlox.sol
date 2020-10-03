@@ -135,7 +135,7 @@ contract StashBlox is ERC1155 {
      * @param id ID of the token to be minted
      * @param supply Amount of the token to be minted
      * @param metadataHash Metadata file hash
-     * @param transactionFees transaction fees
+     * @param transactionFees transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
      * @param feesRecipients list of addresses receiving transfer fees
      * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
      * @param minHoldingForCallback minimum holding to propose a callback
@@ -149,16 +149,15 @@ contract StashBlox is ERC1155 {
                          uint256[] memory feesRecipientsPercentage,
                          uint256 minHoldingForCallback)
     external onlyTokenizer {
-
-      _createToken(recipient,
-                   id,
-                   supply,
-                   metadataHash,
-                   transactionFees,
-                   feesRecipients,
-                   feesRecipientsPercentage,
-                   minHoldingForCallback);
-      emit TransferSingle(msg.sender, address(0), recipient, id, supply);
+        _createToken(recipient,
+                     id,
+                     supply,
+                     metadataHash,
+                     transactionFees,
+                     feesRecipients,
+                     feesRecipientsPercentage,
+                     minHoldingForCallback);
+        emit TransferSingle(msg.sender, address(0), recipient, id, supply);
     }
 
     /**
@@ -199,13 +198,13 @@ contract StashBlox is ERC1155 {
      * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
      * @param minHoldingForCallback minimum holding to propose a callback
      */
-    function setTokenTemplate (uint256 templateID,
-                               address recipient,
-                               uint256 supply,
-                               uint256[3] memory transactionFees,
-                               address[] memory feesRecipients,
-                               uint256[] memory feesRecipientsPercentage,
-                               uint256 minHoldingForCallback)
+    function setTokenTemplate(uint256 templateID,
+                              address recipient,
+                              uint256 supply,
+                              uint256[3] memory transactionFees,
+                              address[] memory feesRecipients,
+                              uint256[] memory feesRecipientsPercentage,
+                              uint256 minHoldingForCallback)
     external onlyTokenizer {
         _tokenTemplates[templateID] = TokenTemplate({
             recipient: recipient,
@@ -223,16 +222,16 @@ contract StashBlox is ERC1155 {
      * @param metadataHash The new metadata hash
      */
     function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyMaintener(id) {
-      _updateMetadataHash(id, metadataHash);
+      _setMetadataHash(id, metadataHash);
     }
 
     /**
      * @dev Function to update transaction fees.
      * @param id The token ID
-     * @param newFees The new fees
+     * @param newFees The new transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
      */
     function updateTransactionFees(uint256 id, uint256[3] memory newFees) external onlyMaintener(id) {
-        _updateTransactionFees(id, newFees);
+        _setTransactionFees(id, newFees);
     }
 
     /**
@@ -245,7 +244,7 @@ contract StashBlox is ERC1155 {
                                   address[] memory newFeesRecipients,
                                   uint256[] memory newFeesRecipientsPercentage)
     external onlyMaintener(id) {
-      _updateFeesRecipients(id, newFeesRecipients, newFeesRecipientsPercentage);
+      _setFeesRecipients(id, newFeesRecipients, newFeesRecipientsPercentage);
     }
 
     /**
@@ -254,7 +253,7 @@ contract StashBlox is ERC1155 {
      * @param newMinHoldingForCallback The new minimum holding
      */
     function updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) external onlyMaintener(id) {
-        _updateMinHoldingForCallback(id, newMinHoldingForCallback);
+        _setMinHoldingForCallback(id, newMinHoldingForCallback);
     }
 
 
@@ -408,8 +407,6 @@ contract StashBlox is ERC1155 {
      * @return result space separated listof IDs
      */
     function tokensByAddress(address account) public view returns (string memory result) {
-        require(account != address(0), "ERC1155: balance query for the zero address");
-
         for (uint i = 0; i < _tokensByAddress[account].length; i++) {
             uint256 id = _tokensByAddress[account][i];
             if (_balances[id][account] > 0) {
@@ -430,7 +427,6 @@ contract StashBlox is ERC1155 {
      * @return result space separated list of addresses
      */
     function addressesByToken(uint256 id) public view returns (string memory result) {
-
         for (uint i = 0; i < _addressesByToken[id].length; i++) {
             address account = _addressesByToken[id][i];
             if (_balances[id][account] > 0) {

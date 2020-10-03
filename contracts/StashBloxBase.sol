@@ -79,7 +79,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
     // Update storage prices events
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
-
+    // Update transactions prices events
     event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256[3] _fees);
 
 
@@ -212,6 +212,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     TOKENS CREATION AND MAINTENANCE FUNCTIONS
     ****************************************/
 
+
     function _createToken(address recipient,
                           uint256 id,
                           uint256 supply,
@@ -221,27 +222,25 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
                           uint256[] memory feesRecipientsPercentage,
                           uint256 minHoldingForCallback)
     internal {
-
         require(_supplies[id] == 0, "StashBlox: Token ID already used");
         require(supply > 0, "StashBlox: Supply must be greater than 0");
 
         _supplies[id] = supply;
+        _tokenMainteners[id][msg.sender] = true;
 
         _setNewBalance(recipient, id, supply);
-        _updateMetadataHash(id, metadataHash);
-        _updateTransactionFees(id, transactionFees);
-        _updateFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
-        _updateMinHoldingForCallback(id, minHoldingForCallback);
-
-        _tokenMainteners[id][msg.sender] = true;
+        _setMetadataHash(id, metadataHash);
+        _setTransactionFees(id, transactionFees);
+        _setFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
+        _setMinHoldingForCallback(id, minHoldingForCallback);
     }
 
-    function _updateMetadataHash(uint256 id, uint256 hash) internal {
+    function _setMetadataHash(uint256 id, uint256 hash) internal {
          _metadataHashes[id] = hash;
          emit MetadataHashUpdated(id, hash);
     }
 
-    function _updateTransactionFees(uint256 id, uint256[3] memory newFees) internal {
+    function _setTransactionFees(uint256 id, uint256[3] memory newFees) internal {
         _lumpSumTransactionFees[id] = newFees[0];
         _valueTransactionFees[id] = newFees[1];
         _storageCostHistory[id].push([block.timestamp, newFees[2]]);
@@ -249,14 +248,14 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         emit UpdateTransactionFees(msg.sender, id, newFees);
     }
 
-    function _updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) internal {
+    function _setMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) internal {
         require(newMinHoldingForCallback < 10000, "StashBlox: minimum holding must be lower than 10000 (100%)");
         _minHoldingForCallback[id] = newMinHoldingForCallback;
     }
 
-    function _updateFeesRecipients(uint256 id,
-                                   address[] memory newFeesRecipients,
-                                   uint256[] memory newFeesRecipientsPercentage)
+    function _setFeesRecipients(uint256 id,
+                                address[] memory newFeesRecipients,
+                                uint256[] memory newFeesRecipientsPercentage)
     internal {
         require(newFeesRecipients.length > 0 &&
                 newFeesRecipients.length == newFeesRecipientsPercentage.length, "StashBlox: Invalid arguments");
