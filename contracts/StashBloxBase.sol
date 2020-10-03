@@ -27,7 +27,9 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     // price of one storage credit in wei
     uint256 storageCreditPrice = 1000;
     // Lump sum transaction fees for each token
-    mapping (uint256 => uint256) _transactionFees;
+    mapping (uint256 => uint256) _lumpSumTransactionFees;
+    // Value proportional transaction fees for each token
+    mapping (uint256 => uint256) _valueTransactionFees;
     // For each token a list of addresses receiving transfer fees
     mapping (uint256 => address[]) internal _feesRecipients;
     // For each token a list of percentage, each one for the corresponding _feesRecipients index
@@ -66,10 +68,9 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     event CallbackAccepted(uint256 indexed _id, address _proposer, uint256 _price);
 
     // Update storage prices events
-    event UpdateStorageCost(address indexed _maintener, uint256 _id, uint256 _cost);
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
 
-    event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256 _fees);
+    event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256[3] _fees);
 
 
     /***************************************
@@ -144,7 +145,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     }
 
     // Calculate transaction fees
-    function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
+    function _transactionFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
 
         uint256 totalCost = 0;
@@ -153,29 +154,32 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         for (uint i = _storageCostHistory[id].length - 1; i >= 0; i--) {
 
             uint256 costStartAt = _storageCostHistory[id][i][0];
-            uint256 cost = (_storageCostHistory[id][i][1] * storageCreditPrice) / 10**8;
+            uint256 cost = (_storageCostHistory[id][i][1].mul(storageCreditPrice)).div(10**8);
             uint256 storageDays;
 
             if (_birthdays[id][account] >= costStartAt) {
-                storageDays = (timeCursor - _birthdays[id][account]) / 86400;
+                storageDays = (timeCursor.sub(_birthdays[id][account])).div(86400);
                 if (storageDays == 0) storageDays = 1;
-                totalCost += storageDays * cost * value;
+                totalCost += (storageDays.mul(cost)).mul(value);
                 break;
             } else {
-                storageDays = (timeCursor - costStartAt) / 86400;
+                storageDays = (timeCursor.sub(costStartAt)).div(86400);
                 if (storageDays == 0) storageDays = 1;
                 timeCursor = costStartAt;
-                totalCost += storageDays * cost * value;
+                totalCost += (storageDays.mul(cost)).mul(value);
             }
         }
-        return totalCost.add(_transactionFees[id]);
+
+        uint256 valueFees = (value.mul(_valueTransactionFees[id])).div(10**8);
+
+        return totalCost.add(_lumpSumTransactionFees[id].add(valueFees));
     }
 
     // Used by ERC1155.sol in safeTransferFrom and safeTransferFromBatch functions
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal returns (uint256 fees) {
         require(!_isLockedMove(from, to, id, value), "Locked");
 
-        fees = _storageFees(from, id, value);
+        fees = _transactionFees(from, id, value);
         require(feesBalance >= fees, "ERC1155: insufficient ETH for transfer fees");
 
         _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
@@ -204,14 +208,12 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
          emit MetadataHashUpdated(id, hash);
     }
 
-    function _updateTransactionFees(uint256 id, uint256 newFees) internal {
-        _transactionFees[id] = newFees;
-        emit UpdateTransactionFees(msg.sender, id, newFees);
-    }
+    function _updateTransactionFees(uint256 id, uint256[3] memory newFees) internal {
+        _lumpSumTransactionFees[id] = newFees[0];
+        _valueTransactionFees[id] = newFees[1];
+        _storageCostHistory[id].push([block.timestamp, newFees[2]]);
 
-    function _updateStorageCost(uint256 id, uint256 newCost) internal {
-        _storageCostHistory[id].push([block.timestamp, newCost]);
-        emit UpdateStorageCost(msg.sender, id, newCost);
+        emit UpdateTransactionFees(msg.sender, id, newFees);
     }
 
     function _updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) internal {

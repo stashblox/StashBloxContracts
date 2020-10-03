@@ -29,7 +29,7 @@ describe("StashBlox", () => {
   const transferTokens = async (params) => {
     const balanceFromBefore = await STASHBLOX.balanceOf.call(params.from, params.tokenID);
     const balanceToBefore = await STASHBLOX.balanceOf.call(params.to, params.tokenID);
-    const storageFees = await STASHBLOX.storageFees.call(params.from, params.tokenID, params.amount);
+    const storageFees = await STASHBLOX.transactionFees.call(params.from, params.tokenID, params.amount);
 
     // try to send 50 tokens to account[2]..
     await STASHBLOX.safeTransferFrom(params.from, params.to, params.tokenID, params.amount, constants.ZERO_BYTES32, {
@@ -54,8 +54,7 @@ describe("StashBlox", () => {
                                                           TOKEN_ID_1,
                                                           TOKEN_SUPPLY_1,
                                                           TOKEN_META_HASH_1,
-                                                          4,
-                                                          STORAGE_COST_1 * 10**8,
+                                                          [4, 0, STORAGE_COST_1 * 10**8],
                                                           [FEES_RECIPIENT_1, FEES_RECIPIENT_2],
                                                           [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2],
                                                           MIN_HOLDING_FOR_CALLBACK); // storage price WEI
@@ -64,8 +63,7 @@ describe("StashBlox", () => {
                                                           TOKEN_ID_2,
                                                           TOKEN_SUPPLY_2,
                                                           TOKEN_META_HASH_2,
-                                                          2,
-                                                          STORAGE_COST_2 * 10**8,
+                                                          [2, 0, STORAGE_COST_2 * 10**8],
                                                           [FEES_RECIPIENT_1, FEES_RECIPIENT_2],
                                                           [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2],
                                                           MIN_HOLDING_FOR_CALLBACK); // storage price WEI
@@ -117,17 +115,17 @@ describe("StashBlox", () => {
     await time.increase(time.duration.years(1)); // travel 365 days ahead
 
     const expectedFees1 = (365 * STORAGE_COST_1 * STORAGE_CREDIT_PRICE) + 4;
-    const fees1 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
+    const fees1 = await STASHBLOX.transactionFees.call(accounts[1], TOKEN_ID_1, 1);
 
     //console.log(fees1.toString())
     assert.equal(fees1.valueOf(), expectedFees1, "Incorrect fees");
 
-    await STASHBLOX.updateStorageCost(TOKEN_ID_1, (STORAGE_COST_1 + 5) * 10**8);
+    await STASHBLOX.updateTransactionFees(TOKEN_ID_1, [4, 0, (STORAGE_COST_1 + 5) * 10**8]);
 
     await time.increase(time.duration.years(1)); // travel 365 days ahead
 
     const expectedFees2 = expectedFees1 + (365 * (STORAGE_COST_1 + 5) * STORAGE_CREDIT_PRICE);
-    const fees2 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
+    const fees2 = await STASHBLOX.transactionFees.call(accounts[1], TOKEN_ID_1, 1);
 
     assert.equal(fees2.toString(), expectedFees2.toString(), "Incorrect fees");
   });
@@ -168,7 +166,7 @@ describe("StashBlox", () => {
     // travel 365 days ahead
     await time.increase(time.duration.years(1));
 
-    const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 50);
+    const storageFees = await STASHBLOX.transactionFees.call(accounts[1], TOKEN_ID_1, 50);
 
     // try to send 50 tokens to account[2]..
     await expectRevert(STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, 50, constants.ZERO_BYTES32, {
@@ -185,7 +183,7 @@ describe("StashBlox", () => {
     // travel 365 days ahead
     await time.increase(time.duration.years(1));
 
-    const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 50);
+    const storageFees = await STASHBLOX.transactionFees.call(accounts[1], TOKEN_ID_1, 50);
 
     // try to send 50 tokens to account[2]..
     await transferTokens({
@@ -213,7 +211,7 @@ describe("StashBlox", () => {
     // travel 365 days ahead
     await time.increase(time.duration.years(1));
 
-    const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, transferAmount);
+    const storageFees = await STASHBLOX.transactionFees.call(accounts[1], TOKEN_ID_1, transferAmount);
     const storageGain1  = storageFees * 0.75;
     const storageGain2  = storageFees * 0.25;
     //console.log("storageGain1", storageGain1.toString())
@@ -248,7 +246,7 @@ describe("StashBlox", () => {
     // travel 365 days ahead
     await time.increase(time.duration.years(1));
 
-    const storageFees = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, transferAmount);
+    const storageFees = await STASHBLOX.transactionFees.call(accounts[1], TOKEN_ID_1, transferAmount);
     // try to send 50 tokens to account[2]
     await STASHBLOX.safeTransferFrom(accounts[1], accounts[2], TOKEN_ID_1, transferAmount, constants.ZERO_BYTES32, {
       from: accounts[1],
@@ -258,8 +256,8 @@ describe("StashBlox", () => {
     // travel 365 days ahead
     await time.increase(time.duration.years(1));
 
-    const storageFees1 = await STASHBLOX.storageFees.call(accounts[2], TOKEN_ID_1, transferAmount);
-    const storageFees2 = await STASHBLOX.storageFees.call(accounts[2], TOKEN_ID_2, transferAmount);
+    const storageFees1 = await STASHBLOX.transactionFees.call(accounts[2], TOKEN_ID_1, transferAmount);
+    const storageFees2 = await STASHBLOX.transactionFees.call(accounts[2], TOKEN_ID_2, transferAmount);
 
     let providedFees = storageFees1.add(storageFees2);
     await expectRevert(STASHBLOX.safeBatchTransferFrom(accounts[2],

@@ -135,8 +135,7 @@ contract StashBlox is ERC1155 {
      * @param id ID of the token to be minted
      * @param supply Amount of the token to be minted
      * @param metadataHash Metadata file hash
-     * @param transactionFees Lump sum transaction fees
-     * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
+     * @param transactionFees transaction fees
      * @param feesRecipients list of addresses receiving transfer fees
      * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
      * @param minHoldingForCallback minimum holding to propose a callback
@@ -145,8 +144,7 @@ contract StashBlox is ERC1155 {
                          uint256 id,
                          uint256 supply,
                          uint256 metadataHash,
-                         uint256 transactionFees,
-                         uint256 storageCreditCost,
+                         uint256[3] memory transactionFees,
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage,
                          uint256 minHoldingForCallback)
@@ -160,7 +158,6 @@ contract StashBlox is ERC1155 {
         _setNewBalance(recipient, id, supply);
         _updateMetadataHash(id, metadataHash);
         _updateTransactionFees(id, transactionFees);
-        _updateStorageCost(id, storageCreditCost);
         _updateFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
         _updateMinHoldingForCallback(id, minHoldingForCallback);
 
@@ -180,22 +177,14 @@ contract StashBlox is ERC1155 {
 
 
     /**
-     * @dev Function to update the lump sum transaction fees.
+     * @dev Function to update transaction fees.
      * @param id The token ID
      * @param newFees The new fees
      */
-    function updateTransactionFees(uint256 id, uint256 newFees) external onlyMaintener(id) {
+    function updateTransactionFees(uint256 id, uint256[3] memory newFees) external onlyMaintener(id) {
         _updateTransactionFees(id, newFees);
     }
 
-    /**
-     * @dev Function to update the storage cost of a token for one day, expressed in "storage credit".
-     * @param id The token ID
-     * @param newCost The new storage cost
-     */
-    function updateStorageCost(uint256 id, uint256 newCost) external onlyMaintener(id) {
-        _updateStorageCost(id, newCost);
-    }
 
     /**
      * @dev Function to update the minimum holding to propose a callback.
@@ -240,8 +229,8 @@ contract StashBlox is ERC1155 {
      * @param id The token ID
      * @param value The amount to transfer
      */
-    function storageFees(address account, uint256 id, uint256 value) public view returns (uint256) {
-        return _storageFees(account, id, value);
+    function transactionFees(address account, uint256 id, uint256 value) public view returns (uint256) {
+        return _transactionFees(account, id, value);
     }
 
 
