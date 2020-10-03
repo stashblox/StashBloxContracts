@@ -3,10 +3,9 @@
 pragma solidity ^0.7.1;
 
 import './lib/ERC1155/ERC1155.sol';
-import './lib/ERC1155/ERC1155Metadata.sol';
 import "./lib/utils/SafeMath.sol";
 
-contract StashBlox is ERC1155, ERC1155Metadata {
+contract StashBlox is ERC1155 {
 
     using SafeMath for uint256;
 
@@ -136,19 +135,21 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      * @param id ID of the token to be minted
      * @param supply Amount of the token to be minted
      * @param metadataHash Metadata file hash
+     * @param transactionFees Lump sum transaction fees
      * @param storageCreditCost cost for 24h storage in storageCredit (x 10 ^ 8 for the precision)
-     * @param minHoldingForCallback minimum holding to propose a callback
      * @param feesRecipients list of addresses receiving transfer fees
      * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
+     * @param minHoldingForCallback minimum holding to propose a callback
      */
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
                          uint256 metadataHash,
+                         uint256 transactionFees,
                          uint256 storageCreditCost,
-                         uint256 minHoldingForCallback,
                          address[] memory feesRecipients,
-                         uint256[] memory feesRecipientsPercentage)
+                         uint256[] memory feesRecipientsPercentage,
+                         uint256 minHoldingForCallback)
     external onlyTokenizer {
 
         require(_supplies[id] == 0, "StashBlox: Token ID already used");
@@ -158,9 +159,10 @@ contract StashBlox is ERC1155, ERC1155Metadata {
 
         _setNewBalance(recipient, id, supply);
         _updateMetadataHash(id, metadataHash);
+        _updateTransactionFees(id, transactionFees);
         _updateStorageCost(id, storageCreditCost);
-        _updateMinHoldingForCallback(id, minHoldingForCallback);
         _updateFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
+        _updateMinHoldingForCallback(id, minHoldingForCallback);
 
         _tokenMainteners[id][msg.sender] = true;
 
@@ -176,6 +178,16 @@ contract StashBlox is ERC1155, ERC1155Metadata {
       _updateMetadataHash(id, metadataHash);
     }
 
+
+    /**
+     * @dev Function to update the lump sum transaction fees.
+     * @param id The token ID
+     * @param newFees The new fees
+     */
+    function updateTransactionFees(uint256 id, uint256 newFees) external onlyMaintener(id) {
+        _updateTransactionFees(id, newFees);
+    }
+
     /**
      * @dev Function to update the storage cost of a token for one day, expressed in "storage credit".
      * @param id The token ID
@@ -183,15 +195,6 @@ contract StashBlox is ERC1155, ERC1155Metadata {
      */
     function updateStorageCost(uint256 id, uint256 newCost) external onlyMaintener(id) {
         _updateStorageCost(id, newCost);
-    }
-
-    /**
-     * @dev Function to update the minimum holding to propose a callback.
-     * @param id The token ID
-     * @param newMinHoldingForCallback The new minimum holding
-     */
-    function updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) external onlyMaintener(id) {
-        _updateMinHoldingForCallback(id, newMinHoldingForCallback);
     }
 
     /**
@@ -205,6 +208,15 @@ contract StashBlox is ERC1155, ERC1155Metadata {
                                   uint256[] memory newFeesRecipientsPercentage)
     external onlyMaintener(id) {
       _updateFeesRecipients(id, newFeesRecipients, newFeesRecipientsPercentage);
+    }
+
+    /**
+     * @dev Function to update the minimum holding to propose a callback.
+     * @param id The token ID
+     * @param newMinHoldingForCallback The new minimum holding
+     */
+    function updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) external onlyMaintener(id) {
+        _updateMinHoldingForCallback(id, newMinHoldingForCallback);
     }
 
 

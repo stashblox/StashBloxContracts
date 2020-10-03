@@ -4,8 +4,9 @@ pragma solidity ^0.7.1;
 
 import "./lib/utils/SafeMath.sol";
 import "./lib/ERC173/ERC173.sol";
+import './lib/ERC1155/ERC1155Metadata.sol';
 
-contract StashBloxBase is ERC173 {
+contract StashBloxBase is ERC173, ERC1155Metadata {
 
     using SafeMath for uint256;
 
@@ -25,6 +26,8 @@ contract StashBloxBase is ERC173 {
     mapping (uint256 => uint256[2][]) internal _storageCostHistory;
     // price of one storage credit in wei
     uint256 storageCreditPrice = 1000;
+    // Lump sum transaction fees for each token
+    mapping (uint256 => uint256) _transactionFees;
     // For each token a list of addresses receiving transfer fees
     mapping (uint256 => address[]) internal _feesRecipients;
     // For each token a list of percentage, each one for the corresponding _feesRecipients index
@@ -63,8 +66,10 @@ contract StashBloxBase is ERC173 {
     event CallbackAccepted(uint256 indexed _id, address _proposer, uint256 _price);
 
     // Update storage prices events
-    event UpdateStorageCost(address indexed _tokenizer, uint256 _id, uint256 _cost);
+    event UpdateStorageCost(address indexed _maintener, uint256 _id, uint256 _cost);
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
+
+    event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256 _fees);
 
 
     /***************************************
@@ -111,6 +116,7 @@ contract StashBloxBase is ERC173 {
     /***************************************
     TOKENS TRANSFER FUNCTIONS
     ****************************************/
+
 
     // update balance, lists of holders and token average age of the recipient
     function _setNewBalance(address recipient, uint256 id, uint256 value) internal {
@@ -162,7 +168,7 @@ contract StashBloxBase is ERC173 {
                 totalCost += storageDays * cost * value;
             }
         }
-        return totalCost;
+        return totalCost.add(_transactionFees[id]);
     }
 
     // Used by ERC1155.sol in safeTransferFrom and safeTransferFromBatch functions
@@ -192,6 +198,16 @@ contract StashBloxBase is ERC173 {
     TOKENS MAINTENANCE FUNCTIONS
     ****************************************/
 
+
+    function _updateMetadataHash(uint256 id, uint256 hash) internal {
+         _metadataHashes[id] = hash;
+         emit MetadataHashUpdated(id, hash);
+    }
+
+    function _updateTransactionFees(uint256 id, uint256 newFees) internal {
+        _transactionFees[id] = newFees;
+        emit UpdateTransactionFees(msg.sender, id, newFees);
+    }
 
     function _updateStorageCost(uint256 id, uint256 newCost) internal {
         _storageCostHistory[id].push([block.timestamp, newCost]);

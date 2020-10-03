@@ -27,9 +27,4 @@ contract ERC1155Metadata is IERC1155Metadata, StringUtils {
         return _metadataHashes[id];
     }
 
-    function _updateMetadataHash(uint256 id, uint256 hash) internal {
-         _metadataHashes[id] = hash;
-         emit MetadataHashUpdated(id, hash);
-    }
-
 }

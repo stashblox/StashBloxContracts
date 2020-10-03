@@ -54,19 +54,21 @@ describe("StashBlox", () => {
                                                           TOKEN_ID_1,
                                                           TOKEN_SUPPLY_1,
                                                           TOKEN_META_HASH_1,
+                                                          4,
                                                           STORAGE_COST_1 * 10**8,
-                                                          MIN_HOLDING_FOR_CALLBACK,
                                                           [FEES_RECIPIENT_1, FEES_RECIPIENT_2],
-                                                          [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2]); // storage price WEI
+                                                          [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2],
+                                                          MIN_HOLDING_FOR_CALLBACK); // storage price WEI
 
     CREATE_TOKEN_RECEIPT_2 = await STASHBLOX.createToken(accounts[2],
                                                           TOKEN_ID_2,
                                                           TOKEN_SUPPLY_2,
                                                           TOKEN_META_HASH_2,
+                                                          2,
                                                           STORAGE_COST_2 * 10**8,
-                                                          MIN_HOLDING_FOR_CALLBACK,
                                                           [FEES_RECIPIENT_1, FEES_RECIPIENT_2],
-                                                          [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2]); // storage price WEI
+                                                          [FEES_RECIPIENT_PERCENTAGE_1, FEES_RECIPIENT_PERCENTAGE_2],
+                                                          MIN_HOLDING_FOR_CALLBACK); // storage price WEI
     //console.log(CREATE_TOKEN_RECEIPT.logs[0].args);
 
     TOKENS_CREATED_AT = await time.latest();
@@ -114,7 +116,7 @@ describe("StashBlox", () => {
   it("should return correct storage fees", async () => {
     await time.increase(time.duration.years(1)); // travel 365 days ahead
 
-    const expectedFees1 = 365 * STORAGE_COST_1 * STORAGE_CREDIT_PRICE;
+    const expectedFees1 = (365 * STORAGE_COST_1 * STORAGE_CREDIT_PRICE) + 4;
     const fees1 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
 
     //console.log(fees1.toString())
@@ -124,10 +126,10 @@ describe("StashBlox", () => {
 
     await time.increase(time.duration.years(1)); // travel 365 days ahead
 
-    const expectedFees2 = expectedFees1 + 365 * (STORAGE_COST_1 + 5) * STORAGE_CREDIT_PRICE;
+    const expectedFees2 = expectedFees1 + (365 * (STORAGE_COST_1 + 5) * STORAGE_CREDIT_PRICE);
     const fees2 = await STASHBLOX.storageFees.call(accounts[1], TOKEN_ID_1, 1);
 
-    assert.equal(fees2.valueOf(), expectedFees2, "Incorrect fees");
+    assert.equal(fees2.toString(), expectedFees2.toString(), "Incorrect fees");
   });
 
 
