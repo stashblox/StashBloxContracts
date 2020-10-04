@@ -1,0 +1,27 @@
+## {{name}}
+{{{natspec.userdoc}}}
+{{{natspec.devdoc}}}
+
+{{#each ownFunctions}}
+### {{name}} {{#if outputs}}`returns {{outputs}}`{{/if}} `{{visibility}}`
+
+{{{natspec.devdoc}}}
+
+Name  | Type | Description
+------------- | ------------- | -------------
+{{#each args}}{{name}}  | {{typeName}} | {{#each ../natspec.params}}{{#if (eq param ../name)}}{{{description}}}{{/if}}{{/each}}{{/each}}
+
+{{/each}}
+
+
+
+
+
+{{#each ownEvents}}
+### `{{name}}({{args}})`
+
+{{{natspec.userdoc}}}
+
+{{{natspec.devdoc}}}
+
+{{/each}}
