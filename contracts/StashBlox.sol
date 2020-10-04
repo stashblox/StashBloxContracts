@@ -386,6 +386,14 @@ contract StashBlox is ERC1155 {
         _ETHBalances[to] -= amount;
     }
 
+    /**
+     * @dev Function to make an ETH deposit that can be used to pay token transfer .
+     * @param to recipent address
+     */
+    function deposit(address to) external payable {
+        _ETHBalances[to] += msg.value;
+    }
+
 
     /***************************************
     UTILS

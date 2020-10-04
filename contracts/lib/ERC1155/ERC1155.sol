@@ -139,16 +139,18 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
-        uint256 feesBalance = msg.value;
+        uint256 feesBalance = msg.value > 0 ? msg.value : _ETHBalances[from];
         feesBalance = feesBalance - _moveTokens(from, to, id, value, feesBalance);
 
         emit TransferSingle(msg.sender, from, to, id, value);
 
         _doSafeTransferAcceptanceCheck(msg.sender, from, to, id, value, data);
 
-        if (feesBalance > 0) {
-          (bool success, ) = msg.sender.call{value: feesBalance}("");
-          require(success, "Transfer failed.");
+        if (msg.value > 0 && feesBalance > 0) {
+            (bool success, ) = msg.sender.call{value: feesBalance}("");
+            require(success, "Transfer failed.");
+        } else if (msg.value == 0) {
+            _ETHBalances[from] = feesBalance;
         }
     }
 
@@ -179,7 +181,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
           "ERC1155: need operator approval for 3rd party transfers"
         );
 
-        uint256 feesBalance = msg.value;
+        uint256 feesBalance = msg.value > 0 ? msg.value : _ETHBalances[from];
         for (uint256 i = 0; i < ids.length; ++i) {
           feesBalance = feesBalance - _moveTokens(from, to, ids[i], values[i], feesBalance);
         }
@@ -188,9 +190,11 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
 
         _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, values, data);
 
-        if (feesBalance > 0) {
-          (bool success, ) = msg.sender.call{value: feesBalance}("");
-          require(success, "Transfer failed.");
+        if (msg.value > 0 && feesBalance > 0) {
+            (bool success, ) = msg.sender.call{value: feesBalance}("");
+            require(success, "Transfer failed.");
+        } else if (msg.value == 0) {
+            _ETHBalances[from] = feesBalance;
         }
     }
 
