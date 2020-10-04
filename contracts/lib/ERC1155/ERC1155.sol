@@ -111,7 +111,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address account, address operator) public view override returns (bool) {
-        return _operatorApprovals[account][operator];
+        return _isWhitelistedOperator(account, operator) || _operatorApprovals[account][operator];
     }
 
     /**

@@ -6,6 +6,12 @@ import "./lib/utils/SafeMath.sol";
 import "./lib/ERC173/ERC173.sol";
 import './lib/ERC1155/ERC1155Metadata.sol';
 
+contract OwnableDelegateProxy { }
+
+contract ProxyRegistry {
+  mapping(address => OwnableDelegateProxy) public proxies;
+}
+
 contract StashBloxBase is ERC173, ERC1155Metadata {
 
     using SafeMath for uint256;
@@ -65,7 +71,8 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         uint256 minHoldingForCallback;
     }
     mapping(uint256 => TokenTemplate) _tokenTemplates;
-
+    // Exchanges proxy addresses
+    address[] _proxyRegistryAddresses;
 
     /***************************************
     EVENTS
@@ -269,6 +276,16 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
         _feesRecipients[id] = newFeesRecipients;
         _feesRecipientsPercentage[id] = newFeesRecipientsPercentage;
+    }
+
+    function _isWhitelistedOperator(address account, address operator) internal view returns (bool) {
+        for (uint256 i = 0; i < _proxyRegistryAddresses.length; ++i) {
+            ProxyRegistry proxyRegistry = ProxyRegistry(_proxyRegistryAddresses[i]);
+            if (address(proxyRegistry.proxies(account)) == operator) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

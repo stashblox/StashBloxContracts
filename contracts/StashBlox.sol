@@ -440,4 +440,12 @@ contract StashBlox is ERC1155 {
         }
         return result;
     }
+
+    /**
+     * @dev Function to update the operator whitelist
+     * @param proxyAddresses List of addresses
+     */
+    function setProxyRegistryAddress(address[] memory proxyAddresses) external onlyOwner {
+        _proxyRegistryAddresses = proxyAddresses;
+    }
 }
