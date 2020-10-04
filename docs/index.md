@@ -1,10 +1,10 @@
-[TOC]
-
-
 ## StashBlox
 
 
-#### authorizeTokenizer
+
+
+
+### authorizeTokenizer
 `authorizeTokenizer(address tokenizer) (external)`
 
 
@@ -16,7 +16,7 @@ Name  | Type | Description
 tokenizer  | address | The authorized address
 
 
-#### revokeTokenizer
+### revokeTokenizer
 `revokeTokenizer(address tokenizer) (external)`
 
 
@@ -28,7 +28,7 @@ Name  | Type | Description
 tokenizer  | address | The authorized address
 
 
-#### isTokenizer
+### isTokenizer
 `isTokenizer(address tokenizer) → bool (external)`
 
 
@@ -40,7 +40,7 @@ Name  | Type | Description
 tokenizer  | address | The authorized address
 
 
-#### authorizeMaintener
+### authorizeMaintener
 `authorizeMaintener(uint256 id, address maintener) (external)`
 
 
@@ -52,7 +52,7 @@ Name  | Type | Description
 id  | uint256 | maintener  | address | The authorized address
 
 
-#### revokeMaintener
+### revokeMaintener
 `revokeMaintener(uint256 id, address maintener) (external)`
 
 
@@ -64,7 +64,7 @@ Name  | Type | Description
 id  | uint256 | maintener  | address | The authorized address
 
 
-#### isMaintener
+### isMaintener
 `isMaintener(uint256 id, address maintener) → bool (external)`
 
 
@@ -76,7 +76,7 @@ Name  | Type | Description
 id  | uint256 | maintener  | address | The authorized address
 
 
-#### lockToken
+### lockToken
 `lockToken(uint256 id) (external)`
 
 
@@ -88,7 +88,7 @@ Name  | Type | Description
 id  | uint256 | The token ID
 
 
-#### unlockToken
+### unlockToken
 `unlockToken(uint256 id) (external)`
 
 
@@ -100,7 +100,7 @@ Name  | Type | Description
 id  | uint256 | The token ID
 
 
-#### isLockedToken
+### isLockedToken
 `isLockedToken(uint256 id) → bool (external)`
 
 
@@ -112,7 +112,7 @@ Name  | Type | Description
 id  | uint256 | The token ID
 
 
-#### lockAddress
+### lockAddress
 `lockAddress(address addr) (external)`
 
 
@@ -124,7 +124,7 @@ Name  | Type | Description
 addr  | address | The address to lock
 
 
-#### unlockAddress
+### unlockAddress
 `unlockAddress(address addr) (external)`
 
 
@@ -136,7 +136,7 @@ Name  | Type | Description
 addr  | address | The address to unlock
 
 
-#### isLockedAddress
+### isLockedAddress
 `isLockedAddress(address addr) → bool (external)`
 
 
@@ -148,7 +148,7 @@ Name  | Type | Description
 addr  | address | The address to check
 
 
-#### createToken
+### createToken
 `createToken(address recipient, uint256 id, uint256 supply, uint256 metadataHash, uint256[3] transactionFees, address[] feesRecipients, uint256[] feesRecipientsPercentage, uint256 minHoldingForCallback) (external)`
 
 
@@ -167,7 +167,7 @@ feesRecipientsPercentage  | uint256[] | list of percentage, each one for the cor
 minHoldingForCallback  | uint256 | minimum holding to propose a callback
 
 
-#### createTokens
+### createTokens
 `createTokens(uint256 templateID, uint256[] ids, uint256[] metadataHashes) (external)`
 
 
@@ -181,7 +181,7 @@ ids  | uint256[] | list of IDs of the tokens to be minted
 metadataHashes  | uint256[] | list of metadata file hashes
 
 
-#### setTokenTemplate
+### setTokenTemplate
 `setTokenTemplate(uint256 templateID, address recipient, uint256 supply, uint256[3] transactionFees, address[] feesRecipients, uint256[] feesRecipientsPercentage, uint256 minHoldingForCallback) (external)`
 
 
@@ -199,7 +199,7 @@ feesRecipientsPercentage  | uint256[] | list of percentage, each one for the cor
 minHoldingForCallback  | uint256 | minimum holding to propose a callback
 
 
-#### updateMetadataHash
+### updateMetadataHash
 `updateMetadataHash(uint256 id, uint256 metadataHash) (external)`
 
 
@@ -212,7 +212,7 @@ id  | uint256 | The token ID
 metadataHash  | uint256 | The new metadata hash
 
 
-#### updateTransactionFees
+### updateTransactionFees
 `updateTransactionFees(uint256 id, uint256[3] newFees) (external)`
 
 
@@ -225,7 +225,7 @@ id  | uint256 | The token ID
 newFees  | uint256[3] | The new transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
 
 
-#### updateFeesRecipients
+### updateFeesRecipients
 `updateFeesRecipients(uint256 id, address[] newFeesRecipients, uint256[] newFeesRecipientsPercentage) (external)`
 
 
@@ -239,7 +239,7 @@ newFeesRecipients  | address[] | list of addresses receiving transfer fees
 newFeesRecipientsPercentage  | uint256[] | list of percentage, each one for the corresponding feesRecipients
 
 
-#### updateMinHoldingForCallback
+### updateMinHoldingForCallback
 `updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) (external)`
 
 
@@ -252,7 +252,7 @@ id  | uint256 | The token ID
 newMinHoldingForCallback  | uint256 | The new minimum holding
 
 
-#### updateStorageCreditPrice
+### updateStorageCreditPrice
 `updateStorageCreditPrice(uint256 newPrice) (external)`
 
 
@@ -264,7 +264,7 @@ Name  | Type | Description
 newPrice  | uint256 | The new price
 
 
-#### transactionFees
+### transactionFees
 `transactionFees(address account, uint256 id, uint256 value) → uint256 (public)`
 
 
@@ -278,7 +278,7 @@ id  | uint256 | The token ID
 value  | uint256 | The amount to transfer
 
 
-#### proposeCallback
+### proposeCallback
 `proposeCallback(uint256 id, uint256 price) (external)`
 
 
@@ -293,7 +293,7 @@ id  | uint256 | Token ID
 price  | uint256 | proposed price
 
 
-#### refuseCallback
+### refuseCallback
 `refuseCallback(uint256 id, address proposer) (external)`
 
 
@@ -306,7 +306,7 @@ id  | uint256 | Token ID
 proposer  | address | address of the proposer
 
 
-#### acceptCallback
+### acceptCallback
 `acceptCallback(uint256 id, address proposer) (external)`
 
 
@@ -319,7 +319,7 @@ id  | uint256 | Token ID
 proposer  | address | address of the proposer
 
 
-#### withdraw
+### withdraw
 `withdraw(address to, uint256 amount) (external)`
 
 
@@ -332,7 +332,7 @@ to  | address | recipent address
 amount  | uint256 | amount to withdraw
 
 
-#### totalSupply
+### totalSupply
 `totalSupply(uint256 id) → uint256 (external)`
 
 
@@ -345,7 +345,7 @@ id  | uint256 | Token ID
 
 
 
-#### tokensByAddress
+### tokensByAddress
 `tokensByAddress(address account) → string result (public)`
 
 
@@ -358,7 +358,7 @@ account  | address | holder address
 
 
 
-#### addressesByToken
+### addressesByToken
 `addressesByToken(uint256 id) → string result (public)`
 
 
@@ -383,8 +383,7 @@ id  | uint256 | Token ID
 
 
 
-
-#### CallbackProposed
+### CallbackProposed
 `event CallbackProposed(uint256 _id, address _proposer, uint256 _price)`
 
 
@@ -392,9 +391,9 @@ id  | uint256 | Token ID
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_id  | uint256 | _proposer  | address | _price  | uint256 |
+_id  | uint256 | _proposer  | address | _price  | uint256 | 
 
-#### CallbackRefused
+### CallbackRefused
 `event CallbackRefused(uint256 _id, address _proposer, uint256 _price)`
 
 
@@ -402,9 +401,9 @@ _id  | uint256 | _proposer  | address | _price  | uint256 |
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_id  | uint256 | _proposer  | address | _price  | uint256 |
+_id  | uint256 | _proposer  | address | _price  | uint256 | 
 
-#### CallbackAccepted
+### CallbackAccepted
 `event CallbackAccepted(uint256 _id, address _proposer, uint256 _price)`
 
 
@@ -412,9 +411,9 @@ _id  | uint256 | _proposer  | address | _price  | uint256 |
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_id  | uint256 | _proposer  | address | _price  | uint256 |
+_id  | uint256 | _proposer  | address | _price  | uint256 | 
 
-#### UpdateStorageCreditPrice
+### UpdateStorageCreditPrice
 `event UpdateStorageCreditPrice(address _owner, uint256 _price)`
 
 
@@ -422,9 +421,9 @@ _id  | uint256 | _proposer  | address | _price  | uint256 |
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_owner  | address | _price  | uint256 |
+_owner  | address | _price  | uint256 | 
 
-#### UpdateTransactionFees
+### UpdateTransactionFees
 `event UpdateTransactionFees(address _maintener, uint256 _id, uint256[3] _fees)`
 
 
@@ -432,7 +431,7 @@ _owner  | address | _price  | uint256 |
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_maintener  | address | _id  | uint256 | _fees  | uint256[3] |
+_maintener  | address | _id  | uint256 | _fees  | uint256[3] | 
 
 
 
@@ -444,8 +443,7 @@ Originally based on code by Enjin: https://github.com/enjin/erc-1155
 
 
 
-
-#### balanceOf
+### balanceOf
 `balanceOf(address account, uint256 id) → uint256 (public)`
 
 
@@ -460,7 +458,7 @@ id  | uint256 | ID of the token
 
 
 
-#### balanceOfBatch
+### balanceOfBatch
 `balanceOfBatch(address[] accounts, uint256[] ids) → uint256[] (public)`
 
 
@@ -475,7 +473,7 @@ ids  | uint256[] | IDs of the tokens
 
 
 
-#### setApprovalForAll
+### setApprovalForAll
 `setApprovalForAll(address operator, bool approved) (external)`
 
 
@@ -491,7 +489,7 @@ operator  | address | address to set the approval
 approved  | bool | representing the status of the approval to be set
 
 
-#### safeTransferFrom
+### safeTransferFrom
 `safeTransferFrom(address from, address to, uint256 id, uint256 value, bytes data) (external)`
 
 
@@ -509,7 +507,7 @@ value  | uint256 | Transfer amount
 data  | bytes | Data forwarded to `onERC1155Received` if `to` is a contract receiver
 
 
-#### safeBatchTransferFrom
+### safeBatchTransferFrom
 `safeBatchTransferFrom(address from, address to, uint256[] ids, uint256[] values, bytes data) (external)`
 
 
@@ -540,8 +538,7 @@ data  | bytes | Data forwarded to `onERC1155Received` if `to` is a contract rece
 
 
 
-
-#### MetadataHashUpdated
+### MetadataHashUpdated
 `event MetadataHashUpdated(uint256 _id, uint256 _hash)`
 
 
@@ -549,7 +546,7 @@ data  | bytes | Data forwarded to `onERC1155Received` if `to` is a contract rece
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_id  | uint256 | _hash  | uint256 |
+_id  | uint256 | _hash  | uint256 | 
 
 
 
@@ -560,8 +557,7 @@ Note: The ERC-165 identifier for this interface is 0xd9b67a26.
 
 
 
-
-#### safeTransferFrom
+### safeTransferFrom
 `safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes _data) (external)`
 
 Transfers `_value` amount of an `_id` from the `_from` address to the `_to` address specified (with safety call).
@@ -583,7 +579,7 @@ _value  | uint256 |   Transfer amount
 _data  | bytes |    Additional data with no specified format, MUST be sent unaltered in call to `onERC1155Received` on `_to`
 
 
-#### safeBatchTransferFrom
+### safeBatchTransferFrom
 `safeBatchTransferFrom(address _from, address _to, uint256[] _ids, uint256[] _values, bytes _data) (external)`
 
 Transfers `_values` amount(s) of `_ids` from the `_from` address to the `_to` address specified (with safety call).
@@ -607,7 +603,7 @@ _values  | uint256[] |  Transfer amounts per token type (order and length must m
 _data  | bytes |    Additional data with no specified format, MUST be sent unaltered in call to the `ERC1155TokenReceiver` hook(s) on `_to`
 
 
-#### setApprovalForAll
+### setApprovalForAll
 `setApprovalForAll(address _operator, bool _approved) (external)`
 
 Enable or disable approval for a third party ("operator") to manage all of the caller's tokens.
@@ -623,7 +619,7 @@ _approved  | bool |  True if the operator is approved, false to revoke approval
 
 
 
-#### TransferSingle
+### TransferSingle
 `event TransferSingle(address _operator, address _from, address _to, uint256 _id, uint256 _value)`
 
 
@@ -638,9 +634,9 @@ When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. ze
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_operator  | address | _from  | address | _to  | address | _id  | uint256 | _value  | uint256 |
+_operator  | address | _from  | address | _to  | address | _id  | uint256 | _value  | uint256 | 
 
-#### TransferBatch
+### TransferBatch
 `event TransferBatch(address _operator, address _from, address _to, uint256[] _ids, uint256[] _values)`
 
 
@@ -655,9 +651,9 @@ When burning/destroying tokens, the `_to` argument MUST be set to `0x0` (i.e. ze
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_operator  | address | _from  | address | _to  | address | _ids  | uint256[] | _values  | uint256[] |
+_operator  | address | _from  | address | _to  | address | _ids  | uint256[] | _values  | uint256[] | 
 
-#### ApprovalForAll
+### ApprovalForAll
 `event ApprovalForAll(address _owner, address _operator, bool _approved)`
 
 
@@ -665,9 +661,9 @@ MUST emit when approval for a second party/operator address to manage all tokens
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_owner  | address | _operator  | address | _approved  | bool |
+_owner  | address | _operator  | address | _approved  | bool | 
 
-#### URI
+### URI
 `event URI(string _value, uint256 _id)`
 
 
@@ -677,7 +673,7 @@ The URI MUST point a JSON file that conforms to the "ERC-1155 Metadata URI JSON 
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_value  | string | _id  | uint256 |
+_value  | string | _id  | uint256 | 
 
 
 
@@ -687,8 +683,7 @@ Note: The ERC-165 identifier for this interface is 0x0e89341c.
 
 
 
-
-#### uri
+### uri
 `uri(uint256 _id) → string (external)`
 
 A distinct Uniform Resource Identifier (URI) for a given token.
@@ -699,7 +694,7 @@ The URI may point to a JSON file that conforms to the "ERC-1155 Metadata URI JSO
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-_id  | uint256 |
+_id  | uint256 | 
 
 
 
@@ -712,8 +707,7 @@ ERC-1155 interface for accepting safe transfers.
 
 
 
-
-#### onERC1155Received
+### onERC1155Received
 `onERC1155Received(address _operator, address _from, uint256 _id, uint256 _amount, bytes _data) → bytes4 (external)`
 
 Handle the receipt of a single ERC1155 token type
@@ -734,7 +728,7 @@ _data  | bytes |      Additional data with no specified format
 
 
 
-#### onERC1155BatchReceived
+### onERC1155BatchReceived
 `onERC1155BatchReceived(address _operator, address _from, uint256[] _ids, uint256[] _amounts, bytes _data) → bytes4 (external)`
 
 Handle the receipt of multiple ERC1155 token types
@@ -765,8 +759,7 @@ https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md
 
 
 
-
-#### supportsInterface
+### supportsInterface
 `supportsInterface(bytes4 _interfaceId) → bool (external)`
 
 Query if a contract implements an interface
@@ -795,8 +788,7 @@ the owner.
 
 
 
-
-#### constructor
+### constructor
 `constructor() (public)`
 
 
@@ -804,7 +796,7 @@ Initializes the contract setting the deployer as the initial owner.
 
 
 
-#### owner
+### owner
 `owner() → address (public)`
 
 
@@ -812,7 +804,7 @@ Returns the address of the current owner.
 
 
 
-#### transferOwnership
+### transferOwnership
 `transferOwnership(address newOwner) (public)`
 
 
@@ -821,10 +813,10 @@ Can only be called by the current owner.
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-newOwner  | address |
+newOwner  | address | 
 
 
-#### _transferOwnership
+### _transferOwnership
 `_transferOwnership(address newOwner) (internal)`
 
 
@@ -832,10 +824,10 @@ Transfers ownership of the contract to a new account (`newOwner`).
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-newOwner  | address |
+newOwner  | address | 
 
 
-#### _isOwner
+### _isOwner
 `_isOwner() → bool (internal)`
 
 
@@ -856,8 +848,7 @@ Note: the ERC-165 identifier for this interface is 0x7f5828d0
 
 
 
-
-#### OwnershipTransferred
+### OwnershipTransferred
 `event OwnershipTransferred(address previousOwner, address newOwner)`
 
 
@@ -865,4 +856,5 @@ This emits when ownership of a contract changes.
 
 Name  | Type | Description
 ------------- | ------------- | -------------
-previousOwner  | address | newOwner  | address |
+previousOwner  | address | newOwner  | address | 
+

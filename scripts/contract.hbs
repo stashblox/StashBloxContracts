@@ -3,9 +3,8 @@
 {{{natspec.devdoc}}}
 
 
-
 {{#each ownFunctions}}{{#if natspec.devdoc}}
-#### {{name}}
+### {{name}}
 `{{name}}({{args}}){{#if outputs}} → {{outputs}}{{/if}} ({{visibility}})`
 
 {{{natspec.userdoc}}}
@@ -21,7 +20,7 @@ Name  | Type | Description
 
 
 {{#each ownEvents}}
-#### {{name}}
+### {{name}}
 `event {{name}}({{args}})`
 
 {{{natspec.userdoc}}}
