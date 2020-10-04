@@ -2,26 +2,35 @@
 {{{natspec.userdoc}}}
 {{{natspec.devdoc}}}
 
-{{#each ownFunctions}}
-### {{name}} {{#if outputs}}`returns {{outputs}}`{{/if}} `{{visibility}}`
 
+
+{{#each ownFunctions}}{{#if natspec.devdoc}}
+#### {{name}}
+`{{name}}({{args}}){{#if outputs}} → {{outputs}}{{/if}} ({{visibility}})`
+
+{{{natspec.userdoc}}}
 {{{natspec.devdoc}}}
 
+{{#if args}}
 Name  | Type | Description
 ------------- | ------------- | -------------
 {{#each args}}{{name}}  | {{typeName}} | {{#each ../natspec.params}}{{#if (eq param ../name)}}{{{description}}}{{/if}}{{/each}}{{/each}}
+{{/if}}
 
-{{/each}}
-
-
-
+{{/if}}{{/each}}
 
 
 {{#each ownEvents}}
-### `{{name}}({{args}})`
+#### {{name}}
+`event {{name}}({{args}})`
 
 {{{natspec.userdoc}}}
-
 {{{natspec.devdoc}}}
+
+{{#if args}}
+Name  | Type | Description
+------------- | ------------- | -------------
+{{#each args}}{{name}}  | {{typeName}} | {{#each ../natspec.params}}{{#if (eq param ../name)}}{{{description}}}{{/if}}{{/each}}{{/each}}
+{{/if}}
 
 {{/each}}
