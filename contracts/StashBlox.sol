@@ -79,16 +79,16 @@ contract StashBlox is ERC1155 {
      * @dev Function to lock a token.
      * @param id The token ID
      */
-    function lockToken(uint256 id) external onlyMaintener(id) {
-        _tokenLocks[id] = true;
+    function lockToken(uint256 id, uint256 documentHash) external onlyMaintener(id) {
+        _lockToken(id, documentHash);
     }
 
     /**
      * @dev Function to unlock a token.
      * @param id The token ID
      */
-    function unlockToken(uint256 id) external onlyMaintener(id) {
-        _tokenLocks[id] = false;
+    function unlockToken(uint256 id, uint256 documentHash) external onlyMaintener(id) {
+        _unlockToken(id, documentHash);
     }
 
     /**
@@ -287,6 +287,14 @@ contract StashBlox is ERC1155 {
     ****************************************/
 
     /**
+     * @dev Maximum addresses to execute automatically the callback when is accepted.
+     * @param newMax new maximum
+     */
+    function setCallbackAutoExecuteMaxAddresses(uint256 newMax) external onlyOwner {
+        _callbackAutoExecuteMaxAddresses = newMax;
+    }
+
+    /**
      * @dev Propose to buy the whole supply of a token.
      * The proposer must hold minHoldingForCallback% of the total supply.
      * StashBlox must approve the price with acceptCallback();
@@ -297,7 +305,7 @@ contract StashBlox is ERC1155 {
     function proposeCallback(uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable returns (uint256) {
         require(_supplies[tokenId] > 0, "StashBlox: Unknown token.");
         require(msg.value >= _callbackPrice(tokenId, price, callees), "StashBlox: insufficient value for the proposed price.");
-        require(callees.length <= _maxPartialCallbackAddresses, "StashBlox: too much callees");
+        require(callees.length <= _callbackAutoExecuteMaxAddresses, "StashBlox: too much callees");
 
         uint256 minHolding = (_supplies[tokenId].mul(_minHoldingForCallback[tokenId])).div(10000);
 
@@ -360,7 +368,7 @@ contract StashBlox is ERC1155 {
         } else if (_isLegalAuthority(callback.tokenId, msg.sender)) {
             _callbackPropositions[callbackId].approvedByLegal = true;
         } else {
-           revert("StashBlox: insufficient permission.");
+            revert("StashBlox: insufficient permission.");
         }
 
         _callbackPropositions[callbackId].accepted = callback.approvedByMaintener && (!callback.needLegalApproval || callback.approvedByLegal);
@@ -369,10 +377,10 @@ contract StashBlox is ERC1155 {
             emit CallbackAccepted(callbackId);
             if (callback.callees.length > 0) {
                 _executeCallback(callbackId, callback.callees.length);
-            } else if (_addressesByToken[callback.tokenId].length <= _maxPartialCallbackAddresses) {
+            } else if (_addressesByToken[callback.tokenId].length <= _callbackAutoExecuteMaxAddresses) {
                 _executeCallback(callbackId, _addressesByToken[callback.tokenId].length);
             } else {
-                _tokenLocks[callback.tokenId] = true;
+                _lockToken(callback.tokenId, callback.documentHash);
             }
         }
     }
@@ -392,7 +400,7 @@ contract StashBlox is ERC1155 {
         _executeCallback(callbackId, maxCall);
 
         if (_callbackPropositions[callbackId].completed) {
-            _tokenLocks[callback.tokenId] = false;
+            _unlockToken(callback.tokenId, callback.documentHash);
         }
     }
 

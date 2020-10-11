@@ -93,7 +93,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     // Legal authority addresses
     mapping (uint256 => address) _legalAuthorityAddresses;
 
-    uint256 _maxPartialCallbackAddresses = 50;
+    uint256 _callbackAutoExecuteMaxAddresses = 50;
 
     /***************************************
     EVENTS
@@ -110,6 +110,9 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
     // Update transactions prices events
     event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256[3] _fees);
+
+    event TokenLocked(uint256 indexed _id, uint256 _documentHash);
+    event TokenUnlocked(uint256 indexed _id, uint256 _documentHash);
 
 
     /***************************************
@@ -143,6 +146,15 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     LOCKS FUNCTIONS
     ****************************************/
 
+    function _lockToken(uint256 id, uint256 documentHash) internal {
+        _tokenLocks[id] = true;
+        emit TokenLocked(id, documentHash);
+    }
+
+    function _unlockToken(uint256 id, uint256 documentHash) internal {
+        _tokenLocks[id] = false;
+        emit TokenUnlocked(id, documentHash);
+    }
 
     function _isLockedToken(uint256 id) internal view returns (bool) {
         return _tokenLocks[id];
