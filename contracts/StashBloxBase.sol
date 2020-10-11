@@ -52,9 +52,26 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     mapping (uint256 => bool) internal _tokenLocks;
     // Mapping for locked addresses
     mapping (address => bool) internal _addressLocks;
+
     // list of callback propositions
-    // _callbackPropositions[tokenID][proposer] = [priceForEachToken, ETHAmountEscrowed]
-    mapping (uint256 => mapping(address => uint256[2])) _callbackPropositions;
+    struct CallbackProposition {
+        uint256 tokenId;
+        address caller;
+        address[] callees;
+        uint256 price;
+        uint256 escrowedAmount;
+        bool needLegalApproval;
+        bool approvedByMaintener;
+        bool approvedByLegal;
+        bool refused;
+        bool accepted;
+        uint256 callCounter;
+        bool completed;
+        uint256 documentHash;
+    }
+    uint256 _nextCallbackPropositionId = 1;
+    mapping (uint256 => CallbackProposition) public _callbackPropositions;
+
     // list of addresses authorized to create a token
     mapping (address => bool) _authorizedTokenizers;
     // List of token mainteners
@@ -73,6 +90,10 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     mapping(uint256 => TokenTemplate) _tokenTemplates;
     // Exchanges proxy addresses
     address[] _proxyRegistryAddresses;
+    // Legal authority addresses
+    mapping (uint256 => address) _legalAuthorityAddresses;
+
+    uint256 _maxPartialCallbackAddresses = 50;
 
     /***************************************
     EVENTS
@@ -80,9 +101,10 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
 
     // Callback events
-    event CallbackProposed(uint256 indexed _id, address _proposer, uint256 _price);
-    event CallbackRefused(uint256 indexed _id, address _proposer, uint256 _price);
-    event CallbackAccepted(uint256 indexed _id, address _proposer, uint256 _price);
+    event CallbackProposed(uint256 indexed _callbackPropositionId);
+    event CallbackRefused(uint256 indexed _callbackPropositionId);
+    event CallbackAccepted(uint256 indexed _callbackPropositionId);
+    event CallbackCompleted(uint256 indexed _callbackPropositionId);
 
     // Update storage prices events
     event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
@@ -99,7 +121,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     }
 
     modifier onlyTokenizer() {
-        require(_isTokenizer(msg.sender), "Mintable: caller is not a tokenizer");
+        require(_isTokenizer(msg.sender), "[StashBlox]: caller is not a tokenizer");
         _;
     }
 
@@ -108,8 +130,12 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     }
 
     modifier onlyMaintener(uint256 id) {
-        require(_isMaintener(id, msg.sender), "Mintable: caller is not a token maintener");
+        require(_isMaintener(id, msg.sender), "[StashBlox]: caller is not a token maintener");
         _;
+    }
+
+    function _isLegalAuthority(uint256 id, address legalAuthority) internal view returns (bool) {
+        return _legalAuthorityAddresses[id] == legalAuthority;
     }
 
 
@@ -137,7 +163,9 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
 
     // update balance, lists of holders and token average age of the recipient
-    function _setNewBalance(address recipient, uint256 id, uint256 value) internal {
+    function _addToBalance(address recipient, uint256 id, uint256 value) internal {
+        uint256 newBalance = _balances[id][recipient].add(value);
+
         if (_balances[id][recipient] == 0) {
 
             if (!_isHolder[id][recipient]) {
@@ -153,12 +181,12 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
             // calculate the average birthday of the received and hold tokens
             uint256 oldTokensAge = block.timestamp.sub(_birthdays[id][recipient]);
-            uint256 newTokenAge = (_balances[id][recipient].mul(oldTokensAge)).div(value);
+            uint256 newTokenAge = (_balances[id][recipient].mul(oldTokensAge)).div(newBalance);
 
             _birthdays[id][recipient] = block.timestamp - newTokenAge;
         }
 
-        _balances[id][recipient] = value;
+        _balances[id][recipient] = newBalance;
     }
 
     // Calculate transaction fees
@@ -201,9 +229,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
         _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
 
-        uint256 newBalanceTo = _balances[id][to].add(value);
-
-        _setNewBalance(to, id, newBalanceTo);
+        _addToBalance(to, id, value);
 
         for (uint256 i = 0; i < _feesRecipients[id].length; ++i) {
             address feesRecipient = _feesRecipients[id][i];
@@ -235,7 +261,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         _supplies[id] = supply;
         _tokenMainteners[id][msg.sender] = true;
 
-        _setNewBalance(recipient, id, supply);
+        _addToBalance(recipient, id, supply);
         _setMetadataHash(id, metadataHash);
         _setTransactionFees(id, transactionFees);
         _setFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
@@ -287,5 +313,20 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         }
         return false;
     }
+
+
+    function _callbackPrice(uint256 tokenId, uint256 price, address[] memory callees) internal view returns (uint256) {
+        uint256 callbackAmount = 0;
+        if (callees.length == 0) {
+            callbackAmount = _supplies[tokenId].sub(_balances[tokenId][msg.sender]);
+        } else {
+            for (uint i; i < callees.length; i++) {
+                callbackAmount += _balances[tokenId][callees[i]];
+            }
+        }
+        return callbackAmount.mul(price);
+    }
+
+
 
 }

@@ -286,86 +286,151 @@ contract StashBlox is ERC1155 {
     CALLBACKS
     ****************************************/
 
-
     /**
      * @dev Propose to buy the whole supply of a token.
      * The proposer must hold minHoldingForCallback% of the total supply.
      * StashBlox must approve the price with acceptCallback();
-     * @param id Token ID
+     * @param tokenId Token ID
      * @param price proposed price
+     * @param callees list of calless. Empty list means all holders.
      */
-    function proposeCallback(uint256 id, uint256 price) external payable {
-        require(_supplies[id] > 0, "StashBlox: Unknown token.");
-        require(price > 0, "StashBlox: Price must be greater than 0.");
+    function proposeCallback(uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable returns (uint256) {
+        require(_supplies[tokenId] > 0, "StashBlox: Unknown token.");
+        require(msg.value >= _callbackPrice(tokenId, price, callees), "StashBlox: insufficient value for the proposed price.");
+        require(callees.length <= _maxPartialCallbackAddresses, "StashBlox: too much callees");
 
-        uint256 minHolding = (_supplies[id].mul(_minHoldingForCallback[id])).div(10000);
-        require(_balances[id][msg.sender] >= minHolding, "StashBlox: insufficient balance to propose a callback.");
+        uint256 minHolding = (_supplies[tokenId].mul(_minHoldingForCallback[tokenId])).div(10000);
 
-        uint256 callbackAmount = _supplies[id].sub(_balances[id][msg.sender]);
-        uint256 callbackPrice = callbackAmount.mul(price);
-        require(msg.value >= callbackPrice, "StashBlox: insufficient value for the proposed price.");
+        _callbackPropositions[_nextCallbackPropositionId] = CallbackProposition({
+            tokenId: tokenId,
+            caller: msg.sender,
+            callees: callees,
+            price: price,
+            escrowedAmount: msg.value,
+            needLegalApproval: (price == 0) ||
+                               (_balances[tokenId][msg.sender] < minHolding) ||
+                               (callees.length > 0),
+            approvedByMaintener: false,
+            approvedByLegal: false,
+            refused: false,
+            accepted: false,
+            callCounter: 0,
+            completed: false,
+            documentHash: documentHash
+        });
 
-        _callbackPropositions[id][msg.sender] = [price, msg.value];
-        emit CallbackProposed(id, msg.sender, price);
+        emit CallbackProposed(_nextCallbackPropositionId);
+        _nextCallbackPropositionId++;
+
+        return _nextCallbackPropositionId - 1;
     }
 
     /**
      * @dev Refuse a callback if the price is not enough.
-     * @param id Token ID
-     * @param proposer address of the proposer
+     * @param callbackId callback proposition ID
      */
-    function refuseCallback(uint256 id, address proposer) external onlyMaintener(id) {
-        uint256 price = _callbackPropositions[id][proposer][0];
-        uint256 escrowedAmount = _callbackPropositions[id][proposer][1];
+    function refuseCallback(uint256 callbackId) external {
+        CallbackProposition memory callback = _callbackPropositions[callbackId];
 
-        require(price > 0, "StashBlox: callback proposition not found.");
+        require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
+        require(callback.refused == false, "StashBlox: callback already refused.");
+        require(callback.accepted == false, "StashBlox: callback already accepted.");
+        require(_isMaintener(callback.tokenId, msg.sender), "StashBlox: insufficient permission.");
 
-        // return escrowed amount. Proposer must use withdraw() function to get
-        // escrowed amount.
-        _ETHBalances[proposer] += escrowedAmount;
+        _callbackPropositions[callbackId].refused = true;
+        _ETHBalances[callback.caller] += callback.escrowedAmount;
 
-        _callbackPropositions[id][proposer] = [0, 0];
-        emit CallbackRefused(id, proposer, price);
+        emit CallbackRefused(callbackId);
     }
 
     /**
      * @dev Accept a callback
-     * @param id Token ID
-     * @param proposer address of the proposer
+     * @param callbackId callback proposition ID
      */
-    function acceptCallback(uint256 id, address proposer) external onlyMaintener(id) {
-        uint256 price = _callbackPropositions[id][proposer][0];
-        uint256 escrowedAmount = _callbackPropositions[id][proposer][1];
+    function acceptCallback(uint256 callbackId) external {
+        CallbackProposition memory callback = _callbackPropositions[callbackId];
 
-        require(price > 0, "StashBlox: callback proposition not found.");
+        require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
+        require(callback.refused == false, "StashBlox: callback already refused.");
+        require(callback.accepted == false, "StashBlox: callback already accepted.");
+        require(callback.escrowedAmount >= _callbackPrice(callback.tokenId, callback.price, callback.callees), "StashBlox: insufficient escrowed amount for the proposed price.");
 
-        uint256 minHolding = (_supplies[id].mul(_minHoldingForCallback[id])).div(10000);
-        require(_balances[id][proposer] >= minHolding, "StashBlox: insufficient balance to execute the callback.");
+        if (_isMaintener(callback.tokenId, msg.sender)) {
+            _callbackPropositions[callbackId].approvedByMaintener = true;
+        } else if (_isLegalAuthority(callback.tokenId, msg.sender)) {
+            _callbackPropositions[callbackId].approvedByLegal = true;
+        } else {
+           revert("StashBlox: insufficient permission.");
+        }
 
-        uint256 callbackAmount = _supplies[id].sub(_balances[id][proposer]);
-        uint256 callbackPrice = callbackAmount.mul(price);
-        require(escrowedAmount >= callbackPrice, "StashBlox: insufficient escrowed value to execute the callback.");
+        _callbackPropositions[callbackId].accepted = callback.approvedByMaintener && (!callback.needLegalApproval || callback.approvedByLegal);
 
-        // move tokens to the proposer address and escrowed ETH to the holders addresses
-        // Holders must use withdraw() function to get paiement amount.
-        for (uint256 i = 0; i < _addressesByToken[id].length; ++i) {
-            address holderAddress = _addressesByToken[id][i];
-            uint256 holderBalance = _balances[id][holderAddress];
-            if (holderBalance > 0) {
-                uint256 holderPrice = price.mul(holderBalance);
-                _ETHBalances[holderAddress] += holderPrice;
-                _balances[id][holderAddress] = 0;
+        if (_callbackPropositions[callbackId].accepted) {
+            emit CallbackAccepted(callbackId);
+            if (callback.callees.length > 0) {
+                _executeCallback(callbackId, callback.callees.length);
+            } else if (_addressesByToken[callback.tokenId].length <= _maxPartialCallbackAddresses) {
+                _executeCallback(callbackId, _addressesByToken[callback.tokenId].length);
+            } else {
+                _tokenLocks[callback.tokenId] = true;
             }
         }
+    }
 
-        _balances[id][proposer] = _supplies[id];
+    /**
+     * @dev Accept a callback. Caller need to recall the function to continue the callback until completed.
+     * @param callbackId callback proposition ID
+     * @param maxCall maximal call to excute
+     */
+    function executeCallback(uint256 callbackId, uint256 maxCall) external {
+        CallbackProposition memory callback = _callbackPropositions[callbackId];
 
-        if (escrowedAmount > callbackPrice) {
-            _ETHBalances[proposer] += escrowedAmount - callbackPrice;
+        require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
+        require(callback.accepted == true, "StashBlox: callback not accepted.");
+        require(callback.completed == false, "StashBlox: callback already completed.");
+
+        _executeCallback(callbackId, maxCall);
+
+        if (_callbackPropositions[callbackId].completed) {
+            _tokenLocks[callback.tokenId] = false;
         }
+    }
 
-        _callbackPropositions[id][proposer] = [0, 0];
-        emit CallbackAccepted(id, proposer, price);
+
+    function _executeCallback(uint256 callbackId, uint256 maxCall) internal {
+        uint256 tokenId = _callbackPropositions[callbackId].tokenId;
+
+        address[] memory callees = _callbackPropositions[callbackId].callees.length > 0 ?
+                                   _callbackPropositions[callbackId].callees :
+                                   _addressesByToken[tokenId];
+
+        uint256 max = callees.length - 1;
+        uint256 start = _callbackPropositions[callbackId].callCounter;
+        uint256 end = start + maxCall <  max ? start + maxCall : max;
+
+        uint256 callbackAmount = 0;
+        for (uint256 i = start; i <= end; i++) {
+            address callee = callees[i];
+            if (_balances[tokenId][callee] > 0) {
+                callbackAmount += _balances[tokenId][callee];
+                _ETHBalances[callee] += _balances[tokenId][callee].mul(_callbackPropositions[callbackId].price);
+
+                emit TransferSingle(msg.sender,
+                                    callee,
+                                    _callbackPropositions[callbackId].caller,
+                                    tokenId,
+                                    _balances[tokenId][callee]);
+
+                _balances[tokenId][callee] = 0;
+            }
+        }
+        _addToBalance(_callbackPropositions[callbackId].caller, tokenId, callbackAmount);
+
+        _callbackPropositions[callbackId].callCounter = end;
+        if (end == max) {
+            _callbackPropositions[callbackId].completed = true;
+            emit CallbackCompleted(callbackId);
+        }
     }
 
 
@@ -394,60 +459,67 @@ contract StashBlox is ERC1155 {
         _ETHBalances[to] += msg.value;
     }
 
+    /**
+     * @dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()).
+     */
+    receive() external payable {
+        _ETHBalances[msg.sender] += msg.value;
+    }
+
 
     /***************************************
     UTILS
     ****************************************/
 
 
-    /**
-     * @dev Function to get token supply
-     * @param id Token ID
-     * @return Token supply
-     */
-    function totalSupply(uint256 id) external view returns (uint256) {
-        return _supplies[id];
-    }
+    // /**
+    //  * @dev Function to get token supply
+    //  * @param id Token ID
+    //  * @return Token supply
+    //  */
+    // function totalSupply(uint256 id) external view returns (uint256) {
+    //     return _supplies[id];
+    // }
 
-    /**
-     * @dev Function to get the list of token hold by an address
-     * @param account holder address
-     * @return result space separated listof IDs
-     */
-    function tokensByAddress(address account) public view returns (string memory result) {
-        for (uint i = 0; i < _tokensByAddress[account].length; i++) {
-            uint256 id = _tokensByAddress[account][i];
-            if (_balances[id][account] > 0) {
-                if (bytes(result).length > 0) {
-                    result = _strConcat(result, " ");
-                    result = _strConcat(result, _toHexString(id));
-                } else {
-                    result = _toHexString(id);
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
-     * @dev Function to get the list of token hold by an address
-     * @param id Token ID
-     * @return result space separated list of addresses
-     */
-    function addressesByToken(uint256 id) public view returns (string memory result) {
-        for (uint i = 0; i < _addressesByToken[id].length; i++) {
-            address account = _addressesByToken[id][i];
-            if (_balances[id][account] > 0) {
-                if (bytes(result).length > 0) {
-                    result = _strConcat(result, " ");
-                    result = _strConcat(result, _toHexString(uint256(account)));
-                } else {
-                    result = _toHexString(uint256(account));
-                }
-            }
-        }
-        return result;
-    }
+    // /**
+    //  * @dev Function to get the list of token hold by an address
+    //  * @param account holder address
+    //  * @return result space separated listof IDs
+    //  */
+    // function tokensByAddress(address account) public view returns (string memory result) {
+    //     for (uint i = 0; i < _tokensByAddress[account].length; i++) {
+    //         uint256 id = _tokensByAddress[account][i];
+    //         if (_balances[id][account] > 0) {
+    //             if (bytes(result).length > 0) {
+    //                 result = _strConcat(result, " ");
+    //                 result = _strConcat(result, _toHexString(id));
+    //             } else {
+    //                 result = _toHexString(id);
+    //             }
+    //         }
+    //     }
+    //     return result;
+    // }
+    //
+    // /**
+    //  * @dev Function to get the list of token hold by an address
+    //  * @param id Token ID
+    //  * @return result space separated list of addresses
+    //  */
+    // function addressesByToken(uint256 id) public view returns (string memory result) {
+    //     for (uint i = 0; i < _addressesByToken[id].length; i++) {
+    //         address account = _addressesByToken[id][i];
+    //         if (_balances[id][account] > 0) {
+    //             if (bytes(result).length > 0) {
+    //                 result = _strConcat(result, " ");
+    //                 result = _strConcat(result, _toHexString(uint256(account)));
+    //             } else {
+    //                 result = _toHexString(uint256(account));
+    //             }
+    //         }
+    //     }
+    //     return result;
+    // }
 
     /**
      * @dev Function to update the operator whitelist

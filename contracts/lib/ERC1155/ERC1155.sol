@@ -177,13 +177,13 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
         require(ids.length == values.length, "ERC1155: IDs and values must have same lengths");
         require(to != address(0), "ERC1155: target address must be non-zero");
         require(
-          from == msg.sender || isApprovedForAll(from, msg.sender) == true,
-          "ERC1155: need operator approval for 3rd party transfers"
+            from == msg.sender || isApprovedForAll(from, msg.sender) == true,
+            "ERC1155: need operator approval for 3rd party transfers"
         );
 
         uint256 feesBalance = msg.value > 0 ? msg.value : _ETHBalances[from];
         for (uint256 i = 0; i < ids.length; ++i) {
-          feesBalance = feesBalance - _moveTokens(from, to, ids[i], values[i], feesBalance);
+            feesBalance = feesBalance - _moveTokens(from, to, ids[i], values[i], feesBalance);
         }
 
         emit TransferBatch(msg.sender, from, to, ids, values);
