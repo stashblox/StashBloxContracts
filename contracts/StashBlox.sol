@@ -261,16 +261,6 @@ contract StashBlox is ERC1155 {
     TRANSFER PRICE
     ****************************************/
 
-
-    /**
-     * @dev Function to update the price of one "storage credit".
-     * @param newPrice The new price
-     */
-    function updateStorageCreditPrice(uint256 newPrice) external onlyOwner {
-        storageCreditPrice = newPrice;
-        emit UpdateStorageCreditPrice(msg.sender, newPrice);
-    }
-
     /**
      * @dev Function to get the transaction price to transfer tokens.
      * @param account the address from where to transfer the tokens

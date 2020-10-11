@@ -30,8 +30,6 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     mapping (uint256 => mapping(address => uint256)) public _birthdays;
     // Mapping from token ID to list of tuple [timestamp, price]
     mapping (uint256 => uint256[2][]) internal _storageCostHistory;
-    // price of one storage credit in wei
-    uint256 storageCreditPrice = 1000;
     // Lump sum transaction fees for each token
     mapping (uint256 => uint256) _lumpSumTransactionFees;
     // Value proportional transaction fees for each token
@@ -106,8 +104,6 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     event CallbackAccepted(uint256 indexed _callbackPropositionId);
     event CallbackCompleted(uint256 indexed _callbackPropositionId);
 
-    // Update storage prices events
-    event UpdateStorageCreditPrice(address indexed _owner, uint256 _price);
     // Update transactions prices events
     event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256[3] _fees);
 
@@ -211,7 +207,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         for (uint i = _storageCostHistory[id].length - 1; i >= 0; i--) {
 
             uint256 costStartAt = _storageCostHistory[id][i][0];
-            uint256 cost = (_storageCostHistory[id][i][1].mul(storageCreditPrice)).div(10**8);
+            uint256 cost = _storageCostHistory[id][i][1];
             uint256 storageDays;
 
             if (_birthdays[id][account] >= costStartAt) {
