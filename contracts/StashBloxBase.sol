@@ -24,8 +24,9 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
     // Mapping from token ID to account balances
     mapping (uint256 => mapping(address => uint256)) public _balances;
-    // Mapping from token ID to Supply
+    // Mapping from token ID to Supply and decimals
     mapping (uint256 => uint256) internal _supplies;
+    mapping (uint256 => uint256) internal _decimals;
     // Mapping from token ID to account age
     mapping (uint256 => mapping(address => uint256)) public _birthdays;
     // Mapping from token ID to list of tuple [timestamp, price]
@@ -80,6 +81,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     struct TokenTemplate {
         address recipient;
         uint256 supply;
+        uint8 decimals;
         uint256[3] transactionFees;
         address[] feesRecipients;
         uint256[] feesRecipientsPercentage;
@@ -257,6 +259,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     function _createToken(address recipient,
                           uint256 id,
                           uint256 supply,
+                          uint8 decimals,
                           uint256 metadataHash,
                           uint256[3] memory transactionFees,
                           address[] memory feesRecipients,
@@ -267,6 +270,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         require(supply > 0, "StashBlox: Supply must be greater than 0");
 
         _supplies[id] = supply;
+        _decimals[id] = decimals;
         _tokenMainteners[id][msg.sender] = true;
 
         _addToBalance(recipient, id, supply);

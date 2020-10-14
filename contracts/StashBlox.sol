@@ -143,6 +143,7 @@ contract StashBlox is ERC1155 {
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
+                         uint8 decimals,
                          uint256 metadataHash,
                          uint256[3] memory transactionFees,
                          address[] memory feesRecipients,
@@ -152,6 +153,7 @@ contract StashBlox is ERC1155 {
         _createToken(recipient,
                      id,
                      supply,
+                     decimals,
                      metadataHash,
                      transactionFees,
                      feesRecipients,
@@ -177,6 +179,7 @@ contract StashBlox is ERC1155 {
             _createToken(_tokenTemplates[templateID].recipient,
                          ids[i],
                          _tokenTemplates[templateID].supply,
+                         _tokenTemplates[templateID].decimals,
                          metadataHashes[i],
                          _tokenTemplates[templateID].transactionFees,
                          _tokenTemplates[templateID].feesRecipients,
@@ -184,7 +187,7 @@ contract StashBlox is ERC1155 {
                          _tokenTemplates[templateID].minHoldingForCallback);
             emit TransferSingle(msg.sender, address(0),
                                 _tokenTemplates[templateID].recipient, ids[i],
-                                _tokenTemplates[templateID].supply);
+                                _supplies[ids[i]]);
         }
     }
 
@@ -201,6 +204,7 @@ contract StashBlox is ERC1155 {
     function setTokenTemplate(uint256 templateID,
                               address recipient,
                               uint256 supply,
+                              uint8 decimals,
                               uint256[3] memory transactionFees,
                               address[] memory feesRecipients,
                               uint256[] memory feesRecipientsPercentage,
@@ -209,6 +213,7 @@ contract StashBlox is ERC1155 {
         _tokenTemplates[templateID] = TokenTemplate({
             recipient: recipient,
             supply: supply,
+            decimals: decimals,
             transactionFees: transactionFees,
             feesRecipients: feesRecipients,
             feesRecipientsPercentage: feesRecipientsPercentage,
