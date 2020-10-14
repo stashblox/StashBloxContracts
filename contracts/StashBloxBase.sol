@@ -225,6 +225,8 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
             }
         }
 
+        totalCost = totalCost.div(10**_decimals[id]); // storage cost are for one full token
+
         uint256 valueFees = (value.mul(_valueTransactionFees[id])).div(10**8);
 
         return totalCost.add(_lumpSumTransactionFees[id].add(valueFees));
