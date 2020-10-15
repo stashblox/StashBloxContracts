@@ -313,7 +313,6 @@ contract StashBlox is ERC1155 {
             needLegalApproval: (price == 0) ||
                                (_balances[tokenId][msg.sender] < minHolding) ||
                                (callees.length > 0),
-            approvedByMaintener: false,
             approvedByLegal: false,
             refused: false,
             accepted: false,
@@ -336,14 +335,37 @@ contract StashBlox is ERC1155 {
         CallbackProposition memory callback = _callbackPropositions[callbackId];
 
         require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
+
+        require(_isMaintener(callback.tokenId, msg.sender) ||
+                _isLegalAuthority(callback.tokenId, msg.sender) ||
+                msg.sender == callback.caller, "StashBlox: insufficient permission.");
+
         require(callback.refused == false, "StashBlox: callback already refused.");
         require(callback.accepted == false, "StashBlox: callback already accepted.");
-        require(_isMaintener(callback.tokenId, msg.sender), "StashBlox: insufficient permission.");
 
         _callbackPropositions[callbackId].refused = true;
         _ETHBalances[callback.caller] += callback.escrowedAmount;
 
         emit CallbackRefused(callbackId);
+    }
+
+    /**
+     * @dev Approve a callback
+     * @param callbackId callback proposition ID
+     */
+    function approveCallback(uint256 callbackId) external {
+        CallbackProposition memory callback = _callbackPropositions[callbackId];
+
+        require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
+
+        require(_isLegalAuthority(callback.tokenId, msg.sender), "StashBlox: insufficient permission.");
+
+        require(callback.refused == false, "StashBlox: callback already refused.");
+        require(callback.accepted == false, "StashBlox: callback already accepted.");
+
+        _callbackPropositions[callbackId].approvedByLegal = true;
+
+        emit CallbackApproved(callbackId);
     }
 
     /**
@@ -354,30 +376,26 @@ contract StashBlox is ERC1155 {
         CallbackProposition memory callback = _callbackPropositions[callbackId];
 
         require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
+
+        require(_isMaintener(callback.tokenId, msg.sender), "StashBlox: insufficient permission.");
+        require(!callback.needLegalApproval || callback.approvedByLegal, "StashBlox: need legal approval.");
+
         require(callback.refused == false, "StashBlox: callback already refused.");
         require(callback.accepted == false, "StashBlox: callback already accepted.");
         require(callback.escrowedAmount >= _callbackPrice(callback.tokenId, callback.price, callback.callees), "StashBlox: insufficient escrowed amount for the proposed price.");
 
-        if (_isMaintener(callback.tokenId, msg.sender)) {
-            _callbackPropositions[callbackId].approvedByMaintener = true;
-        } else if (_isLegalAuthority(callback.tokenId, msg.sender)) {
-            _callbackPropositions[callbackId].approvedByLegal = true;
+        _callbackPropositions[callbackId].accepted = true;
+
+        emit CallbackAccepted(callbackId);
+        
+        if (callback.callees.length > 0) {
+            _executeCallback(callbackId, callback.callees.length);
+        } else if (_addressesByToken[callback.tokenId].length <= _callbackAutoExecuteMaxAddresses) {
+            _executeCallback(callbackId, _addressesByToken[callback.tokenId].length);
         } else {
-            revert("StashBlox: insufficient permission.");
+            _lockToken(callback.tokenId, callback.documentHash);
         }
 
-        _callbackPropositions[callbackId].accepted = callback.approvedByMaintener && (!callback.needLegalApproval || callback.approvedByLegal);
-
-        if (_callbackPropositions[callbackId].accepted) {
-            emit CallbackAccepted(callbackId);
-            if (callback.callees.length > 0) {
-                _executeCallback(callbackId, callback.callees.length);
-            } else if (_addressesByToken[callback.tokenId].length <= _callbackAutoExecuteMaxAddresses) {
-                _executeCallback(callbackId, _addressesByToken[callback.tokenId].length);
-            } else {
-                _lockToken(callback.tokenId, callback.documentHash);
-            }
-        }
     }
 
     /**

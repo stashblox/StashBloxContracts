@@ -60,7 +60,6 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         uint256 price;
         uint256 escrowedAmount;
         bool needLegalApproval;
-        bool approvedByMaintener;
         bool approvedByLegal;
         bool refused;
         bool accepted;
@@ -103,6 +102,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     // Callback events
     event CallbackProposed(uint256 indexed _callbackPropositionId);
     event CallbackRefused(uint256 indexed _callbackPropositionId);
+    event CallbackApproved(uint256 indexed _callbackPropositionId);
     event CallbackAccepted(uint256 indexed _callbackPropositionId);
     event CallbackCompleted(uint256 indexed _callbackPropositionId);
 
@@ -225,6 +225,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
             }
         }
 
+        // TODO!
         totalCost = totalCost.div(10**_decimals[id]); // storage cost are for one full token
 
         uint256 valueFees = (value.mul(_valueTransactionFees[id])).div(10**8);
