@@ -22,7 +22,8 @@ var DATA = {
       transactionFees: [4, 0, 1],
       feesRecipients: [accounts[6], accounts[7]],
       feesRecipientsPercentage: [7500, 2500], //75%, 25%
-      minHoldingForCallback: 8000 //80%
+      minHoldingForCallback: 8000, //80%
+      privateToken: false
   },
   "token2": {
       recipient: accounts[2],
@@ -33,7 +34,8 @@ var DATA = {
       transactionFees: [4, 0, 2],
       feesRecipients: [accounts[6], accounts[7]],
       feesRecipientsPercentage: [7500, 2500], //75%, 25%
-      minHoldingForCallback: 8000 //80%
+      minHoldingForCallback: 8000, //80%
+      privateToken: false
   }
 }
 
@@ -51,7 +53,8 @@ const initFixtures = async() => {
                                                          DATA["token1"].transactionFees,
                                                          DATA["token1"].feesRecipients,
                                                          DATA["token1"].feesRecipientsPercentage,
-                                                         DATA["token1"].minHoldingForCallback);
+                                                         DATA["token1"].minHoldingForCallback,
+                                                         DATA["token1"].privateToken);
     DATA["token1"].createdAt = await time.latest();
 
     DATA["token2"].receipt = await STASHBLOX.createToken(DATA["token2"].recipient,
@@ -62,7 +65,8 @@ const initFixtures = async() => {
                                                          DATA["token2"].transactionFees,
                                                          DATA["token2"].feesRecipients,
                                                          DATA["token2"].feesRecipientsPercentage,
-                                                         DATA["token2"].minHoldingForCallback);
+                                                         DATA["token2"].minHoldingForCallback,
+                                                         DATA["token1"].privateToken);
     DATA["token2"].createdAt = await time.latest();
 
     return DATA;
