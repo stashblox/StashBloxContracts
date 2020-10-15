@@ -85,6 +85,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         address[] feesRecipients;
         uint256[] feesRecipientsPercentage;
         uint256 minHoldingForCallback;
+        bool privateToken;
     }
     mapping(uint256 => TokenTemplate) _tokenTemplates;
     // Exchanges proxy addresses
@@ -93,6 +94,10 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     mapping (uint256 => address) _legalAuthorityAddresses;
 
     uint256 _callbackAutoExecuteMaxAddresses = 50;
+
+    mapping (uint256 => bool) _privateTokens;
+
+    mapping (uint256 => mapping(address => bool)) public _approvedHolders;
 
     /***************************************
     EVENTS
@@ -174,6 +179,8 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
     // update balance, lists of holders and token average age of the recipient
     function _addToBalance(address recipient, uint256 id, uint256 value) internal {
+        require(!_privateTokens[id] || _approvedHolders[id][recipient], "StashBlox: address not approved");
+
         uint256 newBalance = _balances[id][recipient].add(value);
 
         if (_balances[id][recipient] == 0) {
@@ -201,8 +208,6 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
     // Calculate transaction fees
     function _transactionFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
-        require(account != address(0), "ERC1155: balance query for the zero address");
-
         uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
 
@@ -267,7 +272,8 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
                           uint256[3] memory transactionFees,
                           address[] memory feesRecipients,
                           uint256[] memory feesRecipientsPercentage,
-                          uint256 minHoldingForCallback)
+                          uint256 minHoldingForCallback,
+                          bool privateToken)
     internal {
         require(_supplies[id] == 0, "StashBlox: Token ID already used");
         require(supply > 0, "StashBlox: Supply must be greater than 0");
@@ -275,6 +281,8 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         _supplies[id] = supply;
         _decimals[id] = decimals;
         _tokenMainteners[id][msg.sender] = true;
+        _privateTokens[id] = privateToken;
+        _approvedHolders[id][recipient] = true;
 
         _addToBalance(recipient, id, supply);
         _setMetadataHash(id, metadataHash);

@@ -55,6 +55,7 @@ contract StashBlox is ERC1155 {
 
     /**
      * @dev Function to revoke the authorization to maintain a token.
+     * @param id the token id
      * @param maintener The authorized address
      */
     function revokeMaintener(uint256 id, address maintener) external onlyOwner {
@@ -63,10 +64,31 @@ contract StashBlox is ERC1155 {
 
     /**
      * @dev Function to check if an address is authorized to maintain a token.
+     * @param id the token id
      * @param maintener The authorized address
+     * @return true if it's a maintener address
      */
     function isMaintener(uint256 id, address maintener) external view returns (bool) {
         return _isMaintener(id, maintener);
+    }
+
+    /**
+     * @dev Function to approve holder for a private token.
+     * @param id the token id
+     * @param holder The authorized address
+     */
+    function approveHolder(uint256 id, address holder) external onlyMaintener(id) {
+        _approvedHolders[id][holder] = true;
+    }
+
+
+    /**
+     * @dev Function to revoke holder for a private token.
+     * @param id the token id
+     * @param holder The authorized address
+     */
+    function revokeHolder(uint256 id, address holder) external onlyMaintener(id) {
+        _approvedHolders[id][holder] = false;
     }
 
 
@@ -148,7 +170,8 @@ contract StashBlox is ERC1155 {
                          uint256[3] memory transactionFees,
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage,
-                         uint256 minHoldingForCallback)
+                         uint256 minHoldingForCallback,
+                         bool privateToken)
     external onlyTokenizer {
         _createToken(recipient,
                      id,
@@ -158,7 +181,8 @@ contract StashBlox is ERC1155 {
                      transactionFees,
                      feesRecipients,
                      feesRecipientsPercentage,
-                     minHoldingForCallback);
+                     minHoldingForCallback,
+                     privateToken);
         emit TransferSingle(msg.sender, address(0), recipient, id, supply);
     }
 
@@ -184,7 +208,9 @@ contract StashBlox is ERC1155 {
                          _tokenTemplates[templateID].transactionFees,
                          _tokenTemplates[templateID].feesRecipients,
                          _tokenTemplates[templateID].feesRecipientsPercentage,
-                         _tokenTemplates[templateID].minHoldingForCallback);
+                         _tokenTemplates[templateID].minHoldingForCallback,
+                         _tokenTemplates[templateID].privateToken);
+
             emit TransferSingle(msg.sender, address(0),
                                 _tokenTemplates[templateID].recipient, ids[i],
                                 _supplies[ids[i]]);
@@ -208,7 +234,8 @@ contract StashBlox is ERC1155 {
                               uint256[3] memory transactionFees,
                               address[] memory feesRecipients,
                               uint256[] memory feesRecipientsPercentage,
-                              uint256 minHoldingForCallback)
+                              uint256 minHoldingForCallback,
+                              bool privateToken)
     external onlyTokenizer {
         _tokenTemplates[templateID] = TokenTemplate({
             recipient: recipient,
@@ -217,7 +244,8 @@ contract StashBlox is ERC1155 {
             transactionFees: transactionFees,
             feesRecipients: feesRecipients,
             feesRecipientsPercentage: feesRecipientsPercentage,
-            minHoldingForCallback: minHoldingForCallback
+            minHoldingForCallback: minHoldingForCallback,
+            privateToken: privateToken
         });
     }
 
@@ -387,7 +415,7 @@ contract StashBlox is ERC1155 {
         _callbackPropositions[callbackId].accepted = true;
 
         emit CallbackAccepted(callbackId);
-        
+
         if (callback.callees.length > 0) {
             _executeCallback(callbackId, callback.callees.length);
         } else if (_addressesByToken[callback.tokenId].length <= _callbackAutoExecuteMaxAddresses) {
