@@ -1,5 +1,3 @@
-var assert = require("assert")
-
 const {
   balance,
   initContract,
@@ -11,7 +9,8 @@ const {
   travelOneYear,
   accounts,
   now,
-  ZERO_BYTES32
+  ZERO_BYTES32,
+  assert
 } = require("./StashBloxHelpers.js");
 
 var STASHBLOX, DATA;

@@ -1,12 +1,11 @@
-var assert = require("assert")
-
 const {
   initContract,
   initFixtures,
   transferTokens,
   bigN,
   expectEvent,
-  ZERO_ADDRESS
+  ZERO_ADDRESS,
+  assert
 } = require("./StashBloxHelpers.js");
 
 var STASHBLOX, DATA;

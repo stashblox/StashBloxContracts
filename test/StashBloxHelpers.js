@@ -113,5 +113,6 @@ module.exports = exports = {
   accounts,
   now,
   balance,
-  random
+  random,
+  assert
 }
