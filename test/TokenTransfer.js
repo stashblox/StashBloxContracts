@@ -1,3 +1,5 @@
+var assert = require("assert")
+
 const {
   balance,
   initContract,

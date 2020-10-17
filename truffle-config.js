@@ -51,7 +51,7 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
-  plugins: ["truffle-contract-size"],
+  plugins: ["truffle-contract-size", "solidity-coverage"],
 
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default

@@ -1,3 +1,4 @@
+var assert = require("assert")
 const crypto = require("crypto");
 
 const { accounts, contract, defaultSender } = require('@openzeppelin/test-environment');
@@ -111,5 +112,6 @@ module.exports = exports = {
   travelOneYear,
   accounts,
   now,
-  balance
+  balance,
+  random
 }
