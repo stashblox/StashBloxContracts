@@ -25,8 +25,6 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
     using SafeMath for uint256;
     using Address for address;
 
-    // Mapping from token ID to account balances
-    // mapping (uint256 => mapping(address => uint256)) _balances;
 
     // Mapping from account to operator approvals
     mapping (address => mapping(address => bool)) private _operatorApprovals;
@@ -55,7 +53,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
      */
     function balanceOf(address account, uint256 id) public view override returns (uint256) {
         require(account != address(0), "ERC1155: balance query for the zero address");
-        return _balances[id][account];
+        return _tokens[id].holders[account].balance;
     }
 
     /**
@@ -81,7 +79,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
 
         for (uint256 i = 0; i < accounts.length; ++i) {
             require(accounts[i] != address(0), "ERC1155: some address in batch balance query is zero");
-            batchBalances[i] = _balances[ids[i]][accounts[i]];
+            batchBalances[i] = _tokens[ids[i]].holders[accounts[i]].balance;
         }
 
         return batchBalances;
@@ -139,7 +137,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
-        uint256 feesBalance = msg.value > 0 ? msg.value : _ETHBalances[from];
+        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
         feesBalance = feesBalance - _moveTokens(from, to, id, value, feesBalance);
 
         emit TransferSingle(msg.sender, from, to, id, value);
@@ -150,7 +148,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
             (bool success, ) = msg.sender.call{value: feesBalance}("");
             require(success, "Transfer failed.");
         } else if (msg.value == 0) {
-            _ETHBalances[from] = feesBalance;
+            _users[from].ETHBalance = feesBalance;
         }
     }
 
@@ -181,7 +179,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
-        uint256 feesBalance = msg.value > 0 ? msg.value : _ETHBalances[from];
+        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
         for (uint256 i = 0; i < ids.length; ++i) {
             feesBalance = feesBalance - _moveTokens(from, to, ids[i], values[i], feesBalance);
         }
@@ -194,7 +192,7 @@ contract ERC1155 is IERC165, IERC1155, StashBloxBase {
             (bool success, ) = msg.sender.call{value: feesBalance}("");
             require(success, "Transfer failed.");
         } else if (msg.value == 0) {
-            _ETHBalances[from] = feesBalance;
+            _users[from].ETHBalance = feesBalance;
         }
     }
 

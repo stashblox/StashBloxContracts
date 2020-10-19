@@ -4,11 +4,21 @@ pragma solidity ^0.7.1;
 
 import './lib/ERC1155/ERC1155.sol';
 import "./lib/utils/SafeMath.sol";
+import './lib/ERC1155/IERC1155Metadata.sol';
+import './lib/utils/StringUtils.sol';
 
-contract StashBlox is ERC1155 {
+contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
 
     using SafeMath for uint256;
 
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor () {
+        _config.callbackAutoExecuteMaxAddresses = 50;
+        _config.baseURI = "http://stashblox.com/tokens/";
+        _transferOwnership(msg.sender);
+    }
 
     /***************************************
     TOKENIZERS
@@ -20,7 +30,7 @@ contract StashBlox is ERC1155 {
      * @param tokenizer The authorized address
      */
     function authorizeTokenizer(address tokenizer) external onlyOwner {
-        _authorizedTokenizers[tokenizer] = true;
+        _users[tokenizer].isTokenizer = true;
     }
 
     /**
@@ -28,7 +38,7 @@ contract StashBlox is ERC1155 {
      * @param tokenizer The authorized address
      */
     function revokeTokenizer(address tokenizer) external onlyOwner {
-        _authorizedTokenizers[tokenizer] = false;
+        _users[tokenizer].isTokenizer = false;
     }
 
     /**
@@ -50,7 +60,7 @@ contract StashBlox is ERC1155 {
      * @param maintener The authorized address
      */
     function authorizeMaintener(uint256 id, address maintener) external onlyOwner {
-        _tokenMainteners[id][maintener] = true;
+        _tokens[id].holders[maintener].isMaintener = true;
     }
 
     /**
@@ -59,7 +69,7 @@ contract StashBlox is ERC1155 {
      * @param maintener The authorized address
      */
     function revokeMaintener(uint256 id, address maintener) external onlyOwner {
-        _tokenMainteners[id][maintener] = false;
+        _tokens[id].holders[maintener].isMaintener = false;
     }
 
     /**
@@ -78,7 +88,7 @@ contract StashBlox is ERC1155 {
      * @param holder The authorized address
      */
     function approveHolder(uint256 id, address holder) external onlyMaintener(id) {
-        _approvedHolders[id][holder] = true;
+        _tokens[id].holders[holder].isApproved = true;
     }
 
 
@@ -88,7 +98,7 @@ contract StashBlox is ERC1155 {
      * @param holder The authorized address
      */
     function revokeHolder(uint256 id, address holder) external onlyMaintener(id) {
-        _approvedHolders[id][holder] = false;
+        _tokens[id].holders[holder].isApproved = false;
     }
 
 
@@ -126,7 +136,7 @@ contract StashBlox is ERC1155 {
      * @param addr The address to lock
      */
     function lockAddress(address addr) external onlyOwner {
-        _addressLocks[addr] = true;
+        _users[addr].isLocked = true;
     }
 
     /**
@@ -134,7 +144,7 @@ contract StashBlox is ERC1155 {
      * @param addr The address to unlock
      */
     function unlockAddress(address addr) external onlyOwner {
-        _addressLocks[addr] = false;
+        _users[addr].isLocked = false;
     }
 
     /**
@@ -165,13 +175,13 @@ contract StashBlox is ERC1155 {
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
-                         uint8 decimals,
+                         uint256 decimals,
                          uint256 metadataHash,
                          uint256[3] memory transactionFees,
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage,
                          uint256 minHoldingForCallback,
-                         bool privateToken)
+                         bool isPrivate)
     external onlyTokenizer {
         _createToken(recipient,
                      id,
@@ -182,7 +192,7 @@ contract StashBlox is ERC1155 {
                      feesRecipients,
                      feesRecipientsPercentage,
                      minHoldingForCallback,
-                     privateToken);
+                     isPrivate);
         emit TransferSingle(msg.sender, address(0), recipient, id, supply);
     }
 
@@ -200,20 +210,26 @@ contract StashBlox is ERC1155 {
         require(ids.length == metadataHashes.length, "StashBlox: Invalid arguments");
 
         for (uint256 i = 0; i < ids.length; ++i) {
-            _createToken(_tokenTemplates[templateID].recipient,
+            _createToken(_tokenTemplates[templateID].holderList[0],
                          ids[i],
                          _tokenTemplates[templateID].supply,
                          _tokenTemplates[templateID].decimals,
                          metadataHashes[i],
-                         _tokenTemplates[templateID].transactionFees,
+                         [
+                           _tokenTemplates[templateID].lumpSumTransactionFees,
+                           _tokenTemplates[templateID].valueTransactionFees,
+                           _tokenTemplates[templateID].storageCostHistory[0][1]
+                         ],
                          _tokenTemplates[templateID].feesRecipients,
                          _tokenTemplates[templateID].feesRecipientsPercentage,
                          _tokenTemplates[templateID].minHoldingForCallback,
-                         _tokenTemplates[templateID].privateToken);
+                         _tokenTemplates[templateID].isPrivate);
 
-            emit TransferSingle(msg.sender, address(0),
-                                _tokenTemplates[templateID].recipient, ids[i],
-                                _supplies[ids[i]]);
+            emit TransferSingle(msg.sender,
+                                address(0),
+                                _tokenTemplates[templateID].holderList[0],
+                                ids[i],
+                                _tokenTemplates[templateID].supply);
         }
     }
 
@@ -230,23 +246,25 @@ contract StashBlox is ERC1155 {
     function setTokenTemplate(uint256 templateID,
                               address recipient,
                               uint256 supply,
-                              uint8 decimals,
+                              uint256 decimals,
                               uint256[3] memory transactionFees,
                               address[] memory feesRecipients,
                               uint256[] memory feesRecipientsPercentage,
                               uint256 minHoldingForCallback,
-                              bool privateToken)
+                              bool isPrivate)
     external onlyTokenizer {
-        _tokenTemplates[templateID] = TokenTemplate({
-            recipient: recipient,
-            supply: supply,
-            decimals: decimals,
-            transactionFees: transactionFees,
-            feesRecipients: feesRecipients,
-            feesRecipientsPercentage: feesRecipientsPercentage,
-            minHoldingForCallback: minHoldingForCallback,
-            privateToken: privateToken
-        });
+        Token storage template = _tokenTemplates[templateID];
+
+        template.holderList.push(recipient);
+        template.supply = supply;
+        template.decimals = decimals;
+        template.lumpSumTransactionFees = transactionFees[0];
+        template.valueTransactionFees = transactionFees[1];
+        template.storageCostHistory.push([0, transactionFees[2]]);
+        template.feesRecipients = feesRecipients;
+        template.feesRecipientsPercentage = feesRecipientsPercentage;
+        template.minHoldingForCallback = minHoldingForCallback;
+        template.isPrivate = isPrivate;
     }
 
     /**
@@ -295,7 +313,7 @@ contract StashBlox is ERC1155 {
      * @param legalAuthority legal authority address
      */
     function updateLegalAuthority(uint256 id, address legalAuthority) external onlyMaintener(id) {
-        _legalAuthorityAddresses[id] = legalAuthority;
+        _tokens[id].legalAuthority = legalAuthority;
     }
 
 
@@ -323,7 +341,7 @@ contract StashBlox is ERC1155 {
      * @param newMax new maximum
      */
     function setCallbackAutoExecuteMaxAddresses(uint256 newMax) external onlyOwner {
-        _callbackAutoExecuteMaxAddresses = newMax;
+        _config.callbackAutoExecuteMaxAddresses = newMax;
     }
 
     /**
@@ -334,21 +352,22 @@ contract StashBlox is ERC1155 {
      * @param price proposed price
      * @param callees list of calless. Empty list means all holders.
      */
-    function proposeCallback(uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable returns (uint256) {
-        require(_supplies[tokenId] > 0, "StashBlox: Unknown token.");
+    function proposeCallback(uint256 callbackId, uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable {
+        require(_callbackPropositions[callbackId].tokenId == 0, "StashBlox: callbackId already used");
+        require(_tokens[tokenId].supply > 0, "StashBlox: Unknown token.");
         require(msg.value >= _callbackPrice(tokenId, price, callees), "StashBlox: insufficient value for the proposed price.");
-        require(callees.length <= _callbackAutoExecuteMaxAddresses, "StashBlox: too much callees");
+        require(callees.length <= _config.callbackAutoExecuteMaxAddresses, "StashBlox: too much callees");
 
-        uint256 minHolding = (_supplies[tokenId].mul(_minHoldingForCallback[tokenId])).div(10000);
+        uint256 minHolding = (_tokens[tokenId].supply.mul(_tokens[tokenId].minHoldingForCallback)).div(10000);
 
-        _callbackPropositions[_nextCallbackPropositionId] = CallbackProposition({
+        _callbackPropositions[callbackId] = CallbackProposition({
             tokenId: tokenId,
             caller: msg.sender,
             callees: callees,
             price: price,
             escrowedAmount: msg.value,
             needLegalApproval: (price == 0) ||
-                               (_balances[tokenId][msg.sender] < minHolding) ||
+                               (_tokens[tokenId].holders[msg.sender].balance < minHolding) ||
                                (callees.length > 0),
             approvedByLegal: false,
             refused: false,
@@ -358,10 +377,7 @@ contract StashBlox is ERC1155 {
             documentHash: documentHash
         });
 
-        emit CallbackProposed(_nextCallbackPropositionId);
-        _nextCallbackPropositionId++;
-
-        return _nextCallbackPropositionId - 1;
+        emit CallbackProposed(callbackId);
     }
 
     /**
@@ -381,7 +397,7 @@ contract StashBlox is ERC1155 {
         require(callback.accepted == false, "StashBlox: callback already accepted.");
 
         _callbackPropositions[callbackId].refused = true;
-        _ETHBalances[callback.caller] += callback.escrowedAmount;
+        _users[callback.caller].ETHBalance += callback.escrowedAmount;
 
         emit CallbackRefused(callbackId);
     }
@@ -427,8 +443,8 @@ contract StashBlox is ERC1155 {
 
         if (callback.callees.length > 0) {
             _executeCallback(callbackId, callback.callees.length);
-        } else if (_addressesByToken[callback.tokenId].length <= _callbackAutoExecuteMaxAddresses) {
-            _executeCallback(callbackId, _addressesByToken[callback.tokenId].length);
+        } else if (_tokens[callback.tokenId].holderList.length <= _config.callbackAutoExecuteMaxAddresses) {
+            _executeCallback(callbackId, _tokens[callback.tokenId].holderList.length);
         } else {
             _lockToken(callback.tokenId, callback.documentHash);
         }
@@ -460,7 +476,7 @@ contract StashBlox is ERC1155 {
 
         address[] memory callees = _callbackPropositions[callbackId].callees.length > 0 ?
                                    _callbackPropositions[callbackId].callees :
-                                   _addressesByToken[tokenId];
+                                   _tokens[tokenId].holderList;
 
         uint256 max = callees.length - 1;
         uint256 start = _callbackPropositions[callbackId].callCounter;
@@ -469,17 +485,17 @@ contract StashBlox is ERC1155 {
         uint256 callbackAmount = 0;
         for (uint256 i = start; i <= end; i++) {
             address callee = callees[i];
-            if (_balances[tokenId][callee] > 0) {
-                callbackAmount += _balances[tokenId][callee];
-                _ETHBalances[callee] += _balances[tokenId][callee].mul(_callbackPropositions[callbackId].price);
+            if (_tokens[tokenId].holders[callee].balance > 0) {
+                callbackAmount += _tokens[tokenId].holders[callee].balance;
+                _users[callee].ETHBalance += _tokens[tokenId].holders[callee].balance.mul(_callbackPropositions[callbackId].price);
 
                 emit TransferSingle(msg.sender,
                                     callee,
                                     _callbackPropositions[callbackId].caller,
                                     tokenId,
-                                    _balances[tokenId][callee]);
+                                    _tokens[tokenId].holders[callee].balance);
 
-                _balances[tokenId][callee] = 0;
+                _tokens[tokenId].holders[callee].balance = 0;
             }
         }
         _addToBalance(_callbackPropositions[callbackId].caller, tokenId, callbackAmount);
@@ -503,10 +519,10 @@ contract StashBlox is ERC1155 {
      * @param amount amount to withdraw
      */
     function withdraw(address to, uint256 amount) external onlyOwner {
-        require(_ETHBalances[to] >= amount, "StashBlox: Insufficient balance.");
+        require(_users[to].ETHBalance >= amount, "StashBlox: Insufficient balance.");
         (bool success, ) = to.call{value: amount}("");
         require(success, "StashBlox: Withdrawal failed.");
-        _ETHBalances[to] -= amount;
+        _users[to].ETHBalance -= amount;
     }
 
     /**
@@ -514,20 +530,28 @@ contract StashBlox is ERC1155 {
      * @param to recipent address
      */
     function deposit(address to) external payable {
-        _ETHBalances[to] += msg.value;
+        _users[to].ETHBalance += msg.value;
     }
 
     /**
      * @dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()).
      */
     receive() external payable {
-        _ETHBalances[msg.sender] += msg.value;
+        _users[msg.sender].ETHBalance += msg.value;
     }
 
 
     /***************************************
     UTILS
     ****************************************/
+
+    /**
+     * @param id Token ID
+     * @return URI string
+     */
+    function uri(uint256 id) external view override returns (string memory) {
+        return _strConcat(_config.baseURI, _toHexString(id));
+    }
 
 
     // /**
@@ -547,7 +571,7 @@ contract StashBlox is ERC1155 {
     // function tokensByAddress(address account) public view returns (string memory result) {
     //     for (uint i = 0; i < _tokensByAddress[account].length; i++) {
     //         uint256 id = _tokensByAddress[account][i];
-    //         if (_balances[id][account] > 0) {
+    //         if (_tokens[id].balances[account] > 0) {
     //             if (bytes(result).length > 0) {
     //                 result = _strConcat(result, " ");
     //                 result = _strConcat(result, _toHexString(id));
@@ -567,7 +591,7 @@ contract StashBlox is ERC1155 {
     // function addressesByToken(uint256 id) public view returns (string memory result) {
     //     for (uint i = 0; i < _addressesByToken[id].length; i++) {
     //         address account = _addressesByToken[id][i];
-    //         if (_balances[id][account] > 0) {
+    //         if (_tokens[id].balances[account] > 0) {
     //             if (bytes(result).length > 0) {
     //                 result = _strConcat(result, " ");
     //                 result = _strConcat(result, _toHexString(uint256(account)));
@@ -583,7 +607,7 @@ contract StashBlox is ERC1155 {
      * @dev Function to update the operator whitelist
      * @param proxyAddresses List of addresses
      */
-    function setProxyRegistryAddress(address[] memory proxyAddresses) external onlyOwner {
-        _proxyRegistryAddresses = proxyAddresses;
+    function setProxyRegistryAddress(address[10] memory proxyAddresses) external onlyOwner {
+        _config.proxyRegistryAddresses = proxyAddresses;
     }
 }

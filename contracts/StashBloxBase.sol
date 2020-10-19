@@ -4,7 +4,6 @@ pragma solidity ^0.7.1;
 
 import "./lib/utils/SafeMath.sol";
 import "./lib/ERC173/ERC173.sol";
-import './lib/ERC1155/ERC1155Metadata.sol';
 
 contract OwnableDelegateProxy { }
 
@@ -12,92 +11,78 @@ contract ProxyRegistry {
   mapping(address => OwnableDelegateProxy) public proxies;
 }
 
-contract StashBloxBase is ERC173, ERC1155Metadata {
+contract StashBloxBase is ERC173 {
 
     using SafeMath for uint256;
+
+    /***************************************
+    TYPES
+    ****************************************/
+
+
+    struct User {
+        bool isTokenizer;
+        bool isLocked;
+        uint256 ETHBalance;
+        uint256[] tokens;
+    }
+
+    struct Holder {
+        uint256 balance;
+        uint256 birthday;
+        bool isMaintener;
+        bool isHolder; // never come back to false
+        bool isApproved; // for private tokens
+    }
+
+    struct Token {
+        uint256 supply;
+        uint256 decimals;
+        uint256 lumpSumTransactionFees;
+        uint256 valueTransactionFees;
+        uint256 minHoldingForCallback;
+        uint256 metadataHash;
+        address legalAuthority;
+        bool isPrivate;
+        bool locked;
+        mapping(address => Holder) holders;
+        address[] holderList; // Can contains zero balance
+        address[] feesRecipients;
+        uint256[] feesRecipientsPercentage;
+        uint256[2][] storageCostHistory; //list of tuple [timestamp, price]
+    }
+
+    struct CallbackProposition {
+        uint256 tokenId;
+        uint256 price;
+        uint256 escrowedAmount;
+        uint256 callCounter;
+        uint256 documentHash;
+        address caller;
+        bool needLegalApproval;
+        bool approvedByLegal;
+        bool refused;
+        bool accepted;
+        bool completed;
+        address[] callees;
+    }
+
+    struct Config {
+        uint256 callbackAutoExecuteMaxAddresses;
+        string baseURI;
+        address[10] proxyRegistryAddresses;
+    }
 
 
     /***************************************
     GLOBAL VARIABLES
     ****************************************/
 
-
-    // Mapping from token ID to account balances
-    mapping (uint256 => mapping(address => uint256)) public _balances;
-    // Mapping from token ID to Supply and decimals
-    mapping (uint256 => uint256) internal _supplies;
-    mapping (uint256 => uint256) internal _decimals;
-    // Mapping from token ID to account age
-    mapping (uint256 => mapping(address => uint256)) public _birthdays;
-    // Mapping from token ID to list of tuple [timestamp, price]
-    mapping (uint256 => uint256[2][]) internal _storageCostHistory;
-    // Lump sum transaction fees for each token
-    mapping (uint256 => uint256) _lumpSumTransactionFees;
-    // Value proportional transaction fees for each token
-    mapping (uint256 => uint256) _valueTransactionFees;
-    // For each token a list of addresses receiving transfer fees
-    mapping (uint256 => address[]) internal _feesRecipients;
-    // For each token a list of percentage, each one for the corresponding _feesRecipients index
-    mapping (uint256 => uint256[]) internal _feesRecipientsPercentage;
-    // Balances ETH for fees recipients and callbacks
-    mapping (address => uint256) public _ETHBalances;
-    // For each address a list of token IDs. Can contains zero balance.
-    mapping (address => uint256[]) public _tokensByAddress;
-    // For each token a list of addresses. Can contains zero balance.
-    mapping (uint256 => address[]) public _addressesByToken;
-    // Initialize to true on the first token received, never come back to false.
-    mapping (uint256 => mapping(address => bool)) internal _isHolder;
-    // Mapping for locked tokens
-    mapping (uint256 => bool) internal _tokenLocks;
-    // Mapping for locked addresses
-    mapping (address => bool) internal _addressLocks;
-
-    // list of callback propositions
-    struct CallbackProposition {
-        uint256 tokenId;
-        address caller;
-        address[] callees;
-        uint256 price;
-        uint256 escrowedAmount;
-        bool needLegalApproval;
-        bool approvedByLegal;
-        bool refused;
-        bool accepted;
-        uint256 callCounter;
-        bool completed;
-        uint256 documentHash;
-    }
-    uint256 _nextCallbackPropositionId = 1;
+    Config public  _config;
+    mapping (address => User) public  _users;
+    mapping (uint256 => Token) public _tokenTemplates;
+    mapping (uint256 => Token) public _tokens;
     mapping (uint256 => CallbackProposition) public _callbackPropositions;
-
-    // list of addresses authorized to create a token
-    mapping (address => bool) _authorizedTokenizers;
-    // List of token mainteners
-    mapping (uint256 => mapping(address => bool)) _tokenMainteners;
-    // Minimum holding to propose a callback for each token
-    mapping (uint256 => uint256) _minHoldingForCallback;
-    // Token template for batch creation
-    struct TokenTemplate {
-        address recipient;
-        uint256 supply;
-        uint8 decimals;
-        uint256[3] transactionFees;
-        address[] feesRecipients;
-        uint256[] feesRecipientsPercentage;
-        uint256 minHoldingForCallback;
-        bool privateToken;
-    }
-    mapping(uint256 => TokenTemplate) _tokenTemplates;
-    // Exchanges proxy addresses
-    address[] _proxyRegistryAddresses;
-    // Legal authority addresses
-    mapping (uint256 => address) _legalAuthorityAddresses;
-
-    uint256 _callbackAutoExecuteMaxAddresses = 50;
-
-    mapping (uint256 => bool) _privateTokens;
-
-    mapping (uint256 => mapping(address => bool)) public _approvedHolders;
 
 
     /***************************************
@@ -118,13 +103,15 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     event TokenLocked(uint256 indexed _id, uint256 _documentHash);
     event TokenUnlocked(uint256 indexed _id, uint256 _documentHash);
 
+    event MetadataHashUpdated(uint256 indexed _id, uint256 indexed _hash);
+
 
     /***************************************
     MODIFIERS
     ****************************************/
 
     function _isTokenizer(address tokenizer) internal view returns (bool) {
-        return _authorizedTokenizers[tokenizer] || _isOwner();
+        return _users[tokenizer].isTokenizer || _isOwner();
     }
 
     modifier onlyTokenizer() {
@@ -133,7 +120,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     }
 
     function _isMaintener(uint256 id, address maintener) internal view returns (bool) {
-        return _tokenMainteners[id][maintener] || _isOwner();
+        return _tokens[id].holders[maintener].isMaintener || _isOwner();
     }
 
     modifier onlyMaintener(uint256 id) {
@@ -142,7 +129,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     }
 
     function _isLegalAuthority(uint256 id, address legalAuthority) internal view returns (bool) {
-        return _legalAuthorityAddresses[id] == legalAuthority;
+        return _tokens[id].legalAuthority == legalAuthority;
     }
 
 
@@ -152,21 +139,21 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
 
     function _lockToken(uint256 id, uint256 documentHash) internal {
-        _tokenLocks[id] = true;
+        _tokens[id].locked = true;
         emit TokenLocked(id, documentHash);
     }
 
     function _unlockToken(uint256 id, uint256 documentHash) internal {
-        _tokenLocks[id] = false;
+        _tokens[id].locked = false;
         emit TokenUnlocked(id, documentHash);
     }
 
     function _isLockedToken(uint256 id) internal view returns (bool) {
-        return _tokenLocks[id];
+        return _tokens[id].locked;
     }
 
     function _isLockedAddress(address addr) internal view returns (bool) {
-        return _addressLocks[addr];
+        return _users[addr].isLocked;
     }
 
     function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
@@ -181,31 +168,30 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
     // update balance, lists of holders and token average age of the recipient
     function _addToBalance(address recipient, uint256 id, uint256 value) internal {
-        require(!_privateTokens[id] || _approvedHolders[id][recipient], "StashBlox: address not approved");
+        require(!_tokens[id].isPrivate || _tokens[id].holders[recipient].isApproved, "StashBlox: address not approved");
 
-        uint256 newBalance = _balances[id][recipient].add(value);
+        uint256 newBalance = _tokens[id].holders[recipient].balance.add(value);
 
-        if (_balances[id][recipient] == 0) {
+        if (_tokens[id].holders[recipient].balance == 0) {
 
-            if (!_isHolder[id][recipient]) {
-
-                _tokensByAddress[recipient].push(id);
-                _addressesByToken[id].push(recipient);
-                _isHolder[id][recipient];
+            if (!_tokens[id].holders[recipient].isHolder) {
+                _users[recipient].tokens.push(id);
+                _tokens[id].holderList.push(recipient);
+                _tokens[id].holders[recipient].isHolder;
             }
 
-            _birthdays[id][recipient] = block.timestamp;
+            _tokens[id].holders[recipient].birthday = block.timestamp;
 
         } else {
 
             // calculate the average birthday of the received and hold tokens
-            uint256 oldTokensAge = block.timestamp.sub(_birthdays[id][recipient]);
-            uint256 newTokenAge = (_balances[id][recipient].mul(oldTokensAge)).div(newBalance);
+            uint256 oldTokensAge = block.timestamp.sub(_tokens[id].holders[recipient].birthday);
+            uint256 newTokenAge = (_tokens[id].holders[recipient].balance.mul(oldTokensAge)).div(newBalance);
 
-            _birthdays[id][recipient] = block.timestamp - newTokenAge;
+            _tokens[id].holders[recipient].birthday = block.timestamp - newTokenAge;
         }
 
-        _balances[id][recipient] = newBalance;
+        _tokens[id].holders[recipient].balance = newBalance;
     }
 
     // Calculate transaction fees
@@ -213,14 +199,14 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
 
-        for (uint i = _storageCostHistory[id].length - 1; i >= 0; i--) {
+        for (uint i = _tokens[id].storageCostHistory.length - 1; i >= 0; i--) {
 
-            uint256 costStartAt = _storageCostHistory[id][i][0];
-            uint256 cost = _storageCostHistory[id][i][1];
+            uint256 costStartAt = _tokens[id].storageCostHistory[i][0];
+            uint256 cost = _tokens[id].storageCostHistory[i][1];
             uint256 storageDays;
 
-            if (_birthdays[id][account] >= costStartAt) {
-                storageDays = (timeCursor.sub(_birthdays[id][account])).div(86400);
+            if (_tokens[id].holders[account].birthday >= costStartAt) {
+                storageDays = (timeCursor.sub(_tokens[id].holders[account].birthday)).div(86400);
                 if (storageDays == 0) storageDays = 1;
                 totalCost += (storageDays.mul(cost)).mul(value);
                 break;
@@ -233,11 +219,11 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         }
 
         // TODO!
-        totalCost = totalCost.div(10**_decimals[id]); // storage cost are for one full token
+        totalCost = totalCost.div(10**_tokens[id].decimals); // storage cost are for one full token
 
-        uint256 valueFees = (value.mul(_valueTransactionFees[id])).div(10**8);
+        uint256 valueFees = (value.mul(_tokens[id].valueTransactionFees)).div(10**8);
 
-        return totalCost.add(_lumpSumTransactionFees[id].add(valueFees));
+        return totalCost.add(_tokens[id].lumpSumTransactionFees.add(valueFees));
     }
 
     // Used by ERC1155.sol in safeTransferFrom and safeTransferFromBatch functions
@@ -247,14 +233,14 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         fees = _transactionFees(from, id, value);
         require(feesBalance >= fees, "ERC1155: insufficient ETH for transfer fees");
 
-        _balances[id][from] = _balances[id][from].sub(value, "ERC1155: insufficient balance for transfer");
+        _tokens[id].holders[from].balance = _tokens[id].holders[from].balance.sub(value, "ERC1155: insufficient balance for transfer");
 
         _addToBalance(to, id, value);
 
-        for (uint256 i = 0; i < _feesRecipients[id].length; ++i) {
-            address feesRecipient = _feesRecipients[id][i];
-            uint256 feesRecipientsPercentage = _feesRecipientsPercentage[id][i];
-            _ETHBalances[feesRecipient] += (fees.mul(feesRecipientsPercentage)).div(10000);
+        for (uint256 i = 0; i < _tokens[id].feesRecipients.length; ++i) {
+            address feesRecipient = _tokens[id].feesRecipients[i];
+            uint256 feesRecipientsPercentage = _tokens[id].feesRecipientsPercentage[i];
+            _users[feesRecipient].ETHBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
         }
 
         return fees;
@@ -269,22 +255,22 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     function _createToken(address recipient,
                           uint256 id,
                           uint256 supply,
-                          uint8 decimals,
+                          uint256 decimals,
                           uint256 metadataHash,
                           uint256[3] memory transactionFees,
                           address[] memory feesRecipients,
                           uint256[] memory feesRecipientsPercentage,
                           uint256 minHoldingForCallback,
-                          bool privateToken)
+                          bool isPrivate)
     internal {
-        require(_supplies[id] == 0, "StashBlox: Token ID already used");
+        require(_tokens[id].supply == 0, "StashBlox: Token ID already used");
         require(supply > 0, "StashBlox: Supply must be greater than 0");
 
-        _supplies[id] = supply;
-        _decimals[id] = decimals;
-        _tokenMainteners[id][msg.sender] = true;
-        _privateTokens[id] = privateToken;
-        _approvedHolders[id][recipient] = true;
+        _tokens[id].supply = supply;
+        _tokens[id].decimals = decimals;
+        _tokens[id].holders[msg.sender].isMaintener = true;
+        _tokens[id].isPrivate = isPrivate;
+        _tokens[id].holders[recipient].isApproved = true;
 
         _addToBalance(recipient, id, supply);
         _setMetadataHash(id, metadataHash);
@@ -294,21 +280,21 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     }
 
     function _setMetadataHash(uint256 id, uint256 hash) internal {
-         _metadataHashes[id] = hash;
+         _tokens[id].metadataHash = hash;
          emit MetadataHashUpdated(id, hash);
     }
 
     function _setTransactionFees(uint256 id, uint256[3] memory newFees) internal {
-        _lumpSumTransactionFees[id] = newFees[0];
-        _valueTransactionFees[id] = newFees[1];
-        _storageCostHistory[id].push([block.timestamp, newFees[2]]);
+        _tokens[id].lumpSumTransactionFees = newFees[0];
+        _tokens[id].valueTransactionFees = newFees[1];
+        _tokens[id].storageCostHistory.push([block.timestamp, newFees[2]]);
 
         emit UpdateTransactionFees(msg.sender, id, newFees);
     }
 
     function _setMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) internal {
         require(newMinHoldingForCallback < 10000, "StashBlox: minimum holding must be lower than 10000 (100%)");
-        _minHoldingForCallback[id] = newMinHoldingForCallback;
+        _tokens[id].minHoldingForCallback = newMinHoldingForCallback;
     }
 
     function _setFeesRecipients(uint256 id,
@@ -325,33 +311,33 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
         }
         require(totalPercentage == 10000, "StashBlox: Total of feesRecipientsPercentage must be equal to 10000");
 
-        _feesRecipients[id] = newFeesRecipients;
-        _feesRecipientsPercentage[id] = newFeesRecipientsPercentage;
+        _tokens[id].feesRecipients = newFeesRecipients;
+        _tokens[id].feesRecipientsPercentage = newFeesRecipientsPercentage;
     }
 
     function _isWhitelistedOperator(address account, address operator) internal view returns (bool) {
-        for (uint256 i = 0; i < _proxyRegistryAddresses.length; ++i) {
-            ProxyRegistry proxyRegistry = ProxyRegistry(_proxyRegistryAddresses[i]);
-            if (address(proxyRegistry.proxies(account)) == operator) {
-                return true;
+        for (uint256 i = 0; i < _config.proxyRegistryAddresses.length; ++i) {
+            if (_config.proxyRegistryAddresses[i] != address(0)) {
+                ProxyRegistry proxyRegistry = ProxyRegistry(_config.proxyRegistryAddresses[i]);
+                if (address(proxyRegistry.proxies(account)) == operator) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
-
     function _callbackPrice(uint256 tokenId, uint256 price, address[] memory callees) internal view returns (uint256) {
         uint256 callbackAmount = 0;
         if (callees.length == 0) {
-            callbackAmount = _supplies[tokenId].sub(_balances[tokenId][msg.sender]);
+            callbackAmount = _tokens[tokenId].supply.sub(_tokens[tokenId].holders[msg.sender].balance);
         } else {
             for (uint i; i < callees.length; i++) {
-                callbackAmount += _balances[tokenId][callees[i]];
+                callbackAmount += _tokens[tokenId].holders[callees[i]].balance;
             }
         }
         return callbackAmount.mul(price);
     }
-
 
 
 }
