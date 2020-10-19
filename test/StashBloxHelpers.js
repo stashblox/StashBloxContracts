@@ -114,5 +114,6 @@ module.exports = exports = {
   now,
   balance,
   random,
-  assert
+  assert,
+  defaultSender
 }
