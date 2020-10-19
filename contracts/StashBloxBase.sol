@@ -52,7 +52,7 @@ contract StashBloxBase is ERC173 {
         uint256[2][] storageCostHistory; //list of tuple [timestamp, price]
     }
 
-    struct CallbackProposition {
+    struct Callback {
         uint256 tokenId;
         uint256 price;
         uint256 escrowedAmount;
@@ -80,9 +80,9 @@ contract StashBloxBase is ERC173 {
 
     Config public  _config;
     mapping (address => User) public  _users;
-    mapping (uint256 => Token) public _tokenTemplates;
+    mapping (uint256 => Token) public _templates;
     mapping (uint256 => Token) public _tokens;
-    mapping (uint256 => CallbackProposition) public _callbackPropositions;
+    mapping (uint256 => Callback) public _callbacks;
 
 
     /***************************************
@@ -91,11 +91,7 @@ contract StashBloxBase is ERC173 {
 
 
     // Callback events
-    event CallbackProposed(uint256 indexed _callbackPropositionId);
-    event CallbackRefused(uint256 indexed _callbackPropositionId);
-    event CallbackApproved(uint256 indexed _callbackPropositionId);
-    event CallbackAccepted(uint256 indexed _callbackPropositionId);
-    event CallbackCompleted(uint256 indexed _callbackPropositionId);
+    event CallbackUpdated(uint256 indexed _CallbackId);
 
     // Update transactions prices events
     event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256[3] _fees);

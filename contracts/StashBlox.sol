@@ -206,30 +206,30 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                           uint256[] memory ids,
                           uint256[] memory metadataHashes)
     external onlyTokenizer {
-        require(_tokenTemplates[templateID].supply > 0, "StashBlox: Unknown token template");
+        require(_templates[templateID].supply > 0, "StashBlox: Unknown token template");
         require(ids.length == metadataHashes.length, "StashBlox: Invalid arguments");
 
         for (uint256 i = 0; i < ids.length; ++i) {
-            _createToken(_tokenTemplates[templateID].holderList[0],
+            _createToken(_templates[templateID].holderList[0],
                          ids[i],
-                         _tokenTemplates[templateID].supply,
-                         _tokenTemplates[templateID].decimals,
+                         _templates[templateID].supply,
+                         _templates[templateID].decimals,
                          metadataHashes[i],
                          [
-                           _tokenTemplates[templateID].lumpSumTransactionFees,
-                           _tokenTemplates[templateID].valueTransactionFees,
-                           _tokenTemplates[templateID].storageCostHistory[0][1]
+                           _templates[templateID].lumpSumTransactionFees,
+                           _templates[templateID].valueTransactionFees,
+                           _templates[templateID].storageCostHistory[0][1]
                          ],
-                         _tokenTemplates[templateID].feesRecipients,
-                         _tokenTemplates[templateID].feesRecipientsPercentage,
-                         _tokenTemplates[templateID].minHoldingForCallback,
-                         _tokenTemplates[templateID].isPrivate);
+                         _templates[templateID].feesRecipients,
+                         _templates[templateID].feesRecipientsPercentage,
+                         _templates[templateID].minHoldingForCallback,
+                         _templates[templateID].isPrivate);
 
             emit TransferSingle(msg.sender,
                                 address(0),
-                                _tokenTemplates[templateID].holderList[0],
+                                _templates[templateID].holderList[0],
                                 ids[i],
-                                _tokenTemplates[templateID].supply);
+                                _templates[templateID].supply);
         }
     }
 
@@ -253,8 +253,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                               uint256 minHoldingForCallback,
                               bool isPrivate)
     external onlyTokenizer {
-        Token storage template = _tokenTemplates[templateID];
-
+        Token storage template = _templates[templateID];
         template.holderList.push(recipient);
         template.supply = supply;
         template.decimals = decimals;
@@ -353,14 +352,14 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
      * @param callees list of calless. Empty list means all holders.
      */
     function proposeCallback(uint256 callbackId, uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable {
-        require(_callbackPropositions[callbackId].tokenId == 0, "StashBlox: callbackId already used");
+        require(_callbacks[callbackId].tokenId == 0, "StashBlox: callbackId already used");
         require(_tokens[tokenId].supply > 0, "StashBlox: Unknown token.");
         require(msg.value >= _callbackPrice(tokenId, price, callees), "StashBlox: insufficient value for the proposed price.");
         require(callees.length <= _config.callbackAutoExecuteMaxAddresses, "StashBlox: too much callees");
 
         uint256 minHolding = (_tokens[tokenId].supply.mul(_tokens[tokenId].minHoldingForCallback)).div(10000);
 
-        _callbackPropositions[callbackId] = CallbackProposition({
+        _callbacks[callbackId] = Callback({
             tokenId: tokenId,
             caller: msg.sender,
             callees: callees,
@@ -377,7 +376,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
             documentHash: documentHash
         });
 
-        emit CallbackProposed(callbackId);
+        emit CallbackUpdated(callbackId);
     }
 
     /**
@@ -385,7 +384,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
      * @param callbackId callback proposition ID
      */
     function refuseCallback(uint256 callbackId) external {
-        CallbackProposition memory callback = _callbackPropositions[callbackId];
+        Callback memory callback = _callbacks[callbackId];
 
         require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
 
@@ -396,10 +395,10 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
         require(callback.refused == false, "StashBlox: callback already refused.");
         require(callback.accepted == false, "StashBlox: callback already accepted.");
 
-        _callbackPropositions[callbackId].refused = true;
+        _callbacks[callbackId].refused = true;
         _users[callback.caller].ETHBalance += callback.escrowedAmount;
 
-        emit CallbackRefused(callbackId);
+        emit CallbackUpdated(callbackId);
     }
 
     /**
@@ -407,7 +406,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
      * @param callbackId callback proposition ID
      */
     function approveCallback(uint256 callbackId) external {
-        CallbackProposition memory callback = _callbackPropositions[callbackId];
+        Callback memory callback = _callbacks[callbackId];
 
         require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
 
@@ -416,9 +415,9 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
         require(callback.refused == false, "StashBlox: callback already refused.");
         require(callback.accepted == false, "StashBlox: callback already accepted.");
 
-        _callbackPropositions[callbackId].approvedByLegal = true;
+        _callbacks[callbackId].approvedByLegal = true;
 
-        emit CallbackApproved(callbackId);
+        emit CallbackUpdated(callbackId);
     }
 
     /**
@@ -426,7 +425,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
      * @param callbackId callback proposition ID
      */
     function acceptCallback(uint256 callbackId) external {
-        CallbackProposition memory callback = _callbackPropositions[callbackId];
+        Callback memory callback = _callbacks[callbackId];
 
         require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
 
@@ -437,9 +436,9 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
         require(callback.accepted == false, "StashBlox: callback already accepted.");
         require(callback.escrowedAmount >= _callbackPrice(callback.tokenId, callback.price, callback.callees), "StashBlox: insufficient escrowed amount for the proposed price.");
 
-        _callbackPropositions[callbackId].accepted = true;
+        _callbacks[callbackId].accepted = true;
 
-        emit CallbackAccepted(callbackId);
+        emit CallbackUpdated(callbackId);
 
         if (callback.callees.length > 0) {
             _executeCallback(callbackId, callback.callees.length);
@@ -457,7 +456,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
      * @param maxCall maximal call to excute
      */
     function executeCallback(uint256 callbackId, uint256 maxCall) external {
-        CallbackProposition memory callback = _callbackPropositions[callbackId];
+        Callback memory callback = _callbacks[callbackId];
 
         require(callback.tokenId != 0, "StashBlox: callback proposition not found.");
         require(callback.accepted == true, "StashBlox: callback not accepted.");
@@ -465,21 +464,21 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
 
         _executeCallback(callbackId, maxCall);
 
-        if (_callbackPropositions[callbackId].completed) {
+        if (_callbacks[callbackId].completed) {
             _unlockToken(callback.tokenId, callback.documentHash);
         }
     }
 
 
     function _executeCallback(uint256 callbackId, uint256 maxCall) internal {
-        uint256 tokenId = _callbackPropositions[callbackId].tokenId;
+        uint256 tokenId = _callbacks[callbackId].tokenId;
 
-        address[] memory callees = _callbackPropositions[callbackId].callees.length > 0 ?
-                                   _callbackPropositions[callbackId].callees :
+        address[] memory callees = _callbacks[callbackId].callees.length > 0 ?
+                                   _callbacks[callbackId].callees :
                                    _tokens[tokenId].holderList;
 
         uint256 max = callees.length - 1;
-        uint256 start = _callbackPropositions[callbackId].callCounter;
+        uint256 start = _callbacks[callbackId].callCounter;
         uint256 end = start + maxCall <  max ? start + maxCall : max;
 
         uint256 callbackAmount = 0;
@@ -487,23 +486,23 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
             address callee = callees[i];
             if (_tokens[tokenId].holders[callee].balance > 0) {
                 callbackAmount += _tokens[tokenId].holders[callee].balance;
-                _users[callee].ETHBalance += _tokens[tokenId].holders[callee].balance.mul(_callbackPropositions[callbackId].price);
+                _users[callee].ETHBalance += _tokens[tokenId].holders[callee].balance.mul(_callbacks[callbackId].price);
 
                 emit TransferSingle(msg.sender,
                                     callee,
-                                    _callbackPropositions[callbackId].caller,
+                                    _callbacks[callbackId].caller,
                                     tokenId,
                                     _tokens[tokenId].holders[callee].balance);
 
                 _tokens[tokenId].holders[callee].balance = 0;
             }
         }
-        _addToBalance(_callbackPropositions[callbackId].caller, tokenId, callbackAmount);
+        _addToBalance(_callbacks[callbackId].caller, tokenId, callbackAmount);
 
-        _callbackPropositions[callbackId].callCounter = end;
+        _callbacks[callbackId].callCounter = end;
         if (end == max) {
-            _callbackPropositions[callbackId].completed = true;
-            emit CallbackCompleted(callbackId);
+            _callbacks[callbackId].completed = true;
+            emit CallbackUpdated(callbackId);
         }
     }
 
