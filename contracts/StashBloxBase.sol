@@ -90,16 +90,8 @@ contract StashBloxBase is ERC173 {
     ****************************************/
 
 
-    // Callback events
     event CallbackUpdated(uint256 indexed _CallbackId);
-
-    // Update transactions prices events
-    event UpdateTransactionFees(address indexed _maintener, uint256 _id, uint256[3] _fees);
-
-    event TokenLocked(uint256 indexed _id, uint256 _documentHash);
-    event TokenUnlocked(uint256 indexed _id, uint256 _documentHash);
-
-    event MetadataHashUpdated(uint256 indexed _id, uint256 indexed _hash);
+    event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
 
 
     /***************************************
@@ -111,7 +103,7 @@ contract StashBloxBase is ERC173 {
     }
 
     modifier onlyTokenizer() {
-        require(_isTokenizer(msg.sender), "[StashBlox]: caller is not a tokenizer");
+        require(_isTokenizer(msg.sender), "Insufficient permission");
         _;
     }
 
@@ -120,7 +112,7 @@ contract StashBloxBase is ERC173 {
     }
 
     modifier onlyMaintener(uint256 id) {
-        require(_isMaintener(id, msg.sender), "[StashBlox]: caller is not a token maintener");
+        require(_isMaintener(id, msg.sender), "Insufficient permission");
         _;
     }
 
@@ -136,12 +128,12 @@ contract StashBloxBase is ERC173 {
 
     function _lockToken(uint256 id, uint256 documentHash) internal {
         _tokens[id].locked = true;
-        emit TokenLocked(id, documentHash);
+        emit TokenUpdated(id, documentHash);
     }
 
     function _unlockToken(uint256 id, uint256 documentHash) internal {
         _tokens[id].locked = false;
-        emit TokenUnlocked(id, documentHash);
+        emit TokenUpdated(id, documentHash);
     }
 
     function _isLockedToken(uint256 id) internal view returns (bool) {
@@ -164,7 +156,7 @@ contract StashBloxBase is ERC173 {
 
     // update balance, lists of holders and token average age of the recipient
     function _addToBalance(address recipient, uint256 id, uint256 value) internal {
-        require(!_tokens[id].isPrivate || _tokens[id].holders[recipient].isApproved, "StashBlox: address not approved");
+        require(!_tokens[id].isPrivate || _tokens[id].holders[recipient].isApproved, "Address not approved");
 
         uint256 newBalance = _tokens[id].holders[recipient].balance.add(value);
 
@@ -227,9 +219,9 @@ contract StashBloxBase is ERC173 {
         require(!_isLockedMove(from, to, id, value), "Locked");
 
         fees = _transactionFees(from, id, value);
-        require(feesBalance >= fees, "ERC1155: insufficient ETH for transfer fees");
+        require(feesBalance >= fees, "Insufficient ETH for fees");
 
-        _tokens[id].holders[from].balance = _tokens[id].holders[from].balance.sub(value, "ERC1155: insufficient balance for transfer");
+        _tokens[id].holders[from].balance = _tokens[id].holders[from].balance.sub(value, "Insufficient balance");
 
         _addToBalance(to, id, value);
 
@@ -259,8 +251,8 @@ contract StashBloxBase is ERC173 {
                           uint256 minHoldingForCallback,
                           bool isPrivate)
     internal {
-        require(_tokens[id].supply == 0, "StashBlox: Token ID already used");
-        require(supply > 0, "StashBlox: Supply must be greater than 0");
+        require(_tokens[id].supply == 0, "Token ID already used");
+        require(supply > 0, "Supply must be greater than 0");
 
         _tokens[id].supply = supply;
         _tokens[id].decimals = decimals;
@@ -277,19 +269,18 @@ contract StashBloxBase is ERC173 {
 
     function _setMetadataHash(uint256 id, uint256 hash) internal {
          _tokens[id].metadataHash = hash;
-         emit MetadataHashUpdated(id, hash);
+         emit TokenUpdated(id, hash);
     }
 
     function _setTransactionFees(uint256 id, uint256[3] memory newFees) internal {
         _tokens[id].lumpSumTransactionFees = newFees[0];
         _tokens[id].valueTransactionFees = newFees[1];
         _tokens[id].storageCostHistory.push([block.timestamp, newFees[2]]);
-
-        emit UpdateTransactionFees(msg.sender, id, newFees);
+        emit TokenUpdated(id, _tokens[id].metadataHash);
     }
 
     function _setMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) internal {
-        require(newMinHoldingForCallback < 10000, "StashBlox: minimum holding must be lower than 10000 (100%)");
+        require(newMinHoldingForCallback < 10000, "Min. holding must be < 10000");
         _tokens[id].minHoldingForCallback = newMinHoldingForCallback;
     }
 
@@ -298,14 +289,14 @@ contract StashBloxBase is ERC173 {
                                 uint256[] memory newFeesRecipientsPercentage)
     internal {
         require(newFeesRecipients.length > 0 &&
-                newFeesRecipients.length == newFeesRecipientsPercentage.length, "StashBlox: Invalid arguments");
+                newFeesRecipients.length == newFeesRecipientsPercentage.length, "Invalid arguments");
 
         uint256 totalPercentage = 0;
         for (uint256 i = 0; i < newFeesRecipientsPercentage.length; ++i) {
             totalPercentage += newFeesRecipientsPercentage[i];
-            require(newFeesRecipientsPercentage[i] > 0, "StashBlox: feesRecipientsPercentage should be greater than 0");
+            require(newFeesRecipientsPercentage[i] > 0, "Percentages must > 0");
         }
-        require(totalPercentage == 10000, "StashBlox: Total of feesRecipientsPercentage must be equal to 10000");
+        require(totalPercentage == 10000, "Percentage sum must == 10000");
 
         _tokens[id].feesRecipients = newFeesRecipients;
         _tokens[id].feesRecipientsPercentage = newFeesRecipientsPercentage;
