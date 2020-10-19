@@ -266,45 +266,27 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
         template.isPrivate = isPrivate;
     }
 
-    /**
-     * @dev Function to update the metadata hash of a token.
-     * @param id The token ID
-     * @param metadataHash The new metadata hash
-     */
-    function updateMetadataHash(uint256 id, uint256 metadataHash) external onlyMaintener(id) {
-      _setMetadataHash(id, metadataHash);
+
+    function updateToken(uint256 id,
+                         uint256 metadataHash,
+                         uint256[3] memory transactionFees,
+                         address[] memory feesRecipients,
+                         uint256[] memory feesRecipientsPercentage,
+                         uint256 minHoldingForCallback,
+                         bool isPrivate) external onlyMaintener(id) {
+        require(_tokens[id].supply > 0, "Unknown token");
+
+        _updateToken(id,
+                     metadataHash,
+                     transactionFees,
+                     feesRecipients,
+                     feesRecipientsPercentage,
+                     minHoldingForCallback,
+                     isPrivate);
+
+        emit TokenUpdated(id, metadataHash);
     }
 
-    /**
-     * @dev Function to update transaction fees.
-     * @param id The token ID
-     * @param newFees The new transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
-     */
-    function updateTransactionFees(uint256 id, uint256[3] memory newFees) external onlyMaintener(id) {
-        _setTransactionFees(id, newFees);
-    }
-
-    /**
-     * @dev Function to update the minimum holding to propose a callback.
-     * @param id The token ID
-     * @param newFeesRecipients list of addresses receiving transfer fees
-     * @param newFeesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
-     */
-    function updateFeesRecipients(uint256 id,
-                                  address[] memory newFeesRecipients,
-                                  uint256[] memory newFeesRecipientsPercentage)
-    external onlyMaintener(id) {
-      _setFeesRecipients(id, newFeesRecipients, newFeesRecipientsPercentage);
-    }
-
-    /**
-     * @dev Function to update the minimum holding to propose a callback.
-     * @param id The token ID
-     * @param newMinHoldingForCallback The new minimum holding
-     */
-    function updateMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) external onlyMaintener(id) {
-        _setMinHoldingForCallback(id, newMinHoldingForCallback);
-    }
 
     /**
      * @dev Function to update the legal authority address.

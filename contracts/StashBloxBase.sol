@@ -257,50 +257,46 @@ contract StashBloxBase is ERC173 {
         _tokens[id].supply = supply;
         _tokens[id].decimals = decimals;
         _tokens[id].holders[msg.sender].isMaintener = true;
-        _tokens[id].isPrivate = isPrivate;
         _tokens[id].holders[recipient].isApproved = true;
 
+        _updateToken(id,
+                     metadataHash,
+                     transactionFees,
+                     feesRecipients,
+                     feesRecipientsPercentage,
+                     minHoldingForCallback,
+                     isPrivate);
+
         _addToBalance(recipient, id, supply);
-        _setMetadataHash(id, metadataHash);
-        _setTransactionFees(id, transactionFees);
-        _setFeesRecipients(id, feesRecipients, feesRecipientsPercentage);
-        _setMinHoldingForCallback(id, minHoldingForCallback);
     }
 
-    function _setMetadataHash(uint256 id, uint256 hash) internal {
-         _tokens[id].metadataHash = hash;
-         emit TokenUpdated(id, hash);
-    }
-
-    function _setTransactionFees(uint256 id, uint256[3] memory newFees) internal {
-        _tokens[id].lumpSumTransactionFees = newFees[0];
-        _tokens[id].valueTransactionFees = newFees[1];
-        _tokens[id].storageCostHistory.push([block.timestamp, newFees[2]]);
-        emit TokenUpdated(id, _tokens[id].metadataHash);
-    }
-
-    function _setMinHoldingForCallback(uint256 id, uint256 newMinHoldingForCallback) internal {
-        require(newMinHoldingForCallback < 10000, "Min. holding must be < 10000");
-        _tokens[id].minHoldingForCallback = newMinHoldingForCallback;
-    }
-
-    function _setFeesRecipients(uint256 id,
-                                address[] memory newFeesRecipients,
-                                uint256[] memory newFeesRecipientsPercentage)
+    function _updateToken(uint256 id,
+                          uint256 metadataHash,
+                          uint256[3] memory transactionFees,
+                          address[] memory feesRecipients,
+                          uint256[] memory feesRecipientsPercentage,
+                          uint256 minHoldingForCallback,
+                          bool isPrivate)
     internal {
-        require(newFeesRecipients.length > 0 &&
-                newFeesRecipients.length == newFeesRecipientsPercentage.length, "Invalid arguments");
+        require(feesRecipients.length > 0 && feesRecipients.length == feesRecipients.length, "Invalid arguments");
 
         uint256 totalPercentage = 0;
-        for (uint256 i = 0; i < newFeesRecipientsPercentage.length; ++i) {
-            totalPercentage += newFeesRecipientsPercentage[i];
-            require(newFeesRecipientsPercentage[i] > 0, "Percentages must > 0");
-        }
+        for (uint256 i = 0; i < feesRecipientsPercentage.length; ++i)
+            totalPercentage += feesRecipientsPercentage[i];
         require(totalPercentage == 10000, "Percentage sum must == 10000");
 
-        _tokens[id].feesRecipients = newFeesRecipients;
-        _tokens[id].feesRecipientsPercentage = newFeesRecipientsPercentage;
+        require(minHoldingForCallback < 10000, "Min. holding must be < 10000");
+
+        _tokens[id].metadataHash = metadataHash;
+        _tokens[id].lumpSumTransactionFees = transactionFees[0];
+        _tokens[id].valueTransactionFees = transactionFees[1];
+        _tokens[id].storageCostHistory.push([block.timestamp, transactionFees[2]]);
+        _tokens[id].feesRecipients = feesRecipients;
+        _tokens[id].feesRecipientsPercentage = feesRecipientsPercentage;
+        _tokens[id].minHoldingForCallback = minHoldingForCallback;
+        _tokens[id].isPrivate = isPrivate;
     }
+
 
     function _isWhitelistedOperator(address account, address operator) internal view returns (bool) {
         for (uint256 i = 0; i < _config.proxyRegistryAddresses.length; ++i) {
