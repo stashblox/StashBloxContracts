@@ -95,7 +95,7 @@ contract StashBloxBase is ERC173 {
 
 
     /***************************************
-    MODIFIERS
+    PERMISSIONS
     ****************************************/
 
     function _isTokenizer(address tokenizer) internal view returns (bool) {
@@ -251,8 +251,7 @@ contract StashBloxBase is ERC173 {
                           uint256 minHoldingForCallback,
                           bool isPrivate)
     internal {
-        require(_tokens[id].supply == 0, "Token ID already used");
-        require(supply > 0, "Supply must be greater than 0");
+        require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 
         _tokens[id].supply = supply;
         _tokens[id].decimals = decimals;
@@ -278,14 +277,14 @@ contract StashBloxBase is ERC173 {
                           uint256 minHoldingForCallback,
                           bool isPrivate)
     internal {
-        require(feesRecipients.length > 0 && feesRecipients.length == feesRecipients.length, "Invalid arguments");
-
         uint256 totalPercentage = 0;
         for (uint256 i = 0; i < feesRecipientsPercentage.length; ++i)
             totalPercentage += feesRecipientsPercentage[i];
-        require(totalPercentage == 10000, "Percentage sum must == 10000");
 
-        require(minHoldingForCallback < 10000, "Min. holding must be < 10000");
+        require(feesRecipients.length > 0 && feesRecipients.length == feesRecipients.length &&
+                totalPercentage == 10000 &&
+                minHoldingForCallback < 10000,
+                "Invalid arguments");
 
         _tokens[id].metadataHash = metadataHash;
         _tokens[id].lumpSumTransactionFees = transactionFees[0];
@@ -321,6 +320,5 @@ contract StashBloxBase is ERC173 {
         }
         return callbackAmount.mul(price);
     }
-
 
 }

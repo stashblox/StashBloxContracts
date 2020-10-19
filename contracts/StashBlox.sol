@@ -206,8 +206,8 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                           uint256[] memory ids,
                           uint256[] memory metadataHashes)
     external onlyTokenizer {
-        require(_templates[templateID].supply > 0, "Unknown token template");
-        require(ids.length == metadataHashes.length, "Invalid arguments");
+        require(_templates[templateID].supply > 0 &&
+                ids.length == metadataHashes.length, "Invalid arguments");
 
         for (uint256 i = 0; i < ids.length; ++i) {
             _createToken(_templates[templateID].holderList[0],
@@ -334,10 +334,9 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
      * @param callees list of calless. Empty list means all holders.
      */
     function proposeCallback(uint256 callbackId, uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable {
-        require(_callbacks[callbackId].tokenId == 0, "callbackId already used");
-        require(_tokens[tokenId].supply > 0, "Unknown token");
-        require(msg.value >= _callbackPrice(tokenId, price, callees), "Insufficient ETH");
-        require(callees.length <= _config.callbackAutoExecuteMaxAddresses, "Too much callees");
+        require(_callbacks[callbackId].tokenId == 0 && _tokens[tokenId].supply > 0 &&
+                msg.value >= _callbackPrice(tokenId, price, callees) &&
+                callees.length <= _config.callbackAutoExecuteMaxAddresses, "Invalid arguments or value");
 
         uint256 minHolding = (_tokens[tokenId].supply.mul(_tokens[tokenId].minHoldingForCallback)).div(10000);
 
@@ -368,14 +367,12 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
     function refuseCallback(uint256 callbackId) external {
         Callback memory callback = _callbacks[callbackId];
 
-        require(callback.tokenId != 0, "Callback not found");
-
-        require(_isMaintener(callback.tokenId, msg.sender) ||
-                _isLegalAuthority(callback.tokenId, msg.sender) ||
-                msg.sender == callback.caller, "Insufficient permission");
-
-        require(callback.refused == false, "Callback already refused");
-        require(callback.accepted == false, "Callback already accepted");
+        require(callback.tokenId != 0 &&
+                callback.refused == false &&
+                callback.accepted == false &&
+                (_isMaintener(callback.tokenId, msg.sender) ||
+                 _isLegalAuthority(callback.tokenId, msg.sender) ||
+                  msg.sender == callback.caller), "Invalid arguments or permission");
 
         _callbacks[callbackId].refused = true;
         _users[callback.caller].ETHBalance += callback.escrowedAmount;
@@ -390,12 +387,10 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
     function approveCallback(uint256 callbackId) external {
         Callback memory callback = _callbacks[callbackId];
 
-        require(callback.tokenId != 0, "Callback not found");
-
-        require(_isLegalAuthority(callback.tokenId, msg.sender), "Insufficient permission");
-
-        require(callback.refused == false, "Callback already refused");
-        require(callback.accepted == false, "Callback already accepted");
+        require(callback.tokenId != 0 &&
+                _isLegalAuthority(callback.tokenId, msg.sender) &&
+                callback.refused == false &&
+                callback.accepted == false, "Invalid arguments or permission");
 
         _callbacks[callbackId].approvedByLegal = true;
 
@@ -409,14 +404,13 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
     function acceptCallback(uint256 callbackId) external {
         Callback memory callback = _callbacks[callbackId];
 
-        require(callback.tokenId != 0, "Callback not found");
-
-        require(_isMaintener(callback.tokenId, msg.sender), "Insufficient permission.");
-        require(!callback.needLegalApproval || callback.approvedByLegal, "Need legal approval");
-
-        require(callback.refused == false, "Callback already refused");
-        require(callback.accepted == false, "Callback already accepted");
-        require(callback.escrowedAmount >= _callbackPrice(callback.tokenId, callback.price, callback.callees), "Insufficient escrowed amount");
+        require(callback.tokenId != 0 &&
+                _isMaintener(callback.tokenId, msg.sender) &&
+                (!callback.needLegalApproval || callback.approvedByLegal) &&
+                callback.refused == false &&
+                callback.accepted == false &&
+                callback.escrowedAmount >= _callbackPrice(callback.tokenId, callback.price, callback.callees),
+                "Insufficient callback, permission or escrowed amount");
 
         _callbacks[callbackId].accepted = true;
 
@@ -440,9 +434,9 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
     function executeCallback(uint256 callbackId, uint256 maxCall) external {
         Callback memory callback = _callbacks[callbackId];
 
-        require(callback.tokenId != 0, "Callback not found");
-        require(callback.accepted == true, "Callback not accepted");
-        require(callback.completed == false, "Callback already completed");
+        require(callback.tokenId != 0 &&
+                callback.accepted == true &&
+                callback.completed == false, "Invalid callback");
 
         _executeCallback(callbackId, maxCall);
 
@@ -534,6 +528,14 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
         return _strConcat(_config.baseURI, _toHexString(id));
     }
 
+    /**
+     * @dev Function to update the operator whitelist
+     * @param proxyAddresses List of addresses
+     */
+    function setProxyRegistryAddress(address[10] memory proxyAddresses) external onlyOwner {
+        _config.proxyRegistryAddresses = proxyAddresses;
+    }
+
 
     // /**
     //  * @dev Function to get token supply
@@ -544,51 +546,5 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
     //     return _supplies[id];
     // }
 
-    // /**
-    //  * @dev Function to get the list of token hold by an address
-    //  * @param account holder address
-    //  * @return result space separated listof IDs
-    //  */
-    // function tokensByAddress(address account) public view returns (string memory result) {
-    //     for (uint i = 0; i < _tokensByAddress[account].length; i++) {
-    //         uint256 id = _tokensByAddress[account][i];
-    //         if (_tokens[id].balances[account] > 0) {
-    //             if (bytes(result).length > 0) {
-    //                 result = _strConcat(result, " ");
-    //                 result = _strConcat(result, _toHexString(id));
-    //             } else {
-    //                 result = _toHexString(id);
-    //             }
-    //         }
-    //     }
-    //     return result;
-    // }
-    //
-    // /**
-    //  * @dev Function to get the list of token hold by an address
-    //  * @param id Token ID
-    //  * @return result space separated list of addresses
-    //  */
-    // function addressesByToken(uint256 id) public view returns (string memory result) {
-    //     for (uint i = 0; i < _addressesByToken[id].length; i++) {
-    //         address account = _addressesByToken[id][i];
-    //         if (_tokens[id].balances[account] > 0) {
-    //             if (bytes(result).length > 0) {
-    //                 result = _strConcat(result, " ");
-    //                 result = _strConcat(result, _toHexString(uint256(account)));
-    //             } else {
-    //                 result = _toHexString(uint256(account));
-    //             }
-    //         }
-    //     }
-    //     return result;
-    // }
 
-    /**
-     * @dev Function to update the operator whitelist
-     * @param proxyAddresses List of addresses
-     */
-    function setProxyRegistryAddress(address[10] memory proxyAddresses) external onlyOwner {
-        _config.proxyRegistryAddresses = proxyAddresses;
-    }
 }
