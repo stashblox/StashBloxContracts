@@ -289,6 +289,15 @@ contract StashBlox is ERC1155 {
         _setMinHoldingForCallback(id, newMinHoldingForCallback);
     }
 
+    /**
+     * @dev Function to update the legal authority address.
+     * @param id The token ID
+     * @param legalAuthority legal authority address
+     */
+    function updateLegalAuthority(uint256 id, address legalAuthority) external onlyMaintener(id) {
+        _legalAuthorityAddresses[id] = legalAuthority;
+    }
+
 
     /***************************************
     TRANSFER PRICE

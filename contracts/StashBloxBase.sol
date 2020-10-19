@@ -99,6 +99,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
 
     mapping (uint256 => mapping(address => bool)) public _approvedHolders;
 
+
     /***************************************
     EVENTS
     ****************************************/
@@ -148,6 +149,7 @@ contract StashBloxBase is ERC173, ERC1155Metadata {
     /***************************************
     LOCKS FUNCTIONS
     ****************************************/
+
 
     function _lockToken(uint256 id, uint256 documentHash) internal {
         _tokenLocks[id] = true;
