@@ -197,75 +197,28 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
     }
 
     /**
-     * @dev Function to mint tokens.
-     * @param templateID Identifier of the template
+     * @dev Function to mint tokens in batch.
+     * @param id Identifier of the template
      * @param ids list of IDs of the tokens to be minted
      * @param metadataHashes list of metadata file hashes
      */
-    function createTokens(uint256 templateID,
-                          uint256[] memory ids,
-                          uint256[] memory metadataHashes)
+    function cloneToken(uint256 id,
+                        uint256[] memory ids,
+                        uint256[] memory metadataHashes)
     external onlyTokenizer {
-        require(_templates[templateID].supply > 0 &&
+        require(_tokens[id].supply > 0 &&
                 ids.length == metadataHashes.length, "Invalid arguments");
 
         for (uint256 i = 0; i < ids.length; ++i) {
-            _createToken(_templates[templateID].holderList[0],
-                         ids[i],
-                         _templates[templateID].supply,
-                         _templates[templateID].decimals,
-                         metadataHashes[i],
-                         [
-                           _templates[templateID].lumpSumTransactionFees,
-                           _templates[templateID].valueTransactionFees,
-                           _templates[templateID].storageCostHistory[0][1]
-                         ],
-                         _templates[templateID].feesRecipients,
-                         _templates[templateID].feesRecipientsPercentage,
-                         _templates[templateID].minHoldingForCallback,
-                         _templates[templateID].isPrivate);
-
+            _cloneToken(id, ids[i], metadataHashes[i]);
+            
             emit TransferSingle(msg.sender,
                                 address(0),
-                                _templates[templateID].holderList[0],
+                                _tokens[id].holderList[0],
                                 ids[i],
-                                _templates[templateID].supply);
+                                _tokens[id].supply);
         }
     }
-
-    /**
-     * @dev Function to create or update a token template for batch creation.
-     * @param templateID Identifier of the template
-     * @param recipient The address that will own the minted tokens
-     * @param supply Amount of the token to be minted
-     * @param transactionFees transaction fees
-     * @param feesRecipients list of addresses receiving transfer fees
-     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
-     * @param minHoldingForCallback minimum holding to propose a callback
-     */
-    function setTokenTemplate(uint256 templateID,
-                              address recipient,
-                              uint256 supply,
-                              uint256 decimals,
-                              uint256[3] memory transactionFees,
-                              address[] memory feesRecipients,
-                              uint256[] memory feesRecipientsPercentage,
-                              uint256 minHoldingForCallback,
-                              bool isPrivate)
-    external onlyTokenizer {
-        Token storage template = _templates[templateID];
-        template.holderList.push(recipient);
-        template.supply = supply;
-        template.decimals = decimals;
-        template.lumpSumTransactionFees = transactionFees[0];
-        template.valueTransactionFees = transactionFees[1];
-        template.storageCostHistory.push([0, transactionFees[2]]);
-        template.feesRecipients = feesRecipients;
-        template.feesRecipientsPercentage = feesRecipientsPercentage;
-        template.minHoldingForCallback = minHoldingForCallback;
-        template.isPrivate = isPrivate;
-    }
-
 
     function updateToken(uint256 id,
                          uint256 metadataHash,
@@ -372,7 +325,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                 callback.accepted == false &&
                 (_isMaintener(callback.tokenId, msg.sender) ||
                  _isLegalAuthority(callback.tokenId, msg.sender) ||
-                  msg.sender == callback.caller), "Invalid arguments or permission");
+                 msg.sender == callback.caller), "Invalid arguments or permission");
 
         _callbacks[callbackId].refused = true;
         _users[callback.caller].ETHBalance += callback.escrowedAmount;
@@ -423,7 +376,6 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
         } else {
             _lockToken(callback.tokenId, callback.documentHash);
         }
-
     }
 
     /**

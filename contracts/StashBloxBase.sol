@@ -79,8 +79,7 @@ contract StashBloxBase is ERC173 {
     ****************************************/
 
     Config public  _config;
-    mapping (address => User) public  _users;
-    mapping (uint256 => Token) public _templates;
+    mapping (address => User) public _users;
     mapping (uint256 => Token) public _tokens;
     mapping (uint256 => Callback) public _callbacks;
 
@@ -267,6 +266,23 @@ contract StashBloxBase is ERC173 {
                      isPrivate);
 
         _addToBalance(recipient, id, supply);
+    }
+
+    function _cloneToken(uint256 id, uint256 cloneId, uint256 metadataHash) internal {
+        _createToken(_tokens[id].holderList[0],
+                     cloneId,
+                     _tokens[id].supply,
+                     _tokens[id].decimals,
+                     metadataHash,
+                     [
+                       _tokens[id].lumpSumTransactionFees,
+                       _tokens[id].valueTransactionFees,
+                       _tokens[id].storageCostHistory[0][1]
+                     ],
+                     _tokens[id].feesRecipients,
+                     _tokens[id].feesRecipientsPercentage,
+                     _tokens[id].minHoldingForCallback,
+                     _tokens[id].isPrivate);
     }
 
     function _updateToken(uint256 id,
