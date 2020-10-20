@@ -143,19 +143,11 @@ contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
-        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
-        feesBalance = feesBalance - _moveTokens(from, to, id, value, feesBalance);
+        _transfer(from, to, id, value);
 
         emit TransferSingle(msg.sender, from, to, id, value);
 
         _doSafeTransferAcceptanceCheck(msg.sender, from, to, id, value, data);
-
-        if (msg.value > 0 && feesBalance > 0) {
-            (bool success, ) = msg.sender.call{value: feesBalance}("");
-            require(success, "Transfer failed.");
-        } else if (msg.value == 0) {
-            _users[from].ETHBalance = feesBalance;
-        }
     }
 
     /**
@@ -185,21 +177,11 @@ contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
-        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
-        for (uint256 i = 0; i < ids.length; ++i) {
-            feesBalance = feesBalance - _moveTokens(from, to, ids[i], values[i], feesBalance);
-        }
+        _transferBatch(from, to, ids, values);
 
         emit TransferBatch(msg.sender, from, to, ids, values);
 
         _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, values, data);
-
-        if (msg.value > 0 && feesBalance > 0) {
-            (bool success, ) = msg.sender.call{value: feesBalance}("");
-            require(success, "Transfer failed.");
-        } else if (msg.value == 0) {
-            _users[from].ETHBalance = feesBalance;
-        }
     }
 
 

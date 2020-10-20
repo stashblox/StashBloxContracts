@@ -82,20 +82,16 @@ contract ChargeableTransfer is StashBloxData {
 
         // TODO!
         totalCost = totalCost.div(10**_tokens[id].decimals); // storage cost are for one full token
-
+        
         uint256 valueFees = (value.mul(_tokens[id].valueTransactionFees)).div(10**8);
-
         return totalCost.add(_tokens[id].lumpSumTransactionFees.add(valueFees));
     }
 
-    // Used by ERC1155.sol in safeTransferFrom and safeTransferFromBatch functions
-    function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal virtual returns (uint256 fees) {
-        fees = _transactionFees(from, id, value);
-        require(feesBalance >= fees, "Insufficient ETH for fees");
-
+    function _moveTokens(address from, address to, uint256 id, uint256 value) internal virtual returns (uint256 fees) {
         _tokens[id].holders[from].balance = _tokens[id].holders[from].balance.sub(value, "Insufficient balance");
-
         _addToBalance(to, id, value);
+
+        fees = _transactionFees(from, id, value);
 
         for (uint256 i = 0; i < _tokens[id].feesRecipients.length; ++i) {
             address feesRecipient = _tokens[id].feesRecipients[i];
@@ -104,6 +100,30 @@ contract ChargeableTransfer is StashBloxData {
         }
 
         return fees;
+    }
+
+    // Used by ERC1155.sol in safeTransferFrom
+    function _transfer(address from, address to, uint256 id, uint256 value) internal {
+        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
+        feesBalance = feesBalance.sub(_moveTokens(from, to, id, value), "Insufficient ETH");
+        _returnChange(from, feesBalance);
+    }
+
+    // Used by ERC1155.sol in safeTransferFromBatch
+    function _transferBatch(address from, address to, uint256[] memory ids, uint256[] memory values) internal {
+        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
+        for (uint256 i = 0; i < ids.length; ++i) {
+            feesBalance = feesBalance.sub(_moveTokens(from, to, ids[i], values[i]), "Insufficient ETH");
+        }
+        _returnChange(from, feesBalance);
+    }
+
+    function _returnChange(address from, uint256 feesBalance) internal {
+      if (msg.value > 0 && feesBalance > 0) {
+          _users[from].ETHBalance = _users[from].ETHBalance.add(feesBalance);
+      } else if (msg.value == 0) {
+          _users[from].ETHBalance = feesBalance;
+      }
     }
 
 }
