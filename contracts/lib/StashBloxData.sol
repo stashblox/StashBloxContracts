@@ -72,13 +72,5 @@ contract StashBloxData {
     mapping (uint256 => Token) public _tokens;
     mapping (uint256 => Callback) public _callbacks;
 
-    /***************************************
-    EVENTS
-    ****************************************/
-
-
-    event CallbackUpdated(uint256 indexed _CallbackId);
-    event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
-
 
 }

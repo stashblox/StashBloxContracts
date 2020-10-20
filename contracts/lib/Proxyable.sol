@@ -13,6 +13,12 @@ contract ProxyRegistry{
 
 contract Proxyable is StashBloxData, Ownable {
 
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
+
     /**
      * @dev Function to update the operator whitelist
      * @param proxyAddresses List of addresses
@@ -20,6 +26,12 @@ contract Proxyable is StashBloxData, Ownable {
     function setProxyRegistryAddress(address[10] memory proxyAddresses) external onlyOwner {
         _config.proxyRegistryAddresses = proxyAddresses;
     }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
 
     function _isWhitelistedOperator(address account, address operator) internal view returns (bool) {
         for (uint256 i = 0; i < _config.proxyRegistryAddresses.length; ++i) {

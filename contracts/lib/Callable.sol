@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 pragma solidity ^0.7.1;
 
 import './Lockable.sol';
@@ -9,9 +8,18 @@ contract Callable is Lockable {
     using SafeMath for uint256;
 
 
-    /***************************************
-    CALLBACKS
-    ****************************************/
+    /****************************
+    EVENTS
+    *****************************/
+
+
+    event CallbackUpdated(uint256 indexed _CallbackId);
+
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
 
     /**
      * @dev Maximum addresses to execute automatically the callback when is accepted.
@@ -139,6 +147,11 @@ contract Callable is Lockable {
             _unlockToken(callback.tokenId, callback.documentHash);
         }
     }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
 
 
     function _executeCallback(uint256 callbackId, uint256 maxCall) internal {

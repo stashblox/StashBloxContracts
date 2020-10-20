@@ -22,12 +22,11 @@ contract Ownable is IERC173 {
         _transferOwnership(msg.sender);
     }
 
-    /**
-     * @dev Returns the address of the current owner.
-     */
-    function owner() public view override returns (address) {
-        return _owner;
-    }
+
+    /****************************
+    MODIFIERS
+    *****************************/
+
 
     /**
      * @dev Throws if called by any account other than the owner.
@@ -37,6 +36,19 @@ contract Ownable is IERC173 {
         _;
     }
 
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view override returns (address) {
+        return _owner;
+    }
+
     /**
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
      * Can only be called by the current owner.
@@ -44,6 +56,12 @@ contract Ownable is IERC173 {
     function transferOwnership(address newOwner) public override onlyOwner {
         _transferOwnership(newOwner);
     }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
 
     /**
      * @dev Transfers ownership of the contract to a new account (`newOwner`).

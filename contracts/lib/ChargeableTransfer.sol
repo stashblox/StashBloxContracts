@@ -1,15 +1,33 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
-
 import './StashBloxData.sol';
-
 
 contract ChargeableTransfer is StashBloxData {
 
     using SafeMath for uint256;
+
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
+
+    /**
+     * @dev Function to get the transaction price to transfer tokens.
+     * @param account the address from where to transfer the tokens
+     * @param id The token ID
+     * @param value The amount to transfer
+     */
+    function transactionFees(address account, uint256 id, uint256 value) public view returns (uint256) {
+        return _transactionFees(account, id, value);
+    }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
 
 
     // update balance, lists of holders and token average age of the recipient
@@ -86,17 +104,6 @@ contract ChargeableTransfer is StashBloxData {
         }
 
         return fees;
-    }
-
-
-    /**
-     * @dev Function to get the transaction price to transfer tokens.
-     * @param account the address from where to transfer the tokens
-     * @param id The token ID
-     * @param value The amount to transfer
-     */
-    function transactionFees(address account, uint256 id, uint256 value) public view returns (uint256) {
-        return _transactionFees(account, id, value);
     }
 
 }

@@ -11,19 +11,29 @@ contract Maintenable is Mintable {
     using SafeMath for uint256;
 
 
-    /***************************************
-    PERMISSIONS
-    ****************************************/
+    /****************************
+    EVENTS
+    *****************************/
 
 
-    function _isMaintener(uint256 id, address maintener) internal view returns (bool) {
-        return _tokens[id].holders[maintener].isMaintener || _isOwner();
-    }
+    event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
+
+
+    /****************************
+    MODIFIERS
+    *****************************/
+
 
     modifier onlyMaintener(uint256 id) {
         require(_isMaintener(id, msg.sender), "Insufficient permission");
         _;
     }
+
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
 
     /**
      * @dev Function to authorize an address to maintain a token.
@@ -52,12 +62,17 @@ contract Maintenable is Mintable {
         return _isMaintener(id, maintener);
     }
 
-
-    /***************************************
-    TOKENS CREATION AND MAINTENANCE FUNCTIONS
-    ****************************************/
-
-
+    /**
+     * @dev Function to update a token with the given ID.
+     * @param id ID of the token to be updated
+     * @param metadataHash Metadata file hash
+     * @param transactionFees transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
+     * @param feesRecipients list of addresses receiving transfer fees
+     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
+     * @param minHoldingForCallback minimum holding to propose a callback
+     * @param isPrivate true if holder need approval
+     * @param legalAuthority address of the legal authority
+     */
     function updateToken(uint256 id,
                          uint256 metadataHash,
                          uint256[3] memory transactionFees,
@@ -78,6 +93,16 @@ contract Maintenable is Mintable {
                   legalAuthority);
 
         emit TokenUpdated(id, metadataHash);
+    }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
+
+    function _isMaintener(uint256 id, address maintener) internal view returns (bool) {
+        return _tokens[id].holders[maintener].isMaintener || _isOwner();
     }
 
 }

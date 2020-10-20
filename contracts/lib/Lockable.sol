@@ -1,32 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 pragma solidity ^0.7.1;
 
 import './Maintenable.sol';
 
 contract Lockable is Maintenable {
 
-    function _lockToken(uint256 id, uint256 documentHash) internal {
-        _tokens[id].locked = true;
-        emit TokenUpdated(id, documentHash);
-    }
 
-    function _unlockToken(uint256 id, uint256 documentHash) internal {
-        _tokens[id].locked = false;
-        emit TokenUpdated(id, documentHash);
-    }
-
-    function _isLockedToken(uint256 id) internal view returns (bool) {
-        return _tokens[id].locked;
-    }
-
-    function _isLockedAddress(address addr) internal view returns (bool) {
-        return _users[addr].isLocked;
-    }
-
-    function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
-        return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
-    }
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
 
 
     /**
@@ -78,6 +60,34 @@ contract Lockable is Maintenable {
     }
 
 
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
+
+    function _lockToken(uint256 id, uint256 documentHash) internal {
+        _tokens[id].locked = true;
+        emit TokenUpdated(id, documentHash);
+    }
+
+    function _unlockToken(uint256 id, uint256 documentHash) internal {
+        _tokens[id].locked = false;
+        emit TokenUpdated(id, documentHash);
+    }
+
+    function _isLockedToken(uint256 id) internal view returns (bool) {
+        return _tokens[id].locked;
+    }
+
+    function _isLockedAddress(address addr) internal view returns (bool) {
+        return _users[addr].isLocked;
+    }
+
+    function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
+        return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
+    }
+
+    // override ChargeableTransfer._moveTokens
     function _moveTokens(address from, address to, uint256 id, uint256 value, uint256 feesBalance) internal override returns (uint256 fees) {
         require(!_isLockedMove(from, to, id, value), "Locked");
         return super._moveTokens(from, to, id, value, feesBalance);

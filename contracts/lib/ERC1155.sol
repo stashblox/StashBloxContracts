@@ -29,6 +29,12 @@ contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
     // Mapping from account to operator approvals
     mapping (address => mapping(address => bool)) private _operatorApprovals;
 
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
+
     /**
      * @notice Query if a contract implements an interface
      * @param _interfaceID  The interface identifier, as specified in ERC-165
@@ -195,6 +201,12 @@ contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
             _users[from].ETHBalance = feesBalance;
         }
     }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
 
     function _doSafeTransferAcceptanceCheck(
         address operator,

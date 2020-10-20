@@ -8,21 +8,23 @@ import "./ERC1155.sol";
 contract Mintable is ERC1155 {
 
     using SafeMath for uint256;
+    
 
+    /****************************
+    MODIFIERS
+    *****************************/
 
-    /***************************************
-    PERMISSIONS
-    ****************************************/
-
-
-    function _isTokenizer(address tokenizer) internal view returns (bool) {
-        return _users[tokenizer].isTokenizer || _isOwner();
-    }
 
     modifier onlyTokenizer() {
         require(_isTokenizer(msg.sender), "Insufficient permission");
         _;
     }
+
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
 
     /**
      * @dev Function to authorize an address to create a token.
@@ -48,10 +50,78 @@ contract Mintable is ERC1155 {
         return _isTokenizer(tokenizer);
     }
 
+    /**
+     * @dev Function to mint an amount of a token with the given ID.
+     * @param recipient The address that will own the minted tokens
+     * @param id ID of the token to be minted
+     * @param supply Amount of the token to be minted
+     * @param metadataHash Metadata file hash
+     * @param transactionFees transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
+     * @param feesRecipients list of addresses receiving transfer fees
+     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
+     * @param minHoldingForCallback minimum holding to propose a callback
+     * @param isPrivate true if holder need approval
+     * @param legalAuthority address of the legal authority
+     */
+    function createToken(address recipient,
+                         uint256 id,
+                         uint256 supply,
+                         uint256 decimals,
+                         uint256 metadataHash,
+                         uint256[3] memory transactionFees,
+                         address[] memory feesRecipients,
+                         uint256[] memory feesRecipientsPercentage,
+                         uint256 minHoldingForCallback,
+                         bool isPrivate,
+                         address legalAuthority)
+    external onlyTokenizer {
+        _createToken(recipient,
+                     id,
+                     supply,
+                     decimals,
+                     metadataHash,
+                     transactionFees,
+                     feesRecipients,
+                     feesRecipientsPercentage,
+                     minHoldingForCallback,
+                     isPrivate,
+                     legalAuthority);
+        emit TransferSingle(msg.sender, address(0), recipient, id, supply);
+    }
 
-    /***************************************
-    TOKENS CREATION AND MAINTENANCE FUNCTIONS
-    ****************************************/
+    /**
+     * @dev Function to mint tokens in batch.
+     * @param id Identifier of the template
+     * @param ids list of IDs of the tokens to be minted
+     * @param metadataHashes list of metadata file hashes
+     */
+    function cloneToken(uint256 id,
+                        uint256[] memory ids,
+                        uint256[] memory metadataHashes)
+    external onlyTokenizer {
+        require(_tokens[id].supply > 0 &&
+                ids.length == metadataHashes.length, "Invalid arguments");
+
+        for (uint256 i = 0; i < ids.length; ++i) {
+            _cloneToken(id, ids[i], metadataHashes[i]);
+
+            emit TransferSingle(msg.sender,
+                                address(0),
+                                _tokens[id].holderList[0],
+                                ids[i],
+                                _tokens[id].supply);
+        }
+    }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
+
+    function _isTokenizer(address tokenizer) internal view returns (bool) {
+        return _users[tokenizer].isTokenizer || _isOwner();
+    }
 
     function _setToken(uint256 id,
                        uint256 metadataHash,
@@ -130,68 +200,6 @@ contract Mintable is ERC1155 {
                      _tokens[id].minHoldingForCallback,
                      _tokens[id].isPrivate,
                      _tokens[id].legalAuthority);
-    }
-
-
-    /**
-     * @dev Function to mint an amount of a token with the given ID.
-     * @param recipient The address that will own the minted tokens
-     * @param id ID of the token to be minted
-     * @param supply Amount of the token to be minted
-     * @param metadataHash Metadata file hash
-     * @param transactionFees transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
-     * @param feesRecipients list of addresses receiving transfer fees
-     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
-     * @param minHoldingForCallback minimum holding to propose a callback
-     */
-    function createToken(address recipient,
-                         uint256 id,
-                         uint256 supply,
-                         uint256 decimals,
-                         uint256 metadataHash,
-                         uint256[3] memory transactionFees,
-                         address[] memory feesRecipients,
-                         uint256[] memory feesRecipientsPercentage,
-                         uint256 minHoldingForCallback,
-                         bool isPrivate,
-                         address legalAuthority)
-    external onlyTokenizer {
-        _createToken(recipient,
-                     id,
-                     supply,
-                     decimals,
-                     metadataHash,
-                     transactionFees,
-                     feesRecipients,
-                     feesRecipientsPercentage,
-                     minHoldingForCallback,
-                     isPrivate,
-                     legalAuthority);
-        emit TransferSingle(msg.sender, address(0), recipient, id, supply);
-    }
-
-    /**
-     * @dev Function to mint tokens in batch.
-     * @param id Identifier of the template
-     * @param ids list of IDs of the tokens to be minted
-     * @param metadataHashes list of metadata file hashes
-     */
-    function cloneToken(uint256 id,
-                        uint256[] memory ids,
-                        uint256[] memory metadataHashes)
-    external onlyTokenizer {
-        require(_tokens[id].supply > 0 &&
-                ids.length == metadataHashes.length, "Invalid arguments");
-
-        for (uint256 i = 0; i < ids.length; ++i) {
-            _cloneToken(id, ids[i], metadataHashes[i]);
-
-            emit TransferSingle(msg.sender,
-                                address(0),
-                                _tokens[id].holderList[0],
-                                ids[i],
-                                _tokens[id].supply);
-        }
     }
 
 }

@@ -7,6 +7,11 @@ import './Maintenable.sol';
 contract Privatizable is Maintenable {
 
 
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
+
     /**
      * @dev Function to approve holder for a private token.
      * @param id the token id
@@ -27,6 +32,12 @@ contract Privatizable is Maintenable {
     }
 
 
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
+
+    // override ChargeableTransfer._addToBalance()
     function _addToBalance(address recipient, uint256 id, uint256 value) internal override {
         require(!_tokens[id].isPrivate || _tokens[id].holders[recipient].isApproved, "Address not approved");
         super._addToBalance(recipient, id, value);
