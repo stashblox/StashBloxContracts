@@ -248,7 +248,8 @@ contract StashBloxBase is ERC173 {
                           address[] memory feesRecipients,
                           uint256[] memory feesRecipientsPercentage,
                           uint256 minHoldingForCallback,
-                          bool isPrivate)
+                          bool isPrivate,
+                          address legalAuthority)
     internal {
         require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 
@@ -263,7 +264,8 @@ contract StashBloxBase is ERC173 {
                      feesRecipients,
                      feesRecipientsPercentage,
                      minHoldingForCallback,
-                     isPrivate);
+                     isPrivate,
+                     legalAuthority);
 
         _addToBalance(recipient, id, supply);
     }
@@ -282,7 +284,8 @@ contract StashBloxBase is ERC173 {
                      _tokens[id].feesRecipients,
                      _tokens[id].feesRecipientsPercentage,
                      _tokens[id].minHoldingForCallback,
-                     _tokens[id].isPrivate);
+                     _tokens[id].isPrivate,
+                     _tokens[id].legalAuthority);
     }
 
     function _updateToken(uint256 id,
@@ -291,7 +294,8 @@ contract StashBloxBase is ERC173 {
                           address[] memory feesRecipients,
                           uint256[] memory feesRecipientsPercentage,
                           uint256 minHoldingForCallback,
-                          bool isPrivate)
+                          bool isPrivate,
+                          address legalAuthority)
     internal {
         uint256 totalPercentage = 0;
         for (uint256 i = 0; i < feesRecipientsPercentage.length; ++i)
@@ -310,6 +314,7 @@ contract StashBloxBase is ERC173 {
         _tokens[id].feesRecipientsPercentage = feesRecipientsPercentage;
         _tokens[id].minHoldingForCallback = minHoldingForCallback;
         _tokens[id].isPrivate = isPrivate;
+        _tokens[id].legalAuthority = legalAuthority;
     }
 
 

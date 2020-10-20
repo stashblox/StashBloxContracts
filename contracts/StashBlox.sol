@@ -181,7 +181,8 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage,
                          uint256 minHoldingForCallback,
-                         bool isPrivate)
+                         bool isPrivate,
+                         address legalAuthority)
     external onlyTokenizer {
         _createToken(recipient,
                      id,
@@ -192,7 +193,8 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                      feesRecipients,
                      feesRecipientsPercentage,
                      minHoldingForCallback,
-                     isPrivate);
+                     isPrivate,
+                     legalAuthority);
         emit TransferSingle(msg.sender, address(0), recipient, id, supply);
     }
 
@@ -211,7 +213,7 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
 
         for (uint256 i = 0; i < ids.length; ++i) {
             _cloneToken(id, ids[i], metadataHashes[i]);
-            
+
             emit TransferSingle(msg.sender,
                                 address(0),
                                 _tokens[id].holderList[0],
@@ -226,7 +228,8 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage,
                          uint256 minHoldingForCallback,
-                         bool isPrivate) external onlyMaintener(id) {
+                         bool isPrivate,
+                         address legalAuthority) external onlyMaintener(id) {
         require(_tokens[id].supply > 0, "Unknown token");
 
         _updateToken(id,
@@ -235,19 +238,10 @@ contract StashBlox is ERC1155, IERC1155Metadata, StringUtils {
                      feesRecipients,
                      feesRecipientsPercentage,
                      minHoldingForCallback,
-                     isPrivate);
+                     isPrivate,
+                     legalAuthority);
 
         emit TokenUpdated(id, metadataHash);
-    }
-
-
-    /**
-     * @dev Function to update the legal authority address.
-     * @param id The token ID
-     * @param legalAuthority legal authority address
-     */
-    function updateLegalAuthority(uint256 id, address legalAuthority) external onlyMaintener(id) {
-        _tokens[id].legalAuthority = legalAuthority;
     }
 
 
