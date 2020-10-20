@@ -2,14 +2,14 @@
 
 pragma solidity ^0.7.1;
 
-import "./IERC1155.sol";
-import "./IERC1155Receiver.sol";
-import "../ERC165/IERC165.sol";
+import "../interfaces/IERC1155.sol";
+import "../interfaces/IERC1155Receiver.sol";
+import "../interfaces/IERC165.sol";
 import "../utils/SafeMath.sol";
 import "../utils/Address.sol";
 
-import '../../StashBloxBase.sol';
-
+import './ChargeableTransfer.sol';
+import './Proxyable.sol';
 /**
  * @title Standard ERC1155 token
  *
@@ -17,7 +17,7 @@ import '../../StashBloxBase.sol';
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract ERC1155 is IERC165, IERC1155, StashBloxBase {
+contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
 
     bytes4 constant private INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 constant private INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
