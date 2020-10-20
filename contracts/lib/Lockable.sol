@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.7.1;
 
-import './Maintenable.sol';
+import './Privatizable.sol';
 
-contract Lockable is Maintenable {
+contract Lockable is Privatizable {
 
 
     /****************************

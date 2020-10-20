@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
@@ -8,7 +7,7 @@ import "./ERC1155.sol";
 contract Mintable is ERC1155 {
 
     using SafeMath for uint256;
-    
+
 
     /****************************
     MODIFIERS
