@@ -16,7 +16,7 @@ import './Proxyable.sol';
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
+contract MultiToken is IERC165, IERC1155, ChargeableTransfer, Proxyable {
 
     using SafeMath for uint256;
     using Address for address;

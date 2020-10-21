@@ -2,9 +2,9 @@
 pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
-import "./ERC1155.sol";
+import "./MultiToken.sol";
 
-contract Mintable is ERC1155 {
+contract Mintable is MultiToken {
 
     using SafeMath for uint256;
 

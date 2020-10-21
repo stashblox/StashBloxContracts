@@ -2,9 +2,9 @@
 pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
-import './StashBloxData.sol';
+import './Data.sol';
 
-contract ChargeableTransfer is StashBloxData {
+contract ChargeableTransfer is Data {
 
     using SafeMath for uint256;
 
