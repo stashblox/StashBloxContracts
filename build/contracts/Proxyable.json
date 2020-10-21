@@ -316,21 +316,21 @@
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol",
     "exportedSymbols": {
       "OwnableDelegateProxy": [
-        3343
+        3345
       ],
       "ProxyRegistry": [
-        3348
+        3350
       ],
       "Proxyable": [
-        3449
+        3451
       ]
     },
-    "id": 3450,
+    "id": 3452,
     "license": "GPL-3.0-or-later",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3341,
+        "id": 3343,
         "literals": [
           "solidity",
           "^",
@@ -343,10 +343,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol",
         "file": "./Ownable.sol",
-        "id": 3342,
+        "id": 3344,
         "nodeType": "ImportDirective",
-        "scope": 3450,
-        "sourceUnit": 3254,
+        "scope": 3452,
+        "sourceUnit": 3256,
         "src": "70:23:17",
         "symbolAliases": [],
         "unitAlias": ""
@@ -357,14 +357,14 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3343,
+        "id": 3345,
         "linearizedBaseContracts": [
-          3343
+          3345
         ],
         "name": "OwnableDelegateProxy",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 3450,
+        "scope": 3452,
         "src": "95:33:17"
       },
       {
@@ -373,9 +373,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3348,
+        "id": 3350,
         "linearizedBaseContracts": [
-          3348
+          3350
         ],
         "name": "ProxyRegistry",
         "nodeType": "ContractDefinition",
@@ -383,22 +383,22 @@
           {
             "constant": false,
             "functionSelector": "c4552791",
-            "id": 3347,
+            "id": 3349,
             "mutability": "mutable",
             "name": "proxies",
             "nodeType": "VariableDeclaration",
-            "scope": 3348,
+            "scope": 3350,
             "src": "156:55:17",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3343_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3345_$",
               "typeString": "mapping(address => contract OwnableDelegateProxy)"
             },
             "typeName": {
-              "id": 3346,
+              "id": 3348,
               "keyType": {
-                "id": 3344,
+                "id": 3346,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "164:7:17",
@@ -410,17 +410,17 @@
               "nodeType": "Mapping",
               "src": "156:40:17",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3343_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3345_$",
                 "typeString": "mapping(address => contract OwnableDelegateProxy)"
               },
               "valueType": {
-                "id": 3345,
+                "id": 3347,
                 "name": "OwnableDelegateProxy",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 3343,
+                "referencedDeclaration": 3345,
                 "src": "175:20:17",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3343",
+                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3345",
                   "typeString": "contract OwnableDelegateProxy"
                 }
               }
@@ -428,7 +428,7 @@
             "visibility": "public"
           }
         ],
-        "scope": 3450,
+        "scope": 3452,
         "src": "130:84:17"
       },
       {
@@ -436,17 +436,17 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 3349,
+              "id": 3351,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3253,
+              "referencedDeclaration": 3255,
               "src": "238:7:17",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$3253",
+                "typeIdentifier": "t_contract$_Ownable_$3255",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 3350,
+            "id": 3352,
             "nodeType": "InheritanceSpecifier",
             "src": "238:7:17"
           }
@@ -455,21 +455,21 @@
           161,
           234,
           263,
-          1733,
-          1805,
-          3253,
-          4104
+          1735,
+          1807,
+          3255,
+          4106
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3449,
+        "id": 3451,
         "linearizedBaseContracts": [
-          3449,
-          3253,
-          1733,
-          4104,
+          3451,
+          3255,
+          1735,
+          4106,
           161,
-          1805,
+          1807,
           263,
           234
         ],
@@ -478,38 +478,38 @@
         "nodes": [
           {
             "body": {
-              "id": 3366,
+              "id": 3368,
               "nodeType": "Block",
               "src": "552:64:17",
               "statements": [
                 {
                   "expression": {
-                    "id": 3364,
+                    "id": 3366,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 3360,
+                        "id": 3362,
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1702,
+                        "referencedDeclaration": 1704,
                         "src": "562:7:17",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$1664_storage",
+                          "typeIdentifier": "t_struct$_Config_$1666_storage",
                           "typeString": "struct Data.Config storage ref"
                         }
                       },
-                      "id": 3362,
+                      "id": 3364,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proxyRegistryAddresses",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1661,
+                      "referencedDeclaration": 1663,
                       "src": "562:30:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -519,11 +519,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 3363,
+                      "id": 3365,
                       "name": "proxyAddresses",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3355,
+                      "referencedDeclaration": 3357,
                       "src": "595:14:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_memory_ptr",
@@ -536,31 +536,31 @@
                       "typeString": "address[10] storage ref"
                     }
                   },
-                  "id": 3365,
+                  "id": 3367,
                   "nodeType": "ExpressionStatement",
                   "src": "562:47:17"
                 }
               ]
             },
             "documentation": {
-              "id": 3351,
+              "id": 3353,
               "nodeType": "StructuredDocumentation",
               "src": "348:112:17",
               "text": " @dev Function to update the operator whitelist\n @param proxyAddresses List of addresses"
             },
             "functionSelector": "4392e577",
-            "id": 3367,
+            "id": 3369,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 3358,
+                "id": 3360,
                 "modifierName": {
-                  "id": 3357,
+                  "id": 3359,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3185,
+                  "referencedDeclaration": 3187,
                   "src": "542:9:17",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -574,16 +574,16 @@
             "name": "setProxyRegistryAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3356,
+              "id": 3358,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3355,
+                  "id": 3357,
                   "mutability": "mutable",
                   "name": "proxyAddresses",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3367,
+                  "scope": 3369,
                   "src": "498:33:17",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -593,7 +593,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 3352,
+                      "id": 3354,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "498:7:17",
@@ -603,10 +603,10 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 3354,
+                    "id": 3356,
                     "length": {
                       "hexValue": "3130",
-                      "id": 3353,
+                      "id": 3355,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -633,12 +633,12 @@
               "src": "497:35:17"
             },
             "returnParameters": {
-              "id": 3359,
+              "id": 3361,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "552:0:17"
             },
-            "scope": 3449,
+            "scope": 3451,
             "src": "465:151:17",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -646,13 +646,13 @@
           },
           {
             "body": {
-              "id": 3425,
+              "id": 3427,
               "nodeType": "Block",
               "src": "813:420:17",
               "statements": [
                 {
                   "body": {
-                    "id": 3421,
+                    "id": 3423,
                     "nodeType": "Block",
                     "src": "891:314:17",
                     "statements": [
@@ -662,7 +662,7 @@
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           },
-                          "id": 3396,
+                          "id": 3398,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -670,38 +670,38 @@
                           "leftExpression": {
                             "baseExpression": {
                               "expression": {
-                                "id": 3388,
+                                "id": 3390,
                                 "name": "_config",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1702,
+                                "referencedDeclaration": 1704,
                                 "src": "909:7:17",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Config_$1664_storage",
+                                  "typeIdentifier": "t_struct$_Config_$1666_storage",
                                   "typeString": "struct Data.Config storage ref"
                                 }
                               },
-                              "id": 3389,
+                              "id": 3391,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "proxyRegistryAddresses",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 1661,
+                              "referencedDeclaration": 1663,
                               "src": "909:30:17",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_address_$10_storage",
                                 "typeString": "address[10] storage ref"
                               }
                             },
-                            "id": 3391,
+                            "id": 3393,
                             "indexExpression": {
-                              "id": 3390,
+                              "id": 3392,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 3377,
+                              "referencedDeclaration": 3379,
                               "src": "940:1:17",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -725,7 +725,7 @@
                             "arguments": [
                               {
                                 "hexValue": "30",
-                                "id": 3394,
+                                "id": 3396,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -747,7 +747,7 @@
                                   "typeString": "int_const 0"
                                 }
                               ],
-                              "id": 3393,
+                              "id": 3395,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -759,14 +759,14 @@
                                 "typeString": "type(address)"
                               },
                               "typeName": {
-                                "id": 3392,
+                                "id": 3394,
                                 "name": "address",
                                 "nodeType": "ElementaryTypeName",
                                 "src": "946:7:17",
                                 "typeDescriptions": {}
                               }
                             },
-                            "id": 3395,
+                            "id": 3397,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -787,85 +787,85 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 3420,
+                        "id": 3422,
                         "nodeType": "IfStatement",
                         "src": "905:290:17",
                         "trueBody": {
-                          "id": 3419,
+                          "id": 3421,
                           "nodeType": "Block",
                           "src": "958:237:17",
                           "statements": [
                             {
                               "assignments": [
-                                3398
+                                3400
                               ],
                               "declarations": [
                                 {
                                   "constant": false,
-                                  "id": 3398,
+                                  "id": 3400,
                                   "mutability": "mutable",
                                   "name": "proxyRegistry",
                                   "nodeType": "VariableDeclaration",
-                                  "scope": 3419,
+                                  "scope": 3421,
                                   "src": "976:27:17",
                                   "stateVariable": false,
                                   "storageLocation": "default",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                     "typeString": "contract ProxyRegistry"
                                   },
                                   "typeName": {
-                                    "id": 3397,
+                                    "id": 3399,
                                     "name": "ProxyRegistry",
                                     "nodeType": "UserDefinedTypeName",
-                                    "referencedDeclaration": 3348,
+                                    "referencedDeclaration": 3350,
                                     "src": "976:13:17",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                       "typeString": "contract ProxyRegistry"
                                     }
                                   },
                                   "visibility": "internal"
                                 }
                               ],
-                              "id": 3405,
+                              "id": 3407,
                               "initialValue": {
                                 "arguments": [
                                   {
                                     "baseExpression": {
                                       "expression": {
-                                        "id": 3400,
+                                        "id": 3402,
                                         "name": "_config",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 1702,
+                                        "referencedDeclaration": 1704,
                                         "src": "1020:7:17",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_struct$_Config_$1664_storage",
+                                          "typeIdentifier": "t_struct$_Config_$1666_storage",
                                           "typeString": "struct Data.Config storage ref"
                                         }
                                       },
-                                      "id": 3401,
+                                      "id": 3403,
                                       "isConstant": false,
                                       "isLValue": true,
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "memberName": "proxyRegistryAddresses",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 1661,
+                                      "referencedDeclaration": 1663,
                                       "src": "1020:30:17",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_array$_t_address_$10_storage",
                                         "typeString": "address[10] storage ref"
                                       }
                                     },
-                                    "id": 3403,
+                                    "id": 3405,
                                     "indexExpression": {
-                                      "id": 3402,
+                                      "id": 3404,
                                       "name": "i",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 3377,
+                                      "referencedDeclaration": 3379,
                                       "src": "1051:1:17",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_uint256",
@@ -891,18 +891,18 @@
                                       "typeString": "address"
                                     }
                                   ],
-                                  "id": 3399,
+                                  "id": 3401,
                                   "name": "ProxyRegistry",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3348,
+                                  "referencedDeclaration": 3350,
                                   "src": "1006:13:17",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3348_$",
+                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3350_$",
                                     "typeString": "type(contract ProxyRegistry)"
                                   }
                                 },
-                                "id": 3404,
+                                "id": 3406,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -913,7 +913,7 @@
                                 "src": "1006:48:17",
                                 "tryCall": false,
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                   "typeString": "contract ProxyRegistry"
                                 }
                               },
@@ -926,7 +926,7 @@
                                   "typeIdentifier": "t_address",
                                   "typeString": "address"
                                 },
-                                "id": 3414,
+                                "id": 3416,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -936,11 +936,11 @@
                                     {
                                       "arguments": [
                                         {
-                                          "id": 3410,
+                                          "id": 3412,
                                           "name": "account",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3369,
+                                          "referencedDeclaration": 3371,
                                           "src": "1106:7:17",
                                           "typeDescriptions": {
                                             "typeIdentifier": "t_address",
@@ -956,32 +956,32 @@
                                           }
                                         ],
                                         "expression": {
-                                          "id": 3408,
+                                          "id": 3410,
                                           "name": "proxyRegistry",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3398,
+                                          "referencedDeclaration": 3400,
                                           "src": "1084:13:17",
                                           "typeDescriptions": {
-                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                             "typeString": "contract ProxyRegistry"
                                           }
                                         },
-                                        "id": 3409,
+                                        "id": 3411,
                                         "isConstant": false,
                                         "isLValue": false,
                                         "isPure": false,
                                         "lValueRequested": false,
                                         "memberName": "proxies",
                                         "nodeType": "MemberAccess",
-                                        "referencedDeclaration": 3347,
+                                        "referencedDeclaration": 3349,
                                         "src": "1084:21:17",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3343_$",
+                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3345_$",
                                           "typeString": "function (address) view external returns (contract OwnableDelegateProxy)"
                                         }
                                       },
-                                      "id": 3411,
+                                      "id": 3413,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": false,
@@ -992,7 +992,7 @@
                                       "src": "1084:30:17",
                                       "tryCall": false,
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3343",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3345",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     }
@@ -1000,11 +1000,11 @@
                                   "expression": {
                                     "argumentTypes": [
                                       {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3343",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3345",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     ],
-                                    "id": 3407,
+                                    "id": 3409,
                                     "isConstant": false,
                                     "isLValue": false,
                                     "isPure": true,
@@ -1016,14 +1016,14 @@
                                       "typeString": "type(address)"
                                     },
                                     "typeName": {
-                                      "id": 3406,
+                                      "id": 3408,
                                       "name": "address",
                                       "nodeType": "ElementaryTypeName",
                                       "src": "1076:7:17",
                                       "typeDescriptions": {}
                                     }
                                   },
-                                  "id": 3412,
+                                  "id": 3414,
                                   "isConstant": false,
                                   "isLValue": false,
                                   "isPure": false,
@@ -1041,11 +1041,11 @@
                                 "nodeType": "BinaryOperation",
                                 "operator": "==",
                                 "rightExpression": {
-                                  "id": 3413,
+                                  "id": 3415,
                                   "name": "operator",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3371,
+                                  "referencedDeclaration": 3373,
                                   "src": "1119:8:17",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_address",
@@ -1058,18 +1058,18 @@
                                   "typeString": "bool"
                                 }
                               },
-                              "id": 3418,
+                              "id": 3420,
                               "nodeType": "IfStatement",
                               "src": "1072:109:17",
                               "trueBody": {
-                                "id": 3417,
+                                "id": 3419,
                                 "nodeType": "Block",
                                 "src": "1129:52:17",
                                 "statements": [
                                   {
                                     "expression": {
                                       "hexValue": "74727565",
-                                      "id": 3415,
+                                      "id": 3417,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": true,
@@ -1083,8 +1083,8 @@
                                       },
                                       "value": "true"
                                     },
-                                    "functionReturnParameters": 3375,
-                                    "id": 3416,
+                                    "functionReturnParameters": 3377,
+                                    "id": 3418,
                                     "nodeType": "Return",
                                     "src": "1151:11:17"
                                   }
@@ -1101,17 +1101,17 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 3384,
+                    "id": 3386,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 3380,
+                      "id": 3382,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3377,
+                      "referencedDeclaration": 3379,
                       "src": "843:1:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1123,32 +1123,32 @@
                     "rightExpression": {
                       "expression": {
                         "expression": {
-                          "id": 3381,
+                          "id": 3383,
                           "name": "_config",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1702,
+                          "referencedDeclaration": 1704,
                           "src": "847:7:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Config_$1664_storage",
+                            "typeIdentifier": "t_struct$_Config_$1666_storage",
                             "typeString": "struct Data.Config storage ref"
                           }
                         },
-                        "id": 3382,
+                        "id": 3384,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "proxyRegistryAddresses",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1661,
+                        "referencedDeclaration": 1663,
                         "src": "847:30:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$10_storage",
                           "typeString": "address[10] storage ref"
                         }
                       },
-                      "id": 3383,
+                      "id": 3385,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1167,19 +1167,19 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 3422,
+                  "id": 3424,
                   "initializationExpression": {
                     "assignments": [
-                      3377
+                      3379
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 3377,
+                        "id": 3379,
                         "mutability": "mutable",
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 3422,
+                        "scope": 3424,
                         "src": "828:9:17",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -1188,7 +1188,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 3376,
+                          "id": 3378,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "828:7:17",
@@ -1200,10 +1200,10 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 3379,
+                    "id": 3381,
                     "initialValue": {
                       "hexValue": "30",
-                      "id": 3378,
+                      "id": 3380,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1222,7 +1222,7 @@
                   },
                   "loopExpression": {
                     "expression": {
-                      "id": 3386,
+                      "id": 3388,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1232,11 +1232,11 @@
                       "prefix": true,
                       "src": "886:3:17",
                       "subExpression": {
-                        "id": 3385,
+                        "id": 3387,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3377,
+                        "referencedDeclaration": 3379,
                         "src": "888:1:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1248,7 +1248,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 3387,
+                    "id": 3389,
                     "nodeType": "ExpressionStatement",
                     "src": "886:3:17"
                   },
@@ -1258,7 +1258,7 @@
                 {
                   "expression": {
                     "hexValue": "66616c7365",
-                    "id": 3423,
+                    "id": 3425,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -1272,30 +1272,30 @@
                     },
                     "value": "false"
                   },
-                  "functionReturnParameters": 3375,
-                  "id": 3424,
+                  "functionReturnParameters": 3377,
+                  "id": 3426,
                   "nodeType": "Return",
                   "src": "1214:12:17"
                 }
               ]
             },
-            "id": 3426,
+            "id": 3428,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_isWhitelistedOperator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3372,
+              "id": 3374,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3369,
+                  "id": 3371,
                   "mutability": "mutable",
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3426,
+                  "scope": 3428,
                   "src": "749:15:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1304,7 +1304,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3368,
+                    "id": 3370,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "749:7:17",
@@ -1318,11 +1318,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3371,
+                  "id": 3373,
                   "mutability": "mutable",
                   "name": "operator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3426,
+                  "scope": 3428,
                   "src": "766:16:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1331,7 +1331,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3370,
+                    "id": 3372,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "766:7:17",
@@ -1347,16 +1347,16 @@
               "src": "748:35:17"
             },
             "returnParameters": {
-              "id": 3375,
+              "id": 3377,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3374,
+                  "id": 3376,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3426,
+                  "scope": 3428,
                   "src": "807:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1365,7 +1365,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3373,
+                    "id": 3375,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "807:4:17",
@@ -1379,7 +1379,7 @@
               ],
               "src": "806:6:17"
             },
-            "scope": 3449,
+            "scope": 3451,
             "src": "717:516:17",
             "stateMutability": "view",
             "virtual": false,
@@ -1387,7 +1387,7 @@
           },
           {
             "body": {
-              "id": 3447,
+              "id": 3449,
               "nodeType": "Block",
               "src": "1330:112:17",
               "statements": [
@@ -1397,7 +1397,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 3445,
+                    "id": 3447,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1405,11 +1405,11 @@
                     "leftExpression": {
                       "arguments": [
                         {
-                          "id": 3436,
+                          "id": 3438,
                           "name": "account",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 3428,
+                          "referencedDeclaration": 3430,
                           "src": "1370:7:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1417,11 +1417,11 @@
                           }
                         },
                         {
-                          "id": 3437,
+                          "id": 3439,
                           "name": "operator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 3430,
+                          "referencedDeclaration": 3432,
                           "src": "1379:8:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -1440,18 +1440,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 3435,
+                        "id": 3437,
                         "name": "_isWhitelistedOperator",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3426,
+                        "referencedDeclaration": 3428,
                         "src": "1347:22:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_address_$returns$_t_bool_$",
                           "typeString": "function (address,address) view returns (bool)"
                         }
                       },
-                      "id": 3438,
+                      "id": 3440,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1472,24 +1472,24 @@
                       "baseExpression": {
                         "expression": {
                           "baseExpression": {
-                            "id": 3439,
+                            "id": 3441,
                             "name": "_users",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1706,
+                            "referencedDeclaration": 1708,
                             "src": "1392:6:17",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1605_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1607_storage_$",
                               "typeString": "mapping(address => struct Data.User storage ref)"
                             }
                           },
-                          "id": 3441,
+                          "id": 3443,
                           "indexExpression": {
-                            "id": 3440,
+                            "id": 3442,
                             "name": "account",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 3428,
+                            "referencedDeclaration": 3430,
                             "src": "1399:7:17",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -1503,31 +1503,31 @@
                           "nodeType": "IndexAccess",
                           "src": "1392:15:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_User_$1605_storage",
+                            "typeIdentifier": "t_struct$_User_$1607_storage",
                             "typeString": "struct Data.User storage ref"
                           }
                         },
-                        "id": 3442,
+                        "id": 3444,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "operatorApprovals",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1604,
+                        "referencedDeclaration": 1606,
                         "src": "1392:33:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                           "typeString": "mapping(address => bool)"
                         }
                       },
-                      "id": 3444,
+                      "id": 3446,
                       "indexExpression": {
-                        "id": 3443,
+                        "id": 3445,
                         "name": "operator",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3430,
+                        "referencedDeclaration": 3432,
                         "src": "1426:8:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1551,30 +1551,30 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 3434,
-                  "id": 3446,
+                  "functionReturnParameters": 3436,
+                  "id": 3448,
                   "nodeType": "Return",
                   "src": "1340:95:17"
                 }
               ]
             },
-            "id": 3448,
+            "id": 3450,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_isApprovedForAll",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3431,
+              "id": 3433,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3428,
+                  "id": 3430,
                   "mutability": "mutable",
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3448,
+                  "scope": 3450,
                   "src": "1266:15:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1583,7 +1583,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3427,
+                    "id": 3429,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1266:7:17",
@@ -1597,11 +1597,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3430,
+                  "id": 3432,
                   "mutability": "mutable",
                   "name": "operator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3448,
+                  "scope": 3450,
                   "src": "1283:16:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1610,7 +1610,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3429,
+                    "id": 3431,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1283:7:17",
@@ -1626,16 +1626,16 @@
               "src": "1265:35:17"
             },
             "returnParameters": {
-              "id": 3434,
+              "id": 3436,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3433,
+                  "id": 3435,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3448,
+                  "scope": 3450,
                   "src": "1324:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1644,7 +1644,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3432,
+                    "id": 3434,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1324:4:17",
@@ -1658,14 +1658,14 @@
               ],
               "src": "1323:6:17"
             },
-            "scope": 3449,
+            "scope": 3451,
             "src": "1239:203:17",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "internal"
           }
         ],
-        "scope": 3450,
+        "scope": 3452,
         "src": "216:1228:17"
       }
     ],
@@ -1675,21 +1675,21 @@
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol",
     "exportedSymbols": {
       "OwnableDelegateProxy": [
-        3343
+        3345
       ],
       "ProxyRegistry": [
-        3348
+        3350
       ],
       "Proxyable": [
-        3449
+        3451
       ]
     },
-    "id": 3450,
+    "id": 3452,
     "license": "GPL-3.0-or-later",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3341,
+        "id": 3343,
         "literals": [
           "solidity",
           "^",
@@ -1702,10 +1702,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol",
         "file": "./Ownable.sol",
-        "id": 3342,
+        "id": 3344,
         "nodeType": "ImportDirective",
-        "scope": 3450,
-        "sourceUnit": 3254,
+        "scope": 3452,
+        "sourceUnit": 3256,
         "src": "70:23:17",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1716,14 +1716,14 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3343,
+        "id": 3345,
         "linearizedBaseContracts": [
-          3343
+          3345
         ],
         "name": "OwnableDelegateProxy",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 3450,
+        "scope": 3452,
         "src": "95:33:17"
       },
       {
@@ -1732,9 +1732,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3348,
+        "id": 3350,
         "linearizedBaseContracts": [
-          3348
+          3350
         ],
         "name": "ProxyRegistry",
         "nodeType": "ContractDefinition",
@@ -1742,22 +1742,22 @@
           {
             "constant": false,
             "functionSelector": "c4552791",
-            "id": 3347,
+            "id": 3349,
             "mutability": "mutable",
             "name": "proxies",
             "nodeType": "VariableDeclaration",
-            "scope": 3348,
+            "scope": 3350,
             "src": "156:55:17",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3343_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3345_$",
               "typeString": "mapping(address => contract OwnableDelegateProxy)"
             },
             "typeName": {
-              "id": 3346,
+              "id": 3348,
               "keyType": {
-                "id": 3344,
+                "id": 3346,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "164:7:17",
@@ -1769,17 +1769,17 @@
               "nodeType": "Mapping",
               "src": "156:40:17",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3343_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3345_$",
                 "typeString": "mapping(address => contract OwnableDelegateProxy)"
               },
               "valueType": {
-                "id": 3345,
+                "id": 3347,
                 "name": "OwnableDelegateProxy",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 3343,
+                "referencedDeclaration": 3345,
                 "src": "175:20:17",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3343",
+                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3345",
                   "typeString": "contract OwnableDelegateProxy"
                 }
               }
@@ -1787,7 +1787,7 @@
             "visibility": "public"
           }
         ],
-        "scope": 3450,
+        "scope": 3452,
         "src": "130:84:17"
       },
       {
@@ -1795,17 +1795,17 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 3349,
+              "id": 3351,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3253,
+              "referencedDeclaration": 3255,
               "src": "238:7:17",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$3253",
+                "typeIdentifier": "t_contract$_Ownable_$3255",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 3350,
+            "id": 3352,
             "nodeType": "InheritanceSpecifier",
             "src": "238:7:17"
           }
@@ -1814,21 +1814,21 @@
           161,
           234,
           263,
-          1733,
-          1805,
-          3253,
-          4104
+          1735,
+          1807,
+          3255,
+          4106
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3449,
+        "id": 3451,
         "linearizedBaseContracts": [
-          3449,
-          3253,
-          1733,
-          4104,
+          3451,
+          3255,
+          1735,
+          4106,
           161,
-          1805,
+          1807,
           263,
           234
         ],
@@ -1837,38 +1837,38 @@
         "nodes": [
           {
             "body": {
-              "id": 3366,
+              "id": 3368,
               "nodeType": "Block",
               "src": "552:64:17",
               "statements": [
                 {
                   "expression": {
-                    "id": 3364,
+                    "id": 3366,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 3360,
+                        "id": 3362,
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1702,
+                        "referencedDeclaration": 1704,
                         "src": "562:7:17",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$1664_storage",
+                          "typeIdentifier": "t_struct$_Config_$1666_storage",
                           "typeString": "struct Data.Config storage ref"
                         }
                       },
-                      "id": 3362,
+                      "id": 3364,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proxyRegistryAddresses",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1661,
+                      "referencedDeclaration": 1663,
                       "src": "562:30:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -1878,11 +1878,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 3363,
+                      "id": 3365,
                       "name": "proxyAddresses",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3355,
+                      "referencedDeclaration": 3357,
                       "src": "595:14:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_memory_ptr",
@@ -1895,31 +1895,31 @@
                       "typeString": "address[10] storage ref"
                     }
                   },
-                  "id": 3365,
+                  "id": 3367,
                   "nodeType": "ExpressionStatement",
                   "src": "562:47:17"
                 }
               ]
             },
             "documentation": {
-              "id": 3351,
+              "id": 3353,
               "nodeType": "StructuredDocumentation",
               "src": "348:112:17",
               "text": " @dev Function to update the operator whitelist\n @param proxyAddresses List of addresses"
             },
             "functionSelector": "4392e577",
-            "id": 3367,
+            "id": 3369,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 3358,
+                "id": 3360,
                 "modifierName": {
-                  "id": 3357,
+                  "id": 3359,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3185,
+                  "referencedDeclaration": 3187,
                   "src": "542:9:17",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1933,16 +1933,16 @@
             "name": "setProxyRegistryAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3356,
+              "id": 3358,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3355,
+                  "id": 3357,
                   "mutability": "mutable",
                   "name": "proxyAddresses",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3367,
+                  "scope": 3369,
                   "src": "498:33:17",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1952,7 +1952,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 3352,
+                      "id": 3354,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "498:7:17",
@@ -1962,10 +1962,10 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 3354,
+                    "id": 3356,
                     "length": {
                       "hexValue": "3130",
-                      "id": 3353,
+                      "id": 3355,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1992,12 +1992,12 @@
               "src": "497:35:17"
             },
             "returnParameters": {
-              "id": 3359,
+              "id": 3361,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "552:0:17"
             },
-            "scope": 3449,
+            "scope": 3451,
             "src": "465:151:17",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -2005,13 +2005,13 @@
           },
           {
             "body": {
-              "id": 3425,
+              "id": 3427,
               "nodeType": "Block",
               "src": "813:420:17",
               "statements": [
                 {
                   "body": {
-                    "id": 3421,
+                    "id": 3423,
                     "nodeType": "Block",
                     "src": "891:314:17",
                     "statements": [
@@ -2021,7 +2021,7 @@
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           },
-                          "id": 3396,
+                          "id": 3398,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2029,38 +2029,38 @@
                           "leftExpression": {
                             "baseExpression": {
                               "expression": {
-                                "id": 3388,
+                                "id": 3390,
                                 "name": "_config",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1702,
+                                "referencedDeclaration": 1704,
                                 "src": "909:7:17",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Config_$1664_storage",
+                                  "typeIdentifier": "t_struct$_Config_$1666_storage",
                                   "typeString": "struct Data.Config storage ref"
                                 }
                               },
-                              "id": 3389,
+                              "id": 3391,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "proxyRegistryAddresses",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 1661,
+                              "referencedDeclaration": 1663,
                               "src": "909:30:17",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_address_$10_storage",
                                 "typeString": "address[10] storage ref"
                               }
                             },
-                            "id": 3391,
+                            "id": 3393,
                             "indexExpression": {
-                              "id": 3390,
+                              "id": 3392,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 3377,
+                              "referencedDeclaration": 3379,
                               "src": "940:1:17",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -2084,7 +2084,7 @@
                             "arguments": [
                               {
                                 "hexValue": "30",
-                                "id": 3394,
+                                "id": 3396,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -2106,7 +2106,7 @@
                                   "typeString": "int_const 0"
                                 }
                               ],
-                              "id": 3393,
+                              "id": 3395,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -2118,14 +2118,14 @@
                                 "typeString": "type(address)"
                               },
                               "typeName": {
-                                "id": 3392,
+                                "id": 3394,
                                 "name": "address",
                                 "nodeType": "ElementaryTypeName",
                                 "src": "946:7:17",
                                 "typeDescriptions": {}
                               }
                             },
-                            "id": 3395,
+                            "id": 3397,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -2146,85 +2146,85 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 3420,
+                        "id": 3422,
                         "nodeType": "IfStatement",
                         "src": "905:290:17",
                         "trueBody": {
-                          "id": 3419,
+                          "id": 3421,
                           "nodeType": "Block",
                           "src": "958:237:17",
                           "statements": [
                             {
                               "assignments": [
-                                3398
+                                3400
                               ],
                               "declarations": [
                                 {
                                   "constant": false,
-                                  "id": 3398,
+                                  "id": 3400,
                                   "mutability": "mutable",
                                   "name": "proxyRegistry",
                                   "nodeType": "VariableDeclaration",
-                                  "scope": 3419,
+                                  "scope": 3421,
                                   "src": "976:27:17",
                                   "stateVariable": false,
                                   "storageLocation": "default",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                     "typeString": "contract ProxyRegistry"
                                   },
                                   "typeName": {
-                                    "id": 3397,
+                                    "id": 3399,
                                     "name": "ProxyRegistry",
                                     "nodeType": "UserDefinedTypeName",
-                                    "referencedDeclaration": 3348,
+                                    "referencedDeclaration": 3350,
                                     "src": "976:13:17",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                       "typeString": "contract ProxyRegistry"
                                     }
                                   },
                                   "visibility": "internal"
                                 }
                               ],
-                              "id": 3405,
+                              "id": 3407,
                               "initialValue": {
                                 "arguments": [
                                   {
                                     "baseExpression": {
                                       "expression": {
-                                        "id": 3400,
+                                        "id": 3402,
                                         "name": "_config",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 1702,
+                                        "referencedDeclaration": 1704,
                                         "src": "1020:7:17",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_struct$_Config_$1664_storage",
+                                          "typeIdentifier": "t_struct$_Config_$1666_storage",
                                           "typeString": "struct Data.Config storage ref"
                                         }
                                       },
-                                      "id": 3401,
+                                      "id": 3403,
                                       "isConstant": false,
                                       "isLValue": true,
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "memberName": "proxyRegistryAddresses",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 1661,
+                                      "referencedDeclaration": 1663,
                                       "src": "1020:30:17",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_array$_t_address_$10_storage",
                                         "typeString": "address[10] storage ref"
                                       }
                                     },
-                                    "id": 3403,
+                                    "id": 3405,
                                     "indexExpression": {
-                                      "id": 3402,
+                                      "id": 3404,
                                       "name": "i",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 3377,
+                                      "referencedDeclaration": 3379,
                                       "src": "1051:1:17",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_uint256",
@@ -2250,18 +2250,18 @@
                                       "typeString": "address"
                                     }
                                   ],
-                                  "id": 3399,
+                                  "id": 3401,
                                   "name": "ProxyRegistry",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3348,
+                                  "referencedDeclaration": 3350,
                                   "src": "1006:13:17",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3348_$",
+                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3350_$",
                                     "typeString": "type(contract ProxyRegistry)"
                                   }
                                 },
-                                "id": 3404,
+                                "id": 3406,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -2272,7 +2272,7 @@
                                 "src": "1006:48:17",
                                 "tryCall": false,
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                   "typeString": "contract ProxyRegistry"
                                 }
                               },
@@ -2285,7 +2285,7 @@
                                   "typeIdentifier": "t_address",
                                   "typeString": "address"
                                 },
-                                "id": 3414,
+                                "id": 3416,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -2295,11 +2295,11 @@
                                     {
                                       "arguments": [
                                         {
-                                          "id": 3410,
+                                          "id": 3412,
                                           "name": "account",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3369,
+                                          "referencedDeclaration": 3371,
                                           "src": "1106:7:17",
                                           "typeDescriptions": {
                                             "typeIdentifier": "t_address",
@@ -2315,32 +2315,32 @@
                                           }
                                         ],
                                         "expression": {
-                                          "id": 3408,
+                                          "id": 3410,
                                           "name": "proxyRegistry",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3398,
+                                          "referencedDeclaration": 3400,
                                           "src": "1084:13:17",
                                           "typeDescriptions": {
-                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3348",
+                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3350",
                                             "typeString": "contract ProxyRegistry"
                                           }
                                         },
-                                        "id": 3409,
+                                        "id": 3411,
                                         "isConstant": false,
                                         "isLValue": false,
                                         "isPure": false,
                                         "lValueRequested": false,
                                         "memberName": "proxies",
                                         "nodeType": "MemberAccess",
-                                        "referencedDeclaration": 3347,
+                                        "referencedDeclaration": 3349,
                                         "src": "1084:21:17",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3343_$",
+                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3345_$",
                                           "typeString": "function (address) view external returns (contract OwnableDelegateProxy)"
                                         }
                                       },
-                                      "id": 3411,
+                                      "id": 3413,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": false,
@@ -2351,7 +2351,7 @@
                                       "src": "1084:30:17",
                                       "tryCall": false,
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3343",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3345",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     }
@@ -2359,11 +2359,11 @@
                                   "expression": {
                                     "argumentTypes": [
                                       {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3343",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3345",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     ],
-                                    "id": 3407,
+                                    "id": 3409,
                                     "isConstant": false,
                                     "isLValue": false,
                                     "isPure": true,
@@ -2375,14 +2375,14 @@
                                       "typeString": "type(address)"
                                     },
                                     "typeName": {
-                                      "id": 3406,
+                                      "id": 3408,
                                       "name": "address",
                                       "nodeType": "ElementaryTypeName",
                                       "src": "1076:7:17",
                                       "typeDescriptions": {}
                                     }
                                   },
-                                  "id": 3412,
+                                  "id": 3414,
                                   "isConstant": false,
                                   "isLValue": false,
                                   "isPure": false,
@@ -2400,11 +2400,11 @@
                                 "nodeType": "BinaryOperation",
                                 "operator": "==",
                                 "rightExpression": {
-                                  "id": 3413,
+                                  "id": 3415,
                                   "name": "operator",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3371,
+                                  "referencedDeclaration": 3373,
                                   "src": "1119:8:17",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_address",
@@ -2417,18 +2417,18 @@
                                   "typeString": "bool"
                                 }
                               },
-                              "id": 3418,
+                              "id": 3420,
                               "nodeType": "IfStatement",
                               "src": "1072:109:17",
                               "trueBody": {
-                                "id": 3417,
+                                "id": 3419,
                                 "nodeType": "Block",
                                 "src": "1129:52:17",
                                 "statements": [
                                   {
                                     "expression": {
                                       "hexValue": "74727565",
-                                      "id": 3415,
+                                      "id": 3417,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": true,
@@ -2442,8 +2442,8 @@
                                       },
                                       "value": "true"
                                     },
-                                    "functionReturnParameters": 3375,
-                                    "id": 3416,
+                                    "functionReturnParameters": 3377,
+                                    "id": 3418,
                                     "nodeType": "Return",
                                     "src": "1151:11:17"
                                   }
@@ -2460,17 +2460,17 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 3384,
+                    "id": 3386,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 3380,
+                      "id": 3382,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3377,
+                      "referencedDeclaration": 3379,
                       "src": "843:1:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2482,32 +2482,32 @@
                     "rightExpression": {
                       "expression": {
                         "expression": {
-                          "id": 3381,
+                          "id": 3383,
                           "name": "_config",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1702,
+                          "referencedDeclaration": 1704,
                           "src": "847:7:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Config_$1664_storage",
+                            "typeIdentifier": "t_struct$_Config_$1666_storage",
                             "typeString": "struct Data.Config storage ref"
                           }
                         },
-                        "id": 3382,
+                        "id": 3384,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "proxyRegistryAddresses",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1661,
+                        "referencedDeclaration": 1663,
                         "src": "847:30:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$10_storage",
                           "typeString": "address[10] storage ref"
                         }
                       },
-                      "id": 3383,
+                      "id": 3385,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2526,19 +2526,19 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 3422,
+                  "id": 3424,
                   "initializationExpression": {
                     "assignments": [
-                      3377
+                      3379
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 3377,
+                        "id": 3379,
                         "mutability": "mutable",
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 3422,
+                        "scope": 3424,
                         "src": "828:9:17",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -2547,7 +2547,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 3376,
+                          "id": 3378,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "828:7:17",
@@ -2559,10 +2559,10 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 3379,
+                    "id": 3381,
                     "initialValue": {
                       "hexValue": "30",
-                      "id": 3378,
+                      "id": 3380,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2581,7 +2581,7 @@
                   },
                   "loopExpression": {
                     "expression": {
-                      "id": 3386,
+                      "id": 3388,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2591,11 +2591,11 @@
                       "prefix": true,
                       "src": "886:3:17",
                       "subExpression": {
-                        "id": 3385,
+                        "id": 3387,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3377,
+                        "referencedDeclaration": 3379,
                         "src": "888:1:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2607,7 +2607,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 3387,
+                    "id": 3389,
                     "nodeType": "ExpressionStatement",
                     "src": "886:3:17"
                   },
@@ -2617,7 +2617,7 @@
                 {
                   "expression": {
                     "hexValue": "66616c7365",
-                    "id": 3423,
+                    "id": 3425,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -2631,30 +2631,30 @@
                     },
                     "value": "false"
                   },
-                  "functionReturnParameters": 3375,
-                  "id": 3424,
+                  "functionReturnParameters": 3377,
+                  "id": 3426,
                   "nodeType": "Return",
                   "src": "1214:12:17"
                 }
               ]
             },
-            "id": 3426,
+            "id": 3428,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_isWhitelistedOperator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3372,
+              "id": 3374,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3369,
+                  "id": 3371,
                   "mutability": "mutable",
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3426,
+                  "scope": 3428,
                   "src": "749:15:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2663,7 +2663,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3368,
+                    "id": 3370,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "749:7:17",
@@ -2677,11 +2677,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3371,
+                  "id": 3373,
                   "mutability": "mutable",
                   "name": "operator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3426,
+                  "scope": 3428,
                   "src": "766:16:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2690,7 +2690,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3370,
+                    "id": 3372,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "766:7:17",
@@ -2706,16 +2706,16 @@
               "src": "748:35:17"
             },
             "returnParameters": {
-              "id": 3375,
+              "id": 3377,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3374,
+                  "id": 3376,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3426,
+                  "scope": 3428,
                   "src": "807:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2724,7 +2724,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3373,
+                    "id": 3375,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "807:4:17",
@@ -2738,7 +2738,7 @@
               ],
               "src": "806:6:17"
             },
-            "scope": 3449,
+            "scope": 3451,
             "src": "717:516:17",
             "stateMutability": "view",
             "virtual": false,
@@ -2746,7 +2746,7 @@
           },
           {
             "body": {
-              "id": 3447,
+              "id": 3449,
               "nodeType": "Block",
               "src": "1330:112:17",
               "statements": [
@@ -2756,7 +2756,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 3445,
+                    "id": 3447,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2764,11 +2764,11 @@
                     "leftExpression": {
                       "arguments": [
                         {
-                          "id": 3436,
+                          "id": 3438,
                           "name": "account",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 3428,
+                          "referencedDeclaration": 3430,
                           "src": "1370:7:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2776,11 +2776,11 @@
                           }
                         },
                         {
-                          "id": 3437,
+                          "id": 3439,
                           "name": "operator",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 3430,
+                          "referencedDeclaration": 3432,
                           "src": "1379:8:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -2799,18 +2799,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 3435,
+                        "id": 3437,
                         "name": "_isWhitelistedOperator",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3426,
+                        "referencedDeclaration": 3428,
                         "src": "1347:22:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$_t_address_$returns$_t_bool_$",
                           "typeString": "function (address,address) view returns (bool)"
                         }
                       },
-                      "id": 3438,
+                      "id": 3440,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2831,24 +2831,24 @@
                       "baseExpression": {
                         "expression": {
                           "baseExpression": {
-                            "id": 3439,
+                            "id": 3441,
                             "name": "_users",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1706,
+                            "referencedDeclaration": 1708,
                             "src": "1392:6:17",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1605_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1607_storage_$",
                               "typeString": "mapping(address => struct Data.User storage ref)"
                             }
                           },
-                          "id": 3441,
+                          "id": 3443,
                           "indexExpression": {
-                            "id": 3440,
+                            "id": 3442,
                             "name": "account",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 3428,
+                            "referencedDeclaration": 3430,
                             "src": "1399:7:17",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -2862,31 +2862,31 @@
                           "nodeType": "IndexAccess",
                           "src": "1392:15:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_User_$1605_storage",
+                            "typeIdentifier": "t_struct$_User_$1607_storage",
                             "typeString": "struct Data.User storage ref"
                           }
                         },
-                        "id": 3442,
+                        "id": 3444,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "operatorApprovals",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1604,
+                        "referencedDeclaration": 1606,
                         "src": "1392:33:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                           "typeString": "mapping(address => bool)"
                         }
                       },
-                      "id": 3444,
+                      "id": 3446,
                       "indexExpression": {
-                        "id": 3443,
+                        "id": 3445,
                         "name": "operator",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3430,
+                        "referencedDeclaration": 3432,
                         "src": "1426:8:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -2910,30 +2910,30 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 3434,
-                  "id": 3446,
+                  "functionReturnParameters": 3436,
+                  "id": 3448,
                   "nodeType": "Return",
                   "src": "1340:95:17"
                 }
               ]
             },
-            "id": 3448,
+            "id": 3450,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_isApprovedForAll",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3431,
+              "id": 3433,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3428,
+                  "id": 3430,
                   "mutability": "mutable",
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3448,
+                  "scope": 3450,
                   "src": "1266:15:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2942,7 +2942,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3427,
+                    "id": 3429,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1266:7:17",
@@ -2956,11 +2956,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3430,
+                  "id": 3432,
                   "mutability": "mutable",
                   "name": "operator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3448,
+                  "scope": 3450,
                   "src": "1283:16:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2969,7 +2969,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3429,
+                    "id": 3431,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1283:7:17",
@@ -2985,16 +2985,16 @@
               "src": "1265:35:17"
             },
             "returnParameters": {
-              "id": 3434,
+              "id": 3436,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3433,
+                  "id": 3435,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3448,
+                  "scope": 3450,
                   "src": "1324:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -3003,7 +3003,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3432,
+                    "id": 3434,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1324:4:17",
@@ -3017,14 +3017,14 @@
               ],
               "src": "1323:6:17"
             },
-            "scope": 3449,
+            "scope": 3451,
             "src": "1239:203:17",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "internal"
           }
         ],
-        "scope": 3450,
+        "scope": 3452,
         "src": "216:1228:17"
       }
     ],
@@ -3036,7 +3036,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-21T21:50:16.163Z",
+  "updatedAt": "2020-10-21T23:45:22.780Z",
   "devdoc": {
     "kind": "dev",
     "methods": {

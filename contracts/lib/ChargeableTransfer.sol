@@ -50,7 +50,7 @@ contract ChargeableTransfer is Data {
             if (!_tokens[id].holders[recipient].isHolder) {
                 _users[recipient].tokens.push(id);
                 _tokens[id].holderList.push(recipient);
-                _tokens[id].holders[recipient].isHolder;
+                _tokens[id].holders[recipient].isHolder = true;
             }
 
             _tokens[id].holders[recipient].birthday = block.timestamp;
