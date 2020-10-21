@@ -18,15 +18,8 @@ import './Proxyable.sol';
  */
 contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
 
-    bytes4 constant private INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
-    bytes4 constant private INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
-
     using SafeMath for uint256;
     using Address for address;
-
-
-    // Mapping from account to operator approvals
-    mapping (address => mapping(address => bool)) private _operatorApprovals;
 
 
     /****************************
@@ -103,7 +96,7 @@ contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
      */
     function setApprovalForAll(address operator, bool approved) external override {
         require(msg.sender != operator, "ERC1155: cannot set approval status for self");
-        _operatorApprovals[msg.sender][operator] = approved;
+        _users[msg.sender].operatorApprovals[operator] = approved;
         emit ApprovalForAll(msg.sender, operator, approved);
     }
 
@@ -114,7 +107,7 @@ contract ERC1155 is IERC165, IERC1155, ChargeableTransfer, Proxyable {
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address account, address operator) public view override returns (bool) {
-        return _isWhitelistedOperator(account, operator) || _operatorApprovals[account][operator];
+        return _isApprovedForAll(account, operator);
     }
 
     /**

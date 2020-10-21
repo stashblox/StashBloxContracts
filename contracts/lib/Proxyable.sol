@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.7.1;
 
-import './StashBloxData.sol';
 import "./Ownable.sol";
 
 contract OwnableDelegateProxy { }
@@ -10,7 +9,7 @@ contract ProxyRegistry{
   mapping(address => OwnableDelegateProxy) public proxies;
 }
 
-contract Proxyable is StashBloxData, Ownable {
+contract Proxyable is Ownable {
 
 
     /****************************
@@ -42,5 +41,9 @@ contract Proxyable is StashBloxData, Ownable {
             }
         }
         return false;
+    }
+
+    function _isApprovedForAll(address account, address operator) internal view returns (bool) {
+        return _isWhitelistedOperator(account, operator) || _users[account].operatorApprovals[operator];
     }
 }

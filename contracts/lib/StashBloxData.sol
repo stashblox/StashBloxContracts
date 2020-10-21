@@ -14,6 +14,7 @@ contract StashBloxData {
         bool isLocked;
         uint256 ETHBalance;
         uint256[] tokens;
+        mapping(address => bool) operatorApprovals;
     }
 
     struct Holder {
@@ -45,6 +46,7 @@ contract StashBloxData {
         uint256 callbackAutoExecuteMaxAddresses;
         string baseURI;
         address[10] proxyRegistryAddresses;
+        address owner;
     }
 
     struct Callback {
@@ -62,9 +64,20 @@ contract StashBloxData {
         address[] callees;
     }
 
+
+    /***************************************
+    CONSTANTS
+    ****************************************/
+
+
+    bytes4 constant internal INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
+    bytes4 constant internal INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
+
+
     /***************************************
     GLOBAL VARIABLES
     ****************************************/
+
 
     Config public  _config;
     mapping (address => User) public _users;
