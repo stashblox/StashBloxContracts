@@ -95,9 +95,9 @@ contract MultiToken is IERC165, IERC1155, ChargeableTransfer, Proxyable {
      * @param approved representing the status of the approval to be set
      */
     function setApprovalForAll(address operator, bool approved) external override {
-        require(msg.sender != operator, "ERC1155: cannot set approval status for self");
-        _users[msg.sender].operatorApprovals[operator] = approved;
-        emit ApprovalForAll(msg.sender, operator, approved);
+        require(_msgSender() != operator, "ERC1155: cannot set approval status for self");
+        _users[_msgSender()].operatorApprovals[operator] = approved;
+        emit ApprovalForAll(_msgSender(), operator, approved);
     }
 
     /**
@@ -131,15 +131,15 @@ contract MultiToken is IERC165, IERC1155, ChargeableTransfer, Proxyable {
     {
         require(to != address(0), "ERC1155: target address must be non-zero");
         require(
-            from == msg.sender || isApprovedForAll(from, msg.sender) == true,
+            from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
         _transfer(from, to, id, value);
 
-        emit TransferSingle(msg.sender, from, to, id, value);
+        emit TransferSingle(_msgSender(), from, to, id, value);
 
-        _doSafeTransferAcceptanceCheck(msg.sender, from, to, id, value, data);
+        _doSafeTransferAcceptanceCheck(_msgSender(), from, to, id, value, data);
     }
 
     /**
@@ -165,15 +165,15 @@ contract MultiToken is IERC165, IERC1155, ChargeableTransfer, Proxyable {
         require(ids.length == values.length, "ERC1155: IDs and values must have same lengths");
         require(to != address(0), "ERC1155: target address must be non-zero");
         require(
-            from == msg.sender || isApprovedForAll(from, msg.sender) == true,
+            from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
 
         _transferBatch(from, to, ids, values);
 
-        emit TransferBatch(msg.sender, from, to, ids, values);
+        emit TransferBatch(_msgSender(), from, to, ids, values);
 
-        _doSafeBatchTransferAcceptanceCheck(msg.sender, from, to, ids, values, data);
+        _doSafeBatchTransferAcceptanceCheck(_msgSender(), from, to, ids, values, data);
     }
 
 

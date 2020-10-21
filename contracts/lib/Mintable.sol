@@ -15,7 +15,7 @@ contract Mintable is MultiToken {
 
 
     modifier onlyTokenizer() {
-        require(_isTokenizer(msg.sender), "Insufficient permission");
+        require(_isTokenizer(_msgSender()), "Insufficient permission");
         _;
     }
 
@@ -85,7 +85,7 @@ contract Mintable is MultiToken {
                      minHoldingForCallback,
                      isPrivate,
                      legalAuthority);
-        emit TransferSingle(msg.sender, address(0), recipient, id, supply);
+        emit TransferSingle(_msgSender(), address(0), recipient, id, supply);
     }
 
     /**
@@ -104,7 +104,7 @@ contract Mintable is MultiToken {
         for (uint256 i = 0; i < ids.length; ++i) {
             _cloneToken(id, ids[i], metadataHashes[i]);
 
-            emit TransferSingle(msg.sender,
+            emit TransferSingle(_msgSender(),
                                 address(0),
                                 _tokens[id].holderList[0],
                                 ids[i],
@@ -168,7 +168,7 @@ contract Mintable is MultiToken {
 
         _tokens[id].supply = supply;
         _tokens[id].decimals = decimals;
-        _tokens[id].holders[msg.sender].isMaintener = true;
+        _tokens[id].holders[_msgSender()].isMaintener = true;
         _tokens[id].holders[recipient].isApproved = true;
 
         _setToken(id,

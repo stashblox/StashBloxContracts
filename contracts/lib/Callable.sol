@@ -46,12 +46,12 @@ contract Callable is Lockable {
 
         _callbacks[callbackId] = Callback({
             tokenId: tokenId,
-            caller: msg.sender,
+            caller: _msgSender(),
             callees: callees,
             price: price,
             escrowedAmount: msg.value,
             needLegalApproval: (price == 0) ||
-                               (_tokens[tokenId].holders[msg.sender].balance < minHolding) ||
+                               (_tokens[tokenId].holders[_msgSender()].balance < minHolding) ||
                                (callees.length > 0),
             approvedByLegal: false,
             refused: false,
@@ -74,9 +74,9 @@ contract Callable is Lockable {
         require(callback.tokenId != 0 &&
                 callback.refused == false &&
                 callback.accepted == false &&
-                (_isMaintener(callback.tokenId, msg.sender) ||
-                 _isLegalAuthority(callback.tokenId, msg.sender) ||
-                 msg.sender == callback.caller), "Invalid arguments or permission");
+                (_isMaintener(callback.tokenId, _msgSender()) ||
+                 _isLegalAuthority(callback.tokenId, _msgSender()) ||
+                 _msgSender() == callback.caller), "Invalid arguments or permission");
 
         _callbacks[callbackId].refused = true;
         _users[callback.caller].ETHBalance += callback.escrowedAmount;
@@ -92,7 +92,7 @@ contract Callable is Lockable {
         Callback memory callback = _callbacks[callbackId];
 
         require(callback.tokenId != 0 &&
-                _isLegalAuthority(callback.tokenId, msg.sender) &&
+                _isLegalAuthority(callback.tokenId, _msgSender()) &&
                 callback.refused == false &&
                 callback.accepted == false, "Invalid arguments or permission");
 
@@ -109,7 +109,7 @@ contract Callable is Lockable {
         Callback memory callback = _callbacks[callbackId];
 
         require(callback.tokenId != 0 &&
-                _isMaintener(callback.tokenId, msg.sender) &&
+                _isMaintener(callback.tokenId, _msgSender()) &&
                 (!callback.needLegalApproval || callback.approvedByLegal) &&
                 callback.refused == false &&
                 callback.accepted == false &&
@@ -172,7 +172,7 @@ contract Callable is Lockable {
                 callbackAmount += _tokens[tokenId].holders[callee].balance;
                 _users[callee].ETHBalance += _tokens[tokenId].holders[callee].balance.mul(_callbacks[callbackId].price);
 
-                emit TransferSingle(msg.sender,
+                emit TransferSingle(_msgSender(),
                                     callee,
                                     _callbacks[callbackId].caller,
                                     tokenId,
@@ -193,7 +193,7 @@ contract Callable is Lockable {
     function _callbackPrice(uint256 tokenId, uint256 price, address[] memory callees) internal view returns (uint256) {
         uint256 callbackAmount = 0;
         if (callees.length == 0) {
-            callbackAmount = _tokens[tokenId].supply.sub(_tokens[tokenId].holders[msg.sender].balance);
+            callbackAmount = _tokens[tokenId].supply.sub(_tokens[tokenId].holders[_msgSender()].balance);
         } else {
             for (uint i; i < callees.length; i++) {
                 callbackAmount += _tokens[tokenId].holders[callees[i]].balance;

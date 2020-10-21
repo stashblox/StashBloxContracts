@@ -20,7 +20,7 @@ contract Maintenable is Mintable {
 
 
     modifier onlyMaintener(uint256 id) {
-        require(_isMaintener(id, msg.sender), "Insufficient permission");
+        require(_isMaintener(id, _msgSender()), "Insufficient permission");
         _;
     }
 

@@ -3,8 +3,9 @@ pragma solidity ^0.7.1;
 
 import '../utils/StringUtils.sol';
 import '../interfaces/IERC1155Metadata.sol';
+import './GSNCapable.sol';
 
-contract Data is IERC1155Metadata, StringUtils {
+contract Data is GSNCapable, IERC1155Metadata, StringUtils {
 
 
     /***************************************
@@ -75,6 +76,7 @@ contract Data is IERC1155Metadata, StringUtils {
 
     bytes4 constant internal INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 constant internal INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
+    string public override versionRecipient = "1.0.0+opengsn.stashblox";
 
 
     /***************************************

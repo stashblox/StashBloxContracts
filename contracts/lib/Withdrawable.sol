@@ -38,7 +38,7 @@ contract Withdrawable is Data {
      * @dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()).
      */
     receive() external payable {
-        _users[msg.sender].ETHBalance = _users[msg.sender].ETHBalance.add(msg.value);
+        _users[_msgSender()].ETHBalance = _users[_msgSender()].ETHBalance.add(msg.value);
     }
 
 
