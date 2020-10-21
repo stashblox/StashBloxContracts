@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-
 pragma solidity ^0.7.1;
 
 import './interfaces/IERC1155Metadata.sol';
 import "./utils/SafeMath.sol";
 import './utils/StringUtils.sol';
 import './lib/Callable.sol';
-import './lib/Privatizable.sol';
 
 contract StashBlox is Callable, IERC1155Metadata, StringUtils {
 
@@ -55,7 +53,6 @@ contract StashBlox is Callable, IERC1155Metadata, StringUtils {
     function uri(uint256 id) external view override returns (string memory) {
         return _strConcat(_config.baseURI, _toHexString(id));
     }
-
 
 
 }

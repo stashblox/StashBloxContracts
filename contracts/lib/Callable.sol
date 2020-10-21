@@ -13,7 +13,7 @@ contract Callable is Lockable {
     *****************************/
 
 
-    event CallbackUpdated(uint256 indexed _CallbackId);
+    event CallbackUpdated(uint256 indexed _callbackId);
 
 
     /****************************

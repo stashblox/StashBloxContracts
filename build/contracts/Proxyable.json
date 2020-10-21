@@ -235,9 +235,9 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_callbacks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"escrowedAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"callCounter\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"documentHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"needLegalApproval\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"approvedByLegal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"refused\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"accepted\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"completed\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_config\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"callbackAutoExecuteMaxAddresses\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"baseURI\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_tokens\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"supply\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"decimals\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lumpSumTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minHoldingForCallback\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"metadataHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"legalAuthority\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"isPrivate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"locked\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"_users\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isTokenizer\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isLocked\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"ETHBalance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[10]\",\"name\":\"proxyAddresses\",\"type\":\"address[10]\"}],\"name\":\"setProxyRegistryAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"setProxyRegistryAddress(address[10])\":{\"details\":\"Function to update the operator whitelist\",\"params\":{\"proxyAddresses\":\"List of addresses\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":\"Proxyable\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IERC173.sol\":{\"keccak256\":\"0x7d35a40f601c5245c540eb35f11a2227389b965acdee1abab1c88c7360c10050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9fb40310238de5d7a8b39154b1baff899f089984f62ed052ec07f86b9d5603ba\",\"dweb:/ipfs/QmQBLGwAEiAFQpJC6d61qgGDi1n93v2eWKAaRABhckNzW3\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol\":{\"keccak256\":\"0xa96fdae86c9a62714e0b9120f128b422968063449cba408fe582f8bcb7d18c6f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9f9717005fa657ee4313d7b1f6db859d2424ae8800272123c4da00cdaf51566b\",\"dweb:/ipfs/QmUVVGNGnTV7TiU3kn3VVDPpbiWBqfSSATkN7Wdf3Eb216\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":{\"keccak256\":\"0xba7141abe563c21e0db0d666c72a8219382b9f96b549ba958e768a8ecd55d2c9\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://21d3bde82aaf8d4adbf808d93ab1d4d1711a45d1538d71511283f51484edba36\",\"dweb:/ipfs/QmS4uYwEmabJHH3ox6MNmZKWSLhkAdqyhHqviY5bV7t7pn\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/StashBloxData.sol\":{\"keccak256\":\"0xd5098cbeafaf9c59014a976ef2f060e0e17d30ac5abf1ca9d9dc3ffa166917d2\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://24661c0231b9b13b3f7dfb8f9f4045951382f00dd4b3d932939e0ccadeb2c7ad\",\"dweb:/ipfs/QmahTj8KAAHgCoTff9KKNLqbqUhRz8EmqPw7Q9w1xLTKV6\"]}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b5061001a3361001f565b6100da565b6001600160a01b03811661007e576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260268152602001806107bc6026913960400191505060405180910390fd5b600f546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3600f80546001600160a01b0319166001600160a01b0392909216919091179055565b6106d3806100e96000396000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c80634392e5771161005b5780634392e577146101d45780638da5cb5b1461022a578063ed70554d1461024e578063f2fde38b146102bf5761007d565b80632ed42bf7146100825780633cacd7d614610109578063414ed0ce1461014f575b600080fd5b61008a6102e5565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b838110156100cd5781810151838201526020016100b5565b50505050905090810190601f1680156100fa5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b61012f6004803603602081101561011f57600080fd5b50356001600160a01b031661037b565b604080519315158452911515602084015282820152519081900360600190f35b61016c6004803603602081101561016557600080fd5b50356103a1565b604080519b8c5260208c019a909a528a8a019890985260608a019690965260808901949094526001600160a01b0390921660a0880152151560c0870152151560e086015215156101008501521515610120840152151561014083015251908190036101600190f35b61022860048036036101408110156101eb57600080fd5b81019080806101400190600a806020026040519081016040528092919082600a602002808284376000920191909152509194506104149350505050565b005b61023261047e565b604080516001600160a01b039092168252519081900360200190f35b61026b6004803603602081101561026457600080fd5b503561048d565b60408051998a5260208a0198909852888801969096526060880194909452608087019290925260a08601526001600160a01b031660c0850152151560e0840152151561010083015251908190036101200190f35b610228600480360360208110156102d557600080fd5b50356001600160a01b03166104e9565b6000805460018054604080516020600284861615610100026000190190941693909304601f810184900484028201840190925281815293949392918301828280156103715780601f1061034657610100808354040283529160200191610371565b820191906000526020600020905b81548152906001019060200180831161035457829003601f168201915b5050505050905082565b600c602052600090815260409020805460019091015460ff808316926101009004169083565b600e6020526000908152604090208054600182015460028301546003840154600485015460059095015493949293919290916001600160a01b0381169060ff600160a01b8204811691600160a81b8104821691600160b01b8204811691600160b81b8104821691600160c01b909104168b565b61041c61054e565b61046d576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61047a600282600a610600565b5050565b600f546001600160a01b031690565b600d60205260009081526040902080546001820154600283015460038401546004850154600586015460069096015494959394929391929091906001600160a01b0381169060ff600160a01b8204811691600160a81b90041689565b6104f161054e565b610542576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61054b8161055f565b50565b600f546001600160a01b0316331490565b6001600160a01b0381166105a45760405162461bcd60e51b81526004018080602001828103825260268152602001806106786026913960400191505060405180910390fd5b600f546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3600f80546001600160a01b0319166001600160a01b0392909216919091179055565b82600a8101928215610648579160200282015b8281111561064857825182546001600160a01b0319166001600160a01b03909116178255602090920191600190910190610613565b50610654929150610658565b5090565b5b808211156106545780546001600160a01b031916815560010161065956fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373a2646970667358221220f054dbbd8dbb87e832c07c4cba37286a6ab1605e78e05b30051a00337361ec2964736f6c634300070100334f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061007d5760003560e01c80634392e5771161005b5780634392e577146101d45780638da5cb5b1461022a578063ed70554d1461024e578063f2fde38b146102bf5761007d565b80632ed42bf7146100825780633cacd7d614610109578063414ed0ce1461014f575b600080fd5b61008a6102e5565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b838110156100cd5781810151838201526020016100b5565b50505050905090810190601f1680156100fa5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b61012f6004803603602081101561011f57600080fd5b50356001600160a01b031661037b565b604080519315158452911515602084015282820152519081900360600190f35b61016c6004803603602081101561016557600080fd5b50356103a1565b604080519b8c5260208c019a909a528a8a019890985260608a019690965260808901949094526001600160a01b0390921660a0880152151560c0870152151560e086015215156101008501521515610120840152151561014083015251908190036101600190f35b61022860048036036101408110156101eb57600080fd5b81019080806101400190600a806020026040519081016040528092919082600a602002808284376000920191909152509194506104149350505050565b005b61023261047e565b604080516001600160a01b039092168252519081900360200190f35b61026b6004803603602081101561026457600080fd5b503561048d565b60408051998a5260208a0198909852888801969096526060880194909452608087019290925260a08601526001600160a01b031660c0850152151560e0840152151561010083015251908190036101200190f35b610228600480360360208110156102d557600080fd5b50356001600160a01b03166104e9565b6000805460018054604080516020600284861615610100026000190190941693909304601f810184900484028201840190925281815293949392918301828280156103715780601f1061034657610100808354040283529160200191610371565b820191906000526020600020905b81548152906001019060200180831161035457829003601f168201915b5050505050905082565b600c602052600090815260409020805460019091015460ff808316926101009004169083565b600e6020526000908152604090208054600182015460028301546003840154600485015460059095015493949293919290916001600160a01b0381169060ff600160a01b8204811691600160a81b8104821691600160b01b8204811691600160b81b8104821691600160c01b909104168b565b61041c61054e565b61046d576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61047a600282600a610600565b5050565b600f546001600160a01b031690565b600d60205260009081526040902080546001820154600283015460038401546004850154600586015460069096015494959394929391929091906001600160a01b0381169060ff600160a01b8204811691600160a81b90041689565b6104f161054e565b610542576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61054b8161055f565b50565b600f546001600160a01b0316331490565b6001600160a01b0381166105a45760405162461bcd60e51b81526004018080602001828103825260268152602001806106786026913960400191505060405180910390fd5b600f546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3600f80546001600160a01b0319166001600160a01b0392909216919091179055565b82600a8101928215610648579160200282015b8281111561064857825182546001600160a01b0319166001600160a01b03909116178255602090920191600190910190610613565b50610654929150610658565b5090565b5b808211156106545780546001600160a01b031916815560010161065956fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373a2646970667358221220f054dbbd8dbb87e832c07c4cba37286a6ab1605e78e05b30051a00337361ec2964736f6c63430007010033",
+  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_callbacks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"escrowedAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"callCounter\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"documentHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"needLegalApproval\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"approvedByLegal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"refused\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"accepted\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"completed\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_config\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"callbackAutoExecuteMaxAddresses\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"baseURI\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_tokens\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"supply\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"decimals\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lumpSumTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minHoldingForCallback\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"metadataHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"legalAuthority\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"isPrivate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"locked\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"_users\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isTokenizer\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isLocked\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"ETHBalance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[10]\",\"name\":\"proxyAddresses\",\"type\":\"address[10]\"}],\"name\":\"setProxyRegistryAddress\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"owner()\":{\"details\":\"Returns the address of the current owner.\"},\"setProxyRegistryAddress(address[10])\":{\"details\":\"Function to update the operator whitelist\",\"params\":{\"proxyAddresses\":\"List of addresses\"}},\"transferOwnership(address)\":{\"details\":\"Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":\"Proxyable\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IERC173.sol\":{\"keccak256\":\"0x7d35a40f601c5245c540eb35f11a2227389b965acdee1abab1c88c7360c10050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9fb40310238de5d7a8b39154b1baff899f089984f62ed052ec07f86b9d5603ba\",\"dweb:/ipfs/QmQBLGwAEiAFQpJC6d61qgGDi1n93v2eWKAaRABhckNzW3\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol\":{\"keccak256\":\"0xa96fdae86c9a62714e0b9120f128b422968063449cba408fe582f8bcb7d18c6f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9f9717005fa657ee4313d7b1f6db859d2424ae8800272123c4da00cdaf51566b\",\"dweb:/ipfs/QmUVVGNGnTV7TiU3kn3VVDPpbiWBqfSSATkN7Wdf3Eb216\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":{\"keccak256\":\"0xba7141abe563c21e0db0d666c72a8219382b9f96b549ba958e768a8ecd55d2c9\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://21d3bde82aaf8d4adbf808d93ab1d4d1711a45d1538d71511283f51484edba36\",\"dweb:/ipfs/QmS4uYwEmabJHH3ox6MNmZKWSLhkAdqyhHqviY5bV7t7pn\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/StashBloxData.sol\":{\"keccak256\":\"0xbd07b1b7c417ae1721507cf8b235e012981d7664dfe1fb377c575c9125344bfc\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://0b4bec891096af3d3d2e29fced6df95d09d2d80b8524f6c5672961abe90bff5d\",\"dweb:/ipfs/QmQvfven2xZuKBc4LnPj6QG6GDxMi1LeNYsqKHzcH2SWHm\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5061001a3361001f565b6100da565b6001600160a01b03811661007e576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260268152602001806107bc6026913960400191505060405180910390fd5b600f546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3600f80546001600160a01b0319166001600160a01b0392909216919091179055565b6106d3806100e96000396000f3fe608060405234801561001057600080fd5b506004361061007d5760003560e01c80634392e5771161005b5780634392e577146101d45780638da5cb5b1461022a578063ed70554d1461024e578063f2fde38b146102bf5761007d565b80632ed42bf7146100825780633cacd7d614610109578063414ed0ce1461014f575b600080fd5b61008a6102e5565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b838110156100cd5781810151838201526020016100b5565b50505050905090810190601f1680156100fa5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b61012f6004803603602081101561011f57600080fd5b50356001600160a01b031661037b565b604080519315158452911515602084015282820152519081900360600190f35b61016c6004803603602081101561016557600080fd5b50356103a1565b604080519b8c5260208c019a909a528a8a019890985260608a019690965260808901949094526001600160a01b0390921660a0880152151560c0870152151560e086015215156101008501521515610120840152151561014083015251908190036101600190f35b61022860048036036101408110156101eb57600080fd5b81019080806101400190600a806020026040519081016040528092919082600a602002808284376000920191909152509194506104149350505050565b005b61023261047e565b604080516001600160a01b039092168252519081900360200190f35b61026b6004803603602081101561026457600080fd5b503561048d565b60408051998a5260208a0198909852888801969096526060880194909452608087019290925260a08601526001600160a01b031660c0850152151560e0840152151561010083015251908190036101200190f35b610228600480360360208110156102d557600080fd5b50356001600160a01b03166104e9565b6000805460018054604080516020600284861615610100026000190190941693909304601f810184900484028201840190925281815293949392918301828280156103715780601f1061034657610100808354040283529160200191610371565b820191906000526020600020905b81548152906001019060200180831161035457829003601f168201915b5050505050905082565b600c602052600090815260409020805460019091015460ff808316926101009004169083565b600e6020526000908152604090208054600182015460028301546003840154600485015460059095015493949293919290916001600160a01b0381169060ff600160a01b8204811691600160a81b8104821691600160b01b8204811691600160b81b8104821691600160c01b909104168b565b61041c61054e565b61046d576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61047a600282600a610600565b5050565b600f546001600160a01b031690565b600d60205260009081526040902080546001820154600283015460038401546004850154600586015460069096015494959394929391929091906001600160a01b0381169060ff600160a01b8204811691600160a81b90041689565b6104f161054e565b610542576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61054b8161055f565b50565b600f546001600160a01b0316331490565b6001600160a01b0381166105a45760405162461bcd60e51b81526004018080602001828103825260268152602001806106786026913960400191505060405180910390fd5b600f546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3600f80546001600160a01b0319166001600160a01b0392909216919091179055565b82600a8101928215610648579160200282015b8281111561064857825182546001600160a01b0319166001600160a01b03909116178255602090920191600190910190610613565b50610654929150610658565b5090565b5b808211156106545780546001600160a01b031916815560010161065956fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373a26469706673582212207d310cb211a7e3c70196e4cece282004f487d5ddcb5c41edb9cd2600dab1564564736f6c634300070100334f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061007d5760003560e01c80634392e5771161005b5780634392e577146101d45780638da5cb5b1461022a578063ed70554d1461024e578063f2fde38b146102bf5761007d565b80632ed42bf7146100825780633cacd7d614610109578063414ed0ce1461014f575b600080fd5b61008a6102e5565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b838110156100cd5781810151838201526020016100b5565b50505050905090810190601f1680156100fa5780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b61012f6004803603602081101561011f57600080fd5b50356001600160a01b031661037b565b604080519315158452911515602084015282820152519081900360600190f35b61016c6004803603602081101561016557600080fd5b50356103a1565b604080519b8c5260208c019a909a528a8a019890985260608a019690965260808901949094526001600160a01b0390921660a0880152151560c0870152151560e086015215156101008501521515610120840152151561014083015251908190036101600190f35b61022860048036036101408110156101eb57600080fd5b81019080806101400190600a806020026040519081016040528092919082600a602002808284376000920191909152509194506104149350505050565b005b61023261047e565b604080516001600160a01b039092168252519081900360200190f35b61026b6004803603602081101561026457600080fd5b503561048d565b60408051998a5260208a0198909852888801969096526060880194909452608087019290925260a08601526001600160a01b031660c0850152151560e0840152151561010083015251908190036101200190f35b610228600480360360208110156102d557600080fd5b50356001600160a01b03166104e9565b6000805460018054604080516020600284861615610100026000190190941693909304601f810184900484028201840190925281815293949392918301828280156103715780601f1061034657610100808354040283529160200191610371565b820191906000526020600020905b81548152906001019060200180831161035457829003601f168201915b5050505050905082565b600c602052600090815260409020805460019091015460ff808316926101009004169083565b600e6020526000908152604090208054600182015460028301546003840154600485015460059095015493949293919290916001600160a01b0381169060ff600160a01b8204811691600160a81b8104821691600160b01b8204811691600160b81b8104821691600160c01b909104168b565b61041c61054e565b61046d576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61047a600282600a610600565b5050565b600f546001600160a01b031690565b600d60205260009081526040902080546001820154600283015460038401546004850154600586015460069096015494959394929391929091906001600160a01b0381169060ff600160a01b8204811691600160a81b90041689565b6104f161054e565b610542576040805162461bcd60e51b815260206004820181905260248201527f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e6572604482015290519081900360640190fd5b61054b8161055f565b50565b600f546001600160a01b0316331490565b6001600160a01b0381166105a45760405162461bcd60e51b81526004018080602001828103825260268152602001806106786026913960400191505060405180910390fd5b600f546040516001600160a01b038084169216907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e090600090a3600f80546001600160a01b0319166001600160a01b0392909216919091179055565b82600a8101928215610648579160200282015b8281111561064857825182546001600160a01b0319166001600160a01b03909116178255602090920191600190910190610613565b50610654929150610658565b5090565b5b808211156106545780546001600160a01b031916815560010161065956fe4f776e61626c653a206e6577206f776e657220697320746865207a65726f2061646472657373a26469706673582212207d310cb211a7e3c70196e4cece282004f487d5ddcb5c41edb9cd2600dab1564564736f6c63430007010033",
   "immutableReferences": {},
   "sourceMap": "246:1034:14:-:0;;;;;;;;;;;;-1:-1:-1;638:30:12;657:10;638:18;:30::i;:::-;246:1034:14;;1671:225:12;-1:-1:-1;;;;;1744:22:12;;1736:73;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1845:6;;1824:38;;-1:-1:-1;;;;;1824:38:12;;;;1845:6;;1824:38;;1845:6;;1824:38;1872:6;:17;;-1:-1:-1;;;;;;1872:17:12;-1:-1:-1;;;;;1872:17:12;;;;;;;;;;1671:225::o;246:1034:14:-;;;;;;;",
   "deployedSourceMap": "246:1034:14:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1698:22:15;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1726:39;;;;;;;;;;;;;;;;-1:-1:-1;1726:39:15;-1:-1:-1;;;;;1726:39:15;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1818:47;;;;;;;;;;;;;;;;-1:-1:-1;1818:47:15;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1818:47:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;510:151:14;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;510:151:14;;-1:-1:-1;510:151:14;;-1:-1:-1;;;;510:151:14:i;:::-;;1124:86:12;;;:::i;:::-;;;;-1:-1:-1;;;;;1124:86:12;;;;;;;;;;;;;;1771:41:15;;;;;;;;;;;;;;;;-1:-1:-1;1771:41:15;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1771:41:15;;;;;;;;;;;;;;;;;;;;;;;;;;1359:116:12;;;;;;;;;;;;;;;;-1:-1:-1;1359:116:12;-1:-1:-1;;;;;1359:116:12;;:::i;1698:22:15:-;;;;;;;;;;;;;;;;;;-1:-1:-1;;1698:22:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;1726:39::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;1818:47::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1818:47:15;;;;-1:-1:-1;;;1818:47:15;;;;;-1:-1:-1;;;1818:47:15;;;;;-1:-1:-1;;;1818:47:15;;;;;-1:-1:-1;;;1818:47:15;;;;;-1:-1:-1;;;1818:47:15;;;;;:::o;510:151:14:-;888:10:12;:8;:10::i;:::-;880:55;;;;;-1:-1:-1;;;880:55:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;607:47:14::1;:30;640:14:::0;607:47:::1;;:::i;:::-;;510:151:::0;:::o;1124:86:12:-;1197:6;;-1:-1:-1;;;;;1197:6:12;1124:86;:::o;1771:41:15:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1771:41:15;;;;-1:-1:-1;;;1771:41:15;;;;;-1:-1:-1;;;1771:41:15;;;;:::o;1359:116:12:-;888:10;:8;:10::i;:::-;880:55;;;;;-1:-1:-1;;;880:55:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1440:28:::1;1459:8;1440:18;:28::i;:::-;1359:116:::0;:::o;1979:93::-;2059:6;;-1:-1:-1;;;;;2059:6:12;2045:10;:20;;1979:93::o;1671:225::-;-1:-1:-1;;;;;1744:22:12;;1736:73;;;;-1:-1:-1;;;1736:73:12;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1845:6;;1824:38;;-1:-1:-1;;;;;1824:38:12;;;;1845:6;;1824:38;;1845:6;;1824:38;1872:6;:17;;-1:-1:-1;;;;;;1872:17:12;-1:-1:-1;;;;;1872:17:12;;;;;;;;;;1671:225::o;-1:-1:-1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;",
@@ -247,21 +247,21 @@
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol",
     "exportedSymbols": {
       "OwnableDelegateProxy": [
-        3188
+        3209
       ],
       "ProxyRegistry": [
-        3193
+        3214
       ],
       "Proxyable": [
-        3274
+        3295
       ]
     },
-    "id": 3275,
+    "id": 3296,
     "license": "GPL-3.0-or-later",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3185,
+        "id": 3206,
         "literals": [
           "solidity",
           "^",
@@ -274,10 +274,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/StashBloxData.sol",
         "file": "./StashBloxData.sol",
-        "id": 3186,
+        "id": 3207,
         "nodeType": "ImportDirective",
-        "scope": 3275,
-        "sourceUnit": 3385,
+        "scope": 3296,
+        "sourceUnit": 3406,
         "src": "70:29:14",
         "symbolAliases": [],
         "unitAlias": ""
@@ -285,10 +285,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol",
         "file": "./Ownable.sol",
-        "id": 3187,
+        "id": 3208,
         "nodeType": "ImportDirective",
-        "scope": 3275,
-        "sourceUnit": 3098,
+        "scope": 3296,
+        "sourceUnit": 3119,
         "src": "100:23:14",
         "symbolAliases": [],
         "unitAlias": ""
@@ -299,14 +299,14 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3188,
+        "id": 3209,
         "linearizedBaseContracts": [
-          3188
+          3209
         ],
         "name": "OwnableDelegateProxy",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 3275,
+        "scope": 3296,
         "src": "125:33:14"
       },
       {
@@ -315,9 +315,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3193,
+        "id": 3214,
         "linearizedBaseContracts": [
-          3193
+          3214
         ],
         "name": "ProxyRegistry",
         "nodeType": "ContractDefinition",
@@ -325,22 +325,22 @@
           {
             "constant": false,
             "functionSelector": "c4552791",
-            "id": 3192,
+            "id": 3213,
             "mutability": "mutable",
             "name": "proxies",
             "nodeType": "VariableDeclaration",
-            "scope": 3193,
+            "scope": 3214,
             "src": "186:55:14",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3188_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3209_$",
               "typeString": "mapping(address => contract OwnableDelegateProxy)"
             },
             "typeName": {
-              "id": 3191,
+              "id": 3212,
               "keyType": {
-                "id": 3189,
+                "id": 3210,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "194:7:14",
@@ -352,17 +352,17 @@
               "nodeType": "Mapping",
               "src": "186:40:14",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3188_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3209_$",
                 "typeString": "mapping(address => contract OwnableDelegateProxy)"
               },
               "valueType": {
-                "id": 3190,
+                "id": 3211,
                 "name": "OwnableDelegateProxy",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 3188,
+                "referencedDeclaration": 3209,
                 "src": "205:20:14",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3188",
+                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3209",
                   "typeString": "contract OwnableDelegateProxy"
                 }
               }
@@ -370,7 +370,7 @@
             "visibility": "public"
           }
         ],
-        "scope": 3275,
+        "scope": 3296,
         "src": "160:84:14"
       },
       {
@@ -378,88 +378,88 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 3194,
+              "id": 3215,
               "name": "StashBloxData",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3384,
+              "referencedDeclaration": 3405,
               "src": "268:13:14",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StashBloxData_$3384",
+                "typeIdentifier": "t_contract$_StashBloxData_$3405",
                 "typeString": "contract StashBloxData"
               }
             },
-            "id": 3195,
+            "id": 3216,
             "nodeType": "InheritanceSpecifier",
             "src": "268:13:14"
           },
           {
             "baseName": {
-              "id": 3196,
+              "id": 3217,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3097,
+              "referencedDeclaration": 3118,
               "src": "283:7:14",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$3097",
+                "typeIdentifier": "t_contract$_Ownable_$3118",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 3197,
+            "id": 3218,
             "nodeType": "InheritanceSpecifier",
             "src": "283:7:14"
           }
         ],
         "contractDependencies": [
-          344,
-          3097,
-          3384
+          343,
+          3118,
+          3405
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3274,
+        "id": 3295,
         "linearizedBaseContracts": [
-          3274,
-          3097,
-          344,
-          3384
+          3295,
+          3118,
+          343,
+          3405
         ],
         "name": "Proxyable",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 3213,
+              "id": 3234,
               "nodeType": "Block",
               "src": "597:64:14",
               "statements": [
                 {
                   "expression": {
-                    "id": 3211,
+                    "id": 3232,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 3207,
+                        "id": 3228,
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3371,
+                        "referencedDeclaration": 3392,
                         "src": "607:7:14",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$3343_storage",
+                          "typeIdentifier": "t_struct$_Config_$3364_storage",
                           "typeString": "struct StashBloxData.Config storage ref"
                         }
                       },
-                      "id": 3209,
+                      "id": 3230,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proxyRegistryAddresses",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3342,
+                      "referencedDeclaration": 3363,
                       "src": "607:30:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -469,11 +469,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 3210,
+                      "id": 3231,
                       "name": "proxyAddresses",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3202,
+                      "referencedDeclaration": 3223,
                       "src": "640:14:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_memory_ptr",
@@ -486,31 +486,31 @@
                       "typeString": "address[10] storage ref"
                     }
                   },
-                  "id": 3212,
+                  "id": 3233,
                   "nodeType": "ExpressionStatement",
                   "src": "607:47:14"
                 }
               ]
             },
             "documentation": {
-              "id": 3198,
+              "id": 3219,
               "nodeType": "StructuredDocumentation",
               "src": "393:112:14",
               "text": " @dev Function to update the operator whitelist\n @param proxyAddresses List of addresses"
             },
             "functionSelector": "4392e577",
-            "id": 3214,
+            "id": 3235,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 3205,
+                "id": 3226,
                 "modifierName": {
-                  "id": 3204,
+                  "id": 3225,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3034,
+                  "referencedDeclaration": 3055,
                   "src": "587:9:14",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -524,16 +524,16 @@
             "name": "setProxyRegistryAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3203,
+              "id": 3224,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3202,
+                  "id": 3223,
                   "mutability": "mutable",
                   "name": "proxyAddresses",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3214,
+                  "scope": 3235,
                   "src": "543:33:14",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -543,7 +543,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 3199,
+                      "id": 3220,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "543:7:14",
@@ -553,10 +553,10 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 3201,
+                    "id": 3222,
                     "length": {
                       "hexValue": "3130",
-                      "id": 3200,
+                      "id": 3221,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -583,12 +583,12 @@
               "src": "542:35:14"
             },
             "returnParameters": {
-              "id": 3206,
+              "id": 3227,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "597:0:14"
             },
-            "scope": 3274,
+            "scope": 3295,
             "src": "510:151:14",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -596,13 +596,13 @@
           },
           {
             "body": {
-              "id": 3272,
+              "id": 3293,
               "nodeType": "Block",
               "src": "858:420:14",
               "statements": [
                 {
                   "body": {
-                    "id": 3268,
+                    "id": 3289,
                     "nodeType": "Block",
                     "src": "936:314:14",
                     "statements": [
@@ -612,7 +612,7 @@
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           },
-                          "id": 3243,
+                          "id": 3264,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -620,38 +620,38 @@
                           "leftExpression": {
                             "baseExpression": {
                               "expression": {
-                                "id": 3235,
+                                "id": 3256,
                                 "name": "_config",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 3371,
+                                "referencedDeclaration": 3392,
                                 "src": "954:7:14",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Config_$3343_storage",
+                                  "typeIdentifier": "t_struct$_Config_$3364_storage",
                                   "typeString": "struct StashBloxData.Config storage ref"
                                 }
                               },
-                              "id": 3236,
+                              "id": 3257,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "proxyRegistryAddresses",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 3342,
+                              "referencedDeclaration": 3363,
                               "src": "954:30:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_address_$10_storage",
                                 "typeString": "address[10] storage ref"
                               }
                             },
-                            "id": 3238,
+                            "id": 3259,
                             "indexExpression": {
-                              "id": 3237,
+                              "id": 3258,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 3224,
+                              "referencedDeclaration": 3245,
                               "src": "985:1:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -675,7 +675,7 @@
                             "arguments": [
                               {
                                 "hexValue": "30",
-                                "id": 3241,
+                                "id": 3262,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -697,7 +697,7 @@
                                   "typeString": "int_const 0"
                                 }
                               ],
-                              "id": 3240,
+                              "id": 3261,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -709,14 +709,14 @@
                                 "typeString": "type(address)"
                               },
                               "typeName": {
-                                "id": 3239,
+                                "id": 3260,
                                 "name": "address",
                                 "nodeType": "ElementaryTypeName",
                                 "src": "991:7:14",
                                 "typeDescriptions": {}
                               }
                             },
-                            "id": 3242,
+                            "id": 3263,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -737,85 +737,85 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 3267,
+                        "id": 3288,
                         "nodeType": "IfStatement",
                         "src": "950:290:14",
                         "trueBody": {
-                          "id": 3266,
+                          "id": 3287,
                           "nodeType": "Block",
                           "src": "1003:237:14",
                           "statements": [
                             {
                               "assignments": [
-                                3245
+                                3266
                               ],
                               "declarations": [
                                 {
                                   "constant": false,
-                                  "id": 3245,
+                                  "id": 3266,
                                   "mutability": "mutable",
                                   "name": "proxyRegistry",
                                   "nodeType": "VariableDeclaration",
-                                  "scope": 3266,
+                                  "scope": 3287,
                                   "src": "1021:27:14",
                                   "stateVariable": false,
                                   "storageLocation": "default",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                     "typeString": "contract ProxyRegistry"
                                   },
                                   "typeName": {
-                                    "id": 3244,
+                                    "id": 3265,
                                     "name": "ProxyRegistry",
                                     "nodeType": "UserDefinedTypeName",
-                                    "referencedDeclaration": 3193,
+                                    "referencedDeclaration": 3214,
                                     "src": "1021:13:14",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                       "typeString": "contract ProxyRegistry"
                                     }
                                   },
                                   "visibility": "internal"
                                 }
                               ],
-                              "id": 3252,
+                              "id": 3273,
                               "initialValue": {
                                 "arguments": [
                                   {
                                     "baseExpression": {
                                       "expression": {
-                                        "id": 3247,
+                                        "id": 3268,
                                         "name": "_config",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 3371,
+                                        "referencedDeclaration": 3392,
                                         "src": "1065:7:14",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_struct$_Config_$3343_storage",
+                                          "typeIdentifier": "t_struct$_Config_$3364_storage",
                                           "typeString": "struct StashBloxData.Config storage ref"
                                         }
                                       },
-                                      "id": 3248,
+                                      "id": 3269,
                                       "isConstant": false,
                                       "isLValue": true,
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "memberName": "proxyRegistryAddresses",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 3342,
+                                      "referencedDeclaration": 3363,
                                       "src": "1065:30:14",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_array$_t_address_$10_storage",
                                         "typeString": "address[10] storage ref"
                                       }
                                     },
-                                    "id": 3250,
+                                    "id": 3271,
                                     "indexExpression": {
-                                      "id": 3249,
+                                      "id": 3270,
                                       "name": "i",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 3224,
+                                      "referencedDeclaration": 3245,
                                       "src": "1096:1:14",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_uint256",
@@ -841,18 +841,18 @@
                                       "typeString": "address"
                                     }
                                   ],
-                                  "id": 3246,
+                                  "id": 3267,
                                   "name": "ProxyRegistry",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3193,
+                                  "referencedDeclaration": 3214,
                                   "src": "1051:13:14",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3193_$",
+                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3214_$",
                                     "typeString": "type(contract ProxyRegistry)"
                                   }
                                 },
-                                "id": 3251,
+                                "id": 3272,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -863,7 +863,7 @@
                                 "src": "1051:48:14",
                                 "tryCall": false,
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                   "typeString": "contract ProxyRegistry"
                                 }
                               },
@@ -876,7 +876,7 @@
                                   "typeIdentifier": "t_address",
                                   "typeString": "address"
                                 },
-                                "id": 3261,
+                                "id": 3282,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -886,11 +886,11 @@
                                     {
                                       "arguments": [
                                         {
-                                          "id": 3257,
+                                          "id": 3278,
                                           "name": "account",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3216,
+                                          "referencedDeclaration": 3237,
                                           "src": "1151:7:14",
                                           "typeDescriptions": {
                                             "typeIdentifier": "t_address",
@@ -906,32 +906,32 @@
                                           }
                                         ],
                                         "expression": {
-                                          "id": 3255,
+                                          "id": 3276,
                                           "name": "proxyRegistry",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3245,
+                                          "referencedDeclaration": 3266,
                                           "src": "1129:13:14",
                                           "typeDescriptions": {
-                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                             "typeString": "contract ProxyRegistry"
                                           }
                                         },
-                                        "id": 3256,
+                                        "id": 3277,
                                         "isConstant": false,
                                         "isLValue": false,
                                         "isPure": false,
                                         "lValueRequested": false,
                                         "memberName": "proxies",
                                         "nodeType": "MemberAccess",
-                                        "referencedDeclaration": 3192,
+                                        "referencedDeclaration": 3213,
                                         "src": "1129:21:14",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3188_$",
+                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3209_$",
                                           "typeString": "function (address) view external returns (contract OwnableDelegateProxy)"
                                         }
                                       },
-                                      "id": 3258,
+                                      "id": 3279,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": false,
@@ -942,7 +942,7 @@
                                       "src": "1129:30:14",
                                       "tryCall": false,
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3188",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3209",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     }
@@ -950,11 +950,11 @@
                                   "expression": {
                                     "argumentTypes": [
                                       {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3188",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3209",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     ],
-                                    "id": 3254,
+                                    "id": 3275,
                                     "isConstant": false,
                                     "isLValue": false,
                                     "isPure": true,
@@ -966,14 +966,14 @@
                                       "typeString": "type(address)"
                                     },
                                     "typeName": {
-                                      "id": 3253,
+                                      "id": 3274,
                                       "name": "address",
                                       "nodeType": "ElementaryTypeName",
                                       "src": "1121:7:14",
                                       "typeDescriptions": {}
                                     }
                                   },
-                                  "id": 3259,
+                                  "id": 3280,
                                   "isConstant": false,
                                   "isLValue": false,
                                   "isPure": false,
@@ -991,11 +991,11 @@
                                 "nodeType": "BinaryOperation",
                                 "operator": "==",
                                 "rightExpression": {
-                                  "id": 3260,
+                                  "id": 3281,
                                   "name": "operator",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3218,
+                                  "referencedDeclaration": 3239,
                                   "src": "1164:8:14",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_address",
@@ -1008,18 +1008,18 @@
                                   "typeString": "bool"
                                 }
                               },
-                              "id": 3265,
+                              "id": 3286,
                               "nodeType": "IfStatement",
                               "src": "1117:109:14",
                               "trueBody": {
-                                "id": 3264,
+                                "id": 3285,
                                 "nodeType": "Block",
                                 "src": "1174:52:14",
                                 "statements": [
                                   {
                                     "expression": {
                                       "hexValue": "74727565",
-                                      "id": 3262,
+                                      "id": 3283,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": true,
@@ -1033,8 +1033,8 @@
                                       },
                                       "value": "true"
                                     },
-                                    "functionReturnParameters": 3222,
-                                    "id": 3263,
+                                    "functionReturnParameters": 3243,
+                                    "id": 3284,
                                     "nodeType": "Return",
                                     "src": "1196:11:14"
                                   }
@@ -1051,17 +1051,17 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 3231,
+                    "id": 3252,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 3227,
+                      "id": 3248,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3224,
+                      "referencedDeclaration": 3245,
                       "src": "888:1:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1073,32 +1073,32 @@
                     "rightExpression": {
                       "expression": {
                         "expression": {
-                          "id": 3228,
+                          "id": 3249,
                           "name": "_config",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 3371,
+                          "referencedDeclaration": 3392,
                           "src": "892:7:14",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Config_$3343_storage",
+                            "typeIdentifier": "t_struct$_Config_$3364_storage",
                             "typeString": "struct StashBloxData.Config storage ref"
                           }
                         },
-                        "id": 3229,
+                        "id": 3250,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "proxyRegistryAddresses",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 3342,
+                        "referencedDeclaration": 3363,
                         "src": "892:30:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$10_storage",
                           "typeString": "address[10] storage ref"
                         }
                       },
-                      "id": 3230,
+                      "id": 3251,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1117,19 +1117,19 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 3269,
+                  "id": 3290,
                   "initializationExpression": {
                     "assignments": [
-                      3224
+                      3245
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 3224,
+                        "id": 3245,
                         "mutability": "mutable",
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 3269,
+                        "scope": 3290,
                         "src": "873:9:14",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -1138,7 +1138,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 3223,
+                          "id": 3244,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "873:7:14",
@@ -1150,10 +1150,10 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 3226,
+                    "id": 3247,
                     "initialValue": {
                       "hexValue": "30",
-                      "id": 3225,
+                      "id": 3246,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1172,7 +1172,7 @@
                   },
                   "loopExpression": {
                     "expression": {
-                      "id": 3233,
+                      "id": 3254,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1182,11 +1182,11 @@
                       "prefix": true,
                       "src": "931:3:14",
                       "subExpression": {
-                        "id": 3232,
+                        "id": 3253,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3224,
+                        "referencedDeclaration": 3245,
                         "src": "933:1:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1198,7 +1198,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 3234,
+                    "id": 3255,
                     "nodeType": "ExpressionStatement",
                     "src": "931:3:14"
                   },
@@ -1208,7 +1208,7 @@
                 {
                   "expression": {
                     "hexValue": "66616c7365",
-                    "id": 3270,
+                    "id": 3291,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -1222,30 +1222,30 @@
                     },
                     "value": "false"
                   },
-                  "functionReturnParameters": 3222,
-                  "id": 3271,
+                  "functionReturnParameters": 3243,
+                  "id": 3292,
                   "nodeType": "Return",
                   "src": "1259:12:14"
                 }
               ]
             },
-            "id": 3273,
+            "id": 3294,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_isWhitelistedOperator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3219,
+              "id": 3240,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3216,
+                  "id": 3237,
                   "mutability": "mutable",
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3273,
+                  "scope": 3294,
                   "src": "794:15:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1254,7 +1254,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3215,
+                    "id": 3236,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "794:7:14",
@@ -1268,11 +1268,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3218,
+                  "id": 3239,
                   "mutability": "mutable",
                   "name": "operator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3273,
+                  "scope": 3294,
                   "src": "811:16:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1281,7 +1281,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3217,
+                    "id": 3238,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "811:7:14",
@@ -1297,16 +1297,16 @@
               "src": "793:35:14"
             },
             "returnParameters": {
-              "id": 3222,
+              "id": 3243,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3221,
+                  "id": 3242,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3273,
+                  "scope": 3294,
                   "src": "852:4:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1315,7 +1315,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3220,
+                    "id": 3241,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "852:4:14",
@@ -1329,14 +1329,14 @@
               ],
               "src": "851:6:14"
             },
-            "scope": 3274,
+            "scope": 3295,
             "src": "762:516:14",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "internal"
           }
         ],
-        "scope": 3275,
+        "scope": 3296,
         "src": "246:1034:14"
       }
     ],
@@ -1346,21 +1346,21 @@
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol",
     "exportedSymbols": {
       "OwnableDelegateProxy": [
-        3188
+        3209
       ],
       "ProxyRegistry": [
-        3193
+        3214
       ],
       "Proxyable": [
-        3274
+        3295
       ]
     },
-    "id": 3275,
+    "id": 3296,
     "license": "GPL-3.0-or-later",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3185,
+        "id": 3206,
         "literals": [
           "solidity",
           "^",
@@ -1373,10 +1373,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/StashBloxData.sol",
         "file": "./StashBloxData.sol",
-        "id": 3186,
+        "id": 3207,
         "nodeType": "ImportDirective",
-        "scope": 3275,
-        "sourceUnit": 3385,
+        "scope": 3296,
+        "sourceUnit": 3406,
         "src": "70:29:14",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1384,10 +1384,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol",
         "file": "./Ownable.sol",
-        "id": 3187,
+        "id": 3208,
         "nodeType": "ImportDirective",
-        "scope": 3275,
-        "sourceUnit": 3098,
+        "scope": 3296,
+        "sourceUnit": 3119,
         "src": "100:23:14",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1398,14 +1398,14 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3188,
+        "id": 3209,
         "linearizedBaseContracts": [
-          3188
+          3209
         ],
         "name": "OwnableDelegateProxy",
         "nodeType": "ContractDefinition",
         "nodes": [],
-        "scope": 3275,
+        "scope": 3296,
         "src": "125:33:14"
       },
       {
@@ -1414,9 +1414,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3193,
+        "id": 3214,
         "linearizedBaseContracts": [
-          3193
+          3214
         ],
         "name": "ProxyRegistry",
         "nodeType": "ContractDefinition",
@@ -1424,22 +1424,22 @@
           {
             "constant": false,
             "functionSelector": "c4552791",
-            "id": 3192,
+            "id": 3213,
             "mutability": "mutable",
             "name": "proxies",
             "nodeType": "VariableDeclaration",
-            "scope": 3193,
+            "scope": 3214,
             "src": "186:55:14",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3188_$",
+              "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3209_$",
               "typeString": "mapping(address => contract OwnableDelegateProxy)"
             },
             "typeName": {
-              "id": 3191,
+              "id": 3212,
               "keyType": {
-                "id": 3189,
+                "id": 3210,
                 "name": "address",
                 "nodeType": "ElementaryTypeName",
                 "src": "194:7:14",
@@ -1451,17 +1451,17 @@
               "nodeType": "Mapping",
               "src": "186:40:14",
               "typeDescriptions": {
-                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3188_$",
+                "typeIdentifier": "t_mapping$_t_address_$_t_contract$_OwnableDelegateProxy_$3209_$",
                 "typeString": "mapping(address => contract OwnableDelegateProxy)"
               },
               "valueType": {
-                "id": 3190,
+                "id": 3211,
                 "name": "OwnableDelegateProxy",
                 "nodeType": "UserDefinedTypeName",
-                "referencedDeclaration": 3188,
+                "referencedDeclaration": 3209,
                 "src": "205:20:14",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3188",
+                  "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3209",
                   "typeString": "contract OwnableDelegateProxy"
                 }
               }
@@ -1469,7 +1469,7 @@
             "visibility": "public"
           }
         ],
-        "scope": 3275,
+        "scope": 3296,
         "src": "160:84:14"
       },
       {
@@ -1477,88 +1477,88 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 3194,
+              "id": 3215,
               "name": "StashBloxData",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3384,
+              "referencedDeclaration": 3405,
               "src": "268:13:14",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_StashBloxData_$3384",
+                "typeIdentifier": "t_contract$_StashBloxData_$3405",
                 "typeString": "contract StashBloxData"
               }
             },
-            "id": 3195,
+            "id": 3216,
             "nodeType": "InheritanceSpecifier",
             "src": "268:13:14"
           },
           {
             "baseName": {
-              "id": 3196,
+              "id": 3217,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3097,
+              "referencedDeclaration": 3118,
               "src": "283:7:14",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$3097",
+                "typeIdentifier": "t_contract$_Ownable_$3118",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 3197,
+            "id": 3218,
             "nodeType": "InheritanceSpecifier",
             "src": "283:7:14"
           }
         ],
         "contractDependencies": [
-          344,
-          3097,
-          3384
+          343,
+          3118,
+          3405
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 3274,
+        "id": 3295,
         "linearizedBaseContracts": [
-          3274,
-          3097,
-          344,
-          3384
+          3295,
+          3118,
+          343,
+          3405
         ],
         "name": "Proxyable",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 3213,
+              "id": 3234,
               "nodeType": "Block",
               "src": "597:64:14",
               "statements": [
                 {
                   "expression": {
-                    "id": 3211,
+                    "id": 3232,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "expression": {
-                        "id": 3207,
+                        "id": 3228,
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3371,
+                        "referencedDeclaration": 3392,
                         "src": "607:7:14",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$3343_storage",
+                          "typeIdentifier": "t_struct$_Config_$3364_storage",
                           "typeString": "struct StashBloxData.Config storage ref"
                         }
                       },
-                      "id": 3209,
+                      "id": 3230,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": true,
                       "memberName": "proxyRegistryAddresses",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3342,
+                      "referencedDeclaration": 3363,
                       "src": "607:30:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -1568,11 +1568,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 3210,
+                      "id": 3231,
                       "name": "proxyAddresses",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3202,
+                      "referencedDeclaration": 3223,
                       "src": "640:14:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_memory_ptr",
@@ -1585,31 +1585,31 @@
                       "typeString": "address[10] storage ref"
                     }
                   },
-                  "id": 3212,
+                  "id": 3233,
                   "nodeType": "ExpressionStatement",
                   "src": "607:47:14"
                 }
               ]
             },
             "documentation": {
-              "id": 3198,
+              "id": 3219,
               "nodeType": "StructuredDocumentation",
               "src": "393:112:14",
               "text": " @dev Function to update the operator whitelist\n @param proxyAddresses List of addresses"
             },
             "functionSelector": "4392e577",
-            "id": 3214,
+            "id": 3235,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 3205,
+                "id": 3226,
                 "modifierName": {
-                  "id": 3204,
+                  "id": 3225,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3034,
+                  "referencedDeclaration": 3055,
                   "src": "587:9:14",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1623,16 +1623,16 @@
             "name": "setProxyRegistryAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3203,
+              "id": 3224,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3202,
+                  "id": 3223,
                   "mutability": "mutable",
                   "name": "proxyAddresses",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3214,
+                  "scope": 3235,
                   "src": "543:33:14",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1642,7 +1642,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 3199,
+                      "id": 3220,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
                       "src": "543:7:14",
@@ -1652,10 +1652,10 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 3201,
+                    "id": 3222,
                     "length": {
                       "hexValue": "3130",
-                      "id": 3200,
+                      "id": 3221,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1682,12 +1682,12 @@
               "src": "542:35:14"
             },
             "returnParameters": {
-              "id": 3206,
+              "id": 3227,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "597:0:14"
             },
-            "scope": 3274,
+            "scope": 3295,
             "src": "510:151:14",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -1695,13 +1695,13 @@
           },
           {
             "body": {
-              "id": 3272,
+              "id": 3293,
               "nodeType": "Block",
               "src": "858:420:14",
               "statements": [
                 {
                   "body": {
-                    "id": 3268,
+                    "id": 3289,
                     "nodeType": "Block",
                     "src": "936:314:14",
                     "statements": [
@@ -1711,7 +1711,7 @@
                             "typeIdentifier": "t_address",
                             "typeString": "address"
                           },
-                          "id": 3243,
+                          "id": 3264,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1719,38 +1719,38 @@
                           "leftExpression": {
                             "baseExpression": {
                               "expression": {
-                                "id": 3235,
+                                "id": 3256,
                                 "name": "_config",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 3371,
+                                "referencedDeclaration": 3392,
                                 "src": "954:7:14",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Config_$3343_storage",
+                                  "typeIdentifier": "t_struct$_Config_$3364_storage",
                                   "typeString": "struct StashBloxData.Config storage ref"
                                 }
                               },
-                              "id": 3236,
+                              "id": 3257,
                               "isConstant": false,
                               "isLValue": true,
                               "isPure": false,
                               "lValueRequested": false,
                               "memberName": "proxyRegistryAddresses",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 3342,
+                              "referencedDeclaration": 3363,
                               "src": "954:30:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_address_$10_storage",
                                 "typeString": "address[10] storage ref"
                               }
                             },
-                            "id": 3238,
+                            "id": 3259,
                             "indexExpression": {
-                              "id": 3237,
+                              "id": 3258,
                               "name": "i",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 3224,
+                              "referencedDeclaration": 3245,
                               "src": "985:1:14",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_uint256",
@@ -1774,7 +1774,7 @@
                             "arguments": [
                               {
                                 "hexValue": "30",
-                                "id": 3241,
+                                "id": 3262,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": true,
@@ -1796,7 +1796,7 @@
                                   "typeString": "int_const 0"
                                 }
                               ],
-                              "id": 3240,
+                              "id": 3261,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -1808,14 +1808,14 @@
                                 "typeString": "type(address)"
                               },
                               "typeName": {
-                                "id": 3239,
+                                "id": 3260,
                                 "name": "address",
                                 "nodeType": "ElementaryTypeName",
                                 "src": "991:7:14",
                                 "typeDescriptions": {}
                               }
                             },
-                            "id": 3242,
+                            "id": 3263,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": true,
@@ -1836,85 +1836,85 @@
                             "typeString": "bool"
                           }
                         },
-                        "id": 3267,
+                        "id": 3288,
                         "nodeType": "IfStatement",
                         "src": "950:290:14",
                         "trueBody": {
-                          "id": 3266,
+                          "id": 3287,
                           "nodeType": "Block",
                           "src": "1003:237:14",
                           "statements": [
                             {
                               "assignments": [
-                                3245
+                                3266
                               ],
                               "declarations": [
                                 {
                                   "constant": false,
-                                  "id": 3245,
+                                  "id": 3266,
                                   "mutability": "mutable",
                                   "name": "proxyRegistry",
                                   "nodeType": "VariableDeclaration",
-                                  "scope": 3266,
+                                  "scope": 3287,
                                   "src": "1021:27:14",
                                   "stateVariable": false,
                                   "storageLocation": "default",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                    "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                     "typeString": "contract ProxyRegistry"
                                   },
                                   "typeName": {
-                                    "id": 3244,
+                                    "id": 3265,
                                     "name": "ProxyRegistry",
                                     "nodeType": "UserDefinedTypeName",
-                                    "referencedDeclaration": 3193,
+                                    "referencedDeclaration": 3214,
                                     "src": "1021:13:14",
                                     "typeDescriptions": {
-                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                      "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                       "typeString": "contract ProxyRegistry"
                                     }
                                   },
                                   "visibility": "internal"
                                 }
                               ],
-                              "id": 3252,
+                              "id": 3273,
                               "initialValue": {
                                 "arguments": [
                                   {
                                     "baseExpression": {
                                       "expression": {
-                                        "id": 3247,
+                                        "id": 3268,
                                         "name": "_config",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 3371,
+                                        "referencedDeclaration": 3392,
                                         "src": "1065:7:14",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_struct$_Config_$3343_storage",
+                                          "typeIdentifier": "t_struct$_Config_$3364_storage",
                                           "typeString": "struct StashBloxData.Config storage ref"
                                         }
                                       },
-                                      "id": 3248,
+                                      "id": 3269,
                                       "isConstant": false,
                                       "isLValue": true,
                                       "isPure": false,
                                       "lValueRequested": false,
                                       "memberName": "proxyRegistryAddresses",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 3342,
+                                      "referencedDeclaration": 3363,
                                       "src": "1065:30:14",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_array$_t_address_$10_storage",
                                         "typeString": "address[10] storage ref"
                                       }
                                     },
-                                    "id": 3250,
+                                    "id": 3271,
                                     "indexExpression": {
-                                      "id": 3249,
+                                      "id": 3270,
                                       "name": "i",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 3224,
+                                      "referencedDeclaration": 3245,
                                       "src": "1096:1:14",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_uint256",
@@ -1940,18 +1940,18 @@
                                       "typeString": "address"
                                     }
                                   ],
-                                  "id": 3246,
+                                  "id": 3267,
                                   "name": "ProxyRegistry",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3193,
+                                  "referencedDeclaration": 3214,
                                   "src": "1051:13:14",
                                   "typeDescriptions": {
-                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3193_$",
+                                    "typeIdentifier": "t_type$_t_contract$_ProxyRegistry_$3214_$",
                                     "typeString": "type(contract ProxyRegistry)"
                                   }
                                 },
-                                "id": 3251,
+                                "id": 3272,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -1962,7 +1962,7 @@
                                 "src": "1051:48:14",
                                 "tryCall": false,
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                  "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                   "typeString": "contract ProxyRegistry"
                                 }
                               },
@@ -1975,7 +1975,7 @@
                                   "typeIdentifier": "t_address",
                                   "typeString": "address"
                                 },
-                                "id": 3261,
+                                "id": 3282,
                                 "isConstant": false,
                                 "isLValue": false,
                                 "isPure": false,
@@ -1985,11 +1985,11 @@
                                     {
                                       "arguments": [
                                         {
-                                          "id": 3257,
+                                          "id": 3278,
                                           "name": "account",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3216,
+                                          "referencedDeclaration": 3237,
                                           "src": "1151:7:14",
                                           "typeDescriptions": {
                                             "typeIdentifier": "t_address",
@@ -2005,32 +2005,32 @@
                                           }
                                         ],
                                         "expression": {
-                                          "id": 3255,
+                                          "id": 3276,
                                           "name": "proxyRegistry",
                                           "nodeType": "Identifier",
                                           "overloadedDeclarations": [],
-                                          "referencedDeclaration": 3245,
+                                          "referencedDeclaration": 3266,
                                           "src": "1129:13:14",
                                           "typeDescriptions": {
-                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3193",
+                                            "typeIdentifier": "t_contract$_ProxyRegistry_$3214",
                                             "typeString": "contract ProxyRegistry"
                                           }
                                         },
-                                        "id": 3256,
+                                        "id": 3277,
                                         "isConstant": false,
                                         "isLValue": false,
                                         "isPure": false,
                                         "lValueRequested": false,
                                         "memberName": "proxies",
                                         "nodeType": "MemberAccess",
-                                        "referencedDeclaration": 3192,
+                                        "referencedDeclaration": 3213,
                                         "src": "1129:21:14",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3188_$",
+                                          "typeIdentifier": "t_function_external_view$_t_address_$returns$_t_contract$_OwnableDelegateProxy_$3209_$",
                                           "typeString": "function (address) view external returns (contract OwnableDelegateProxy)"
                                         }
                                       },
-                                      "id": 3258,
+                                      "id": 3279,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": false,
@@ -2041,7 +2041,7 @@
                                       "src": "1129:30:14",
                                       "tryCall": false,
                                       "typeDescriptions": {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3188",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3209",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     }
@@ -2049,11 +2049,11 @@
                                   "expression": {
                                     "argumentTypes": [
                                       {
-                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3188",
+                                        "typeIdentifier": "t_contract$_OwnableDelegateProxy_$3209",
                                         "typeString": "contract OwnableDelegateProxy"
                                       }
                                     ],
-                                    "id": 3254,
+                                    "id": 3275,
                                     "isConstant": false,
                                     "isLValue": false,
                                     "isPure": true,
@@ -2065,14 +2065,14 @@
                                       "typeString": "type(address)"
                                     },
                                     "typeName": {
-                                      "id": 3253,
+                                      "id": 3274,
                                       "name": "address",
                                       "nodeType": "ElementaryTypeName",
                                       "src": "1121:7:14",
                                       "typeDescriptions": {}
                                     }
                                   },
-                                  "id": 3259,
+                                  "id": 3280,
                                   "isConstant": false,
                                   "isLValue": false,
                                   "isPure": false,
@@ -2090,11 +2090,11 @@
                                 "nodeType": "BinaryOperation",
                                 "operator": "==",
                                 "rightExpression": {
-                                  "id": 3260,
+                                  "id": 3281,
                                   "name": "operator",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 3218,
+                                  "referencedDeclaration": 3239,
                                   "src": "1164:8:14",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_address",
@@ -2107,18 +2107,18 @@
                                   "typeString": "bool"
                                 }
                               },
-                              "id": 3265,
+                              "id": 3286,
                               "nodeType": "IfStatement",
                               "src": "1117:109:14",
                               "trueBody": {
-                                "id": 3264,
+                                "id": 3285,
                                 "nodeType": "Block",
                                 "src": "1174:52:14",
                                 "statements": [
                                   {
                                     "expression": {
                                       "hexValue": "74727565",
-                                      "id": 3262,
+                                      "id": 3283,
                                       "isConstant": false,
                                       "isLValue": false,
                                       "isPure": true,
@@ -2132,8 +2132,8 @@
                                       },
                                       "value": "true"
                                     },
-                                    "functionReturnParameters": 3222,
-                                    "id": 3263,
+                                    "functionReturnParameters": 3243,
+                                    "id": 3284,
                                     "nodeType": "Return",
                                     "src": "1196:11:14"
                                   }
@@ -2150,17 +2150,17 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 3231,
+                    "id": 3252,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 3227,
+                      "id": 3248,
                       "name": "i",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 3224,
+                      "referencedDeclaration": 3245,
                       "src": "888:1:14",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2172,32 +2172,32 @@
                     "rightExpression": {
                       "expression": {
                         "expression": {
-                          "id": 3228,
+                          "id": 3249,
                           "name": "_config",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 3371,
+                          "referencedDeclaration": 3392,
                           "src": "892:7:14",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Config_$3343_storage",
+                            "typeIdentifier": "t_struct$_Config_$3364_storage",
                             "typeString": "struct StashBloxData.Config storage ref"
                           }
                         },
-                        "id": 3229,
+                        "id": 3250,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "proxyRegistryAddresses",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 3342,
+                        "referencedDeclaration": 3363,
                         "src": "892:30:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$10_storage",
                           "typeString": "address[10] storage ref"
                         }
                       },
-                      "id": 3230,
+                      "id": 3251,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2216,19 +2216,19 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 3269,
+                  "id": 3290,
                   "initializationExpression": {
                     "assignments": [
-                      3224
+                      3245
                     ],
                     "declarations": [
                       {
                         "constant": false,
-                        "id": 3224,
+                        "id": 3245,
                         "mutability": "mutable",
                         "name": "i",
                         "nodeType": "VariableDeclaration",
-                        "scope": 3269,
+                        "scope": 3290,
                         "src": "873:9:14",
                         "stateVariable": false,
                         "storageLocation": "default",
@@ -2237,7 +2237,7 @@
                           "typeString": "uint256"
                         },
                         "typeName": {
-                          "id": 3223,
+                          "id": 3244,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
                           "src": "873:7:14",
@@ -2249,10 +2249,10 @@
                         "visibility": "internal"
                       }
                     ],
-                    "id": 3226,
+                    "id": 3247,
                     "initialValue": {
                       "hexValue": "30",
-                      "id": 3225,
+                      "id": 3246,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -2271,7 +2271,7 @@
                   },
                   "loopExpression": {
                     "expression": {
-                      "id": 3233,
+                      "id": 3254,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2281,11 +2281,11 @@
                       "prefix": true,
                       "src": "931:3:14",
                       "subExpression": {
-                        "id": 3232,
+                        "id": 3253,
                         "name": "i",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3224,
+                        "referencedDeclaration": 3245,
                         "src": "933:1:14",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -2297,7 +2297,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 3234,
+                    "id": 3255,
                     "nodeType": "ExpressionStatement",
                     "src": "931:3:14"
                   },
@@ -2307,7 +2307,7 @@
                 {
                   "expression": {
                     "hexValue": "66616c7365",
-                    "id": 3270,
+                    "id": 3291,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": true,
@@ -2321,30 +2321,30 @@
                     },
                     "value": "false"
                   },
-                  "functionReturnParameters": 3222,
-                  "id": 3271,
+                  "functionReturnParameters": 3243,
+                  "id": 3292,
                   "nodeType": "Return",
                   "src": "1259:12:14"
                 }
               ]
             },
-            "id": 3273,
+            "id": 3294,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_isWhitelistedOperator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3219,
+              "id": 3240,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3216,
+                  "id": 3237,
                   "mutability": "mutable",
                   "name": "account",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3273,
+                  "scope": 3294,
                   "src": "794:15:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2353,7 +2353,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3215,
+                    "id": 3236,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "794:7:14",
@@ -2367,11 +2367,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 3218,
+                  "id": 3239,
                   "mutability": "mutable",
                   "name": "operator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3273,
+                  "scope": 3294,
                   "src": "811:16:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2380,7 +2380,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3217,
+                    "id": 3238,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "811:7:14",
@@ -2396,16 +2396,16 @@
               "src": "793:35:14"
             },
             "returnParameters": {
-              "id": 3222,
+              "id": 3243,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3221,
+                  "id": 3242,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3273,
+                  "scope": 3294,
                   "src": "852:4:14",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2414,7 +2414,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 3220,
+                    "id": 3241,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "852:4:14",
@@ -2428,14 +2428,14 @@
               ],
               "src": "851:6:14"
             },
-            "scope": 3274,
+            "scope": 3295,
             "src": "762:516:14",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "internal"
           }
         ],
-        "scope": 3275,
+        "scope": 3296,
         "src": "246:1034:14"
       }
     ],
@@ -2447,7 +2447,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-20T21:56:14.917Z",
+  "updatedAt": "2020-10-21T13:07:43.202Z",
   "devdoc": {
     "kind": "dev",
     "methods": {

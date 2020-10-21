@@ -19,9 +19,20 @@ contract ChargeableTransfer is StashBloxData {
      * @param account the address from where to transfer the tokens
      * @param id The token ID
      * @param value The amount to transfer
+     * @return transfer price
      */
     function transactionFees(address account, uint256 id, uint256 value) public view returns (uint256) {
         return _transactionFees(account, id, value);
+    }
+
+    /**
+     * @dev Function to get the average age of the token for the given address.
+     * @param account the address from where to transfer the tokens
+     * @param id The token ID
+     * @return average age in seconds
+     */
+    function averageAge(address account, uint256 id) public view returns (uint256) {
+        return block.timestamp.sub(_tokens[id].holders[account].birthday);
     }
 
 
@@ -82,7 +93,7 @@ contract ChargeableTransfer is StashBloxData {
 
         // TODO!
         totalCost = totalCost.div(10**_tokens[id].decimals); // storage cost are for one full token
-        
+
         uint256 valueFees = (value.mul(_tokens[id].valueTransactionFees)).div(10**8);
         return totalCost.add(_tokens[id].lumpSumTransactionFees.add(valueFees));
     }

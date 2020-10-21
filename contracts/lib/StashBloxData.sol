@@ -71,5 +71,4 @@ contract StashBloxData {
     mapping (uint256 => Token) public _tokens;
     mapping (uint256 => Callback) public _callbacks;
 
-
 }
