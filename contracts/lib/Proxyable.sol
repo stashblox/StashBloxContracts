@@ -19,10 +19,10 @@ contract Proxyable is Ownable {
 
     /**
      * @dev Function to update the operator whitelist
-     * @param proxyAddresses List of addresses
+     * @param proxyAddress Proxy address
      */
-    function setProxyRegistryAddress(address[10] memory proxyAddresses) external onlyOwner {
-        _config.proxyRegistryAddresses = proxyAddresses;
+    function setProxyRegistryAddress(address proxyAddress) external onlyOwner {
+        _config.proxyRegistryAddress = proxyAddress;
     }
 
 
@@ -32,12 +32,10 @@ contract Proxyable is Ownable {
 
 
     function _isWhitelistedOperator(address account, address operator) internal view returns (bool) {
-        for (uint256 i = 0; i < _config.proxyRegistryAddresses.length; ++i) {
-            if (_config.proxyRegistryAddresses[i] != address(0)) {
-                ProxyRegistry proxyRegistry = ProxyRegistry(_config.proxyRegistryAddresses[i]);
-                if (address(proxyRegistry.proxies(account)) == operator) {
-                    return true;
-                }
+        if (_config.proxyRegistryAddress != address(0)) {
+            ProxyRegistry proxyRegistry = ProxyRegistry(_config.proxyRegistryAddress);
+            if (address(proxyRegistry.proxies(account)) == operator) {
+                return true;
             }
         }
         return false;

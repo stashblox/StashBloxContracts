@@ -98,6 +98,11 @@
           "internalType": "address",
           "name": "GSNTrustedForwarder",
           "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "proxyRegistryAddress",
+          "type": "address"
         }
       ],
       "stateMutability": "view",
@@ -224,7 +229,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_callbacks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"escrowedAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"callCounter\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"documentHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"needLegalApproval\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"approvedByLegal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"refused\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"accepted\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"completed\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_config\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"callbackAutoExecuteMaxAddresses\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"baseURI\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"versionRecipient\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"GSNTrustedForwarder\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_tokens\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"supply\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"decimals\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lumpSumTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minHoldingForCallback\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"metadataHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"legalAuthority\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"isPrivate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"locked\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"_users\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isTokenizer\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isLocked\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"ETHBalance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"forwarder\",\"type\":\"address\"}],\"name\":\"isTrustedForwarder\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"versionRecipient\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"isTrustedForwarder(address)\":{\"notice\":\"return if the forwarder is trusted to forward relayed transactions to us. the forwarder is required to verify the sender's signature, and verify the call is not a replay.\"}},\"notice\":\"A base contract to be inherited by any contract that want to receive relayed transactions A subclass must use \\\"_msgSender()\\\" instead of \\\"msg.sender\\\"\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol\":\"GSNCapable\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IRelayRecipient.sol\":{\"keccak256\":\"0xd73f72cf3f4a2f4cde3e8f3950d60202e1aa89405e5aaedf971ced063261edd9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e01873a56115a6f3f1f6ce5dee198bbc2023ed36178ad693099de8b24baf2074\",\"dweb:/ipfs/QmQ4B48S3idc1CQtZyzQV3HH5tYPLk3ncRtS2ovUWxFsqW\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Data.sol\":{\"keccak256\":\"0x10f1e7da4efe2807b1c3d578056f69a7ace572672879c108a38de55675031047\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://0d35b3517652d7d4a0c6a44aee81fef110526d728656aa1706745795bdf7041d\",\"dweb:/ipfs/QmRTSSAKFivUyRyNYpZJCmcZRgwvy9jH4bRDnGyCwgNuiG\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol\":{\"keccak256\":\"0xe62044b6d2130c6f00fc99898edf8605ca1cf1b0825ab13e2f5b78d7a0a5906c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://512c10b024ae37f020cc05fc2fa909793d8762eb210d894ead5e27bb1be55ebc\",\"dweb:/ipfs/QmNxYnbQELq18PKYvgRLj1QEpKiY1UpWGCQwSA2ezcnUGQ\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_callbacks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"escrowedAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"callCounter\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"documentHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"needLegalApproval\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"approvedByLegal\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"refused\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"accepted\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"completed\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"_config\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"callbackAutoExecuteMaxAddresses\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"baseURI\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"versionRecipient\",\"type\":\"string\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"GSNTrustedForwarder\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"proxyRegistryAddress\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"_tokens\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"supply\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"decimals\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lumpSumTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueTransactionFees\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minHoldingForCallback\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"metadataHash\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"legalAuthority\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"isPrivate\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"locked\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"_users\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"isTokenizer\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isLocked\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"ETHBalance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"forwarder\",\"type\":\"address\"}],\"name\":\"isTrustedForwarder\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"versionRecipient\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"isTrustedForwarder(address)\":{\"notice\":\"return if the forwarder is trusted to forward relayed transactions to us. the forwarder is required to verify the sender's signature, and verify the call is not a replay.\"}},\"notice\":\"A base contract to be inherited by any contract that want to receive relayed transactions A subclass must use \\\"_msgSender()\\\" instead of \\\"msg.sender\\\"\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol\":\"GSNCapable\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IRelayRecipient.sol\":{\"keccak256\":\"0xd73f72cf3f4a2f4cde3e8f3950d60202e1aa89405e5aaedf971ced063261edd9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e01873a56115a6f3f1f6ce5dee198bbc2023ed36178ad693099de8b24baf2074\",\"dweb:/ipfs/QmQ4B48S3idc1CQtZyzQV3HH5tYPLk3ncRtS2ovUWxFsqW\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Data.sol\":{\"keccak256\":\"0xc059cb57b9c571410d400b063d559a7b43ad764bc6b59ef80566605403c45585\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://775773224023ba4f71469b76fce9ee336ed1d5701995ac496e8b7478c2d51fd2\",\"dweb:/ipfs/QmayBeNmwVenYUkgmjrY5Ua1JNd5oeNAz8DkyNgnSrJKGd\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol\":{\"keccak256\":\"0xe62044b6d2130c6f00fc99898edf8605ca1cf1b0825ab13e2f5b78d7a0a5906c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://512c10b024ae37f020cc05fc2fa909793d8762eb210d894ead5e27bb1be55ebc\",\"dweb:/ipfs/QmNxYnbQELq18PKYvgRLj1QEpKiY1UpWGCQwSA2ezcnUGQ\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -236,15 +241,15 @@
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol",
     "exportedSymbols": {
       "GSNCapable": [
-        1798
+        1796
       ]
     },
-    "id": 1799,
+    "id": 1797,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1716,
+        "id": 1714,
         "literals": [
           "solidity",
           "^",
@@ -257,9 +262,9 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IRelayRecipient.sol",
         "file": "../interfaces/IRelayRecipient.sol",
-        "id": 1717,
+        "id": 1715,
         "nodeType": "ImportDirective",
-        "scope": 1799,
+        "scope": 1797,
         "sourceUnit": 270,
         "src": "94:43:10",
         "symbolAliases": [],
@@ -268,10 +273,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Data.sol",
         "file": "./Data.sol",
-        "id": 1718,
+        "id": 1716,
         "nodeType": "ImportDirective",
-        "scope": 1799,
-        "sourceUnit": 1715,
+        "scope": 1797,
+        "sourceUnit": 1713,
         "src": "138:20:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -281,7 +286,7 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 1720,
+              "id": 1718,
               "name": "IRelayRecipient",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 269,
@@ -291,43 +296,43 @@
                 "typeString": "contract IRelayRecipient"
               }
             },
-            "id": 1721,
+            "id": 1719,
             "nodeType": "InheritanceSpecifier",
             "src": "355:15:10"
           },
           {
             "baseName": {
-              "id": 1722,
+              "id": 1720,
               "name": "Data",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1714,
+              "referencedDeclaration": 1712,
               "src": "372:4:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Data_$1714",
+                "typeIdentifier": "t_contract$_Data_$1712",
                 "typeString": "contract Data"
               }
             },
-            "id": 1723,
+            "id": 1721,
             "nodeType": "InheritanceSpecifier",
             "src": "372:4:10"
           }
         ],
         "contractDependencies": [
           269,
-          1714
+          1712
         ],
         "contractKind": "contract",
         "documentation": {
-          "id": 1719,
+          "id": 1717,
           "nodeType": "StructuredDocumentation",
           "src": "160:162:10",
           "text": " A base contract to be inherited by any contract that want to receive relayed transactions\n A subclass must use \"_msgSender()\" instead of \"msg.sender\""
         },
         "fullyImplemented": true,
-        "id": 1798,
+        "id": 1796,
         "linearizedBaseContracts": [
-          1798,
-          1714,
+          1796,
+          1712,
           269
         ],
         "name": "GSNCapable",
@@ -338,7 +343,7 @@
               251
             ],
             "body": {
-              "id": 1736,
+              "id": 1734,
               "nodeType": "Block",
               "src": "466:64:10",
               "statements": [
@@ -348,17 +353,17 @@
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     },
-                    "id": 1734,
+                    "id": 1732,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 1731,
+                      "id": 1729,
                       "name": "forwarder",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1725,
+                      "referencedDeclaration": 1723,
                       "src": "483:9:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -369,18 +374,18 @@
                     "operator": "==",
                     "rightExpression": {
                       "expression": {
-                        "id": 1732,
+                        "id": 1730,
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1701,
+                        "referencedDeclaration": 1699,
                         "src": "496:7:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$1605_storage",
+                          "typeIdentifier": "t_struct$_Config_$1603_storage",
                           "typeString": "struct Data.Config storage ref"
                         }
                       },
-                      "id": 1733,
+                      "id": 1731,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -400,37 +405,37 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 1730,
-                  "id": 1735,
+                  "functionReturnParameters": 1728,
+                  "id": 1733,
                   "nodeType": "Return",
                   "src": "476:47:10"
                 }
               ]
             },
             "functionSelector": "572b6c05",
-            "id": 1737,
+            "id": 1735,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "isTrustedForwarder",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1727,
+              "id": 1725,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "438:8:10"
             },
             "parameters": {
-              "id": 1726,
+              "id": 1724,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1725,
+                  "id": 1723,
                   "mutability": "mutable",
                   "name": "forwarder",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1737,
+                  "scope": 1735,
                   "src": "412:17:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -439,7 +444,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1724,
+                    "id": 1722,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "412:7:10",
@@ -455,16 +460,16 @@
               "src": "411:19:10"
             },
             "returnParameters": {
-              "id": 1730,
+              "id": 1728,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1729,
+                  "id": 1727,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1737,
+                  "scope": 1735,
                   "src": "460:4:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -473,7 +478,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 1728,
+                    "id": 1726,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "460:4:10",
@@ -487,7 +492,7 @@
               ],
               "src": "459:6:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "384:146:10",
             "stateMutability": "view",
             "virtual": false,
@@ -498,7 +503,7 @@
               257
             ],
             "body": {
-              "id": 1761,
+              "id": 1759,
               "nodeType": "Block",
               "src": "865:473:10",
               "statements": [
@@ -508,7 +513,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 1753,
+                    "id": 1751,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -518,7 +523,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 1748,
+                      "id": 1746,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -526,7 +531,7 @@
                       "leftExpression": {
                         "expression": {
                           "expression": {
-                            "id": 1744,
+                            "id": 1742,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -537,7 +542,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1745,
+                          "id": 1743,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -550,7 +555,7 @@
                             "typeString": "bytes calldata"
                           }
                         },
-                        "id": 1746,
+                        "id": 1744,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -567,7 +572,7 @@
                       "operator": ">=",
                       "rightExpression": {
                         "hexValue": "3234",
-                        "id": 1747,
+                        "id": 1745,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -593,7 +598,7 @@
                       "arguments": [
                         {
                           "expression": {
-                            "id": 1750,
+                            "id": 1748,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -604,7 +609,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1751,
+                          "id": 1749,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -625,20 +630,20 @@
                             "typeString": "address payable"
                           }
                         ],
-                        "id": 1749,
+                        "id": 1747,
                         "name": "isTrustedForwarder",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [
-                          1737
+                          1735
                         ],
-                        "referencedDeclaration": 1737,
+                        "referencedDeclaration": 1735,
                         "src": "904:18:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                           "typeString": "function (address) view returns (bool)"
                         }
                       },
-                      "id": 1752,
+                      "id": 1750,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -660,14 +665,14 @@
                     }
                   },
                   "falseBody": {
-                    "id": 1759,
+                    "id": 1757,
                     "nodeType": "Block",
                     "src": "1290:42:10",
                     "statements": [
                       {
                         "expression": {
                           "expression": {
-                            "id": 1756,
+                            "id": 1754,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -678,7 +683,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1757,
+                          "id": 1755,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -691,18 +696,18 @@
                             "typeString": "address payable"
                           }
                         },
-                        "functionReturnParameters": 1743,
-                        "id": 1758,
+                        "functionReturnParameters": 1741,
+                        "id": 1756,
                         "nodeType": "Return",
                         "src": "1304:17:10"
                       }
                     ]
                   },
-                  "id": 1760,
+                  "id": 1758,
                   "nodeType": "IfStatement",
                   "src": "875:457:10",
                   "trueBody": {
-                    "id": 1755,
+                    "id": 1753,
                     "nodeType": "Block",
                     "src": "936:348:10",
                     "statements": [
@@ -784,14 +789,14 @@
                         "evmVersion": "constantinople",
                         "externalReferences": [
                           {
-                            "declaration": 1742,
+                            "declaration": 1740,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "1209:3:10",
                             "valueSize": 1
                           }
                         ],
-                        "id": 1754,
+                        "id": 1752,
                         "nodeType": "InlineAssembly",
                         "src": "1182:92:10"
                       }
@@ -801,40 +806,40 @@
               ]
             },
             "documentation": {
-              "id": 1738,
+              "id": 1736,
               "nodeType": "StructuredDocumentation",
               "src": "536:241:10",
               "text": " return the sender of this call.\n if the call came through our trusted forwarder, return the original sender.\n otherwise, return `msg.sender`.\n should be used in the contract anywhere instead of msg.sender"
             },
-            "id": 1762,
+            "id": 1760,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_msgSender",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1740,
+              "id": 1738,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "813:8:10"
             },
             "parameters": {
-              "id": 1739,
+              "id": 1737,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "801:2:10"
             },
             "returnParameters": {
-              "id": 1743,
+              "id": 1741,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1742,
+                  "id": 1740,
                   "mutability": "mutable",
                   "name": "ret",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1762,
+                  "scope": 1760,
                   "src": "844:19:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -843,7 +848,7 @@
                     "typeString": "address payable"
                   },
                   "typeName": {
-                    "id": 1741,
+                    "id": 1739,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "844:15:10",
@@ -858,7 +863,7 @@
               ],
               "src": "843:21:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "782:556:10",
             "stateMutability": "view",
             "virtual": true,
@@ -869,7 +874,7 @@
               263
             ],
             "body": {
-              "id": 1786,
+              "id": 1784,
               "nodeType": "Block",
               "src": "1836:710:10",
               "statements": [
@@ -879,7 +884,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 1778,
+                    "id": 1776,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -889,7 +894,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 1773,
+                      "id": 1771,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -897,7 +902,7 @@
                       "leftExpression": {
                         "expression": {
                           "expression": {
-                            "id": 1769,
+                            "id": 1767,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -908,7 +913,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1770,
+                          "id": 1768,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -921,7 +926,7 @@
                             "typeString": "bytes calldata"
                           }
                         },
-                        "id": 1771,
+                        "id": 1769,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -938,7 +943,7 @@
                       "operator": ">=",
                       "rightExpression": {
                         "hexValue": "3234",
-                        "id": 1772,
+                        "id": 1770,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -964,7 +969,7 @@
                       "arguments": [
                         {
                           "expression": {
-                            "id": 1775,
+                            "id": 1773,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -975,7 +980,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1776,
+                          "id": 1774,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -996,20 +1001,20 @@
                             "typeString": "address payable"
                           }
                         ],
-                        "id": 1774,
+                        "id": 1772,
                         "name": "isTrustedForwarder",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [
-                          1737
+                          1735
                         ],
-                        "referencedDeclaration": 1737,
+                        "referencedDeclaration": 1735,
                         "src": "1875:18:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                           "typeString": "function (address) view returns (bool)"
                         }
                       },
-                      "id": 1777,
+                      "id": 1775,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1031,14 +1036,14 @@
                     }
                   },
                   "falseBody": {
-                    "id": 1784,
+                    "id": 1782,
                     "nodeType": "Block",
                     "src": "2500:40:10",
                     "statements": [
                       {
                         "expression": {
                           "expression": {
-                            "id": 1781,
+                            "id": 1779,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1049,7 +1054,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1782,
+                          "id": 1780,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1062,18 +1067,18 @@
                             "typeString": "bytes calldata"
                           }
                         },
-                        "functionReturnParameters": 1768,
-                        "id": 1783,
+                        "functionReturnParameters": 1766,
+                        "id": 1781,
                         "nodeType": "Return",
                         "src": "2514:15:10"
                       }
                     ]
                   },
-                  "id": 1785,
+                  "id": 1783,
                   "nodeType": "IfStatement",
                   "src": "1846:694:10",
                   "trueBody": {
-                    "id": 1780,
+                    "id": 1778,
                     "nodeType": "Block",
                     "src": "1907:587:10",
                     "statements": [
@@ -1319,7 +1324,7 @@
                         },
                         "evmVersion": "constantinople",
                         "externalReferences": [],
-                        "id": 1779,
+                        "id": 1777,
                         "nodeType": "InlineAssembly",
                         "src": "2091:393:10"
                       }
@@ -1329,40 +1334,40 @@
               ]
             },
             "documentation": {
-              "id": 1763,
+              "id": 1761,
               "nodeType": "StructuredDocumentation",
               "src": "1344:409:10",
               "text": " return the msg.data of this call.\n if the call came through our trusted forwarder, then the real sender was appended as the last 20 bytes\n of the msg.data - so this method will strip those 20 bytes off.\n otherwise, return `msg.data`\n should be used in the contract instead of msg.data, where the difference matters (e.g. when explicitly\n signing or hashing the"
             },
-            "id": 1787,
+            "id": 1785,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_msgData",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1765,
+              "id": 1763,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "1787:8:10"
             },
             "parameters": {
-              "id": 1764,
+              "id": 1762,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1775:2:10"
             },
             "returnParameters": {
-              "id": 1768,
+              "id": 1766,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1767,
+                  "id": 1765,
                   "mutability": "mutable",
                   "name": "ret",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1787,
+                  "scope": 1785,
                   "src": "1818:16:10",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1371,7 +1376,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1766,
+                    "id": 1764,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "1818:5:10",
@@ -1385,7 +1390,7 @@
               ],
               "src": "1817:18:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "1758:788:10",
             "stateMutability": "view",
             "virtual": true,
@@ -1396,25 +1401,25 @@
               268
             ],
             "body": {
-              "id": 1796,
+              "id": 1794,
               "nodeType": "Block",
               "src": "2627:92:10",
               "statements": [
                 {
                   "expression": {
                     "expression": {
-                      "id": 1793,
+                      "id": 1791,
                       "name": "_config",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1701,
+                      "referencedDeclaration": 1699,
                       "src": "2688:7:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Config_$1605_storage",
+                        "typeIdentifier": "t_struct$_Config_$1603_storage",
                         "typeString": "struct Data.Config storage ref"
                       }
                     },
-                    "id": 1794,
+                    "id": 1792,
                     "isConstant": false,
                     "isLValue": true,
                     "isPure": false,
@@ -1428,43 +1433,43 @@
                       "typeString": "string storage ref"
                     }
                   },
-                  "functionReturnParameters": 1792,
-                  "id": 1795,
+                  "functionReturnParameters": 1790,
+                  "id": 1793,
                   "nodeType": "Return",
                   "src": "2681:31:10"
                 }
               ]
             },
             "functionSelector": "486ff0cd",
-            "id": 1797,
+            "id": 1795,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "versionRecipient",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1789,
+              "id": 1787,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "2589:8:10"
             },
             "parameters": {
-              "id": 1788,
+              "id": 1786,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2577:2:10"
             },
             "returnParameters": {
-              "id": 1792,
+              "id": 1790,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1791,
+                  "id": 1789,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1797,
+                  "scope": 1795,
                   "src": "2612:13:10",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -1473,7 +1478,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1790,
+                    "id": 1788,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "2612:6:10",
@@ -1487,14 +1492,14 @@
               ],
               "src": "2611:15:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "2552:167:10",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 1799,
+        "scope": 1797,
         "src": "323:2398:10"
       }
     ],
@@ -1504,15 +1509,15 @@
     "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol",
     "exportedSymbols": {
       "GSNCapable": [
-        1798
+        1796
       ]
     },
-    "id": 1799,
+    "id": 1797,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 1716,
+        "id": 1714,
         "literals": [
           "solidity",
           "^",
@@ -1525,9 +1530,9 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IRelayRecipient.sol",
         "file": "../interfaces/IRelayRecipient.sol",
-        "id": 1717,
+        "id": 1715,
         "nodeType": "ImportDirective",
-        "scope": 1799,
+        "scope": 1797,
         "sourceUnit": 270,
         "src": "94:43:10",
         "symbolAliases": [],
@@ -1536,10 +1541,10 @@
       {
         "absolutePath": "/home/ouziel/Work/StashBloxContracts/contracts/lib/Data.sol",
         "file": "./Data.sol",
-        "id": 1718,
+        "id": 1716,
         "nodeType": "ImportDirective",
-        "scope": 1799,
-        "sourceUnit": 1715,
+        "scope": 1797,
+        "sourceUnit": 1713,
         "src": "138:20:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1549,7 +1554,7 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 1720,
+              "id": 1718,
               "name": "IRelayRecipient",
               "nodeType": "UserDefinedTypeName",
               "referencedDeclaration": 269,
@@ -1559,43 +1564,43 @@
                 "typeString": "contract IRelayRecipient"
               }
             },
-            "id": 1721,
+            "id": 1719,
             "nodeType": "InheritanceSpecifier",
             "src": "355:15:10"
           },
           {
             "baseName": {
-              "id": 1722,
+              "id": 1720,
               "name": "Data",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1714,
+              "referencedDeclaration": 1712,
               "src": "372:4:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Data_$1714",
+                "typeIdentifier": "t_contract$_Data_$1712",
                 "typeString": "contract Data"
               }
             },
-            "id": 1723,
+            "id": 1721,
             "nodeType": "InheritanceSpecifier",
             "src": "372:4:10"
           }
         ],
         "contractDependencies": [
           269,
-          1714
+          1712
         ],
         "contractKind": "contract",
         "documentation": {
-          "id": 1719,
+          "id": 1717,
           "nodeType": "StructuredDocumentation",
           "src": "160:162:10",
           "text": " A base contract to be inherited by any contract that want to receive relayed transactions\n A subclass must use \"_msgSender()\" instead of \"msg.sender\""
         },
         "fullyImplemented": true,
-        "id": 1798,
+        "id": 1796,
         "linearizedBaseContracts": [
-          1798,
-          1714,
+          1796,
+          1712,
           269
         ],
         "name": "GSNCapable",
@@ -1606,7 +1611,7 @@
               251
             ],
             "body": {
-              "id": 1736,
+              "id": 1734,
               "nodeType": "Block",
               "src": "466:64:10",
               "statements": [
@@ -1616,17 +1621,17 @@
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     },
-                    "id": 1734,
+                    "id": 1732,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftExpression": {
-                      "id": 1731,
+                      "id": 1729,
                       "name": "forwarder",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1725,
+                      "referencedDeclaration": 1723,
                       "src": "483:9:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -1637,18 +1642,18 @@
                     "operator": "==",
                     "rightExpression": {
                       "expression": {
-                        "id": 1732,
+                        "id": 1730,
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1701,
+                        "referencedDeclaration": 1699,
                         "src": "496:7:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$1605_storage",
+                          "typeIdentifier": "t_struct$_Config_$1603_storage",
                           "typeString": "struct Data.Config storage ref"
                         }
                       },
-                      "id": 1733,
+                      "id": 1731,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -1668,37 +1673,37 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 1730,
-                  "id": 1735,
+                  "functionReturnParameters": 1728,
+                  "id": 1733,
                   "nodeType": "Return",
                   "src": "476:47:10"
                 }
               ]
             },
             "functionSelector": "572b6c05",
-            "id": 1737,
+            "id": 1735,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "isTrustedForwarder",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1727,
+              "id": 1725,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "438:8:10"
             },
             "parameters": {
-              "id": 1726,
+              "id": 1724,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1725,
+                  "id": 1723,
                   "mutability": "mutable",
                   "name": "forwarder",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1737,
+                  "scope": 1735,
                   "src": "412:17:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1707,7 +1712,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 1724,
+                    "id": 1722,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "412:7:10",
@@ -1723,16 +1728,16 @@
               "src": "411:19:10"
             },
             "returnParameters": {
-              "id": 1730,
+              "id": 1728,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1729,
+                  "id": 1727,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1737,
+                  "scope": 1735,
                   "src": "460:4:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1741,7 +1746,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 1728,
+                    "id": 1726,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "460:4:10",
@@ -1755,7 +1760,7 @@
               ],
               "src": "459:6:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "384:146:10",
             "stateMutability": "view",
             "virtual": false,
@@ -1766,7 +1771,7 @@
               257
             ],
             "body": {
-              "id": 1761,
+              "id": 1759,
               "nodeType": "Block",
               "src": "865:473:10",
               "statements": [
@@ -1776,7 +1781,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 1753,
+                    "id": 1751,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1786,7 +1791,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 1748,
+                      "id": 1746,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1794,7 +1799,7 @@
                       "leftExpression": {
                         "expression": {
                           "expression": {
-                            "id": 1744,
+                            "id": 1742,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1805,7 +1810,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1745,
+                          "id": 1743,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1818,7 +1823,7 @@
                             "typeString": "bytes calldata"
                           }
                         },
-                        "id": 1746,
+                        "id": 1744,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1835,7 +1840,7 @@
                       "operator": ">=",
                       "rightExpression": {
                         "hexValue": "3234",
-                        "id": 1747,
+                        "id": 1745,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1861,7 +1866,7 @@
                       "arguments": [
                         {
                           "expression": {
-                            "id": 1750,
+                            "id": 1748,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1872,7 +1877,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1751,
+                          "id": 1749,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1893,20 +1898,20 @@
                             "typeString": "address payable"
                           }
                         ],
-                        "id": 1749,
+                        "id": 1747,
                         "name": "isTrustedForwarder",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [
-                          1737
+                          1735
                         ],
-                        "referencedDeclaration": 1737,
+                        "referencedDeclaration": 1735,
                         "src": "904:18:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                           "typeString": "function (address) view returns (bool)"
                         }
                       },
-                      "id": 1752,
+                      "id": 1750,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1928,14 +1933,14 @@
                     }
                   },
                   "falseBody": {
-                    "id": 1759,
+                    "id": 1757,
                     "nodeType": "Block",
                     "src": "1290:42:10",
                     "statements": [
                       {
                         "expression": {
                           "expression": {
-                            "id": 1756,
+                            "id": 1754,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -1946,7 +1951,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1757,
+                          "id": 1755,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -1959,18 +1964,18 @@
                             "typeString": "address payable"
                           }
                         },
-                        "functionReturnParameters": 1743,
-                        "id": 1758,
+                        "functionReturnParameters": 1741,
+                        "id": 1756,
                         "nodeType": "Return",
                         "src": "1304:17:10"
                       }
                     ]
                   },
-                  "id": 1760,
+                  "id": 1758,
                   "nodeType": "IfStatement",
                   "src": "875:457:10",
                   "trueBody": {
-                    "id": 1755,
+                    "id": 1753,
                     "nodeType": "Block",
                     "src": "936:348:10",
                     "statements": [
@@ -2052,14 +2057,14 @@
                         "evmVersion": "constantinople",
                         "externalReferences": [
                           {
-                            "declaration": 1742,
+                            "declaration": 1740,
                             "isOffset": false,
                             "isSlot": false,
                             "src": "1209:3:10",
                             "valueSize": 1
                           }
                         ],
-                        "id": 1754,
+                        "id": 1752,
                         "nodeType": "InlineAssembly",
                         "src": "1182:92:10"
                       }
@@ -2069,40 +2074,40 @@
               ]
             },
             "documentation": {
-              "id": 1738,
+              "id": 1736,
               "nodeType": "StructuredDocumentation",
               "src": "536:241:10",
               "text": " return the sender of this call.\n if the call came through our trusted forwarder, return the original sender.\n otherwise, return `msg.sender`.\n should be used in the contract anywhere instead of msg.sender"
             },
-            "id": 1762,
+            "id": 1760,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_msgSender",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1740,
+              "id": 1738,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "813:8:10"
             },
             "parameters": {
-              "id": 1739,
+              "id": 1737,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "801:2:10"
             },
             "returnParameters": {
-              "id": 1743,
+              "id": 1741,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1742,
+                  "id": 1740,
                   "mutability": "mutable",
                   "name": "ret",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1762,
+                  "scope": 1760,
                   "src": "844:19:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2111,7 +2116,7 @@
                     "typeString": "address payable"
                   },
                   "typeName": {
-                    "id": 1741,
+                    "id": 1739,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "844:15:10",
@@ -2126,7 +2131,7 @@
               ],
               "src": "843:21:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "782:556:10",
             "stateMutability": "view",
             "virtual": true,
@@ -2137,7 +2142,7 @@
               263
             ],
             "body": {
-              "id": 1786,
+              "id": 1784,
               "nodeType": "Block",
               "src": "1836:710:10",
               "statements": [
@@ -2147,7 +2152,7 @@
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     },
-                    "id": 1778,
+                    "id": 1776,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2157,7 +2162,7 @@
                         "typeIdentifier": "t_uint256",
                         "typeString": "uint256"
                       },
-                      "id": 1773,
+                      "id": 1771,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2165,7 +2170,7 @@
                       "leftExpression": {
                         "expression": {
                           "expression": {
-                            "id": 1769,
+                            "id": 1767,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -2176,7 +2181,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1770,
+                          "id": 1768,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2189,7 +2194,7 @@
                             "typeString": "bytes calldata"
                           }
                         },
-                        "id": 1771,
+                        "id": 1769,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2206,7 +2211,7 @@
                       "operator": ">=",
                       "rightExpression": {
                         "hexValue": "3234",
-                        "id": 1772,
+                        "id": 1770,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -2232,7 +2237,7 @@
                       "arguments": [
                         {
                           "expression": {
-                            "id": 1775,
+                            "id": 1773,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -2243,7 +2248,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1776,
+                          "id": 1774,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2264,20 +2269,20 @@
                             "typeString": "address payable"
                           }
                         ],
-                        "id": 1774,
+                        "id": 1772,
                         "name": "isTrustedForwarder",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [
-                          1737
+                          1735
                         ],
-                        "referencedDeclaration": 1737,
+                        "referencedDeclaration": 1735,
                         "src": "1875:18:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                           "typeString": "function (address) view returns (bool)"
                         }
                       },
-                      "id": 1777,
+                      "id": 1775,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -2299,14 +2304,14 @@
                     }
                   },
                   "falseBody": {
-                    "id": 1784,
+                    "id": 1782,
                     "nodeType": "Block",
                     "src": "2500:40:10",
                     "statements": [
                       {
                         "expression": {
                           "expression": {
-                            "id": 1781,
+                            "id": 1779,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -2317,7 +2322,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 1782,
+                          "id": 1780,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -2330,18 +2335,18 @@
                             "typeString": "bytes calldata"
                           }
                         },
-                        "functionReturnParameters": 1768,
-                        "id": 1783,
+                        "functionReturnParameters": 1766,
+                        "id": 1781,
                         "nodeType": "Return",
                         "src": "2514:15:10"
                       }
                     ]
                   },
-                  "id": 1785,
+                  "id": 1783,
                   "nodeType": "IfStatement",
                   "src": "1846:694:10",
                   "trueBody": {
-                    "id": 1780,
+                    "id": 1778,
                     "nodeType": "Block",
                     "src": "1907:587:10",
                     "statements": [
@@ -2587,7 +2592,7 @@
                         },
                         "evmVersion": "constantinople",
                         "externalReferences": [],
-                        "id": 1779,
+                        "id": 1777,
                         "nodeType": "InlineAssembly",
                         "src": "2091:393:10"
                       }
@@ -2597,40 +2602,40 @@
               ]
             },
             "documentation": {
-              "id": 1763,
+              "id": 1761,
               "nodeType": "StructuredDocumentation",
               "src": "1344:409:10",
               "text": " return the msg.data of this call.\n if the call came through our trusted forwarder, then the real sender was appended as the last 20 bytes\n of the msg.data - so this method will strip those 20 bytes off.\n otherwise, return `msg.data`\n should be used in the contract instead of msg.data, where the difference matters (e.g. when explicitly\n signing or hashing the"
             },
-            "id": 1787,
+            "id": 1785,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "_msgData",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1765,
+              "id": 1763,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "1787:8:10"
             },
             "parameters": {
-              "id": 1764,
+              "id": 1762,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1775:2:10"
             },
             "returnParameters": {
-              "id": 1768,
+              "id": 1766,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1767,
+                  "id": 1765,
                   "mutability": "mutable",
                   "name": "ret",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1787,
+                  "scope": 1785,
                   "src": "1818:16:10",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2639,7 +2644,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 1766,
+                    "id": 1764,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "1818:5:10",
@@ -2653,7 +2658,7 @@
               ],
               "src": "1817:18:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "1758:788:10",
             "stateMutability": "view",
             "virtual": true,
@@ -2664,25 +2669,25 @@
               268
             ],
             "body": {
-              "id": 1796,
+              "id": 1794,
               "nodeType": "Block",
               "src": "2627:92:10",
               "statements": [
                 {
                   "expression": {
                     "expression": {
-                      "id": 1793,
+                      "id": 1791,
                       "name": "_config",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1701,
+                      "referencedDeclaration": 1699,
                       "src": "2688:7:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Config_$1605_storage",
+                        "typeIdentifier": "t_struct$_Config_$1603_storage",
                         "typeString": "struct Data.Config storage ref"
                       }
                     },
-                    "id": 1794,
+                    "id": 1792,
                     "isConstant": false,
                     "isLValue": true,
                     "isPure": false,
@@ -2696,43 +2701,43 @@
                       "typeString": "string storage ref"
                     }
                   },
-                  "functionReturnParameters": 1792,
-                  "id": 1795,
+                  "functionReturnParameters": 1790,
+                  "id": 1793,
                   "nodeType": "Return",
                   "src": "2681:31:10"
                 }
               ]
             },
             "functionSelector": "486ff0cd",
-            "id": 1797,
+            "id": 1795,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "versionRecipient",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 1789,
+              "id": 1787,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "2589:8:10"
             },
             "parameters": {
-              "id": 1788,
+              "id": 1786,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2577:2:10"
             },
             "returnParameters": {
-              "id": 1792,
+              "id": 1790,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 1791,
+                  "id": 1789,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 1797,
+                  "scope": 1795,
                   "src": "2612:13:10",
                   "stateVariable": false,
                   "storageLocation": "memory",
@@ -2741,7 +2746,7 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 1790,
+                    "id": 1788,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
                     "src": "2612:6:10",
@@ -2755,14 +2760,14 @@
               ],
               "src": "2611:15:10"
             },
-            "scope": 1798,
+            "scope": 1796,
             "src": "2552:167:10",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 1799,
+        "scope": 1797,
         "src": "323:2398:10"
       }
     ],
@@ -2774,7 +2779,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-22T09:44:00.925Z",
+  "updatedAt": "2020-10-22T10:26:15.558Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
