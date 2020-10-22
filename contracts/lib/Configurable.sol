@@ -7,6 +7,14 @@ contract Configurable is Ownable {
 
 
     /****************************
+    EVENTS
+    *****************************/
+
+
+    event ConfigUpdated();
+
+
+    /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
@@ -32,6 +40,8 @@ contract Configurable is Ownable {
         if (_config.owner != owner) _transferOwnership(owner);
         _config.GSNTrustedForwarder = GSNTrustedForwarder;
         _config.proxyRegistryAddress = proxyRegistryAddress;
+
+        emit ConfigUpdated();
     }
 
 }
