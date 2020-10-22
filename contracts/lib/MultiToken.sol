@@ -2,10 +2,13 @@
 pragma solidity ^0.7.1;
 
 import "../interfaces/IERC1155.sol";
+import '../interfaces/IERC1155Metadata.sol';
 import "../interfaces/IERC1155Receiver.sol";
 import "../interfaces/IERC165.sol";
+
 import "../utils/SafeMath.sol";
 import "../utils/Address.sol";
+import '../utils/StringUtils.sol';
 
 import './ChargeableTransfer.sol';
 import './Proxyable.sol';
@@ -16,7 +19,7 @@ import './Proxyable.sol';
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract MultiToken is IERC165, IERC1155, ChargeableTransfer, Proxyable {
+contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Proxyable {
 
     using SafeMath for uint256;
     using Address for address;
@@ -174,6 +177,14 @@ contract MultiToken is IERC165, IERC1155, ChargeableTransfer, Proxyable {
         emit TransferBatch(_msgSender(), from, to, ids, values);
 
         _doSafeBatchTransferAcceptanceCheck(_msgSender(), from, to, ids, values, data);
+    }
+
+    /**
+     * @param id Token ID
+     * @return URI string
+     */
+    function uri(uint256 id) external view override returns (string memory) {
+        return _strConcat(_config.baseURI, _toHexString(id));
     }
 
 

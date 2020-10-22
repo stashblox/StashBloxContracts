@@ -1,9 +1,9 @@
 {
   "contractName": "OwnableDelegateProxy",
   "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":\"OwnableDelegateProxy\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IERC1155Metadata.sol\":{\"keccak256\":\"0x121c132f1a15fafd91c187380702cb32d60beab1a4054670efc987e36bc2b70f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://425182c1ecd27456fc2f1c3fd82444b17a13f2e4e503bb3f7b973e83d2ceb1bb\",\"dweb:/ipfs/QmU54fpZCpdGtjUAbQkr4cYikCzKKQqjS3LPNQpYpJXiA8\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IERC173.sol\":{\"keccak256\":\"0x7d35a40f601c5245c540eb35f11a2227389b965acdee1abab1c88c7360c10050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9fb40310238de5d7a8b39154b1baff899f089984f62ed052ec07f86b9d5603ba\",\"dweb:/ipfs/QmQBLGwAEiAFQpJC6d61qgGDi1n93v2eWKAaRABhckNzW3\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IRelayRecipient.sol\":{\"keccak256\":\"0xd73f72cf3f4a2f4cde3e8f3950d60202e1aa89405e5aaedf971ced063261edd9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e01873a56115a6f3f1f6ce5dee198bbc2023ed36178ad693099de8b24baf2074\",\"dweb:/ipfs/QmQ4B48S3idc1CQtZyzQV3HH5tYPLk3ncRtS2ovUWxFsqW\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Data.sol\":{\"keccak256\":\"0x43b948f9486cfb6b10424e77b6226187b41b13ef7e011ee37fdc74c876c7e71a\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://8538cd9833731ccd8872dab21f5f7767f29054c28d6c4af1f9afed3a6f0edc2e\",\"dweb:/ipfs/QmRhY6PVkyr5fUSHttfphASikz8mxjNiaaaS4bXCqLY6FT\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol\":{\"keccak256\":\"0x9d2b49ab0fcef40fc062d2672f2f313b16c4d18474c40845c96bb609c23887db\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e32a33579b880e60491a4d98d560912652ddd1c1bb871e6d5e501f7db8f575d0\",\"dweb:/ipfs/QmSGRU7bioBjq6RVnpvduuzYFsF9rrjhXUVEEQebZMkTcD\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol\":{\"keccak256\":\"0x62250370e6f9abd908205ec912cf68a142c6d26cbb30451ad57a372bf73fd920\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://71b29e832882282fca8dd49265c2d2fb6beecfe8bbf908b48c279506d8b2e572\",\"dweb:/ipfs/QmRpobgioqEYq1Utzoy9kno77v59gGhR5FpovkXmQgxsCh\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":{\"keccak256\":\"0x6e349cd9263193acda067d4b2fe7cebd1a0d169c7b4ab1fb38a664ecdb60065f\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://5eed5b309c557a2a496a87659ccbae4561ee0121326b30df10ea881fd71872bc\",\"dweb:/ipfs/QmeJRw3fSUAYb9roQpSh7KzpRwTpPcdW8bobg5qpFofFjF\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/utils/StringUtils.sol\":{\"keccak256\":\"0x700249db0ed6aa2be4fc7675c9cdb5cdcc4e49abec52eefa58c2b02092784188\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f4a8babf975072c842269b5cb10aedfed77307629626cc6ab6173e68462eaebb\",\"dweb:/ipfs/QmVSAHYR99a4Q6jrrSqvRxMEnD2dhNAUPLyGA9KGJGTLDL\"]}},\"version\":1}",
-  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122008960359d3eb277be1a46dd749ec60b11ec6fd17740130744ee1c27d7de7a7ce64736f6c63430007010033",
-  "deployedBytecode": "0x6080604052600080fdfea264697066735822122008960359d3eb277be1a46dd749ec60b11ec6fd17740130744ee1c27d7de7a7ce64736f6c63430007010033",
+  "metadata": "{\"compiler\":{\"version\":\"0.7.1+commit.f4a555be\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":\"OwnableDelegateProxy\"},\"evmVersion\":\"constantinople\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IERC173.sol\":{\"keccak256\":\"0x7d35a40f601c5245c540eb35f11a2227389b965acdee1abab1c88c7360c10050\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9fb40310238de5d7a8b39154b1baff899f089984f62ed052ec07f86b9d5603ba\",\"dweb:/ipfs/QmQBLGwAEiAFQpJC6d61qgGDi1n93v2eWKAaRABhckNzW3\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/interfaces/IRelayRecipient.sol\":{\"keccak256\":\"0xd73f72cf3f4a2f4cde3e8f3950d60202e1aa89405e5aaedf971ced063261edd9\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e01873a56115a6f3f1f6ce5dee198bbc2023ed36178ad693099de8b24baf2074\",\"dweb:/ipfs/QmQ4B48S3idc1CQtZyzQV3HH5tYPLk3ncRtS2ovUWxFsqW\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Data.sol\":{\"keccak256\":\"0x49506ef2d8628e92f9c762088cbe5f8ce9f35bf20041eab9f4495399660858a5\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://dc047263c6af45dd2b655b1a3bc9910fb6a752152625d8c082eda697f935448b\",\"dweb:/ipfs/QmYuntEdGTX2Gj5jFcEWPs6qgxSuDP1VYsT83y9C6bwE8m\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/GSNCapable.sol\":{\"keccak256\":\"0x9d2b49ab0fcef40fc062d2672f2f313b16c4d18474c40845c96bb609c23887db\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://e32a33579b880e60491a4d98d560912652ddd1c1bb871e6d5e501f7db8f575d0\",\"dweb:/ipfs/QmSGRU7bioBjq6RVnpvduuzYFsF9rrjhXUVEEQebZMkTcD\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Ownable.sol\":{\"keccak256\":\"0x62250370e6f9abd908205ec912cf68a142c6d26cbb30451ad57a372bf73fd920\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://71b29e832882282fca8dd49265c2d2fb6beecfe8bbf908b48c279506d8b2e572\",\"dweb:/ipfs/QmRpobgioqEYq1Utzoy9kno77v59gGhR5FpovkXmQgxsCh\"]},\"/home/ouziel/Work/StashBloxContracts/contracts/lib/Proxyable.sol\":{\"keccak256\":\"0x6e349cd9263193acda067d4b2fe7cebd1a0d169c7b4ab1fb38a664ecdb60065f\",\"license\":\"GPL-3.0-or-later\",\"urls\":[\"bzz-raw://5eed5b309c557a2a496a87659ccbae4561ee0121326b30df10ea881fd71872bc\",\"dweb:/ipfs/QmeJRw3fSUAYb9roQpSh7KzpRwTpPcdW8bobg5qpFofFjF\"]}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220c4ec91fffcdfdc3db0c6538e67281f90335df5315c02fa773b1947e6df2c3cd464736f6c63430007010033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220c4ec91fffcdfdc3db0c6538e67281f90335df5315c02fa773b1947e6df2c3cd464736f6c63430007010033",
   "immutableReferences": {},
   "sourceMap": "95:33:17:-:0;;;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "95:33:17:-:0;;;;;",
@@ -149,13 +149,11 @@
           }
         ],
         "contractDependencies": [
-          161,
           234,
           263,
-          1735,
-          1807,
-          3255,
-          4106
+          1711,
+          1783,
+          3255
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
@@ -163,10 +161,8 @@
         "linearizedBaseContracts": [
           3451,
           3255,
-          1735,
-          4106,
-          161,
-          1807,
+          1711,
+          1783,
           263,
           234
         ],
@@ -192,10 +188,10 @@
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1704,
+                        "referencedDeclaration": 1698,
                         "src": "562:7:17",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$1666_storage",
+                          "typeIdentifier": "t_struct$_Config_$1660_storage",
                           "typeString": "struct Data.Config storage ref"
                         }
                       },
@@ -206,7 +202,7 @@
                       "lValueRequested": true,
                       "memberName": "proxyRegistryAddresses",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1663,
+                      "referencedDeclaration": 1657,
                       "src": "562:30:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -371,10 +367,10 @@
                                 "name": "_config",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1704,
+                                "referencedDeclaration": 1698,
                                 "src": "909:7:17",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Config_$1666_storage",
+                                  "typeIdentifier": "t_struct$_Config_$1660_storage",
                                   "typeString": "struct Data.Config storage ref"
                                 }
                               },
@@ -385,7 +381,7 @@
                               "lValueRequested": false,
                               "memberName": "proxyRegistryAddresses",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 1663,
+                              "referencedDeclaration": 1657,
                               "src": "909:30:17",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -535,10 +531,10 @@
                                         "name": "_config",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 1704,
+                                        "referencedDeclaration": 1698,
                                         "src": "1020:7:17",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_struct$_Config_$1666_storage",
+                                          "typeIdentifier": "t_struct$_Config_$1660_storage",
                                           "typeString": "struct Data.Config storage ref"
                                         }
                                       },
@@ -549,7 +545,7 @@
                                       "lValueRequested": false,
                                       "memberName": "proxyRegistryAddresses",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 1663,
+                                      "referencedDeclaration": 1657,
                                       "src": "1020:30:17",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -824,10 +820,10 @@
                           "name": "_config",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1704,
+                          "referencedDeclaration": 1698,
                           "src": "847:7:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Config_$1666_storage",
+                            "typeIdentifier": "t_struct$_Config_$1660_storage",
                             "typeString": "struct Data.Config storage ref"
                           }
                         },
@@ -838,7 +834,7 @@
                         "lValueRequested": false,
                         "memberName": "proxyRegistryAddresses",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1663,
+                        "referencedDeclaration": 1657,
                         "src": "847:30:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -1173,10 +1169,10 @@
                             "name": "_users",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1708,
+                            "referencedDeclaration": 1702,
                             "src": "1392:6:17",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1607_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1601_storage_$",
                               "typeString": "mapping(address => struct Data.User storage ref)"
                             }
                           },
@@ -1200,7 +1196,7 @@
                           "nodeType": "IndexAccess",
                           "src": "1392:15:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_User_$1607_storage",
+                            "typeIdentifier": "t_struct$_User_$1601_storage",
                             "typeString": "struct Data.User storage ref"
                           }
                         },
@@ -1211,7 +1207,7 @@
                         "lValueRequested": false,
                         "memberName": "operatorApprovals",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1606,
+                        "referencedDeclaration": 1600,
                         "src": "1392:33:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
@@ -1508,13 +1504,11 @@
           }
         ],
         "contractDependencies": [
-          161,
           234,
           263,
-          1735,
-          1807,
-          3255,
-          4106
+          1711,
+          1783,
+          3255
         ],
         "contractKind": "contract",
         "fullyImplemented": true,
@@ -1522,10 +1516,8 @@
         "linearizedBaseContracts": [
           3451,
           3255,
-          1735,
-          4106,
-          161,
-          1807,
+          1711,
+          1783,
           263,
           234
         ],
@@ -1551,10 +1543,10 @@
                         "name": "_config",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 1704,
+                        "referencedDeclaration": 1698,
                         "src": "562:7:17",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Config_$1666_storage",
+                          "typeIdentifier": "t_struct$_Config_$1660_storage",
                           "typeString": "struct Data.Config storage ref"
                         }
                       },
@@ -1565,7 +1557,7 @@
                       "lValueRequested": true,
                       "memberName": "proxyRegistryAddresses",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 1663,
+                      "referencedDeclaration": 1657,
                       "src": "562:30:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -1730,10 +1722,10 @@
                                 "name": "_config",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 1704,
+                                "referencedDeclaration": 1698,
                                 "src": "909:7:17",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_struct$_Config_$1666_storage",
+                                  "typeIdentifier": "t_struct$_Config_$1660_storage",
                                   "typeString": "struct Data.Config storage ref"
                                 }
                               },
@@ -1744,7 +1736,7 @@
                               "lValueRequested": false,
                               "memberName": "proxyRegistryAddresses",
                               "nodeType": "MemberAccess",
-                              "referencedDeclaration": 1663,
+                              "referencedDeclaration": 1657,
                               "src": "909:30:17",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -1894,10 +1886,10 @@
                                         "name": "_config",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 1704,
+                                        "referencedDeclaration": 1698,
                                         "src": "1020:7:17",
                                         "typeDescriptions": {
-                                          "typeIdentifier": "t_struct$_Config_$1666_storage",
+                                          "typeIdentifier": "t_struct$_Config_$1660_storage",
                                           "typeString": "struct Data.Config storage ref"
                                         }
                                       },
@@ -1908,7 +1900,7 @@
                                       "lValueRequested": false,
                                       "memberName": "proxyRegistryAddresses",
                                       "nodeType": "MemberAccess",
-                                      "referencedDeclaration": 1663,
+                                      "referencedDeclaration": 1657,
                                       "src": "1020:30:17",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -2183,10 +2175,10 @@
                           "name": "_config",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 1704,
+                          "referencedDeclaration": 1698,
                           "src": "847:7:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Config_$1666_storage",
+                            "typeIdentifier": "t_struct$_Config_$1660_storage",
                             "typeString": "struct Data.Config storage ref"
                           }
                         },
@@ -2197,7 +2189,7 @@
                         "lValueRequested": false,
                         "memberName": "proxyRegistryAddresses",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1663,
+                        "referencedDeclaration": 1657,
                         "src": "847:30:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_array$_t_address_$10_storage",
@@ -2532,10 +2524,10 @@
                             "name": "_users",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 1708,
+                            "referencedDeclaration": 1702,
                             "src": "1392:6:17",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1607_storage_$",
+                              "typeIdentifier": "t_mapping$_t_address_$_t_struct$_User_$1601_storage_$",
                               "typeString": "mapping(address => struct Data.User storage ref)"
                             }
                           },
@@ -2559,7 +2551,7 @@
                           "nodeType": "IndexAccess",
                           "src": "1392:15:17",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_User_$1607_storage",
+                            "typeIdentifier": "t_struct$_User_$1601_storage",
                             "typeString": "struct Data.User storage ref"
                           }
                         },
@@ -2570,7 +2562,7 @@
                         "lValueRequested": false,
                         "memberName": "operatorApprovals",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 1606,
+                        "referencedDeclaration": 1600,
                         "src": "1392:33:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
@@ -2733,7 +2725,7 @@
   },
   "networks": {},
   "schemaVersion": "3.2.3",
-  "updatedAt": "2020-10-21T23:45:22.775Z",
+  "updatedAt": "2020-10-22T09:28:25.290Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

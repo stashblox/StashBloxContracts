@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.7.1;
 
-import '../utils/StringUtils.sol';
-import '../interfaces/IERC1155Metadata.sol';
 import './GSNCapable.sol';
 
-contract Data is GSNCapable, IERC1155Metadata, StringUtils {
+contract Data is GSNCapable {
 
 
     /***************************************
@@ -88,19 +86,5 @@ contract Data is GSNCapable, IERC1155Metadata, StringUtils {
     mapping (address => User) public _users;
     mapping (uint256 => Token) public _tokens;
     mapping (uint256 => Callback) public _callbacks;
-
-
-    /***************************************
-    EXTERNAL FUNCTIONS
-    ****************************************/
-
-
-    /**
-     * @param id Token ID
-     * @return URI string
-     */
-    function uri(uint256 id) external view override returns (string memory) {
-        return _strConcat(_config.baseURI, _toHexString(id));
-    }
 
 }
