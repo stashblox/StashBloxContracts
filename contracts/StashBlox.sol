@@ -3,8 +3,9 @@ pragma solidity ^0.7.1;
 
 import './lib/Callable.sol';
 import './lib/Withdrawable.sol';
+import './lib/Configurable.sol';
 
-contract StashBlox is Callable, Withdrawable {
+contract StashBlox is Callable, Withdrawable, Configurable {
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
