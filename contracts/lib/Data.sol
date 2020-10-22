@@ -1,15 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.7.1;
 
-import './GSNCapable.sol';
-
-contract Data is GSNCapable {
+contract Data {
 
 
     /***************************************
     TYPES
     ****************************************/
 
+    struct Config {
+        uint256 callbackAutoExecuteMaxAddresses;
+        string baseURI;
+        string versionRecipient;
+        address owner;
+        address GSNTrustedForwarder;
+        address[10] proxyRegistryAddresses;
+    }
 
     struct User {
         bool isTokenizer;
@@ -44,13 +50,6 @@ contract Data is GSNCapable {
         uint256[2][] storageCostHistory; //list of tuple [timestamp, price]
     }
 
-    struct Config {
-        uint256 callbackAutoExecuteMaxAddresses;
-        string baseURI;
-        address[10] proxyRegistryAddresses;
-        address owner;
-    }
-
     struct Callback {
         uint256 tokenId;
         uint256 price;
@@ -74,7 +73,6 @@ contract Data is GSNCapable {
 
     bytes4 constant internal INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 constant internal INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
-    string public override versionRecipient = "1.0.0+opengsn.stashblox";
 
 
     /***************************************

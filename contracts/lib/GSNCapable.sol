@@ -3,20 +3,16 @@
 pragma solidity ^0.7.1;
 
 import "../interfaces/IRelayRecipient.sol";
+import "./Data.sol";
 
 /**
  * A base contract to be inherited by any contract that want to receive relayed transactions
  * A subclass must use "_msgSender()" instead of "msg.sender"
  */
-abstract contract GSNCapable is IRelayRecipient {
-
-    /*
-     * Forwarder singleton we accept calls from
-     */
-    address public trustedForwarder;
+abstract contract GSNCapable is IRelayRecipient, Data {
 
     function isTrustedForwarder(address forwarder) public override view returns(bool) {
-        return forwarder == trustedForwarder;
+        return forwarder == _config.GSNTrustedForwarder;
     }
 
     /**
@@ -63,5 +59,10 @@ abstract contract GSNCapable is IRelayRecipient {
         } else {
             return msg.data;
         }
+    }
+
+    function versionRecipient() external override view returns (string memory) {
+        //return "1.0.0+opengsn.stashblox";
+        return _config.versionRecipient;
     }
 }

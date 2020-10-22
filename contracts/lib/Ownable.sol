@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.1;
 
-import './Data.sol';
+import './GSNCapable.sol';
 import "../interfaces/IERC173.sol";
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -12,7 +12,7 @@ import "../interfaces/IERC173.sol";
  * `onlyOwner`, which can be applied to your functions to restrict their use to
  * the owner.
  */
-contract Ownable is IERC173, Data {
+contract Ownable is IERC173, GSNCapable {
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.

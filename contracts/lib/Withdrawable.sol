@@ -2,9 +2,9 @@
 pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
-import './Data.sol';
+import './GSNCapable.sol';
 
-contract Withdrawable is Data {
+contract Withdrawable is GSNCapable {
 
     using SafeMath for uint256;
 
