@@ -137,8 +137,9 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
+        _users[_msgSender()].ETHBalance = _users[_msgSender()].ETHBalance.add(msg.value);
 
-        _transfer(from, to, id, value);
+        _transfer(_msgSender(), from, to, id, value);
 
         emit TransferSingle(_msgSender(), from, to, id, value);
 
@@ -171,8 +172,9 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
-
-        _transferBatch(from, to, ids, values);
+        _users[_msgSender()].ETHBalance = _users[_msgSender()].ETHBalance.add(msg.value);
+        
+        _transferBatch(_msgSender(), from, to, ids, values);
 
         emit TransferBatch(_msgSender(), from, to, ids, values);
 

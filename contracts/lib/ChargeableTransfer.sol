@@ -114,27 +114,14 @@ contract ChargeableTransfer is GSNCapable {
     }
 
     // Used by ERC1155.sol in safeTransferFrom
-    function _transfer(address from, address to, uint256 id, uint256 value) internal {
-        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
-        feesBalance = feesBalance.sub(_moveTokens(from, to, id, value), "Insufficient ETH");
-        _returnChange(from, feesBalance);
+    function _transfer(address operator, address from, address to, uint256 id, uint256 value) internal {
+        _users[operator].ETHBalance = _users[operator].ETHBalance.sub(_moveTokens(from, to, id, value), "Insufficient ETH");
     }
 
     // Used by ERC1155.sol in safeTransferFromBatch
-    function _transferBatch(address from, address to, uint256[] memory ids, uint256[] memory values) internal {
-        uint256 feesBalance = msg.value > 0 ? msg.value : _users[from].ETHBalance;
-        for (uint256 i = 0; i < ids.length; ++i) {
-            feesBalance = feesBalance.sub(_moveTokens(from, to, ids[i], values[i]), "Insufficient ETH");
-        }
-        _returnChange(from, feesBalance);
-    }
-
-    function _returnChange(address from, uint256 feesBalance) internal {
-      if (msg.value > 0 && feesBalance > 0) {
-          _users[from].ETHBalance = _users[from].ETHBalance.add(feesBalance);
-      } else if (msg.value == 0) {
-          _users[from].ETHBalance = feesBalance;
+    function _transferBatch(address operator, address from, address to, uint256[] memory ids, uint256[] memory values) internal {
+      for (uint256 i = 0; i < ids.length; ++i) {
+          _users[operator].ETHBalance = _users[operator].ETHBalance.sub(_moveTokens(from, to, ids[i], values[i]), "Insufficient ETH");
       }
     }
-
 }
