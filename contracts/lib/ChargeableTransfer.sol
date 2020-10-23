@@ -26,7 +26,7 @@ contract ChargeableTransfer is GSNCapable {
     }
 
     /**
-     * @dev Function to get the average age of the token for the given address.
+     * @dev Function to get the average age of the token hold by the given address.
      * @param account the address from where to transfer the tokens
      * @param id The token ID
      * @return average age in seconds
@@ -92,7 +92,6 @@ contract ChargeableTransfer is GSNCapable {
                 totalCost += (storageDays.mul(cost)).mul(value);
             }
         }
-
         // TODO!
         totalCost = totalCost.div(10**_tokens[id].decimals); // storage cost are for one full token
 

@@ -22,14 +22,6 @@ contract Callable is Lockable {
 
 
     /**
-     * @dev Maximum addresses to execute automatically the callback when is accepted.
-     * @param newMax new maximum
-     */
-    function setCallbackAutoExecuteMaxAddresses(uint256 newMax) external onlyOwner {
-        _config.callbackAutoExecuteMaxAddresses = newMax;
-    }
-
-    /**
      * @dev Propose to buy the whole supply of a token.
      * The proposer must hold minHoldingForCallback% of the total supply.
      * StashBlox must approve the price with acceptCallback();
@@ -42,17 +34,13 @@ contract Callable is Lockable {
                 msg.value >= _callbackPrice(tokenId, price, callees) &&
                 callees.length <= _config.callbackAutoExecuteMaxAddresses, "Invalid arguments or value");
 
-        uint256 minHolding = (_tokens[tokenId].supply.mul(_tokens[tokenId].minHoldingForCallback)).div(10000);
-
         _callbacks[callbackId] = Callback({
             tokenId: tokenId,
             caller: _msgSender(),
             callees: callees,
             price: price,
             escrowedAmount: msg.value,
-            needLegalApproval: (price == 0) ||
-                               (_tokens[tokenId].holders[_msgSender()].balance < minHolding) ||
-                               (callees.length > 0),
+            needLegalApproval: _needLegalApproval(tokenId, price, callees),
             approvedByLegal: false,
             refused: false,
             accepted: false,
@@ -154,6 +142,14 @@ contract Callable is Lockable {
     *****************************/
 
 
+    function _needLegalApproval(uint256 tokenId, uint256 price, address[] memory callees) internal view returns (bool) {
+        uint256 minHolding = (_tokens[tokenId].supply.mul(_tokens[tokenId].minHoldingForCallback)).div(10000);
+
+        return price == 0 ||
+               _tokens[tokenId].holders[_msgSender()].balance < minHolding ||
+               callees.length > 0;
+    }
+
     function _executeCallback(uint256 callbackId, uint256 maxCall) internal {
         uint256 tokenId = _callbacks[callbackId].tokenId;
 
@@ -161,43 +157,48 @@ contract Callable is Lockable {
                                    _callbacks[callbackId].callees :
                                    _tokens[tokenId].holderList;
 
-        uint256 max = callees.length - 1;
         uint256 start = _callbacks[callbackId].callCounter;
-        uint256 end = start + maxCall <  max ? start + maxCall : max;
+        uint256 end = start + maxCall <  callees.length - 1 ? start + maxCall : callees.length - 1;
 
         uint256 callbackAmount = 0;
+        uint256 callbackPrice = 0;
+
         for (uint256 i = start; i <= end; i++) {
-            address callee = callees[i];
-            if (_tokens[tokenId].holders[callee].balance > 0) {
-                callbackAmount += _tokens[tokenId].holders[callee].balance;
-                _users[callee].ETHBalance += _tokens[tokenId].holders[callee].balance.mul(_callbacks[callbackId].price);
+            uint256 calleeBalance = _tokens[tokenId].holders[callees[i]].balance;
+            if (calleeBalance == 0) continue;
 
-                emit TransferSingle(_msgSender(),
-                                    callee,
-                                    _callbacks[callbackId].caller,
-                                    tokenId,
-                                    _tokens[tokenId].holders[callee].balance);
-
-                _tokens[tokenId].holders[callee].balance = 0;
-            }
+            uint256 price = calleeBalance.mul(_callbacks[callbackId].price);
+            // pay the callee
+            _users[callees[i]].ETHBalance = _users[callees[i]].ETHBalance.add(price);
+            // and remove token from his account
+            _tokens[tokenId].holders[callees[i]].balance = 0;
+            // increment total amount and total price for the caller
+            callbackAmount = callbackAmount.add(calleeBalance);
+            callbackPrice = callbackPrice.add(price);
+            // emit transfer event
+            emit TransferSingle(_msgSender(), callees[i], _callbacks[callbackId].caller, tokenId, calleeBalance);
         }
+        // remove total price from the escrowedAmount
+        _callbacks[callbackId].escrowedAmount = _callbacks[callbackId].escrowedAmount.sub(callbackPrice);
+        // add total token to the caller account
         _addToBalance(_callbacks[callbackId].caller, tokenId, callbackAmount);
 
         _callbacks[callbackId].callCounter = end;
-        if (end == max) {
+        if (end == callees.length - 1) {
             _callbacks[callbackId].completed = true;
             emit CallbackUpdated(callbackId);
         }
     }
 
     function _callbackPrice(uint256 tokenId, uint256 price, address[] memory callees) internal view returns (uint256) {
-        uint256 callbackAmount = 0;
         if (callees.length == 0) {
-            callbackAmount = _tokens[tokenId].supply.sub(_tokens[tokenId].holders[_msgSender()].balance);
-        } else {
-            for (uint i; i < callees.length; i++) {
-                callbackAmount += _tokens[tokenId].holders[callees[i]].balance;
-            }
+            // price for all the supply less the caller holding
+            return (_tokens[tokenId].supply.sub(_tokens[tokenId].holders[_msgSender()].balance)).mul(price);
+        }
+
+        uint256 callbackAmount = 0;
+        for (uint i; i < callees.length; i++) {
+            callbackAmount += _tokens[tokenId].holders[callees[i]].balance;
         }
         return callbackAmount.mul(price);
     }
