@@ -25,9 +25,9 @@
   "devDependencies": {
     "@openzeppelin/test-environment": "^0.1.5",
     "@openzeppelin/test-helpers": "^0.5.7",
+    "ganache-cli": "^6.9.1",
     "mocha": "^7.1.1",
     "solc-0.7": "npm:solc@^0.7.2",
-    "solidity-coverage": "^0.7.11",
-    "ganache-cli": "^6.9.1"
+    "solidity-coverage": "^0.7.11"
   }
 }
