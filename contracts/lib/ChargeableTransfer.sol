@@ -70,14 +70,14 @@ contract ChargeableTransfer is GSNCapable {
         _tokens[id].holders[recipient].balance = newBalance;
     }
 
-    function _storageCost(address account, uint256 id, uint256 value) internal view returns (uint256) {
+    function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
 
-        for (uint i = _tokens[id].storageCostHistory.length - 1; i >= 0; i--) {
+        for (uint i = _tokens[id].storageFees.length - 1; i >= 0; i--) {
 
-            uint256 costStartAt = _tokens[id].storageCostHistory[i][0];
-            uint256 cost = _tokens[id].storageCostHistory[i][1];
+            uint256 costStartAt = _tokens[id].storageFees[i][0];
+            uint256 cost = _tokens[id].storageFees[i][1];
             uint256 storageDays;
 
             if (_tokens[id].holders[account].birthday >= costStartAt) {
@@ -101,11 +101,11 @@ contract ChargeableTransfer is GSNCapable {
     // Calculate transaction fees
     function _transactionFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         // calculate cost proportional to time and value
-        uint256 storageCost = _storageCost(account, id, value);
+        uint256 storageFees = _storageFees(account, id, value);
         // calculate cost proportional to value only
-        uint256 valueFees = (value.mul(_tokens[id].valueTransactionFees)).div(10**8);
+        uint256 standardFees = (value.mul(_tokens[id].standardFees)).div(10**8);
         // add them to lump sum cost
-        return _tokens[id].lumpSumTransactionFees.add(storageCost).add(valueFees);
+        return _tokens[id].lumpSumFees.add(storageFees).add(standardFees);
     }
 
     function _distributeFees(uint256 id, uint256 fees) internal {

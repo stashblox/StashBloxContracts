@@ -36,8 +36,8 @@ contract Data {
     struct Token {
         uint256 supply;
         uint256 decimals;
-        uint256 lumpSumTransactionFees;
-        uint256 valueTransactionFees;
+        uint256 lumpSumFees;
+        uint256 standardFees;
         uint256 minHoldingForCallback;
         uint256 metadataHash;
         address legalAuthority;
@@ -47,7 +47,7 @@ contract Data {
         address[] holderList; // Can contains zero balance
         address[] feesRecipients;
         uint256[] feesRecipientsPercentage;
-        uint256[2][] storageCostHistory; //list of tuple [timestamp, price]
+        uint256[2][] storageFees; //list of tuple [timestamp, price]
     }
 
     struct Callback {

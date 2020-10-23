@@ -141,9 +141,9 @@ contract Mintable is MultiToken {
                 "Invalid arguments");
 
         _tokens[id].metadataHash = metadataHash;
-        _tokens[id].lumpSumTransactionFees = transactionFees[0];
-        _tokens[id].valueTransactionFees = transactionFees[1];
-        _tokens[id].storageCostHistory.push([block.timestamp, transactionFees[2]]);
+        _tokens[id].lumpSumFees = transactionFees[0];
+        _tokens[id].standardFees = transactionFees[1];
+        _tokens[id].storageFees.push([block.timestamp, transactionFees[2]]);
         _tokens[id].feesRecipients = feesRecipients;
         _tokens[id].feesRecipientsPercentage = feesRecipientsPercentage;
         _tokens[id].minHoldingForCallback = minHoldingForCallback;
@@ -190,9 +190,9 @@ contract Mintable is MultiToken {
                      _tokens[id].decimals,
                      metadataHash,
                      [
-                       _tokens[id].lumpSumTransactionFees,
-                       _tokens[id].valueTransactionFees,
-                       _tokens[id].storageCostHistory[0][1]
+                       _tokens[id].lumpSumFees,
+                       _tokens[id].standardFees,
+                       _tokens[id].storageFees[0][1]
                      ],
                      _tokens[id].feesRecipients,
                      _tokens[id].feesRecipientsPercentage,
