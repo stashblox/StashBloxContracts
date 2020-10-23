@@ -88,8 +88,8 @@ contract Lockable is Privatizable {
     }
 
     // override ChargeableTransfer._moveTokens
-    function _moveTokens(address from, address to, uint256 id, uint256 value) internal override returns (uint256 fees) {
+    function _moveTokens(address operator, address from, address to, uint256 id, uint256 value) internal override returns (uint256 fees) {
         require(!_isLockedMove(from, to, id, value), "Locked");
-        return super._moveTokens(from, to, id, value);
+        return super._moveTokens(operator, from, to, id, value);
     }
 }

@@ -51,7 +51,6 @@ contract ChargeableTransfer is GSNCapable {
 
     function _updateBirthday(address recipient, uint256 id, uint256 newBalance) internal {
         uint256 currentBalance = _tokens[id].holders[recipient].balance ;
-
         if (currentBalance == 0) {
             // first tokens no need to calculate avarage age
             _tokens[id].holders[recipient].birthday = block.timestamp;
@@ -63,20 +62,15 @@ contract ChargeableTransfer is GSNCapable {
         }
     }
 
-
     // update balance, lists of holders and token average age of the recipient
     function _addToBalance(address recipient, uint256 id, uint256 value) internal virtual {
         uint256 newBalance = _tokens[id].holders[recipient].balance.add(value);
-
         _registerNewHolder(recipient, id);
-
         _updateBirthday(recipient, id, newBalance);
-
         _tokens[id].holders[recipient].balance = newBalance;
     }
 
-    // Calculate transaction fees
-    function _transactionFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
+    function _storageCost(address account, uint256 id, uint256 value) internal view returns (uint256) {
         uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
 
@@ -102,9 +96,17 @@ contract ChargeableTransfer is GSNCapable {
         // TODO!
         totalCost = totalCost.div(10**_tokens[id].decimals); // storage cost are for one full token
 
-        uint256 valueFees = (value.mul(_tokens[id].valueTransactionFees)).div(10**8);
+        return totalCost;
+    }
 
-        return totalCost.add(_tokens[id].lumpSumTransactionFees.add(valueFees));
+    // Calculate transaction fees
+    function _transactionFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
+        // calculate cost proportional to time and value
+        uint256 storageCost = _storageCost(account, id, value);
+        // calculate cost proportional to value only
+        uint256 valueFees = (value.mul(_tokens[id].valueTransactionFees)).div(10**8);
+        // add them to lump sum cost
+        return _tokens[id].lumpSumTransactionFees.add(storageCost).add(valueFees);
     }
 
     function _distributeFees(uint256 id, uint256 fees) internal {
@@ -115,28 +117,25 @@ contract ChargeableTransfer is GSNCapable {
         }
     }
 
-    function _moveTokens(address from, address to, uint256 id, uint256 value) internal virtual returns (uint256 fees) {
-
-        // move tokens
+    function _moveTokens(address operator, address from, address to, uint256 id, uint256 value) internal virtual returns (uint256 fees) {
+        // remove tokens from sender balance
         _tokens[id].holders[from].balance = _tokens[id].holders[from].balance.sub(value, "Insufficient balance");
+        // remove tokens to receiver balance
         _addToBalance(to, id, value);
-
-        // pay StashBlox fees
+        // calculate StashBlox fees
         fees = _transactionFees(from, id, value);
-        _distributeFees(fees);
+        // remove them from operator balance
+        _users[operator].ETHBalance = _users[operator].ETHBalance.sub(fees, "Insufficient ETH");
+        // and distribute them to fees recipients
+        _distributeFees(id, fees);
 
         return fees;
     }
 
-    // Used by ERC1155.sol in safeTransferFrom
-    function _transfer(address operator, address from, address to, uint256 id, uint256 value) internal {
-        _users[operator].ETHBalance = _users[operator].ETHBalance.sub(_moveTokens(from, to, id, value), "Insufficient ETH");
-    }
-
     // Used by ERC1155.sol in safeTransferFromBatch
-    function _transferBatch(address operator, address from, address to, uint256[] memory ids, uint256[] memory values) internal {
-      for (uint256 i = 0; i < ids.length; ++i) {
-          _users[operator].ETHBalance = _users[operator].ETHBalance.sub(_moveTokens(from, to, ids[i], values[i]), "Insufficient ETH");
-      }
+    function _moveTokensBatch(address operator, address from, address to, uint256[] memory ids, uint256[] memory values) internal {
+        for (uint256 i = 0; i < ids.length; ++i) {
+            _moveTokens(operator, from, to, ids[i], values[i]);
+        }
     }
 }
