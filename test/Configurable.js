@@ -29,7 +29,7 @@ describe("Configurable.sol", () => {
       assert.equal(newConfig.versionRecipient, "1.0.0+opengsn.stashblox", "Invalid config value");
       assert.equal(newConfig.owner, defaultSender, "Invalid config value");
       assert.equal(newConfig.GSNTrustedForwarder,  ZERO_ADDRESS, "Invalid config value");
-      assert.equal(newConfig.proxyRegistryAddress, ZERO_ADDRESS, "Invalid config value");
+      assert.equal(newConfig.proxyRegistryAccount, ZERO_ADDRESS, "Invalid config value");
 
     });
 
@@ -40,7 +40,7 @@ describe("Configurable.sol", () => {
       const versionRecipient = "versionRecipient";
       const owner = accounts[4];
       const GSNTrustedForwarder = accounts[5];
-      const proxyRegistryAddress = accounts[6];
+      const proxyRegistryAccount = accounts[6];
 
       const receipt = await STASHBLOX.updateConfig(
         callbackAutoExecuteMaxAccounts,
@@ -48,7 +48,7 @@ describe("Configurable.sol", () => {
         versionRecipient,
         owner,
         GSNTrustedForwarder,
-        proxyRegistryAddress
+        proxyRegistryAccount
       );
 
       expectEvent(receipt, "ConfigUpdated");
@@ -60,7 +60,7 @@ describe("Configurable.sol", () => {
       assert.equal(newConfig.versionRecipient, versionRecipient, "Invalid config value");
       assert.equal(newConfig.owner, owner, "Invalid config value");
       assert.equal(newConfig.GSNTrustedForwarder, GSNTrustedForwarder, "Invalid config value");
-      assert.equal(newConfig.proxyRegistryAddress, proxyRegistryAddress, "Invalid config value");
+      assert.equal(newConfig.proxyRegistryAccount, proxyRegistryAccount, "Invalid config value");
 
     });
 

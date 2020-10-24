@@ -14,7 +14,7 @@ contract Data {
         string versionRecipient;
         address owner;
         address GSNTrustedForwarder;
-        address proxyRegistryAddress;
+        address proxyRegistryAccount;
     }
 
     struct Account {

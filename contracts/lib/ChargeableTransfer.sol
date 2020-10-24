@@ -116,22 +116,23 @@ contract ChargeableTransfer is GSNCapable {
         }
     }
 
+    // Used by ERC1155 implementation in safeTransferFrom
     function _moveTokens(address operator, address from, address to, uint256 id, uint256 value) internal virtual returns (uint256 fees) {
         // remove tokens from sender balance
         _tokens[id].holders[from].balance = _tokens[id].holders[from].balance.sub(value, "Insufficient balance");
-        // remove tokens to receiver balance
+        // add tokens to receiver balance
         _addToBalance(to, id, value);
         // calculate StashBlox fees
         fees = _transactionFees(from, id, value);
-        // remove them from operator balance
+        // remove fees from operator ETH balance
         _accounts[operator].ETHBalance = _accounts[operator].ETHBalance.sub(fees, "Insufficient ETH");
-        // and distribute them to fees recipients
+        // distribute fees to beneficiaries
         _distributeFees(id, fees);
 
         return fees;
     }
 
-    // Used by ERC1155.sol in safeTransferFromBatch
+    // Used by ERC1155 implementation in safeTransferFromBatch
     function _moveTokensBatch(address operator, address from, address to, uint256[] memory ids, uint256[] memory values) internal {
         for (uint256 i = 0; i < ids.length; ++i) {
             _moveTokens(operator, from, to, ids[i], values[i]);
