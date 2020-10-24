@@ -97,7 +97,7 @@ contract Maintenable is Mintable {
 
 
     function _isMaintener(uint256 id, address account) internal view returns (bool) {
-        return _tokens[id].holders[account].isMaintener || _isOwner();
+        return _tokens[id].holders[account].isMaintener || (account == _config.owner);
     }
 
 }

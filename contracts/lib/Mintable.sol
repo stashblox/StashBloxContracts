@@ -43,10 +43,10 @@ contract Mintable is MultiToken {
 
     /**
      * @dev Function to check if an address is authorized to create a token.
-     * @param tokenizer The authorized address
+     * @param account The authorized address
      */
-    function isTokenizer(address tokenizer) external view returns (bool) {
-        return _isTokenizer(tokenizer);
+    function isTokenizer(address account) external view returns (bool) {
+        return _isTokenizer(account);
     }
 
     /**
@@ -119,7 +119,7 @@ contract Mintable is MultiToken {
 
 
     function _isTokenizer(address account) internal view returns (bool) {
-        return _accounts[account].isTokenizer || _isOwner();
+        return _accounts[account].isTokenizer || (account == _config.owner);
     }
 
     function _setToken(uint256 id,
