@@ -94,13 +94,13 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      * Because an account already has operator privileges for itself, this function will revert
      * if the account attempts to set the approval status for itself.
      *
-     * @param operator address to set the approval
+     * @param account address to set the approval
      * @param approved representing the status of the approval to be set
      */
-    function setApprovalForAll(address operator, bool approved) external override {
-        require(_msgSender() != operator, "ERC1155: cannot set approval status for self");
-        _accounts[_msgSender()].operatorApprovals[operator] = approved;
-        emit ApprovalForAll(_msgSender(), operator, approved);
+    function setApprovalForAll(address account, bool approved) external override {
+        require(_msgSender() != account, "ERC1155: cannot set approval status for self");
+        _accounts[_msgSender()].operatorApprovals[account] = approved;
+        emit ApprovalForAll(_msgSender(), account, approved);
     }
 
     /**

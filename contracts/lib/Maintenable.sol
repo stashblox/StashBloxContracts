@@ -32,29 +32,29 @@ contract Maintenable is Mintable {
 
     /**
      * @dev Function to authorize an address to maintain a token.
-     * @param maintener The authorized address
+     * @param account The authorized address
      */
-    function authorizeMaintener(uint256 id, address maintener) external onlyOwner {
-        _tokens[id].holders[maintener].isMaintener = true;
+    function authorizeMaintener(uint256 id, address account) external onlyOwner {
+        _tokens[id].holders[account].isMaintener = true;
     }
 
     /**
      * @dev Function to revoke the authorization to maintain a token.
      * @param id the token id
-     * @param maintener The authorized address
+     * @param account The authorized address
      */
-    function revokeMaintener(uint256 id, address maintener) external onlyOwner {
-        _tokens[id].holders[maintener].isMaintener = false;
+    function revokeMaintener(uint256 id, address account) external onlyOwner {
+        _tokens[id].holders[account].isMaintener = false;
     }
 
     /**
      * @dev Function to check if an address is authorized to maintain a token.
      * @param id the token id
-     * @param maintener The authorized address
+     * @param account The authorized address
      * @return true if it's a maintener address
      */
-    function isMaintener(uint256 id, address maintener) external view returns (bool) {
-        return _isMaintener(id, maintener);
+    function isMaintener(uint256 id, address account) external view returns (bool) {
+        return _isMaintener(id, account);
     }
 
     /**
@@ -96,8 +96,8 @@ contract Maintenable is Mintable {
     *****************************/
 
 
-    function _isMaintener(uint256 id, address maintener) internal view returns (bool) {
-        return _tokens[id].holders[maintener].isMaintener || _isOwner();
+    function _isMaintener(uint256 id, address account) internal view returns (bool) {
+        return _tokens[id].holders[account].isMaintener || _isOwner();
     }
 
 }

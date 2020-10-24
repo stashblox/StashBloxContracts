@@ -19,10 +19,10 @@ contract Proxyable is Ownable {
 
     /**
      * @dev Function to update the operator whitelist
-     * @param proxyAddress Proxy address
+     * @param account Proxy address
      */
-    function setProxyRegistryAddress(address proxyAddress) external onlyOwner {
-        _config.proxyRegistryAddress = proxyAddress;
+    function setProxyRegistryAddress(address account) external onlyOwner {
+        _config.proxyRegistryAddress = account;
     }
 
 

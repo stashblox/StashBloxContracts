@@ -9,7 +9,7 @@ contract Data {
     ****************************************/
 
     struct Config {
-        uint256 callbackAutoExecuteMaxAddresses;
+        uint256 callbackAutoExecuteMaxAccounts;
         string baseURI;
         string versionRecipient;
         address owner;

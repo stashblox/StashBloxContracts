@@ -32,7 +32,7 @@ contract Callable is Lockable {
     function proposeCallback(uint256 callbackId, uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable {
         require(_callbacks[callbackId].tokenId == 0 && _tokens[tokenId].supply > 0 &&
                 msg.value >= _callbackPrice(tokenId, price, callees) &&
-                callees.length <= _config.callbackAutoExecuteMaxAddresses, "Invalid arguments or value");
+                callees.length <= _config.callbackAutoExecuteMaxAccounts, "Invalid arguments or value");
 
         _callbacks[callbackId] = Callback({
             tokenId: tokenId,
@@ -110,7 +110,7 @@ contract Callable is Lockable {
 
         if (callback.callees.length > 0) {
             _executeCallback(callbackId, callback.callees.length);
-        } else if (_tokens[callback.tokenId].holderList.length <= _config.callbackAutoExecuteMaxAddresses) {
+        } else if (_tokens[callback.tokenId].holderList.length <= _config.callbackAutoExecuteMaxAccounts) {
             _executeCallback(callbackId, _tokens[callback.tokenId].holderList.length);
         } else {
             _lockToken(callback.tokenId, callback.documentHash);
@@ -203,8 +203,8 @@ contract Callable is Lockable {
         return callbackAmount.mul(price);
     }
 
-    function _isLegalAuthority(uint256 id, address legalAuthority) internal view returns (bool) {
-        return _tokens[id].legalAuthority == legalAuthority;
+    function _isLegalAuthority(uint256 id, address account) internal view returns (bool) {
+        return _tokens[id].legalAuthority == account;
     }
 
 }

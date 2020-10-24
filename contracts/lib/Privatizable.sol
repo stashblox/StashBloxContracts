@@ -14,20 +14,20 @@ contract Privatizable is Maintenable {
     /**
      * @dev Function to approve holder for a private token.
      * @param id the token id
-     * @param holder The authorized address
+     * @param account The authorized address
      */
-    function approveHolder(uint256 id, address holder) external onlyMaintener(id) {
-        _tokens[id].holders[holder].isApproved = true;
+    function approveHolder(uint256 id, address account) external onlyMaintener(id) {
+        _tokens[id].holders[account].isApproved = true;
     }
 
 
     /**
      * @dev Function to revoke holder for a private token.
      * @param id the token id
-     * @param holder The authorized address
+     * @param account The authorized address
      */
-    function revokeHolder(uint256 id, address holder) external onlyMaintener(id) {
-        _tokens[id].holders[holder].isApproved = false;
+    function revokeHolder(uint256 id, address account) external onlyMaintener(id) {
+        _tokens[id].holders[account].isApproved = false;
     }
 
 
@@ -37,9 +37,9 @@ contract Privatizable is Maintenable {
 
 
     // override ChargeableTransfer._addToBalance()
-    function _addToBalance(address recipient, uint256 id, uint256 value) internal override {
-        require(!_tokens[id].isPrivate || _tokens[id].holders[recipient].isApproved, "Address not approved");
-        super._addToBalance(recipient, id, value);
+    function _addToBalance(address account, uint256 id, uint256 value) internal override {
+        require(!_tokens[id].isPrivate || _tokens[id].holders[account].isApproved, "Account not approved");
+        super._addToBalance(account, id, value);
     }
 
 }

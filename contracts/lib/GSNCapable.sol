@@ -11,8 +11,8 @@ import "./Data.sol";
  */
 abstract contract GSNCapable is IRelayRecipient, Data {
 
-    function isTrustedForwarder(address forwarder) public override view returns(bool) {
-        return forwarder == _config.GSNTrustedForwarder;
+    function isTrustedForwarder(address account) public override view returns(bool) {
+        return account == _config.GSNTrustedForwarder;
     }
 
     /**
@@ -21,13 +21,13 @@ abstract contract GSNCapable is IRelayRecipient, Data {
      * otherwise, return `msg.sender`.
      * should be used in the contract anywhere instead of msg.sender
      */
-    function _msgSender() internal override virtual view returns (address payable ret) {
+    function _msgSender() internal override virtual view returns (address payable account) {
         if (msg.data.length >= 24 && isTrustedForwarder(msg.sender)) {
             // At this point we know that the sender is a trusted forwarder,
             // so we trust that the last bytes of msg.data are the verified sender address.
             // extract sender address from the end of msg.data
             assembly {
-                ret := shr(96,calldataload(sub(calldatasize(),20)))
+                account := shr(96,calldataload(sub(calldatasize(),20)))
             }
         } else {
             return msg.sender;
@@ -42,7 +42,7 @@ abstract contract GSNCapable is IRelayRecipient, Data {
      * should be used in the contract instead of msg.data, where the difference matters (e.g. when explicitly
      * signing or hashing the
      */
-    function _msgData() internal override virtual view returns (bytes memory ret) {
+    function _msgData() internal override virtual view returns (bytes memory account) {
         if (msg.data.length >= 24 && isTrustedForwarder(msg.sender)) {
             // At this point we know that the sender is a trusted forwarder,
             // we copy the msg.data , except the last 20 bytes (and update the total length)

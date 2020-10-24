@@ -50,10 +50,11 @@ contract Ownable is IERC173, GSNCapable {
 
     /**
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * @param account address of the new owner
      * Can only be called by the current owner.
      */
-    function transferOwnership(address newOwner) public override onlyOwner {
-        _transferOwnership(newOwner);
+    function transferOwnership(address account) public override onlyOwner {
+        _transferOwnership(account);
     }
 
 
@@ -65,10 +66,10 @@ contract Ownable is IERC173, GSNCapable {
     /**
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
      */
-    function _transferOwnership(address newOwner) internal {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        emit OwnershipTransferred(_config.owner, newOwner);
-        _config.owner = newOwner;
+    function _transferOwnership(address account) internal {
+        require(account != address(0), "Ownable: new owner is the zero address");
+        emit OwnershipTransferred(_config.owner, account);
+        _config.owner = account;
     }
 
     /**

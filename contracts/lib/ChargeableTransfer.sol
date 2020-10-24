@@ -41,33 +41,33 @@ contract ChargeableTransfer is GSNCapable {
     *****************************/
 
 
-    function _registerNewHolder(address recipient, uint256 id) internal {
-        if (!_tokens[id].holders[recipient].isHolder) {
-            _accounts[recipient].tokens.push(id);
-            _tokens[id].holderList.push(recipient);
-            _tokens[id].holders[recipient].isHolder = true;
+    function _registerNewHolder(address account, uint256 id) internal {
+        if (!_tokens[id].holders[account].isHolder) {
+            _accounts[account].tokens.push(id);
+            _tokens[id].holderList.push(account);
+            _tokens[id].holders[account].isHolder = true;
         }
     }
 
-    function _updateBirthday(address recipient, uint256 id, uint256 newBalance) internal {
-        uint256 currentBalance = _tokens[id].holders[recipient].balance ;
+    function _updateBirthday(address account, uint256 id, uint256 newBalance) internal {
+        uint256 currentBalance = _tokens[id].holders[account].balance ;
         if (currentBalance == 0) {
             // first tokens no need to calculate avarage age
-            _tokens[id].holders[recipient].birthday = block.timestamp;
+            _tokens[id].holders[account].birthday = block.timestamp;
         } else {
             // now - [((now - birthday) * B1) / B2]
-            _tokens[id].holders[recipient].birthday = block.timestamp.sub(
-                (currentBalance.mul(averageAge(recipient, id))).div(newBalance)
+            _tokens[id].holders[account].birthday = block.timestamp.sub(
+                (currentBalance.mul(averageAge(account, id))).div(newBalance)
             );
         }
     }
 
     // update balance, lists of holders and token average age of the recipient
-    function _addToBalance(address recipient, uint256 id, uint256 value) internal virtual {
-        uint256 newBalance = _tokens[id].holders[recipient].balance.add(value);
-        _registerNewHolder(recipient, id);
-        _updateBirthday(recipient, id, newBalance);
-        _tokens[id].holders[recipient].balance = newBalance;
+    function _addToBalance(address account, uint256 id, uint256 value) internal virtual {
+        uint256 newBalance = _tokens[id].holders[account].balance.add(value);
+        _registerNewHolder(account, id);
+        _updateBirthday(account, id, newBalance);
+        _tokens[id].holders[account].balance = newBalance;
     }
 
     function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {

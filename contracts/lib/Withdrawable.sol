@@ -16,22 +16,22 @@ contract Withdrawable is GSNCapable {
 
     /**
      * @dev Function to withdraw ETH from the contract. TODO: Add permission ??
-     * @param to recipent address
+     * @param account recipent address
      * @param amount amount to withdraw
      */
-    function withdraw(address to, uint256 amount) external {
-        require(_accounts[to].ETHBalance >= amount, "Insufficient balance");
-        (bool success, ) = to.call{value: amount}("");
+    function withdraw(address account, uint256 amount) external {
+        require(_accounts[account].ETHBalance >= amount, "Insufficient balance");
+        (bool success, ) = account.call{value: amount}("");
         require(success, "Withdrawal failed");
-        _accounts[to].ETHBalance -= amount;
+        _accounts[account].ETHBalance -= amount;
     }
 
     /**
      * @dev Function to make an ETH deposit that can be used to pay token transfer .
-     * @param to recipent address
+     * @param account recipent address
      */
-    function deposit(address to) external payable {
-        _accounts[to].ETHBalance = _accounts[to].ETHBalance.add(msg.value);
+    function deposit(address account) external payable {
+        _accounts[account].ETHBalance = _accounts[account].ETHBalance.add(msg.value);
     }
 
     /**
