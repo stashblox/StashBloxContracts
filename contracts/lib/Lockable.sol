@@ -5,6 +5,13 @@ import './Privatizable.sol';
 
 contract Lockable is Privatizable {
 
+    /****************************
+    EVENTS
+    *****************************/
+
+
+    event AccountUpdated(address indexed _account, uint256 _documentHash);
+
 
     /****************************
     EXTERNAL FUNCTIONS
@@ -37,26 +44,28 @@ contract Lockable is Privatizable {
 
     /**
      * @dev Function to lock an address.
-     * @param addr The address to lock
+     * @param account The address to lock
      */
-    function lockAccount(address addr) external onlyOwner {
-        _accounts[addr].isLocked = true;
+    function lockAccount(address account, uint256 documentHash) external onlyOwner {
+        _accounts[account].isLocked = true;
+        emit AccountUpdated(account, documentHash);
     }
 
     /**
      * @dev Function to unlock an address.
-     * @param addr The address to unlock
+     * @param account The address to unlock
      */
-    function unlockAccount(address addr) external onlyOwner {
-        _accounts[addr].isLocked = false;
+    function unlockAccount(address account, uint256 documentHash) external onlyOwner {
+        _accounts[account].isLocked = false;
+        emit AccountUpdated(account, documentHash);
     }
 
     /**
      * @dev Function to check if an address is lockec.
-     * @param addr The address to check
+     * @param account The address to check
      */
-    function isLockedAccount(address addr) external view returns (bool){
-        return _isLockedAccount(addr);
+    function isLockedAccount(address account) external view returns (bool){
+        return _isLockedAccount(account);
     }
 
 
@@ -79,8 +88,8 @@ contract Lockable is Privatizable {
         return _tokens[id].locked;
     }
 
-    function _isLockedAccount(address addr) internal view returns (bool) {
-        return _accounts[addr].isLocked;
+    function _isLockedAccount(address account) internal view returns (bool) {
+        return _accounts[account].isLocked;
     }
 
     function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
