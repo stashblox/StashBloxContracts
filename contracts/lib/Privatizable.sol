@@ -16,7 +16,7 @@ contract Privatizable is Maintenable {
      * @param id the token id
      * @param account The authorized address
      */
-    function approveHolder(uint256 id, address account) external onlyMaintener(id) {
+    function approveAccount(uint256 id, address account) external onlyMaintener(id) {
         _tokens[id].holders[account].isApproved = true;
     }
 
@@ -26,10 +26,18 @@ contract Privatizable is Maintenable {
      * @param id the token id
      * @param account The authorized address
      */
-    function revokeHolder(uint256 id, address account) external onlyMaintener(id) {
+    function revokeAccount(uint256 id, address account) external onlyMaintener(id) {
         _tokens[id].holders[account].isApproved = false;
     }
 
+
+    /**
+     * @dev Function to check if an account is approved for a given token.
+     * @param id The token ID
+     */
+    function isApprovedAccount(uint256 id, address account) external view returns (bool){
+        return _tokens[id].holders[account].isApproved;
+    }
 
     /****************************
     INTERNAL FUNCTIONS
