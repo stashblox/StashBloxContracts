@@ -6,7 +6,10 @@ const {
   expectEvent,
   ZERO_ADDRESS,
   assert,
-  now
+  now,
+  accounts,
+  random,
+  expectRevert
 } = require("./lib/helpers.js");
 
 var STASHBLOX, DATA;
@@ -16,6 +19,93 @@ describe("Mintable.sol", () => {
   beforeEach(async function () {
     STASHBLOX = await initContract();
     DATA = await initFixtures();
+  });
+
+  describe("#authorizeTokenizer", () => {
+
+    it("should authorize tokenizser", async () => {
+      authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
+      assert.equal(authorized, false, "invalid authorization");
+
+      await STASHBLOX.authorizeTokenizer(accounts[5]);
+
+      authorized = await STASHBLOX.isTokenizer(accounts[5]);
+      assert.equal(authorized, true, "invalid authorization");
+    });
+
+    it("should be able to tokenize", async () => {
+      await STASHBLOX.authorizeTokenizer(accounts[5]);
+
+      const tokenId = random();
+
+      await STASHBLOX.createToken(accounts[5],
+                                  tokenId,
+                                  DATA["token1"].supply,
+                                  DATA["token1"].decimals,
+                                  DATA["token1"].metadataHash,
+                                  DATA["token1"].transactionFees,
+                                  DATA["token1"].feesRecipients,
+                                  DATA["token1"].feesRecipientsPercentage,
+                                  DATA["token1"].minHoldingForCallback,
+                                  DATA["token1"].privateToken,
+                                  DATA["token1"].legalAuthority, {from: accounts[5]});
+
+      const balance = await STASHBLOX.balanceOf.call(accounts[5], tokenId);
+      assert.equal(balance.valueOf(), DATA["token1"].supply, "token wasn't in the first account");
+    });
+
+    it("should not be able to tokenize", async () => {
+      const tokenId = random();
+
+      await expectRevert(STASHBLOX.createToken(accounts[5],
+                                  tokenId,
+                                  DATA["token1"].supply,
+                                  DATA["token1"].decimals,
+                                  DATA["token1"].metadataHash,
+                                  DATA["token1"].transactionFees,
+                                  DATA["token1"].feesRecipients,
+                                  DATA["token1"].feesRecipientsPercentage,
+                                  DATA["token1"].minHoldingForCallback,
+                                  DATA["token1"].privateToken,
+                                  DATA["token1"].legalAuthority, {from: accounts[5]}), "Insufficient permission");
+
+    });
+  });
+
+
+  describe("#revokeTokenizer", () => {
+
+    it("should revoke tokeniser", async () => {
+      authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
+      assert.equal(authorized, false, "invalid authorization");
+
+      await STASHBLOX.authorizeTokenizer(accounts[5]);
+      await STASHBLOX.revokeTokenizer(accounts[5]);
+
+      authorized = await STASHBLOX.isTokenizer(accounts[5]);
+      assert.equal(authorized, false, "invalid authorization");
+    });
+
+    it("should not be able to tokenize", async () => {
+      await STASHBLOX.authorizeTokenizer(accounts[5]);
+      await STASHBLOX.revokeTokenizer(accounts[5]);
+      
+      const tokenId = random();
+
+      await expectRevert(STASHBLOX.createToken(accounts[5],
+                                  tokenId,
+                                  DATA["token1"].supply,
+                                  DATA["token1"].decimals,
+                                  DATA["token1"].metadataHash,
+                                  DATA["token1"].transactionFees,
+                                  DATA["token1"].feesRecipients,
+                                  DATA["token1"].feesRecipientsPercentage,
+                                  DATA["token1"].minHoldingForCallback,
+                                  DATA["token1"].privateToken,
+                                  DATA["token1"].legalAuthority, {from: accounts[5]}), "Insufficient permission");
+
+    });
+
   });
 
   describe("#createToken", () => {
