@@ -99,7 +99,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      */
     function setApprovalForAll(address operator, bool approved) external override {
         require(_msgSender() != operator, "ERC1155: cannot set approval status for self");
-        _users[_msgSender()].operatorApprovals[operator] = approved;
+        _accounts[_msgSender()].operatorApprovals[operator] = approved;
         emit ApprovalForAll(_msgSender(), operator, approved);
     }
 
@@ -137,7 +137,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
-        _users[_msgSender()].ETHBalance = _users[_msgSender()].ETHBalance.add(msg.value);
+        _accounts[_msgSender()].ETHBalance = _accounts[_msgSender()].ETHBalance.add(msg.value);
 
         _moveTokens(_msgSender(), from, to, id, value);
 
@@ -172,7 +172,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
-        _users[_msgSender()].ETHBalance = _users[_msgSender()].ETHBalance.add(msg.value);
+        _accounts[_msgSender()].ETHBalance = _accounts[_msgSender()].ETHBalance.add(msg.value);
 
         _moveTokensBatch(_msgSender(), from, to, ids, values);
 

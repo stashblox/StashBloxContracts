@@ -30,7 +30,7 @@ contract Mintable is MultiToken {
      * @param tokenizer The authorized address
      */
     function authorizeTokenizer(address tokenizer) external onlyOwner {
-        _users[tokenizer].isTokenizer = true;
+        _accounts[tokenizer].isTokenizer = true;
     }
 
     /**
@@ -38,7 +38,7 @@ contract Mintable is MultiToken {
      * @param tokenizer The authorized address
      */
     function revokeTokenizer(address tokenizer) external onlyOwner {
-        _users[tokenizer].isTokenizer = false;
+        _accounts[tokenizer].isTokenizer = false;
     }
 
     /**
@@ -119,7 +119,7 @@ contract Mintable is MultiToken {
 
 
     function _isTokenizer(address tokenizer) internal view returns (bool) {
-        return _users[tokenizer].isTokenizer || _isOwner();
+        return _accounts[tokenizer].isTokenizer || _isOwner();
     }
 
     function _setToken(uint256 id,

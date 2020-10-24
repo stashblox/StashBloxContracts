@@ -20,10 +20,10 @@ contract Withdrawable is GSNCapable {
      * @param amount amount to withdraw
      */
     function withdraw(address to, uint256 amount) external {
-        require(_users[to].ETHBalance >= amount, "Insufficient balance");
+        require(_accounts[to].ETHBalance >= amount, "Insufficient balance");
         (bool success, ) = to.call{value: amount}("");
         require(success, "Withdrawal failed");
-        _users[to].ETHBalance -= amount;
+        _accounts[to].ETHBalance -= amount;
     }
 
     /**
@@ -31,14 +31,14 @@ contract Withdrawable is GSNCapable {
      * @param to recipent address
      */
     function deposit(address to) external payable {
-        _users[to].ETHBalance = _users[to].ETHBalance.add(msg.value);
+        _accounts[to].ETHBalance = _accounts[to].ETHBalance.add(msg.value);
     }
 
     /**
      * @dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()).
      */
     receive() external payable {
-        _users[_msgSender()].ETHBalance = _users[_msgSender()].ETHBalance.add(msg.value);
+        _accounts[_msgSender()].ETHBalance = _accounts[_msgSender()].ETHBalance.add(msg.value);
     }
 
 

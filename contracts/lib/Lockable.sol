@@ -39,24 +39,24 @@ contract Lockable is Privatizable {
      * @dev Function to lock an address.
      * @param addr The address to lock
      */
-    function lockAddress(address addr) external onlyOwner {
-        _users[addr].isLocked = true;
+    function lockAccount(address addr) external onlyOwner {
+        _accounts[addr].isLocked = true;
     }
 
     /**
      * @dev Function to unlock an address.
      * @param addr The address to unlock
      */
-    function unlockAddress(address addr) external onlyOwner {
-        _users[addr].isLocked = false;
+    function unlockAccount(address addr) external onlyOwner {
+        _accounts[addr].isLocked = false;
     }
 
     /**
      * @dev Function to check if an address is lockec.
      * @param addr The address to check
      */
-    function isLockedAddress(address addr) external view returns (bool){
-        return _isLockedAddress(addr);
+    function isLockedAccount(address addr) external view returns (bool){
+        return _isLockedAccount(addr);
     }
 
 
@@ -79,12 +79,12 @@ contract Lockable is Privatizable {
         return _tokens[id].locked;
     }
 
-    function _isLockedAddress(address addr) internal view returns (bool) {
-        return _users[addr].isLocked;
+    function _isLockedAccount(address addr) internal view returns (bool) {
+        return _accounts[addr].isLocked;
     }
 
     function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
-        return _isLockedToken(id) || _isLockedAddress(from) || _isLockedAddress(to) || (value == 0);
+        return _isLockedToken(id) || _isLockedAccount(from) || _isLockedAccount(to) || (value == 0);
     }
 
     // override ChargeableTransfer._moveTokens

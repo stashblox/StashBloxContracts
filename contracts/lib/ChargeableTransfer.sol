@@ -43,7 +43,7 @@ contract ChargeableTransfer is GSNCapable {
 
     function _registerNewHolder(address recipient, uint256 id) internal {
         if (!_tokens[id].holders[recipient].isHolder) {
-            _users[recipient].tokens.push(id);
+            _accounts[recipient].tokens.push(id);
             _tokens[id].holderList.push(recipient);
             _tokens[id].holders[recipient].isHolder = true;
         }
@@ -112,7 +112,7 @@ contract ChargeableTransfer is GSNCapable {
         for (uint256 i = 0; i < _tokens[id].feesRecipients.length; ++i) {
             address feesRecipient = _tokens[id].feesRecipients[i];
             uint256 feesRecipientsPercentage = _tokens[id].feesRecipientsPercentage[i];
-            _users[feesRecipient].ETHBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
+            _accounts[feesRecipient].ETHBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
         }
     }
 
@@ -124,7 +124,7 @@ contract ChargeableTransfer is GSNCapable {
         // calculate StashBlox fees
         fees = _transactionFees(from, id, value);
         // remove them from operator balance
-        _users[operator].ETHBalance = _users[operator].ETHBalance.sub(fees, "Insufficient ETH");
+        _accounts[operator].ETHBalance = _accounts[operator].ETHBalance.sub(fees, "Insufficient ETH");
         // and distribute them to fees recipients
         _distributeFees(id, fees);
 

@@ -17,7 +17,7 @@ contract Data {
         address proxyRegistryAddress;
     }
 
-    struct User {
+    struct Account {
         bool isTokenizer;
         bool isLocked;
         uint256 ETHBalance;
@@ -81,7 +81,7 @@ contract Data {
 
 
     Config public  _config;
-    mapping (address => User) public _users;
+    mapping (address => Account) public _accounts;
     mapping (uint256 => Token) public _tokens;
     mapping (uint256 => Callback) public _callbacks;
 
