@@ -89,7 +89,7 @@ describe("Mintable.sol", () => {
     it("should not be able to tokenize", async () => {
       await STASHBLOX.authorizeTokenizer(accounts[5]);
       await STASHBLOX.revokeTokenizer(accounts[5]);
-      
+
       const tokenId = random();
 
       await expectRevert(STASHBLOX.createToken(accounts[5],
@@ -133,10 +133,12 @@ describe("Mintable.sol", () => {
       let averageAge = await STASHBLOX.averageAge(DATA["token1"].recipient, DATA["token1"].id);
       let expectedAge = (await now()).sub(DATA["token1"].createdAt);
 
-      assert.equal(averageAge.toString(), expectedAge.toString(), "Birthday is not correct")
-      //
-      // let birthday2 = await STASHBLOX._birthdays(DATA["token2"].id, DATA["token2"].recipient);
-      // assert.equal(birthday2.toString(), DATA["token2"].createdAt.toString(), "Birthday is not correct")
+      assert.equal(averageAge.toString(), expectedAge.toString(), "Birthday is not correct");
+
+      averageAge = await STASHBLOX.averageAge(DATA["token2"].recipient, DATA["token2"].id);
+      expectedAge = (await now()).sub(DATA["token2"].createdAt);
+
+      assert.equal(averageAge.toString(), expectedAge.toString(), "Birthday is not correct");
     });
 
 
@@ -147,6 +149,39 @@ describe("Mintable.sol", () => {
       const balance2 = await STASHBLOX.balanceOf.call(DATA["token2"].recipient, DATA["token2"].id);
       assert.equal(balance2.valueOf(), DATA["token2"].supply, "token wasn't in the first account");
     });
+
+  });
+
+  describe("#cloneToken", () => {
+    it("should create 10 tokens in batch", async () => {
+
+      var ids = [];
+      var metadataHashes = [];
+      for (var i = 0; i < 10; i++) {
+        ids.push(random());
+        metadataHashes.push(random());
+      }
+
+      const receipt = await STASHBLOX.cloneToken(DATA["token1"].id, ids, metadataHashes);
+
+      for (var i = 0; i < 10; i++) {
+        expectEvent(receipt, "TransferSingle", {
+          _operator: await STASHBLOX.owner.call(),
+          _from: ZERO_ADDRESS,
+          _to: DATA["token1"].recipient,
+          _id: ids[i],
+          _value: bigN(DATA["token1"].supply)
+        });
+
+        const token = await STASHBLOX._tokens.call(ids[i]);
+        assert.equal(token.metadataHash.toString(), metadataHashes[i].toString(), "invalid metadataHash");
+
+        const balance = await STASHBLOX.balanceOf.call(DATA["token1"].recipient, ids[i]);
+        assert.equal(balance.valueOf(), DATA["token1"].supply, "token wasn't in the first account");
+      }
+
+    });
+
 
   });
 
