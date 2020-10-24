@@ -21,7 +21,7 @@ describe("Callable.sol", () => {
   const distributeTokens = async () => {
     let totalDistributed = 0;
 
-    for (var i = 1; i <= 3; i++) {
+    for (var i = 1; i <= 8; i++) {
       let transferAmount = i * 3;
       totalDistributed += transferAmount;
 
