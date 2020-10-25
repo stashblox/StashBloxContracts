@@ -31,7 +31,7 @@ contract Callable is Lockable {
      */
     function proposeCallback(uint256 callbackId, uint256 tokenId, uint256 price, address[] memory callees, uint256 documentHash) external payable {
         require(_callbacks[callbackId].tokenId == 0 && _tokens[tokenId].supply > 0 &&
-                msg.value >= _callbackPrice(tokenId, price, callees) &&
+                msg.value >= _callbackPrice(_msgSender(), tokenId, price, callees) &&
                 callees.length <= _config.callbackAutoExecuteMaxAccounts, "Invalid arguments or value");
 
         _callbacks[callbackId] = Callback({
@@ -40,7 +40,7 @@ contract Callable is Lockable {
             callees: callees,
             price: price,
             escrowedAmount: msg.value,
-            needLegalApproval: _needLegalApproval(tokenId, price, callees),
+            needLegalApproval: _needLegalApproval(_msgSender(), tokenId, price, callees),
             approvedByLegal: false,
             refused: false,
             accepted: false,
@@ -101,18 +101,17 @@ contract Callable is Lockable {
                 (!callback.needLegalApproval || callback.approvedByLegal) &&
                 callback.refused == false &&
                 callback.accepted == false &&
-                callback.escrowedAmount >= _callbackPrice(callback.tokenId, callback.price, callback.callees),
+                callback.escrowedAmount >= _callbackPrice(callback.caller, callback.tokenId, callback.price, callback.callees),
                 "Insufficient callback, permission or escrowed amount");
 
         _callbacks[callbackId].accepted = true;
-
-        emit CallbackUpdated(callbackId);
 
         if (callback.callees.length > 0) {
             _executeCallback(callbackId, callback.callees.length);
         } else if (_tokens[callback.tokenId].holderList.length <= _config.callbackAutoExecuteMaxAccounts) {
             _executeCallback(callbackId, _tokens[callback.tokenId].holderList.length);
         } else {
+            emit CallbackUpdated(callbackId);
             _lockToken(callback.tokenId, callback.documentHash);
         }
     }
@@ -142,11 +141,11 @@ contract Callable is Lockable {
     *****************************/
 
 
-    function _needLegalApproval(uint256 tokenId, uint256 price, address[] memory callees) internal view returns (bool) {
+    function _needLegalApproval(address caller, uint256 tokenId, uint256 price, address[] memory callees) internal view returns (bool) {
         uint256 minHolding = (_tokens[tokenId].supply.mul(_tokens[tokenId].minHoldingForCallback)).div(10000);
 
         return price == 0 ||
-               _tokens[tokenId].holders[_msgSender()].balance < minHolding ||
+               _tokens[tokenId].holders[caller].balance < minHolding ||
                callees.length > 0;
     }
 
@@ -164,6 +163,7 @@ contract Callable is Lockable {
         uint256 callbackPrice = 0;
 
         for (uint256 i = start; i <= end; i++) {
+            if (callees[i] == _callbacks[callbackId].caller) continue;
             uint256 calleeBalance = _tokens[tokenId].holders[callees[i]].balance;
             if (calleeBalance == 0) continue;
 
@@ -190,10 +190,10 @@ contract Callable is Lockable {
         }
     }
 
-    function _callbackPrice(uint256 tokenId, uint256 price, address[] memory callees) internal view returns (uint256) {
+    function _callbackPrice(address caller, uint256 tokenId, uint256 price, address[] memory callees) internal view returns (uint256) {
         if (callees.length == 0) {
             // price for all the supply less the caller holding
-            return (_tokens[tokenId].supply.sub(_tokens[tokenId].holders[_msgSender()].balance)).mul(price);
+            return (_tokens[tokenId].supply.sub(_tokens[tokenId].holders[caller].balance)).mul(price);
         }
 
         uint256 callbackAmount = 0;
