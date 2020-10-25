@@ -47,7 +47,7 @@ describe("Mintable.sol", () => {
                                   DATA["token1"].feesRecipients,
                                   DATA["token1"].feesRecipientsPercentage,
                                   DATA["token1"].minHoldingForCallback,
-                                  DATA["token1"].privateToken,
+                                  DATA["token1"].isPrivate,
                                   DATA["token1"].legalAuthority, {from: accounts[5]});
 
       const balance = await STASHBLOX.balanceOf.call(accounts[5], tokenId);
@@ -66,7 +66,7 @@ describe("Mintable.sol", () => {
                                   DATA["token1"].feesRecipients,
                                   DATA["token1"].feesRecipientsPercentage,
                                   DATA["token1"].minHoldingForCallback,
-                                  DATA["token1"].privateToken,
+                                  DATA["token1"].isPrivate,
                                   DATA["token1"].legalAuthority, {from: accounts[5]}), "Insufficient permission");
 
     });
@@ -101,7 +101,7 @@ describe("Mintable.sol", () => {
                                   DATA["token1"].feesRecipients,
                                   DATA["token1"].feesRecipientsPercentage,
                                   DATA["token1"].minHoldingForCallback,
-                                  DATA["token1"].privateToken,
+                                  DATA["token1"].isPrivate,
                                   DATA["token1"].legalAuthority, {from: accounts[5]}), "Insufficient permission");
 
     });
