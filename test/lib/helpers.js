@@ -2,7 +2,7 @@ var assert = require("assert")
 const crypto = require("crypto");
 
 const { accounts, contract, defaultSender } = require('@openzeppelin/test-environment');
-const { BN, constants, expectEvent, expectRevert, time, balance } = require('@openzeppelin/test-helpers');
+const { BN, constants, expectEvent, expectRevert, time, balance, send } = require('@openzeppelin/test-helpers');
 
 const random = () => { return new BN(crypto.randomBytes(20).toString('hex')); }
 const bigN = (value) => { return new BN(value); }
@@ -119,5 +119,6 @@ module.exports = exports = {
   balance,
   random,
   assert,
-  defaultSender
+  defaultSender,
+  send
 }
