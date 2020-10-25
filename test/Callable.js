@@ -41,7 +41,7 @@ describe("Callable.sol", () => {
 
   const getETHBalances = async () => {
     let ethBalance = {};
-    for (var i = 0; i <= 5; i++) {
+    for (var i = 0; i <= 9; i++) {
       ethBalance[i] = (await STASHBLOX._accounts(accounts[i])).ETHBalance;
     }
     return ethBalance;
@@ -142,6 +142,134 @@ describe("Callable.sol", () => {
 
       callback = await STASHBLOX._callbacks(1);
       assert.equal(callback.approvedByLegal, true, "Invalid value for approved");
+    });
+
+  });
+
+  describe("#acceptCallback", async () => {
+
+    it("should accept and execute callback", async () => {
+      let totalDistributed = await distributeTokens();
+      await proposeCallback(100, totalDistributed);
+
+      let ethBalancesBefore = await getETHBalances();
+
+      let receipt = await STASHBLOX.acceptCallback(1);
+
+      let ethBalancesAfter = await getETHBalances();
+
+      let callback = await STASHBLOX._callbacks.call(1);
+
+      assert.equal(callback.accepted, true, "invalid callback status");
+      assert.equal(callback.completed, true, "invalid callback status");
+
+      expectEvent(receipt, "CallbackUpdated", {
+        _callbackId: bigN(1)
+      });
+
+      for (var i = 1; i <= 8; i++) {
+        const balance = await STASHBLOX.balanceOf.call(accounts[i + 1], DATA["token1"].id);
+        assert.equal(balance.valueOf(), 0, "Token not called");
+
+        let expectedEthBalance = ethBalancesBefore[i + 1].add(bigN(i * 3 * 100));
+        assert.equal(expectedEthBalance.toString(), ethBalancesAfter[i + 1].toString(), "invalid ETH balance");
+      }
+    });
+
+    it("should accept but not execute callback", async () => {
+      let config = await STASHBLOX._config();
+      let receipt = await STASHBLOX.updateConfig(
+        2,
+        config.baseURI,
+        config.versionRecipient,
+        config.owner,
+        config.GSNTrustedForwarder,
+        config.proxyRegistryAccount
+      );
+
+      let totalDistributed = await distributeTokens();
+      await proposeCallback(100, totalDistributed);
+
+      let ethBalancesBefore = await getETHBalances();
+
+      receipt = await STASHBLOX.acceptCallback(1);
+
+      let ethBalancesAfter = await getETHBalances();
+
+      let callback = await STASHBLOX._callbacks.call(1);
+
+      assert.equal(callback.accepted, true, "invalid callback status");
+      assert.equal(callback.completed, false, "invalid callback status");
+
+      expectEvent(receipt, "CallbackUpdated", {
+        _callbackId: bigN(1)
+      });
+
+      for (var i = 1; i <= 8; i++) {
+        const balance = await STASHBLOX.balanceOf.call(accounts[i + 1], DATA["token1"].id);
+        assert.equal(balance.valueOf(), i * 3, "Token called");
+        assert.equal(ethBalancesBefore[i + 1].toString(), ethBalancesAfter[i + 1].toString(), "invalid ETH balance");
+      }
+    });
+
+  });
+
+  describe("#executeCallback", async () => {
+
+    it("should execute callback by batch", async () => {
+      let config = await STASHBLOX._config();
+      await STASHBLOX.updateConfig(
+        2,
+        config.baseURI,
+        config.versionRecipient,
+        config.owner,
+        config.GSNTrustedForwarder,
+        config.proxyRegistryAccount
+      );
+
+      let totalDistributed = await distributeTokens();
+      await proposeCallback(100, totalDistributed);
+      await STASHBLOX.acceptCallback(1);
+
+      let ethBalancesBefore = await getETHBalances();
+      let receipt = await STASHBLOX.executeCallback(1, 4);
+      let ethBalancesAfter = await getETHBalances();
+
+      let callback = await STASHBLOX._callbacks.call(1);
+      assert.equal(callback.accepted, true, "invalid callback status");
+      assert.equal(callback.completed, false, "invalid callback status");
+
+      for (var i = 1; i <= 4; i++) {
+        const balance = await STASHBLOX.balanceOf.call(accounts[i + 1], DATA["token1"].id);
+        assert.equal(balance.valueOf(), 0, "Token not called");
+
+        let expectedEthBalance = ethBalancesBefore[i + 1].add(bigN(i * 3 * 100));
+        assert.equal(expectedEthBalance.toString(), ethBalancesAfter[i + 1].toString(), "invalid ETH balance");
+      }
+      for (var i = 5; i <= 8; i++) {
+        const balance = await STASHBLOX.balanceOf.call(accounts[i + 1], DATA["token1"].id);
+        assert.equal(balance.valueOf(), i * 3, "Token called");
+        assert.equal(ethBalancesBefore[i + 1].toString(), ethBalancesAfter[i + 1].toString(), "invalid ETH balance");
+      }
+
+      receipt = await STASHBLOX.executeCallback(1, 4);
+      ethBalancesAfter = await getETHBalances();
+
+      callback = await STASHBLOX._callbacks.call(1);
+      assert.equal(callback.accepted, true, "invalid callback status");
+      assert.equal(callback.completed, true, "invalid callback status");
+
+      expectEvent(receipt, "CallbackUpdated", {
+        _callbackId: bigN(1)
+      });
+
+      for (var i = 1; i <= 8; i++) {
+        const balance = await STASHBLOX.balanceOf.call(accounts[i + 1], DATA["token1"].id);
+        assert.equal(balance.valueOf(), 0, "Token not called");
+
+        let expectedEthBalance = ethBalancesBefore[i + 1].add(bigN(i * 3 * 100));
+        assert.equal(expectedEthBalance.toString(), ethBalancesAfter[i + 1].toString(), "invalid ETH balance");
+      }
     });
 
   });
