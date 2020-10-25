@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const { accounts, contract, defaultSender } = require('@openzeppelin/test-environment');
 const { BN, constants, expectEvent, expectRevert, time, balance, send } = require('@openzeppelin/test-helpers');
 
-const random = () => { return new BN(crypto.randomBytes(20).toString('hex')); }
+const random = () => { return new BN(crypto.randomBytes(20)); }
 const bigN = (value) => { return new BN(value); }
 const StashBloxClass = contract.fromArtifact('StashBlox');
 const ZERO_ADDRESS = constants.ZERO_ADDRESS;
@@ -79,14 +79,24 @@ const initFixtures = async() => {
 
 
 const transferTokens = async (params) => {
+    params.operator = params.operator || params.from;
+
     const balanceFromBefore = await STASHBLOX.balanceOf.call(params.from, params.tokenID);
     const balanceToBefore = await STASHBLOX.balanceOf.call(params.to, params.tokenID);
     const storageFees = await STASHBLOX.transactionFees.call(params.from, params.tokenID, params.amount);
 
     // try to send 50 tokens to account[2]..
-    await STASHBLOX.safeTransferFrom(params.from, params.to, params.tokenID, params.amount, constants.ZERO_BYTES32, {
-      from: params.from,
+    const receipt = await STASHBLOX.safeTransferFrom(params.from, params.to, params.tokenID, params.amount, constants.ZERO_BYTES32, {
+      from: params.operator,
       value: storageFees
+    });
+
+    expectEvent(receipt, "TransferSingle", {
+      _operator: params.operator,
+      _from: params.from,
+      _to: params.to,
+      _id: params.tokenID,
+      _value: bigN(params.amount)
     });
 
     const balanceFromAfter = await STASHBLOX.balanceOf.call(params.from, params.tokenID);
@@ -95,6 +105,50 @@ const transferTokens = async (params) => {
     assert.equal(balanceFromBefore.sub(balanceFromAfter).toString(), params.amount.toString(), "Incorrect balance");
     assert.equal(balanceToAfter.sub(balanceToBefore).toString(), params.amount.toString(), "Incorrect balance");
 }
+
+const transferTokensBatch = async (params) => {
+    params.operator = params.operator || params.from;
+
+    let balancesToBefore = [];
+    for (var i = 0; i < params.ids.length; i++) {
+      balancesToBefore[params.ids[i]] = await STASHBLOX.balanceOf.call(params.to, params.ids[i]);
+    }
+
+    let balancesFromBefore = [];
+    for (var i = 0; i < params.ids.length; i++) {
+      balancesFromBefore[params.ids[i]] = await STASHBLOX.balanceOf.call(params.from, params.ids[i]);
+    }
+
+    let storageFees = 0;
+
+    for (var i = 0; i < params.ids.length; i++) {
+      storageFees += await STASHBLOX.transactionFees.call(params.from, params.ids[i], params.amounts[i]);
+    }
+
+    const receipt = await STASHBLOX.safeBatchTransferFrom(params.from, params.to, params.ids, params.amounts, constants.ZERO_BYTES32, {
+      from: params.operator,
+      value: storageFees
+    });
+
+    expectEvent(receipt, "TransferBatch", {
+      _operator: params.operator,
+      _from: params.from,
+      _to: params.to
+    });
+
+    for (var i = 0; i < params.ids.length; i++) {
+      assert.equal(receipt.logs[0].args._ids[i].toString(), params.ids[i].toString(), "invalid IDs in event");
+      assert.equal(receipt.logs[0].args._values[i].toString(), params.amounts[i].toString(), "invalid IDs in event");
+
+      const balanceFromAfter = await STASHBLOX.balanceOf.call(params.from, params.ids[i]);
+      const balanceToAfter = await STASHBLOX.balanceOf.call(params.to, params.ids[i]);
+
+      assert.equal(balancesFromBefore[params.ids[i]].sub(balanceFromAfter).toString(), params.amounts[i].toString(), "Incorrect balance");
+      assert.equal(balanceToAfter.sub(balancesToBefore[params.ids[i]]).toString(), params.amounts[i].toString(), "Incorrect balance");
+    }
+}
+
+
 
 const travelOneYear = async() => {
   await time.increase(time.duration.years(1));
@@ -108,6 +162,7 @@ module.exports = exports = {
   initContract,
   initFixtures,
   transferTokens,
+  transferTokensBatch,
   bigN,
   expectEvent,
   expectRevert,
