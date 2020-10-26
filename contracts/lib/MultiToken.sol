@@ -98,9 +98,10 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      * @param approved representing the status of the approval to be set
      */
     function setApprovalForAll(address account, bool approved) external override {
-        require(_msgSender() != account, "ERC1155: cannot set approval status for self");
-        _accounts[_msgSender()].operatorApprovals[account] = approved;
-        emit ApprovalForAll(_msgSender(), account, approved);
+        address operator = _msgSender();
+        require(operator != account, "ERC1155: cannot set approval status for self");
+        _accounts[operator].operatorApprovals[account] = approved;
+        emit ApprovalForAll(operator, account, approved);
     }
 
     /**
@@ -132,18 +133,20 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     )
         external payable override
     {
+        address operator = _msgSender();
+
         require(to != address(0), "ERC1155: target address must be non-zero");
         require(
-            from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
+            from == operator || isApprovedForAll(from, operator) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
-        _accounts[_msgSender()].ETHBalance = _accounts[_msgSender()].ETHBalance.add(msg.value);
+        _accounts[operator].ETHBalance = _accounts[operator].ETHBalance.add(msg.value);
 
-        _moveTokens(_msgSender(), from, to, id, value);
+        _moveTokens(operator, from, to, id, value);
 
-        emit TransferSingle(_msgSender(), from, to, id, value);
+        emit TransferSingle(operator, from, to, id, value);
 
-        _doSafeTransferAcceptanceCheck(_msgSender(), from, to, id, value, data);
+        _doSafeTransferAcceptanceCheck(operator, from, to, id, value, data);
     }
 
     /**
@@ -166,19 +169,21 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     )
         external payable override
     {
+        address operator = _msgSender();
+
         require(ids.length == values.length, "ERC1155: IDs and values must have same lengths");
         require(to != address(0), "ERC1155: target address must be non-zero");
         require(
-            from == _msgSender() || isApprovedForAll(from, _msgSender()) == true,
+            from == operator || isApprovedForAll(from, operator) == true,
             "ERC1155: need operator approval for 3rd party transfers"
         );
-        _accounts[_msgSender()].ETHBalance = _accounts[_msgSender()].ETHBalance.add(msg.value);
+        _accounts[operator].ETHBalance = _accounts[operator].ETHBalance.add(msg.value);
 
-        _moveTokensBatch(_msgSender(), from, to, ids, values);
+        _moveTokensBatch(operator, from, to, ids, values);
 
-        emit TransferBatch(_msgSender(), from, to, ids, values);
+        emit TransferBatch(operator, from, to, ids, values);
 
-        _doSafeBatchTransferAcceptanceCheck(_msgSender(), from, to, ids, values, data);
+        _doSafeBatchTransferAcceptanceCheck(operator, from, to, ids, values, data);
     }
 
     /**
