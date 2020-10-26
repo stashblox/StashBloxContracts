@@ -27,14 +27,14 @@ describe("Mintable.sol", () => {
       authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.authorizeTokenizer(accounts[5]);
+      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
 
       authorized = await STASHBLOX.isTokenizer(accounts[5]);
       assert.equal(authorized, true, "invalid authorization");
     });
 
     it("should be able to tokenize", async () => {
-      await STASHBLOX.authorizeTokenizer(accounts[5]);
+      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
 
       const tokenId = random();
 
@@ -79,16 +79,16 @@ describe("Mintable.sol", () => {
       authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.authorizeTokenizer(accounts[5]);
-      await STASHBLOX.revokeTokenizer(accounts[5]);
+      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
+      await STASHBLOX.setTokenizerAuthorization(accounts[5], false);
 
       authorized = await STASHBLOX.isTokenizer(accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
     });
 
     it("should not be able to tokenize", async () => {
-      await STASHBLOX.authorizeTokenizer(accounts[5]);
-      await STASHBLOX.revokeTokenizer(accounts[5]);
+      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
+      await STASHBLOX.setTokenizerAuthorization(accounts[5], false);
 
       const tokenId = random();
 

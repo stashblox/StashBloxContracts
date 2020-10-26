@@ -29,16 +29,8 @@ contract Mintable is MultiToken {
      * @dev Function to authorize an address to create a token.
      * @param account The authorized address
      */
-    function authorizeTokenizer(address account) external onlyOwner {
-        _accounts[account].isTokenizer = true;
-    }
-
-    /**
-     * @dev Function to revoke the authorization to create a token.
-     * @param account The authorized address
-     */
-    function revokeTokenizer(address account) external onlyOwner {
-        _accounts[account].isTokenizer = false;
+    function setTokenizerAuthorization(address account, bool isTokenizer) external onlyOwner {
+        _accounts[account].isTokenizer = isTokenizer;
     }
 
     /**

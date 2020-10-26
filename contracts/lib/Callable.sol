@@ -112,7 +112,7 @@ contract Callable is Lockable {
             _executeCallback(callbackId, _tokens[callback.tokenId].holderList.length);
         } else {
             emit CallbackUpdated(callbackId);
-            _lockToken(callback.tokenId, callback.documentHash);
+            _setTokenLock(callback.tokenId, true, callback.documentHash);
         }
     }
 
@@ -131,7 +131,7 @@ contract Callable is Lockable {
         _executeCallback(callbackId, maxCall);
 
         if (_callbacks[callbackId].completed) {
-            _unlockToken(callback.tokenId, callback.documentHash);
+            _setTokenLock(callback.tokenId, false, callback.documentHash);
         }
     }
 

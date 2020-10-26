@@ -34,18 +34,10 @@ contract Maintenable is Mintable {
      * @dev Function to authorize an address to maintain a token.
      * @param account The authorized address
      */
-    function authorizeMaintener(uint256 id, address account) external onlyOwner {
-        _tokens[id].holders[account].isMaintener = true;
+    function setMaintenerAuthorization(uint256 id, address account, bool isMaintener) external onlyOwner {
+        _tokens[id].holders[account].isMaintener = isMaintener;
     }
 
-    /**
-     * @dev Function to revoke the authorization to maintain a token.
-     * @param id the token id
-     * @param account The authorized address
-     */
-    function revokeMaintener(uint256 id, address account) external onlyOwner {
-        _tokens[id].holders[account].isMaintener = false;
-    }
 
     /**
      * @dev Function to check if an address is authorized to maintain a token.

@@ -17,21 +17,12 @@ contract Lockable is Privatizable {
     EXTERNAL FUNCTIONS
     *****************************/
 
-
-    /**
-     * @dev Function to lock a token.
-     * @param id The token ID
-     */
-    function lockToken(uint256 id, uint256 documentHash) external onlyMaintener(id) {
-        _lockToken(id, documentHash);
-    }
-
     /**
      * @dev Function to unlock a token.
      * @param id The token ID
      */
-    function unlockToken(uint256 id, uint256 documentHash) external onlyMaintener(id) {
-        _unlockToken(id, documentHash);
+    function setTokenLock(uint256 id, bool lock, uint256 documentHash) external onlyMaintener(id) {
+        _setTokenLock(id, lock, documentHash);
     }
 
     /**
@@ -43,20 +34,11 @@ contract Lockable is Privatizable {
     }
 
     /**
-     * @dev Function to lock an address.
-     * @param account The address to lock
-     */
-    function lockAccount(address account, uint256 documentHash) external onlyOwner {
-        _accounts[account].isLocked = true;
-        emit AccountUpdated(account, documentHash);
-    }
-
-    /**
      * @dev Function to unlock an address.
      * @param account The address to unlock
      */
-    function unlockAccount(address account, uint256 documentHash) external onlyOwner {
-        _accounts[account].isLocked = false;
+    function setAccountLock(address account, bool lock, uint256 documentHash) external onlyOwner {
+        _accounts[account].isLocked = lock;
         emit AccountUpdated(account, documentHash);
     }
 
@@ -74,13 +56,8 @@ contract Lockable is Privatizable {
     *****************************/
 
 
-    function _lockToken(uint256 id, uint256 documentHash) internal {
-        _tokens[id].locked = true;
-        emit TokenUpdated(id, documentHash);
-    }
-
-    function _unlockToken(uint256 id, uint256 documentHash) internal {
-        _tokens[id].locked = false;
+    function _setTokenLock(uint256 id, bool lock, uint256 documentHash) internal {
+        _tokens[id].locked = lock;
         emit TokenUpdated(id, documentHash);
     }
 

@@ -27,7 +27,7 @@ describe("Lockable.sol", () => {
       assert.equal(locked, false, "invalid lock");
 
       const docHash = random();
-      const receipt = await STASHBLOX.lockToken(DATA["token1"].id, docHash);
+      const receipt = await STASHBLOX.setTokenLock(DATA["token1"].id, true, docHash);
 
       expectEvent(receipt, "TokenUpdated", {
         _id: DATA["token1"].id,
@@ -40,7 +40,7 @@ describe("Lockable.sol", () => {
 
     it("should raise error on transfer", async () => {
       const docHash = random();
-      let receipt = await STASHBLOX.lockToken(DATA["token1"].id, docHash);
+      let receipt = await STASHBLOX.setTokenLock(DATA["token1"].id, true, docHash);
 
       const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
       await expectRevert(STASHBLOX.safeTransferFrom(DATA["token1"].recipient, accounts[2], DATA["token1"].id, 50 * 10**8, ZERO_BYTES32, {
@@ -55,12 +55,12 @@ describe("Lockable.sol", () => {
 
     it("should unlock token", async () => {
       const docHash = random();
-      let receipt = await STASHBLOX.lockToken(DATA["token1"].id, docHash);
+      let receipt = await STASHBLOX.setTokenLock(DATA["token1"].id, true, docHash);
 
       locked = await STASHBLOX.isLockedToken(DATA["token1"].id);
       assert.equal(locked, true, "invalid lock");
 
-      receipt = await STASHBLOX.unlockToken(DATA["token1"].id, docHash);
+      receipt = await STASHBLOX.setTokenLock(DATA["token1"].id, false, docHash);
       expectEvent(receipt, "TokenUpdated", {
         _id: DATA["token1"].id,
         _documentHash: docHash
@@ -87,7 +87,7 @@ describe("Lockable.sol", () => {
       assert.equal(locked, false, "invalid lock");
 
       const docHash = random();
-      const receipt = await STASHBLOX.lockAccount(accounts[2], docHash);
+      const receipt = await STASHBLOX.setAccountLock(accounts[2], true, docHash);
 
       expectEvent(receipt, "AccountUpdated", {
         _account: accounts[2],
@@ -100,7 +100,7 @@ describe("Lockable.sol", () => {
 
     it("should raise error on transfer", async () => {
       const docHash = random();
-      let receipt = await STASHBLOX.lockAccount(accounts[2], docHash);
+      let receipt = await STASHBLOX.setAccountLock(accounts[2], true, docHash);
 
       const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
       await expectRevert(STASHBLOX.safeTransferFrom(DATA["token1"].recipient, accounts[2], DATA["token1"].id, 50 * 10**8, ZERO_BYTES32, {
@@ -117,12 +117,12 @@ describe("Lockable.sol", () => {
 
     it("should unlock account", async () => {
       const docHash = random();
-      let receipt = await STASHBLOX.lockAccount(accounts[2], docHash);
+      let receipt = await STASHBLOX.setAccountLock(accounts[2], true, docHash);
 
       locked = await STASHBLOX.isLockedAccount(accounts[2]);
       assert.equal(locked, true, "invalid lock");
 
-      receipt = await STASHBLOX.unlockAccount(accounts[2], docHash);
+      receipt = await STASHBLOX.setAccountLock(accounts[2], false, docHash);
       expectEvent(receipt, "AccountUpdated", {
         _account: accounts[2],
         _documentHash: docHash

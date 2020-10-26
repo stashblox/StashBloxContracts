@@ -16,18 +16,8 @@ contract Privatizable is Maintenable {
      * @param id the token id
      * @param account The authorized address
      */
-    function approveAccount(uint256 id, address account) external onlyMaintener(id) {
-        _tokens[id].holders[account].isApproved = true;
-    }
-
-
-    /**
-     * @dev Function to revoke holder for a private token.
-     * @param id the token id
-     * @param account The authorized address
-     */
-    function revokeAccount(uint256 id, address account) external onlyMaintener(id) {
-        _tokens[id].holders[account].isApproved = false;
+    function setAccountApproval(uint256 id, address account, bool isApproved) external onlyMaintener(id) {
+        _tokens[id].holders[account].isApproved = isApproved;
     }
 
 
