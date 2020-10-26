@@ -132,6 +132,7 @@ contract Mintable is MultiToken {
                 minHoldingForCallback < 10000,
                 "Invalid arguments");
 
+        if (_tokens[id].metadataHash != metadataHash) emit URI(uri(id), id);
         _tokens[id].metadataHash = metadataHash;
         _tokens[id].lumpSumFees = transactionFees[0];
         _tokens[id].standardFees = transactionFees[1];

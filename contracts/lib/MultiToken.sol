@@ -185,7 +185,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      * @param id Token ID
      * @return URI string
      */
-    function uri(uint256 id) external view override returns (string memory) {
+    function uri(uint256 id) public view override returns (string memory) {
         return _strConcat(_config.baseURI, _toHexString(id));
     }
 
