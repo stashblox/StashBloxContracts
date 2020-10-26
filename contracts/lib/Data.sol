@@ -85,4 +85,24 @@ contract Data {
     mapping (uint256 => Token) public _tokens;
     mapping (uint256 => Callback) public _callbacks;
 
+
+    /***************************************
+    EXTERNAL FUNCTIONS
+    ****************************************/
+
+
+    function tokenDetails(uint256 id) public view returns (address[] memory,
+                                                           address[] memory,
+                                                           uint256[] memory,
+                                                           uint256[2][] memory) {
+        return (_tokens[id].holderList,
+                _tokens[id].feesRecipients,
+                _tokens[id].feesRecipientsPercentage,
+                _tokens[id].storageFees);
+    }
+
+    function tokenList(address account) public view returns (uint256[] memory) {
+        return _accounts[account].tokens;
+    }
+
 }
