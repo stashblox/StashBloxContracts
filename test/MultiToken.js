@@ -199,6 +199,19 @@ describe("MultiToken.sol", () => {
         ));
       });
 
+      it("should revert if receiver is a valid contract but refuse tokens", async () => {
+        const receiver = await ERC1155ReceiverMock.new(
+          RECEIVER_SINGLE_MAGIC_VALUE, true,
+          RECEIVER_BATCH_MAGIC_VALUE, true,
+        );
+        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+
+        expectRevert(STASHBLOX.safeTransferFrom(
+          accounts[1], receiver.address, DATA["token1"].id, 50, ZERO_BYTES32,
+          {from: accounts[1], value: storageFees}
+        ), "ERC1155ReceiverMock: reverting on receive");
+      });
+
     });
 
 
@@ -309,6 +322,29 @@ describe("MultiToken.sol", () => {
           accounts[1], receiver.address, [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
           {from: accounts[1], value: storageFees * 2}
         ), "error");
+      });
+
+
+      it("should revert if receiver is a valid contract but refuse tokens", async () => {
+        const receiver = await ERC1155ReceiverMock.new(
+          RECEIVER_SINGLE_MAGIC_VALUE, true,
+          RECEIVER_BATCH_MAGIC_VALUE, true,
+        );
+
+        await transferTokens({
+          operator: accounts[2],
+          from: accounts[2],
+          to: accounts[1],
+          tokenID: DATA["token2"].id,
+          amount: 50
+        });
+
+        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+
+        expectRevert(STASHBLOX.safeBatchTransferFrom(
+          accounts[1], receiver.address, [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
+          {from: accounts[1], value: storageFees * 2}
+        ), "ERC1155ReceiverMock: reverting on batch receive");
       });
 
     });
