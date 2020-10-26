@@ -11,12 +11,19 @@ const {
   assert,
   defaultSender,
   ZERO_ADDRESS,
-  ZERO_BYTES32
+  ZERO_BYTES32,
+  contract
 } = require("./lib/helpers.js");
 
 const INTERFACE_SIGNATURE_ERC165 = '0x01ffc9a7';
 const INTERFACE_SIGNATURE_ERC1155 = '0xd9b67a26';
 const INTERFACE_SIGNATURE_UNKNOWN = '0xd9b67a27';
+
+const ERC1155ReceiverMock = contract.fromArtifact('ERC1155ReceiverMock');
+const RECEIVER_SINGLE_MAGIC_VALUE = '0xf23a6e61';
+const RECEIVER_BATCH_MAGIC_VALUE = '0xbc197c81';
+
+const DummyMock = contract.fromArtifact('DummyMock');
 
 describe("MultiToken.sol", () => {
 
@@ -158,6 +165,40 @@ describe("MultiToken.sol", () => {
           amount: 50
         });
       });
+
+      it("valid contract receiver should emit Received event", async () => {
+        const receiver = await ERC1155ReceiverMock.new(
+          RECEIVER_SINGLE_MAGIC_VALUE, false,
+          RECEIVER_BATCH_MAGIC_VALUE, false,
+        );
+
+        const receipt = await transferTokens({
+          operator: accounts[1],
+          from: accounts[1],
+          to: receiver.address,
+          tokenID: DATA["token1"].id,
+          amount: 50
+        });
+
+        await expectEvent.inTransaction(receipt.tx, ERC1155ReceiverMock, 'Received', {
+          operator: accounts[1],
+          from: accounts[1],
+          id: DATA["token1"].id,
+          value: bigN(50),
+          data: ZERO_BYTES32
+        });
+      });
+
+      it("should revert if receiver is not a valid contract", async () => {
+        const receiver = await DummyMock.new();
+        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+
+        expectRevert.unspecified(STASHBLOX.safeTransferFrom(
+          accounts[1], receiver.address, DATA["token1"].id, 50, ZERO_BYTES32,
+          {from: accounts[1], value: storageFees}
+        ));
+      });
+
     });
 
 
@@ -219,6 +260,55 @@ describe("MultiToken.sol", () => {
           ids: [DATA["token1"].id, DATA["token2"].id],
           amounts: [50, 50]
         });
+      });
+
+      it("valid contract receiver should emit Received event", async () => {
+        const receiver = await ERC1155ReceiverMock.new(
+          RECEIVER_SINGLE_MAGIC_VALUE, false,
+          RECEIVER_BATCH_MAGIC_VALUE, false,
+        );
+
+        await transferTokens({
+          operator: accounts[2],
+          from: accounts[2],
+          to: accounts[1],
+          tokenID: DATA["token2"].id,
+          amount: 50
+        });
+
+        const receipt = await transferTokensBatch({
+          operator: accounts[1],
+          from: accounts[1],
+          to: receiver.address,
+          ids: [DATA["token1"].id, DATA["token2"].id],
+          amounts: [50, 50]
+        });
+
+        await expectEvent.inTransaction(receipt.tx, ERC1155ReceiverMock, 'BatchReceived', {
+          operator: accounts[1],
+          from: accounts[1],
+          ids: [DATA["token1"].id.toString(), DATA["token2"].id.toString()],
+          values: ['50', '50'],
+          data: ZERO_BYTES32
+        });
+      });
+
+      it("should revert if receiver is not a valid contract", async () => {
+        await transferTokens({
+          operator: accounts[2],
+          from: accounts[2],
+          to: accounts[1],
+          tokenID: DATA["token2"].id,
+          amount: 50
+        });
+
+        const receiver = await DummyMock.new();
+        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+
+        expectRevert(STASHBLOX.safeBatchTransferFrom(
+          accounts[1], receiver.address, [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
+          {from: accounts[1], value: storageFees * 2}
+        ), "error");
       });
 
     });

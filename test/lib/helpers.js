@@ -104,6 +104,8 @@ const transferTokens = async (params) => {
 
     assert.equal(balanceFromBefore.sub(balanceFromAfter).toString(), params.amount.toString(), "Incorrect balance");
     assert.equal(balanceToAfter.sub(balanceToBefore).toString(), params.amount.toString(), "Incorrect balance");
+
+    return receipt;
 }
 
 const transferTokensBatch = async (params) => {
@@ -146,6 +148,8 @@ const transferTokensBatch = async (params) => {
       assert.equal(balancesFromBefore[params.ids[i]].sub(balanceFromAfter).toString(), params.amounts[i].toString(), "Incorrect balance");
       assert.equal(balanceToAfter.sub(balancesToBefore[params.ids[i]]).toString(), params.amounts[i].toString(), "Incorrect balance");
     }
+    
+    return receipt;
 }
 
 
@@ -175,5 +179,6 @@ module.exports = exports = {
   random,
   assert,
   defaultSender,
-  send
+  send,
+  contract
 }
