@@ -21,15 +21,13 @@ describe("Privatizable.sol", () => {
   });
 
   const makePrivate = async () => {
-      DATA["token1"].isPrivate = true;
-
       await STASHBLOX.updateToken(DATA["token1"].id,
                                   DATA["token1"].metadataHash,
                                   DATA["token1"].transactionFees,
                                   DATA["token1"].feesRecipients,
                                   DATA["token1"].feesRecipientsPercentage,
                                   DATA["token1"].minHoldingForCallback,
-                                  DATA["token1"].isPrivate,
+                                  true,
                                   DATA["token1"].legalAuthority);
   }
 
