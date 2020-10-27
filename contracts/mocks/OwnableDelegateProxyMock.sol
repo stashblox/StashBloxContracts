@@ -5,7 +5,7 @@ import "../interfaces/IERC1155.sol";
 
 contract OwnableDelegateProxyMock {
 
-    address _ERC1155Address;
+    address public _ERC1155Address;
 
     constructor(address ERC1155Address) {
         _ERC1155Address = ERC1155Address;

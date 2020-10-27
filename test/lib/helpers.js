@@ -1,7 +1,7 @@
 var assert = require("assert")
 const crypto = require("crypto");
 
-const { accounts, contract, defaultSender } = require('@openzeppelin/test-environment');
+const { accounts, contract, defaultSender, web3 } = require('@openzeppelin/test-environment');
 const { BN, constants, expectEvent, expectRevert, time, balance, send } = require('@openzeppelin/test-helpers');
 
 const random = () => { return new BN(crypto.randomBytes(20)); }
@@ -148,7 +148,7 @@ const transferTokensBatch = async (params) => {
       assert.equal(balancesFromBefore[params.ids[i]].sub(balanceFromAfter).toString(), params.amounts[i].toString(), "Incorrect balance");
       assert.equal(balanceToAfter.sub(balancesToBefore[params.ids[i]]).toString(), params.amounts[i].toString(), "Incorrect balance");
     }
-    
+
     return receipt;
 }
 
@@ -180,5 +180,6 @@ module.exports = exports = {
   assert,
   defaultSender,
   send,
-  contract
+  contract,
+  web3
 }
