@@ -2,16 +2,16 @@
 pragma solidity ^0.7.1;
 
 import "../interfaces/IERC1155.sol";
-import '../interfaces/IERC1155Metadata.sol';
+import "../interfaces/IERC1155Metadata.sol";
 import "../interfaces/IERC1155Receiver.sol";
 import "../interfaces/IERC165.sol";
 
 import "../utils/SafeMath.sol";
 import "../utils/Address.sol";
-import '../utils/StringUtils.sol';
+import "../utils/StringUtils.sol";
 
-import './ChargeableTransfer.sol';
-import './Proxyable.sol';
+import "./ChargeableTransfer.sol";
+import "./Proxyable.sol";
 /**
  * @title Standard ERC1155 token
  *

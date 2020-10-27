@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.7.1;
 
-import './Mintable.sol';
+import "./Mintable.sol";
 
 contract Maintenable is Mintable {
 
@@ -43,7 +43,7 @@ contract Maintenable is Mintable {
      * @dev Function to check if an address is authorized to maintain a token.
      * @param id the token id
      * @param account The authorized address
-     * @return true if it's a maintener address
+     * @return true if it"s a maintener address
      */
     function isMaintener(uint256 id, address account) external view returns (bool) {
         return _isMaintener(id, account);

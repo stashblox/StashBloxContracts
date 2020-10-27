@@ -2,7 +2,7 @@
 pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
-import './GSNCapable.sol';
+import "./GSNCapable.sol";
 
 contract Withdrawable is GSNCapable {
 

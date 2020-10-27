@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.1;
 
-import '../lib/GSNCapable.sol';
+import "../lib/GSNCapable.sol";
 
 contract GSNCapableMock is GSNCapable {
 

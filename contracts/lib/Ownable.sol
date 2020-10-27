@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.1;
 
-import './GSNCapable.sol';
+import "./GSNCapable.sol";
 import "../interfaces/IERC173.sol";
 /**
  * @dev Contract module which provides a basic access control mechanism, where
