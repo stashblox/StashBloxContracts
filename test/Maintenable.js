@@ -27,7 +27,7 @@ describe("Maintenable.sol", () => {
       let authorized = await STASHBLOX.isMaintener.call(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
+      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
 
       authorized = await STASHBLOX.isMaintener(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, true, "invalid authorization");
@@ -42,8 +42,8 @@ describe("Maintenable.sol", () => {
       let authorized = await STASHBLOX.isMaintener.call(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
-      await STASHBLOX.setMaintenerAuthorization(DATA["token1"].id, accounts[5], false);
+      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
+      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], false);
 
       authorized = await STASHBLOX.isMaintener(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
@@ -54,7 +54,7 @@ describe("Maintenable.sol", () => {
   describe("#updateToken", () => {
 
     it("should be able to update token", async () => {
-      await STASHBLOX.setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
+      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
 
       let metadataHash = random();
       let transactionFees = [3, 0, 1];
@@ -64,14 +64,14 @@ describe("Maintenable.sol", () => {
       let isPrivate = true;
       let legalAuthority = accounts[5];
 
-      let receipt = await STASHBLOX.updateToken(DATA["token1"].id,
-                                                metadataHash,
-                                                transactionFees,
-                                                feesRecipients,
-                                                feesRecipientsPercentage,
-                                                minHoldingForCallback,
-                                                isPrivate,
-                                                legalAuthority, {from: accounts[5]});
+      let receipt = await STASHBLOX.updateToken.send(DATA["token1"].id,
+                                                     metadataHash,
+                                                     transactionFees,
+                                                     feesRecipients,
+                                                     feesRecipientsPercentage,
+                                                     minHoldingForCallback,
+                                                     isPrivate,
+                                                     legalAuthority, {from: accounts[5]});
 
       expectEvent(receipt, "TokenUpdated", {
         _id: DATA["token1"].id,

@@ -42,7 +42,7 @@ describe("Configurable.sol", () => {
       const GSNTrustedForwarder = accounts[5];
       const proxyRegistryAccount = accounts[6];
 
-      const receipt = await STASHBLOX.updateConfig(
+      const receipt = await STASHBLOX.updateConfig.send(
         callbackAutoExecuteMaxAccounts,
         baseURI,
         versionRecipient,
@@ -50,6 +50,8 @@ describe("Configurable.sol", () => {
         GSNTrustedForwarder,
         proxyRegistryAccount
       );
+
+      //console.log(receipt);
 
       expectEvent(receipt, "ConfigUpdated");
 

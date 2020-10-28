@@ -99,7 +99,8 @@ module.exports = {
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
-    timeout: 100000
+    timeout: 100000,
+    require: "./test/lib/hooks.js"
   },
 
   // Configure your compilers

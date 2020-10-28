@@ -39,7 +39,7 @@ describe("Ownable.sol", () => {
       let owner = await STASHBLOX.owner();
       assert.equal(owner, defaultSender, "Invalid owner");
 
-      const receipt = await STASHBLOX.transferOwnership(accounts[3]);
+      const receipt = await STASHBLOX.transferOwnership.send(accounts[3]);
 
       expectEvent(receipt, "OwnershipTransferred", {
         previousOwner: defaultSender,

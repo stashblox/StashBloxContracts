@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx mocha --exit --recursive --no-timeout"
+    "test": "npx mocha --exit --recursive --no-timeout --require test/lib/hooks.js"
   },
   "author": "",
   "license": "ISC",

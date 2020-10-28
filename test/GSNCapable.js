@@ -31,7 +31,7 @@ describe("GSNCapable.sol", () => {
     const versionRecipient = "versionRecipient";
     const owner = defaultSender;
     const proxyRegistryAccount = accounts[1];
-    const receipt = await STASHBLOX.updateConfig(
+    const receipt = await STASHBLOX.updateConfig.send(
       callbackAutoExecuteMaxAccounts,
       baseURI,
       versionRecipient,

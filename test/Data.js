@@ -27,13 +27,13 @@ describe("Data.sol", () => {
     });
 
     it("_accounts should have free getter", async () => {
-      await STASHBLOX.setTokenizerAuthorization(DATA["token1"].recipient, true);
+      await STASHBLOX.setTokenizerAuthorization.send(DATA["token1"].recipient, true);
       const account = await STASHBLOX._accounts(DATA["token1"].recipient);
       assert.equal(account.isTokenizer, true, "invalid account");
     });
 
     it("_callbacks should have free getter", async () => {
-      await STASHBLOX.proposeCallback(1, DATA["token1"].id, 100, [], random(), {
+      await STASHBLOX.proposeCallback.send(1, DATA["token1"].id, 100, [], random(), {
         from: accounts[1],
         value: 100 * DATA["token1"].supply
       });

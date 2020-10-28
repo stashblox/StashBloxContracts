@@ -26,7 +26,7 @@ describe("Widthdrawable.sol", () => {
       let ethBalance = (await STASHBLOX._accounts(accounts[3])).ETHBalance;
       assert.equal(ethBalance.valueOf(), 0, "invalid eth balance");
 
-      await STASHBLOX.deposit(accounts[3], {
+      await STASHBLOX.deposit.send(accounts[3], {
         value: 10000
       })
 
@@ -55,8 +55,8 @@ describe("Widthdrawable.sol", () => {
     it("should increase ETH balance", async () => {
       let balanceBefore = await balance.current(accounts[3]);
 
-      await STASHBLOX.deposit(accounts[3], { value: 10000 });
-      await STASHBLOX.withdraw(accounts[3], 10000);
+      await STASHBLOX.deposit.send(accounts[3], { value: 10000 });
+      await STASHBLOX.withdraw.send(accounts[3], 10000);
 
       let balanceAfter = await balance.current(accounts[3]);
       let expectedBalance = balanceBefore.add(bigN(10000));
@@ -66,7 +66,7 @@ describe("Widthdrawable.sol", () => {
 
     it("should decrease ETH balance escrowed by the contract", async () => {
       await send.ether(accounts[3], STASHBLOX.address, 10000);
-      await STASHBLOX.withdraw(accounts[3], 4000);
+      await STASHBLOX.withdraw.send(accounts[3], 4000);
 
       ethBalance = (await STASHBLOX._accounts(accounts[3])).ETHBalance;
       assert.equal(ethBalance.valueOf(), 6000, "invalid eth balance");

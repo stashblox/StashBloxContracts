@@ -93,19 +93,19 @@ describe("MultiToken.sol", () => {
     describe("#setApprovalForAll", async () => {
 
       it("should revert when someone approve for self", async () => {
-        expectRevert(STASHBLOX.setApprovalForAll(accounts[3], true, {from: accounts[3]}),
+        expectRevert(STASHBLOX.setApprovalForAll.send(accounts[3], true, {from: accounts[3]}),
                      "ERC1155: cannot set approval status for self");
       });
 
       it("should emit event", async () => {
-        let receipt = await STASHBLOX.setApprovalForAll(accounts[1], true, {from: accounts[3]});
+        let receipt = await STASHBLOX.setApprovalForAll.send(accounts[1], true, {from: accounts[3]});
         expectEvent(receipt, "ApprovalForAll", {
           _owner: accounts[3],
           _operator: accounts[1],
           _approved: true
         });
 
-        receipt = await STASHBLOX.setApprovalForAll(accounts[1], false, {from: accounts[3]});
+        receipt = await STASHBLOX.setApprovalForAll.send(accounts[1], false, {from: accounts[3]});
         expectEvent(receipt, "ApprovalForAll", {
           _owner: accounts[3],
           _operator: accounts[1],
@@ -117,11 +117,11 @@ describe("MultiToken.sol", () => {
 
     describe("#isApprovedForAll", async () => {
       it("should return the correct permission", async () => {
-        await STASHBLOX.setApprovalForAll(accounts[1], true, {from: accounts[3]});
+        await STASHBLOX.setApprovalForAll.send(accounts[1], true, {from: accounts[3]});
         let permission = await STASHBLOX.isApprovedForAll(accounts[3], accounts[1]);
         assert.equal(permission, true, "invalid permission");
 
-        await STASHBLOX.setApprovalForAll(accounts[1], false, {from: accounts[3]});
+        await STASHBLOX.setApprovalForAll.send(accounts[1], false, {from: accounts[3]});
         permission = await STASHBLOX.isApprovedForAll(accounts[3], accounts[1]);
         assert.equal(permission, false, "invalid permission");
       });
@@ -156,7 +156,7 @@ describe("MultiToken.sol", () => {
       });
 
       it("should successfully transfer tokens by approved operator", async () => {
-        await STASHBLOX.setApprovalForAll(accounts[3], true, {from: accounts[1]});
+        await STASHBLOX.setApprovalForAll.send(accounts[3], true, {from: accounts[1]});
         await transferTokens({
           operator: accounts[3],
           from: accounts[1],
@@ -265,7 +265,7 @@ describe("MultiToken.sol", () => {
           amount: 50
         });
 
-        await STASHBLOX.setApprovalForAll(accounts[3], true, {from: accounts[1]});
+        await STASHBLOX.setApprovalForAll.send(accounts[3], true, {from: accounts[1]});
         await transferTokensBatch({
           operator: accounts[3],
           from: accounts[1],

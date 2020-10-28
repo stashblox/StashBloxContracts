@@ -36,14 +36,14 @@ describe("ChargeableTransfer.sol", () => {
 
         DATA["token1"].transactionFees[2] += 5;
 
-        await STASHBLOX.updateToken(DATA["token1"].id,
-                                    DATA["token1"].metadataHash,
-                                    DATA["token1"].transactionFees,
-                                    DATA["token1"].feesRecipients,
-                                    DATA["token1"].feesRecipientsPercentage,
-                                    DATA["token1"].minHoldingForCallback,
-                                    DATA["token1"].isPrivate,
-                                    DATA["token1"].legalAuthority);
+        await STASHBLOX.updateToken.send(DATA["token1"].id,
+                                         DATA["token1"].metadataHash,
+                                         DATA["token1"].transactionFees,
+                                         DATA["token1"].feesRecipients,
+                                         DATA["token1"].feesRecipientsPercentage,
+                                         DATA["token1"].minHoldingForCallback,
+                                         DATA["token1"].isPrivate,
+                                         DATA["token1"].legalAuthority);
 
         await travelOneYear(); // travel 365 days ahead
 
@@ -186,12 +186,12 @@ describe("ChargeableTransfer.sol", () => {
                                                          {from: accounts[2], value: providedFees.sub(bigN(1))}),
                                                          "Insufficient ETH");
 
-      await STASHBLOX.safeBatchTransferFrom(accounts[2],
-                                            accounts[3],
-                                            [DATA["token1"].id, DATA["token2"].id],
-                                            [transferAmount, transferAmount],
-                                            ZERO_BYTES32,
-                                            {from: accounts[2], value: storageFees1 + storageFees2});
+      await STASHBLOX.safeBatchTransferFrom.send(accounts[2],
+                                                 accounts[3],
+                                                 [DATA["token1"].id, DATA["token2"].id],
+                                                 [transferAmount, transferAmount],
+                                                 ZERO_BYTES32,
+                                                 {from: accounts[2], value: storageFees1 + storageFees2});
 
       const balance1 = await STASHBLOX.balanceOf.call(accounts[3], DATA["token1"].id);
       assert.equal(balance1.valueOf(), transferAmount, "Token not received");

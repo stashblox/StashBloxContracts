@@ -27,28 +27,28 @@ describe("Mintable.sol", () => {
       authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
+      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
 
       authorized = await STASHBLOX.isTokenizer(accounts[5]);
       assert.equal(authorized, true, "invalid authorization");
     });
 
     it("should be able to tokenize", async () => {
-      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
+      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
 
       const tokenId = random();
 
-      await STASHBLOX.createToken(accounts[5],
-                                  tokenId,
-                                  DATA["token1"].supply,
-                                  DATA["token1"].decimals,
-                                  DATA["token1"].metadataHash,
-                                  DATA["token1"].transactionFees,
-                                  DATA["token1"].feesRecipients,
-                                  DATA["token1"].feesRecipientsPercentage,
-                                  DATA["token1"].minHoldingForCallback,
-                                  DATA["token1"].isPrivate,
-                                  DATA["token1"].legalAuthority, {from: accounts[5]});
+      await STASHBLOX.createToken.send(accounts[5],
+                                       tokenId,
+                                       DATA["token1"].supply,
+                                       DATA["token1"].decimals,
+                                       DATA["token1"].metadataHash,
+                                       DATA["token1"].transactionFees,
+                                       DATA["token1"].feesRecipients,
+                                       DATA["token1"].feesRecipientsPercentage,
+                                       DATA["token1"].minHoldingForCallback,
+                                       DATA["token1"].isPrivate,
+                                       DATA["token1"].legalAuthority, {from: accounts[5]});
 
       const balance = await STASHBLOX.balanceOf.call(accounts[5], tokenId);
       assert.equal(balance.valueOf(), DATA["token1"].supply, "token wasn't in the first account");
@@ -79,16 +79,16 @@ describe("Mintable.sol", () => {
       authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
-      await STASHBLOX.setTokenizerAuthorization(accounts[5], false);
+      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
+      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], false);
 
       authorized = await STASHBLOX.isTokenizer(accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
     });
 
     it("should not be able to tokenize", async () => {
-      await STASHBLOX.setTokenizerAuthorization(accounts[5], true);
-      await STASHBLOX.setTokenizerAuthorization(accounts[5], false);
+      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
+      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], false);
 
       const tokenId = random();
 
@@ -162,7 +162,7 @@ describe("Mintable.sol", () => {
         metadataHashes.push(random());
       }
 
-      const receipt = await STASHBLOX.cloneToken(DATA["token1"].id, ids, metadataHashes);
+      const receipt = await STASHBLOX.cloneToken.send(DATA["token1"].id, ids, metadataHashes);
 
       for (var i = 0; i < 10; i++) {
         expectEvent(receipt, "TransferSingle", {

@@ -50,7 +50,7 @@ describe("Callable.sol", () => {
   const proposeCallback = async (price, totalDistributed) => {
     const callees = [];
     const documentHash = random();
-    let receipt = await STASHBLOX.proposeCallback(1, DATA["token1"].id, price, callees, documentHash, {
+    let receipt = await STASHBLOX.proposeCallback.send(1, DATA["token1"].id, price, callees, documentHash, {
       from: accounts[1],
       value: price * totalDistributed
     });
@@ -103,7 +103,7 @@ describe("Callable.sol", () => {
       let totalDistributed = await distributeTokens();
       await proposeCallback(100, totalDistributed);
 
-      let receipt = await STASHBLOX.refuseCallback(1);
+      let receipt = await STASHBLOX.refuseCallback.send(1);
 
       let callback = await STASHBLOX._callbacks(1);
       assert.equal(callback.refused, true, "Invalid value for refused field");
@@ -132,7 +132,7 @@ describe("Callable.sol", () => {
 
       //await STASHBLOX.updateLegalAuthority(DATA["token1"].id, defaultSender);
 
-      receipt = await STASHBLOX.approveCallback(1, {
+      receipt = await STASHBLOX.approveCallback.send(1, {
         from: DATA["token1"].legalAuthority
       });
 
@@ -154,7 +154,7 @@ describe("Callable.sol", () => {
 
       let ethBalancesBefore = await getETHBalances();
 
-      let receipt = await STASHBLOX.acceptCallback(1);
+      let receipt = await STASHBLOX.acceptCallback.send(1);
 
       let ethBalancesAfter = await getETHBalances();
 
@@ -178,7 +178,7 @@ describe("Callable.sol", () => {
 
     it("should accept but not execute callback", async () => {
       let config = await STASHBLOX._config();
-      let receipt = await STASHBLOX.updateConfig(
+      let receipt = await STASHBLOX.updateConfig.send(
         2,
         config.baseURI,
         config.versionRecipient,
@@ -192,7 +192,7 @@ describe("Callable.sol", () => {
 
       let ethBalancesBefore = await getETHBalances();
 
-      receipt = await STASHBLOX.acceptCallback(1);
+      receipt = await STASHBLOX.acceptCallback.send(1);
 
       let ethBalancesAfter = await getETHBalances();
 
@@ -218,7 +218,7 @@ describe("Callable.sol", () => {
 
     it("should execute callback by batch", async () => {
       let config = await STASHBLOX._config();
-      await STASHBLOX.updateConfig(
+      await STASHBLOX.updateConfig.send(
         2,
         config.baseURI,
         config.versionRecipient,
@@ -229,10 +229,10 @@ describe("Callable.sol", () => {
 
       let totalDistributed = await distributeTokens();
       await proposeCallback(100, totalDistributed);
-      await STASHBLOX.acceptCallback(1);
+      await STASHBLOX.acceptCallback.send(1);
 
       let ethBalancesBefore = await getETHBalances();
-      let receipt = await STASHBLOX.executeCallback(1, 4);
+      let receipt = await STASHBLOX.executeCallback.send(1, 4);
       let ethBalancesAfter = await getETHBalances();
 
       let callback = await STASHBLOX._callbacks.call(1);
@@ -252,7 +252,7 @@ describe("Callable.sol", () => {
         assert.equal(ethBalancesBefore[i + 1].toString(), ethBalancesAfter[i + 1].toString(), "invalid ETH balance");
       }
 
-      receipt = await STASHBLOX.executeCallback(1, 4);
+      receipt = await STASHBLOX.executeCallback.send(1, 4);
       ethBalancesAfter = await getETHBalances();
 
       callback = await STASHBLOX._callbacks.call(1);

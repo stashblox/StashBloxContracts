@@ -10,7 +10,7 @@ const StashBloxClass = contract.fromArtifact('StashBlox');
 const ZERO_ADDRESS = constants.ZERO_ADDRESS;
 const ZERO_BYTES32 = constants.ZERO_BYTES32;
 
-
+var GAS_LOGS = [];
 var STASHBLOX;
 
 var DATA = {
@@ -44,6 +44,22 @@ var DATA = {
 
 const initContract =  async() => {
     STASHBLOX = await StashBloxClass.new();
+
+    for (var i = 0; i < STASHBLOX.abi.length; i++) {
+      if (["payable", "nonpayable"].indexOf(STASHBLOX.abi[i].stateMutability) != -1 && STASHBLOX.abi[i].type == "function") {
+        const functionName = STASHBLOX.abi[i].name;
+        STASHBLOX[functionName].send = async (...args) => {
+          const receipt = await STASHBLOX[functionName](...args);
+          GAS_LOGS.push({
+            functionName: functionName,
+            args: args,
+            gasUsed: receipt.receipt.gasUsed
+          })
+          return receipt;
+        }
+      }
+    }
+
     return STASHBLOX
 }
 
@@ -86,7 +102,7 @@ const transferTokens = async (params) => {
     const storageFees = await STASHBLOX.transactionFees.call(params.from, params.tokenID, params.amount);
 
     // try to send 50 tokens to account[2]..
-    const receipt = await STASHBLOX.safeTransferFrom(params.from, params.to, params.tokenID, params.amount, constants.ZERO_BYTES32, {
+    const receipt = await STASHBLOX.safeTransferFrom.send(params.from, params.to, params.tokenID, params.amount, constants.ZERO_BYTES32, {
       from: params.operator,
       value: storageFees
     });
@@ -127,7 +143,7 @@ const transferTokensBatch = async (params) => {
       storageFees += await STASHBLOX.transactionFees.call(params.from, params.ids[i], params.amounts[i]);
     }
 
-    const receipt = await STASHBLOX.safeBatchTransferFrom(params.from, params.to, params.ids, params.amounts, constants.ZERO_BYTES32, {
+    const receipt = await STASHBLOX.safeBatchTransferFrom.send(params.from, params.to, params.ids, params.amounts, constants.ZERO_BYTES32, {
       from: params.operator,
       value: storageFees
     });
@@ -181,5 +197,6 @@ module.exports = exports = {
   defaultSender,
   send,
   contract,
-  web3
+  web3,
+  GAS_LOGS
 }
