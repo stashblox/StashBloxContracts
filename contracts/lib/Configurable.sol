@@ -25,20 +25,20 @@ contract Configurable is Ownable {
      * @param baseURI base URI for the metadata URLs
      * @param versionRecipient version needed by GSN relay
      * @param owner ew owner of the contract
-     * @param GSNTrustedForwarder trusted GSN relay
+     * @param gsnTrustedForwarder trusted GSN relay
      * @param proxyRegistryAccount trusted delegate proxy
      */
     function updateConfig(uint256 callbackAutoExecuteMaxAccounts,
                           string calldata baseURI,
                           string calldata versionRecipient,
                           address owner,
-                          address GSNTrustedForwarder,
+                          address gsnTrustedForwarder,
                           address proxyRegistryAccount) external onlyOwner {
         _config.callbackAutoExecuteMaxAccounts = callbackAutoExecuteMaxAccounts;
         _config.baseURI = baseURI;
         _config.versionRecipient = versionRecipient;
         if (_config.owner != owner) _transferOwnership(owner);
-        _config.GSNTrustedForwarder = GSNTrustedForwarder;
+        _config.gsnTrustedForwarder = gsnTrustedForwarder;
         _config.proxyRegistryAccount = proxyRegistryAccount;
 
         emit ConfigUpdated();

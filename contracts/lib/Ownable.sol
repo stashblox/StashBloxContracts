@@ -67,7 +67,7 @@ contract Ownable is IERC173, GSNCapable {
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
      */
     function _transferOwnership(address account) internal {
-        require(account != address(0), "Ownable: new owner is the zero address");
+        require(account != address(0), "invalid account");
         emit OwnershipTransferred(_config.owner, account);
         _config.owner = account;
     }

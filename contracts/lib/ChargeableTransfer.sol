@@ -112,7 +112,7 @@ contract ChargeableTransfer is GSNCapable {
         for (uint256 i = 0; i < _tokens[id].feesRecipients.length; ++i) {
             address feesRecipient = _tokens[id].feesRecipients[i];
             uint256 feesRecipientsPercentage = _tokens[id].feesRecipientsPercentage[i];
-            _accounts[feesRecipient].ETHBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
+            _accounts[feesRecipient].ethBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
         }
     }
 
@@ -125,7 +125,7 @@ contract ChargeableTransfer is GSNCapable {
         // calculate StashBlox fees
         fees = _transactionFees(from, id, value);
         // remove fees from operator ETH balance
-        _accounts[operator].ETHBalance = _accounts[operator].ETHBalance.sub(fees, "Insufficient ETH");
+        _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");
         // distribute fees to beneficiaries
         _distributeFees(id, fees);
 

@@ -26,8 +26,8 @@ contract StringUtils {
         } else if (10 <= uint8(d) && uint8(d) <= 15) {
             return byte(uint8(byte("a")) + d - 10);
         }
-        // revert("Invalid hex digit");
-        revert();
+        revert("Invalid hex digit");
+        //revert();
     }
 
     function _toHexString(uint a) internal pure returns (string memory) {

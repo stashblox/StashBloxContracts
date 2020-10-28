@@ -82,7 +82,7 @@ library SafeMath {
         }
 
         uint256 c = a * b;
-        require(c / a == b, "SafeMath: multiplication overflow");
+        require(c / a == b, "SafeMath: mul. overflow");
 
         return c;
     }

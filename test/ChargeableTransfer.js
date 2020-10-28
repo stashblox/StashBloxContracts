@@ -126,7 +126,7 @@ describe("ChargeableTransfer.sol", () => {
 
 
     it("it should split fees between feesRecipients", async () => {
-      let ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[0])).ETHBalance
+      let ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[0])).ethBalance
       assert.equal(ethBalance.valueOf(), 0, "Incorrect ETH balance");
 
       let transferAmount = 38 * 10**8;
@@ -147,9 +147,9 @@ describe("ChargeableTransfer.sol", () => {
         amount: transferAmount
       });
 
-      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[0])).ETHBalance
+      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[0])).ethBalance
       assert.equal(ethBalance.toString(), storageGain1.toString(), "Incorrect balance increase");
-      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[1])).ETHBalance
+      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[1])).ethBalance
       assert.equal(ethBalance.toString(), storageGain2.toString(), "Incorrect balance increase");
     });
 

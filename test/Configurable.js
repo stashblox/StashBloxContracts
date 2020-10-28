@@ -28,7 +28,7 @@ describe("Configurable.sol", () => {
       assert.equal(newConfig.baseURI, "http://stashblox.com/tokens/", "Invalid config value");
       assert.equal(newConfig.versionRecipient, "1.0.0+opengsn.stashblox", "Invalid config value");
       assert.equal(newConfig.owner, defaultSender, "Invalid config value");
-      assert.equal(newConfig.GSNTrustedForwarder,  ZERO_ADDRESS, "Invalid config value");
+      assert.equal(newConfig.gsnTrustedForwarder,  ZERO_ADDRESS, "Invalid config value");
       assert.equal(newConfig.proxyRegistryAccount, ZERO_ADDRESS, "Invalid config value");
 
     });
@@ -39,7 +39,7 @@ describe("Configurable.sol", () => {
       const baseURI = "baseURI";
       const versionRecipient = "versionRecipient";
       const owner = accounts[4];
-      const GSNTrustedForwarder = accounts[5];
+      const gsnTrustedForwarder = accounts[5];
       const proxyRegistryAccount = accounts[6];
 
       const receipt = await STASHBLOX.updateConfig.send(
@@ -47,7 +47,7 @@ describe("Configurable.sol", () => {
         baseURI,
         versionRecipient,
         owner,
-        GSNTrustedForwarder,
+        gsnTrustedForwarder,
         proxyRegistryAccount
       );
 
@@ -61,7 +61,7 @@ describe("Configurable.sol", () => {
       assert.equal(newConfig.baseURI, baseURI, "Invalid config value");
       assert.equal(newConfig.versionRecipient, versionRecipient, "Invalid config value");
       assert.equal(newConfig.owner, owner, "Invalid config value");
-      assert.equal(newConfig.GSNTrustedForwarder, GSNTrustedForwarder, "Invalid config value");
+      assert.equal(newConfig.gsnTrustedForwarder, gsnTrustedForwarder, "Invalid config value");
       assert.equal(newConfig.proxyRegistryAccount, proxyRegistryAccount, "Invalid config value");
 
     });

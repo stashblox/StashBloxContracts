@@ -65,7 +65,7 @@ describe("MultiToken.sol", () => {
       });
 
       it("should revert when asking balance for zero address", async () => {
-        expectRevert(STASHBLOX.balanceOf.call(ZERO_ADDRESS, DATA["token1"].id), "ERC1155: balance query for the zero address");
+        expectRevert(STASHBLOX.balanceOf.call(ZERO_ADDRESS, DATA["token1"].id), "invalid account");
       });
 
     });
@@ -80,12 +80,12 @@ describe("MultiToken.sol", () => {
 
       it("should revert when asking balance for zero address", async () => {
         expectRevert(STASHBLOX.balanceOfBatch.call([accounts[1], ZERO_ADDRESS], [DATA["token1"].id, DATA["token2"].id]),
-                     "ERC1155: some address in batch balance query is zero");
+                     "invalid account");
       });
 
       it("should revert when accounts and IDs don't have same lengths", async () => {
         expectRevert(STASHBLOX.balanceOfBatch.call([accounts[1], accounts[2]], [DATA["token1"].id, DATA["token2"].id, DATA["token2"].id]),
-                     "ERC1155: accounts and IDs must have same lengths");
+                     "invalid arguments");
       });
 
     });
@@ -94,7 +94,7 @@ describe("MultiToken.sol", () => {
 
       it("should revert when someone approve for self", async () => {
         expectRevert(STASHBLOX.setApprovalForAll.send(accounts[3], true, {from: accounts[3]}),
-                     "ERC1155: cannot set approval status for self");
+                     "invalid account");
       });
 
       it("should emit event", async () => {
@@ -133,7 +133,7 @@ describe("MultiToken.sol", () => {
         expectRevert(STASHBLOX.safeTransferFrom(
           accounts[1], ZERO_ADDRESS, DATA["token1"].id, 50, ZERO_BYTES32,
           {from: accounts[1]}
-        ), "ERC1155: target address must be non-zero");
+        ), "invalid recipient");
       });
 
       it("should revert when operator is not approved", async () => {
@@ -141,7 +141,7 @@ describe("MultiToken.sol", () => {
         expectRevert(STASHBLOX.safeTransferFrom(
           accounts[1], accounts[2], DATA["token1"].id, 50, ZERO_BYTES32,
           {from: accounts[3]}
-        ), "ERC1155: need operator approval for 3rd party transfers");
+        ), "operator not approved");
 
       });
 
@@ -209,7 +209,7 @@ describe("MultiToken.sol", () => {
         expectRevert(STASHBLOX.safeTransferFrom(
           accounts[1], receiver.address, DATA["token1"].id, 50, ZERO_BYTES32,
           {from: accounts[1], value: storageFees}
-        ), "ERC1155ReceiverMock: reverting on receive");
+        ), "reverting on receive");
       });
 
     });
@@ -221,21 +221,21 @@ describe("MultiToken.sol", () => {
         expectRevert(STASHBLOX.safeBatchTransferFrom(
           accounts[1], ZERO_ADDRESS, [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
           {from: accounts[1]}
-        ), "ERC1155: target address must be non-zero");
+        ), "invalid account");
       });
 
       it("should revert if ids and values don't have the same lengths", async () => {
         expectRevert(STASHBLOX.safeBatchTransferFrom(
           accounts[1], accounts[2], [DATA["token1"].id, DATA["token1"].id], [50, 50, 50], ZERO_BYTES32,
           {from: accounts[3]}
-        ), "ERC1155: IDs and values must have same lengths");
+        ), "invalid arguments");
       });
 
       it("should revert when operator is not approved", async () => {
         expectRevert(STASHBLOX.safeBatchTransferFrom(
           accounts[1], accounts[2], [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
           {from: accounts[3]}
-        ), "ERC1155: need operator approval for 3rd party transfers");
+        ), "operator not approved");
       });
 
       it("should successfully transfer tokens", async () => {
@@ -344,7 +344,7 @@ describe("MultiToken.sol", () => {
         expectRevert(STASHBLOX.safeBatchTransferFrom(
           accounts[1], receiver.address, [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
           {from: accounts[1], value: storageFees * 2}
-        ), "ERC1155ReceiverMock: reverting on batch receive");
+        ), "reverting on batch receive");
       });
 
     });

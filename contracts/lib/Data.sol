@@ -13,14 +13,14 @@ contract Data {
         string baseURI;
         string versionRecipient;
         address owner;
-        address GSNTrustedForwarder;
+        address gsnTrustedForwarder;
         address proxyRegistryAccount;
     }
 
     struct Account {
         bool isTokenizer;
         bool isLocked;
-        uint256 ETHBalance;
+        uint256 ethBalance;
         uint256[] tokens;
         mapping(address => bool) operatorApprovals;
     }

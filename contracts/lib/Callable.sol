@@ -67,7 +67,7 @@ contract Callable is Lockable {
                  _msgSender() == callback.caller), "Invalid arguments or permission");
 
         _callbacks[callbackId].refused = true;
-        _accounts[callback.caller].ETHBalance += callback.escrowedAmount;
+        _accounts[callback.caller].ethBalance += callback.escrowedAmount;
 
         emit CallbackUpdated(callbackId);
     }
@@ -102,7 +102,7 @@ contract Callable is Lockable {
                 callback.refused == false &&
                 callback.accepted == false &&
                 callback.escrowedAmount >= _callbackPrice(callback.caller, callback.tokenId, callback.price, callback.callees),
-                "Insufficient callback, permission or escrowed amount");
+                "callback cannot be accepted");
 
         _callbacks[callbackId].accepted = true;
 
@@ -169,7 +169,7 @@ contract Callable is Lockable {
 
             uint256 price = calleeBalance.mul(_callbacks[callbackId].price);
             // pay the callee
-            _accounts[callees[i]].ETHBalance = _accounts[callees[i]].ETHBalance.add(price);
+            _accounts[callees[i]].ethBalance = _accounts[callees[i]].ethBalance.add(price);
             // and remove token from his account
             _tokens[tokenId].holders[callees[i]].balance = 0;
             // increment total amount and total price for the caller

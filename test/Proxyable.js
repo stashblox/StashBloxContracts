@@ -77,7 +77,7 @@ describe("Proxyable.sol", () => {
       expectRevert(delegateProxy.safeTransferFrom(accounts[2], accounts[1], DATA["token2"].id, 50, ZERO_BYTES32, {
         value: storageFees,
         from: accounts[2]
-      }), "ERC1155: need operator approval for 3rd party transfers");
+      }), "operator not approved");
 
       let balanceAfter = await STASHBLOX.balanceOf.call(accounts[2], DATA["token2"].id);
       assert.equal(balanceBefore.toString(), balanceAfter.toString(), "invalid balance");
@@ -149,7 +149,7 @@ describe("Proxyable.sol", () => {
                                                              [50, 50], ZERO_BYTES32, {
         value: storageFees,
         from: accounts[1]
-      }), "ERC1155: need operator approval for 3rd party transfers");
+      }), "operator not approved");
 
 
       let balanceAfter1 = await STASHBLOX.balanceOf.call(accounts[1], DATA["token1"].id);

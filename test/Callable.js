@@ -39,10 +39,10 @@ describe("Callable.sol", () => {
     return totalDistributed;
   }
 
-  const getETHBalances = async () => {
+  const getethBalances = async () => {
     let ethBalance = {};
     for (var i = 0; i <= 9; i++) {
-      ethBalance[i] = (await STASHBLOX._accounts(accounts[i])).ETHBalance;
+      ethBalance[i] = (await STASHBLOX._accounts(accounts[i])).ethBalance;
     }
     return ethBalance;
   }
@@ -97,7 +97,7 @@ describe("Callable.sol", () => {
   describe("#refuseCallback", async () => {
 
     it("should refuse callback and refund caller", async () => {
-      let ethBalances1 = await getETHBalances();
+      let ethBalances1 = await getethBalances();
       assert.equal(ethBalances1[1].valueOf(), 0, "invalid ETH balance");
 
       let totalDistributed = await distributeTokens();
@@ -112,7 +112,7 @@ describe("Callable.sol", () => {
         _callbackId: bigN(1)
       });
 
-      let ethBalances2 = await getETHBalances();
+      let ethBalances2 = await getethBalances();
       assert.equal(ethBalances2[1].valueOf(), 100 * totalDistributed, "invalid ETH balance");
     });
 
@@ -152,11 +152,11 @@ describe("Callable.sol", () => {
       let totalDistributed = await distributeTokens();
       await proposeCallback(100, totalDistributed);
 
-      let ethBalancesBefore = await getETHBalances();
+      let ethBalancesBefore = await getethBalances();
 
       let receipt = await STASHBLOX.acceptCallback.send(1);
 
-      let ethBalancesAfter = await getETHBalances();
+      let ethBalancesAfter = await getethBalances();
 
       let callback = await STASHBLOX._callbacks.call(1);
 
@@ -183,18 +183,18 @@ describe("Callable.sol", () => {
         config.baseURI,
         config.versionRecipient,
         config.owner,
-        config.GSNTrustedForwarder,
+        config.gsnTrustedForwarder,
         config.proxyRegistryAccount
       );
 
       let totalDistributed = await distributeTokens();
       await proposeCallback(100, totalDistributed);
 
-      let ethBalancesBefore = await getETHBalances();
+      let ethBalancesBefore = await getethBalances();
 
       receipt = await STASHBLOX.acceptCallback.send(1);
 
-      let ethBalancesAfter = await getETHBalances();
+      let ethBalancesAfter = await getethBalances();
 
       let callback = await STASHBLOX._callbacks.call(1);
 
@@ -223,7 +223,7 @@ describe("Callable.sol", () => {
         config.baseURI,
         config.versionRecipient,
         config.owner,
-        config.GSNTrustedForwarder,
+        config.gsnTrustedForwarder,
         config.proxyRegistryAccount
       );
 
@@ -231,9 +231,9 @@ describe("Callable.sol", () => {
       await proposeCallback(100, totalDistributed);
       await STASHBLOX.acceptCallback.send(1);
 
-      let ethBalancesBefore = await getETHBalances();
+      let ethBalancesBefore = await getethBalances();
       let receipt = await STASHBLOX.executeCallback.send(1, 4);
-      let ethBalancesAfter = await getETHBalances();
+      let ethBalancesAfter = await getethBalances();
 
       let callback = await STASHBLOX._callbacks.call(1);
       assert.equal(callback.accepted, true, "invalid callback status");
@@ -253,7 +253,7 @@ describe("Callable.sol", () => {
       }
 
       receipt = await STASHBLOX.executeCallback.send(1, 4);
-      ethBalancesAfter = await getETHBalances();
+      ethBalancesAfter = await getethBalances();
 
       callback = await STASHBLOX._callbacks.call(1);
       assert.equal(callback.accepted, true, "invalid callback status");

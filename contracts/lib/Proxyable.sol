@@ -3,7 +3,7 @@ pragma solidity ^0.7.1;
 
 import "./Ownable.sol";
 
-contract OwnableDelegateProxy { }
+contract OwnableDelegateProxy { } // solhint-disable-line no-empty-blocks
 
 interface ProxyRegistry {
   function proxies(address account) view external returns (OwnableDelegateProxy);

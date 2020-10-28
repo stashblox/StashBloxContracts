@@ -53,7 +53,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         @return The account's balance of the token type requested
      */
     function balanceOf(address account, uint256 id) public view override returns (uint256) {
-        require(account != address(0), "ERC1155: balance query for the zero address");
+        require(account != address(0), "invalid account");
         return _tokens[id].holders[account].balance;
     }
 
@@ -74,12 +74,12 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         view
         override returns (uint256[] memory)
     {
-        require(accounts.length == ids.length, "ERC1155: accounts and IDs must have same lengths");
+        require(accounts.length == ids.length, "invalid arguments");
 
         uint256[] memory batchBalances = new uint256[](accounts.length);
 
         for (uint256 i = 0; i < accounts.length; ++i) {
-            require(accounts[i] != address(0), "ERC1155: some address in batch balance query is zero");
+            require(accounts[i] != address(0), "invalid account");
             batchBalances[i] = _tokens[ids[i]].holders[accounts[i]].balance;
         }
 
@@ -99,7 +99,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      */
     function setApprovalForAll(address account, bool approved) external override {
         address operator = _msgSender();
-        require(operator != account, "ERC1155: cannot set approval status for self");
+        require(operator != account, "invalid account");
         _accounts[operator].operatorApprovals[account] = approved;
         emit ApprovalForAll(operator, account, approved);
     }
@@ -135,12 +135,12 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     {
         address operator = _msgSender();
 
-        require(to != address(0), "ERC1155: target address must be non-zero");
+        require(to != address(0), "invalid recipient");
         require(
             from == operator || isApprovedForAll(from, operator) == true,
-            "ERC1155: need operator approval for 3rd party transfers"
+            "operator not approved"
         );
-        _accounts[operator].ETHBalance = _accounts[operator].ETHBalance.add(msg.value);
+        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
 
         _moveTokens(operator, from, to, id, value);
 
@@ -171,13 +171,13 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     {
         address operator = _msgSender();
 
-        require(ids.length == values.length, "ERC1155: IDs and values must have same lengths");
-        require(to != address(0), "ERC1155: target address must be non-zero");
+        require(ids.length == values.length, "invalid arguments");
+        require(to != address(0), "invalid account");
         require(
             from == operator || isApprovedForAll(from, operator) == true,
-            "ERC1155: need operator approval for 3rd party transfers"
+            "operator not approved"
         );
-        _accounts[operator].ETHBalance = _accounts[operator].ETHBalance.add(msg.value);
+        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
 
         _moveTokensBatch(operator, from, to, ids, values);
 
@@ -214,7 +214,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             require(
                 IERC1155Receiver(to).onERC1155Received(operator, from, id, value, data) ==
                     IERC1155Receiver(to).onERC1155Received.selector,
-                "ERC1155: got unknown value from onERC1155Received"
+                "unknown value from receiver"
             );
         }
     }
@@ -233,7 +233,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             require(
                 IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, values, data) ==
                     IERC1155Receiver(to).onERC1155BatchReceived.selector,
-                "ERC1155: got unknown value from onERC1155BatchReceived"
+                "unknown value from receiver"
             );
         }
     }

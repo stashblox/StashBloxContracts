@@ -12,7 +12,7 @@ import "./Data.sol";
 abstract contract GSNCapable is IRelayRecipient, Data {
 
     function isTrustedForwarder(address account) public override view returns(bool) {
-        return account == _config.GSNTrustedForwarder;
+        return account == _config.gsnTrustedForwarder;
     }
 
     /**

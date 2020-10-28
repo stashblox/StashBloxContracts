@@ -5,10 +5,10 @@ import "../interfaces/IERC1155.sol";
 
 contract OwnableDelegateProxyMock {
 
-    address public _ERC1155Address;
+    address public _erc1155Address;
 
-    constructor(address ERC1155Address) {
-        _ERC1155Address = ERC1155Address;
+    constructor(address erc1155Address) {
+        _erc1155Address = erc1155Address;
     }
 
     function safeTransferFrom(
@@ -18,7 +18,7 @@ contract OwnableDelegateProxyMock {
         uint256 value,
         bytes calldata data
     ) external payable {
-        IERC1155(_ERC1155Address).safeTransferFrom{value: msg.value}(from, to, id, value, data);
+        IERC1155(_erc1155Address).safeTransferFrom{value: msg.value}(from, to, id, value, data);
     }
 
     function safeBatchTransferFrom(
@@ -29,6 +29,6 @@ contract OwnableDelegateProxyMock {
         bytes calldata data
     )
     external payable {
-        IERC1155(_ERC1155Address).safeBatchTransferFrom{value: msg.value}(from, to, ids, values, data);
+        IERC1155(_erc1155Address).safeBatchTransferFrom{value: msg.value}(from, to, ids, values, data);
     }
 }
