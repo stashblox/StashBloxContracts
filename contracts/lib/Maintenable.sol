@@ -62,7 +62,7 @@ contract Maintenable is Mintable {
      */
     function updateToken(uint256 id,
                          uint256 metadataHash,
-                         uint256[3] memory transactionFees,
+                         uint256[6] memory transactionFees,
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage,
                          uint256 minHoldingForCallback,

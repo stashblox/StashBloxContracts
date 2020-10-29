@@ -59,7 +59,7 @@ contract Mintable is MultiToken {
                          uint256 supply,
                          uint256 decimals,
                          uint256 metadataHash,
-                         uint256[3] memory transactionFees,
+                         uint256[6] memory transactionFees,
                          address[] memory feesRecipients,
                          uint256[] memory feesRecipientsPercentage,
                          uint256 minHoldingForCallback,
@@ -116,7 +116,7 @@ contract Mintable is MultiToken {
 
     function _setToken(uint256 id,
                        uint256 metadataHash,
-                       uint256[3] memory transactionFees,
+                       uint256[6] memory transactionFees,
                        address[] memory feesRecipients,
                        uint256[] memory feesRecipientsPercentage,
                        uint256 minHoldingForCallback,
@@ -137,6 +137,9 @@ contract Mintable is MultiToken {
         _tokens[id].lumpSumFees = transactionFees[0];
         _tokens[id].standardFees = transactionFees[1];
         _tokens[id].storageFees.push([block.timestamp, transactionFees[2]]);
+        _tokens[id].feesUnitType = transactionFees[3];
+        _tokens[id].feesUnitAddress = address(uint160(transactionFees[4]));
+        _tokens[id].feesUnitId = transactionFees[5];
         _tokens[id].feesRecipients = feesRecipients;
         _tokens[id].feesRecipientsPercentage = feesRecipientsPercentage;
         _tokens[id].minHoldingForCallback = minHoldingForCallback;
@@ -150,7 +153,7 @@ contract Mintable is MultiToken {
                           uint256 supply,
                           uint256 decimals,
                           uint256 metadataHash,
-                          uint256[3] memory transactionFees,
+                          uint256[6] memory transactionFees,
                           address[] memory feesRecipients,
                           uint256[] memory feesRecipientsPercentage,
                           uint256 minHoldingForCallback,
@@ -185,7 +188,10 @@ contract Mintable is MultiToken {
                      [
                        _tokens[id].lumpSumFees,
                        _tokens[id].standardFees,
-                       _tokens[id].storageFees[0][1]
+                       _tokens[id].storageFees[0][1],
+                       _tokens[id].feesUnitType,
+                       uint256(uint160(_tokens[id].feesUnitAddress)),
+                       _tokens[id].feesUnitId
                      ],
                      _tokens[id].feesRecipients,
                      _tokens[id].feesRecipientsPercentage,

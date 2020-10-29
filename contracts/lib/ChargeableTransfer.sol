@@ -108,7 +108,10 @@ contract ChargeableTransfer is GSNCapable {
         return _tokens[id].lumpSumFees.add(storageFees).add(standardFees);
     }
 
-    function _distributeFees(uint256 id, uint256 fees) internal {
+    function _payFees(uint256 id, address operator, uint256 fees) internal {
+        // remove fees from operator ETH balance
+        _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");
+        // distribute fees to beneficiaries
         for (uint256 i = 0; i < _tokens[id].feesRecipients.length; ++i) {
             address feesRecipient = _tokens[id].feesRecipients[i];
             uint256 feesRecipientsPercentage = _tokens[id].feesRecipientsPercentage[i];
@@ -124,10 +127,8 @@ contract ChargeableTransfer is GSNCapable {
         _addToBalance(to, id, value);
         // calculate StashBlox fees
         fees = _transactionFees(from, id, value);
-        // remove fees from operator ETH balance
-        _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");
-        // distribute fees to beneficiaries
-        _distributeFees(id, fees);
+        // pay fees
+        _payFees(id, operator, fees);
 
         return fees;
     }

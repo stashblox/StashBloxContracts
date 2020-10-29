@@ -57,7 +57,7 @@ describe("Maintenable.sol", () => {
       await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
 
       let metadataHash = random();
-      let transactionFees = [3, 0, 1];
+      let transactionFees = [3, 0, 1, 0, 0, ZERO_ADDRESS];
       let feesRecipients = [accounts[5]];
       let feesRecipientsPercentage = [10000];
       let minHoldingForCallback = 5000;
@@ -91,7 +91,7 @@ describe("Maintenable.sol", () => {
     it("should not be able to update token", async () => {
 
       expectRevert(
-        STASHBLOX.updateToken(DATA["token1"].id, random(), [3, 0, 1], [accounts[5]], [10000], 5000, true, accounts[5], {from: accounts[5]}),
+        STASHBLOX.updateToken(DATA["token1"].id, random(), [3, 0, 1, 0, 0, ZERO_ADDRESS], [accounts[5]], [10000], 5000, true, accounts[5], {from: accounts[5]}),
         "Insufficient permission"
       );
 

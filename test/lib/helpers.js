@@ -13,6 +13,7 @@ const ZERO_BYTES32 = constants.ZERO_BYTES32;
 var GAS_LOGS = [];
 var STASHBLOX;
 
+
 var DATA = {
   "token1": {
       recipient: accounts[1],
@@ -20,7 +21,7 @@ var DATA = {
       supply: 1000 * 10**8,
       decimals: 8,
       metadataHash: random(),
-      transactionFees: [4, 0, 1],
+      transactionFees: [4, 0, 1, 0, 0, ZERO_ADDRESS],
       feesRecipients: [accounts[6], accounts[7]],
       feesRecipientsPercentage: [7500, 2500], //75%, 25%
       minHoldingForCallback: 8000, //80%
@@ -33,7 +34,7 @@ var DATA = {
       supply: 1000 * 10**8,
       decimals: 8,
       metadataHash: random(),
-      transactionFees: [4, 0, 2],
+      transactionFees: [4, 0, 2, 0, 0, ZERO_ADDRESS],
       feesRecipients: [accounts[6], accounts[7]],
       feesRecipientsPercentage: [7500, 2500], //75%, 25%
       minHoldingForCallback: 8000, //80%

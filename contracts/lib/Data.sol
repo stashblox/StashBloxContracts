@@ -23,6 +23,8 @@ contract Data {
         uint256 ethBalance;
         uint256[] tokens;
         mapping(address => bool) operatorApprovals;
+        mapping(address => uint256) erc20Balance;
+        mapping(address => mapping(uint256 => uint256)) erc1155Balance;
     }
 
     struct Holder {
@@ -40,6 +42,9 @@ contract Data {
         uint256 standardFees;
         uint256 minHoldingForCallback;
         uint256 metadataHash;
+        uint256 feesUnitType; // 0 ether, 1 erc20, 2 erc1155
+        uint256 feesUnitId;
+        address feesUnitAddress;
         address legalAuthority;
         bool isPrivate;
         bool locked;
