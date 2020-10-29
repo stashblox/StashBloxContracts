@@ -43,40 +43,39 @@ contract Mintable is MultiToken {
 
     /**
      * @dev Function to mint an amount of a token with the given ID.
+      `params` must contains the following informations:
+
+                              [0]: metadataHash
+                              [1]: isPrivate
+                              [2]: minHoldingForCallback
+                              [3]: legalAuthority
+                              [4]: standardFees
+                              [5]: lumpSumFees
+                              [6]: storageFees
+                              [7]: feesUnitType
+                              [8]: feesUnitAddress
+                              [9]: feesUnitId
+                             [10]: n
+                     [11 -> 10+n]: feesRecipients
+                  [11+n -> 10+2n]: feesRecipientsPercentage
+
      * @param recipient The address that will own the minted tokens
      * @param id ID of the token to be minted
      * @param supply Amount of the token to be minted
-     * @param metadataHash Metadata file hash
-     * @param transactionFees transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
-     * @param feesRecipients list of addresses receiving transfer fees
-     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
-     * @param minHoldingForCallback minimum holding to propose a callback
-     * @param isPrivate true if holder need approval
-     * @param legalAuthority address of the legal authority
+     * @param decimals Number of decimals
+     * @param params Token information
      */
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
                          uint256 decimals,
-                         uint256 metadataHash,
-                         uint256[6] memory transactionFees,
-                         address[] memory feesRecipients,
-                         uint256[] memory feesRecipientsPercentage,
-                         uint256 minHoldingForCallback,
-                         bool isPrivate,
-                         address legalAuthority)
+                         uint256[] memory params)
     external onlyTokenizer {
         _createToken(recipient,
                      id,
                      supply,
                      decimals,
-                     metadataHash,
-                     transactionFees,
-                     feesRecipients,
-                     feesRecipientsPercentage,
-                     minHoldingForCallback,
-                     isPrivate,
-                     legalAuthority);
+                     params);
         emit TransferSingle(_msgSender(), address(0), recipient, id, supply);
     }
 
@@ -113,39 +112,50 @@ contract Mintable is MultiToken {
     function _isTokenizer(address account) internal view returns (bool) {
         return _accounts[account].isTokenizer || (account == _config.owner);
     }
-
-    function _setToken(uint256 id,
-                       uint256 metadataHash,
-                       uint256[6] memory transactionFees,
-                       address[] memory feesRecipients,
-                       uint256[] memory feesRecipientsPercentage,
-                       uint256 minHoldingForCallback,
-                       bool isPrivate,
-                       address legalAuthority)
-    internal {
+    /*
+                    [0]: metadataHash
+                    [1]: isPrivate
+                    [2]: minHoldingForCallback
+                    [3]: legalAuthority
+                    [4]: standardFees
+                    [5]: lumpSumFees
+                    [6]: storageFees
+                    [7]: feesUnitType
+                    [8]: feesUnitAddress
+                    [9]: feesUnitId
+                   [10]: n
+           [11 -> 10+n]: feesRecipients
+        [11+n -> 10+2n]: feesRecipientsPercentage
+    */
+    function _setToken(uint256 id, uint256[] memory params) internal {
+        uint256 n = params[10];
         uint256 totalPercentage = 0;
-        for (uint256 i = 0; i < feesRecipientsPercentage.length; ++i)
-            totalPercentage += feesRecipientsPercentage[i];
 
-        require(feesRecipients.length > 0 && feesRecipients.length == feesRecipients.length &&
+        for (uint256 i = 11 + n; i <= 10 + (2 * n); ++i)
+            totalPercentage += params[i];
+
+        require(params.length == 11 + (2 * n) &&
                 totalPercentage == 10000 &&
-                minHoldingForCallback < 10000 &&
-                transactionFees[3] <= 2, // 0 ether, 1 erc20, 2 erc1155
+                params[2] < 10000 &&      // minHoldingForCallback
+                params[7] <= 2,         // 0 ether, 1 erc20, 2 erc1155
                 "Invalid arguments");
 
-        if (_tokens[id].metadataHash != metadataHash) emit URI(uri(id), id);
-        _tokens[id].metadataHash = metadataHash;
-        _tokens[id].lumpSumFees = transactionFees[0];
-        _tokens[id].standardFees = transactionFees[1];
-        _tokens[id].storageFees.push([block.timestamp, transactionFees[2]]);
-        _tokens[id].feesUnitType = transactionFees[3];
-        _tokens[id].feesUnitAddress = address(uint160(transactionFees[4]));
-        _tokens[id].feesUnitId = transactionFees[5];
-        _tokens[id].feesRecipients = feesRecipients;
-        _tokens[id].feesRecipientsPercentage = feesRecipientsPercentage;
-        _tokens[id].minHoldingForCallback = minHoldingForCallback;
-        _tokens[id].isPrivate = isPrivate;
-        _tokens[id].legalAuthority = legalAuthority;
+        if (_tokens[id].metadataHash != params[0]) emit URI(uri(id), id);
+        _tokens[id].metadataHash = params[0];
+        _tokens[id].isPrivate = params[1] > 0;
+        _tokens[id].minHoldingForCallback = params[2];
+        _tokens[id].legalAuthority = address(uint160(params[3]));
+        _tokens[id].standardFees = params[4];
+        _tokens[id].lumpSumFees = params[5];
+        _tokens[id].storageFees.push([block.timestamp, params[6]]);
+        _tokens[id].feesUnitType = params[7];
+        _tokens[id].feesUnitAddress = address(uint160(params[8]));
+        _tokens[id].feesUnitId = params[9];
+
+        for (uint256 i = 11; i <= 10 + n; ++i) {
+            _tokens[id].feesRecipients.push(address(uint160(params[i])));
+            _tokens[id].feesRecipientsPercentage.push(params[i + n]);
+        }
     }
 
 
@@ -153,13 +163,7 @@ contract Mintable is MultiToken {
                           uint256 id,
                           uint256 supply,
                           uint256 decimals,
-                          uint256 metadataHash,
-                          uint256[6] memory transactionFees,
-                          address[] memory feesRecipients,
-                          uint256[] memory feesRecipientsPercentage,
-                          uint256 minHoldingForCallback,
-                          bool isPrivate,
-                          address legalAuthority)
+                          uint256[] memory params)
     internal {
         require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 
@@ -168,37 +172,36 @@ contract Mintable is MultiToken {
         _tokens[id].holders[_msgSender()].isMaintener = true;
         _tokens[id].holders[recipient].isApproved = true;
 
-        _setToken(id,
-                  metadataHash,
-                  transactionFees,
-                  feesRecipients,
-                  feesRecipientsPercentage,
-                  minHoldingForCallback,
-                  isPrivate,
-                  legalAuthority);
+        _setToken(id, params);
 
         _addToBalance(recipient, id, supply);
     }
 
     function _cloneToken(uint256 id, uint256 cloneId, uint256 metadataHash) internal {
+        uint256[] memory params;
+
+        params[0] = metadataHash;
+        params[1] = _tokens[id].isPrivate ? 1 : 0;
+        params[2] = _tokens[id].minHoldingForCallback;
+        params[3] = uint256(uint160(_tokens[id].legalAuthority));
+        params[4] = _tokens[id].standardFees;
+        params[5] = _tokens[id].lumpSumFees;
+        params[6] = _tokens[id].storageFees[0][1];
+        params[7] = _tokens[id].feesUnitType;
+        params[8] = uint256(uint160(_tokens[id].feesUnitAddress));
+        params[9] = _tokens[id].feesUnitId;
+        params[10] = _tokens[id].feesRecipients.length;
+
+        for (uint256 i = 1; i <= params[10]; i++) {
+            params[10 + i] = uint256(uint160(_tokens[id].feesRecipients[i]));
+            params[10 + i + params[10]] = _tokens[id].feesRecipientsPercentage[i];
+        }
+
         _createToken(_tokens[id].holderList[0],
                      cloneId,
                      _tokens[id].supply,
                      _tokens[id].decimals,
-                     metadataHash,
-                     [
-                       _tokens[id].lumpSumFees,
-                       _tokens[id].standardFees,
-                       _tokens[id].storageFees[0][1],
-                       _tokens[id].feesUnitType,
-                       uint256(uint160(_tokens[id].feesUnitAddress)),
-                       _tokens[id].feesUnitId
-                     ],
-                     _tokens[id].feesRecipients,
-                     _tokens[id].feesRecipientsPercentage,
-                     _tokens[id].minHoldingForCallback,
-                     _tokens[id].isPrivate,
-                     _tokens[id].legalAuthority);
+                     params);
     }
 
 }

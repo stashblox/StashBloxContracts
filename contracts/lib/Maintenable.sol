@@ -51,35 +51,31 @@ contract Maintenable is Mintable {
 
     /**
      * @dev Function to update a token with the given ID.
+     `params` must contains the following informations:
+
+                             [0]: metadataHash
+                             [1]: isPrivate
+                             [2]: minHoldingForCallback
+                             [3]: legalAuthority
+                             [4]: standardFees
+                             [5]: lumpSumFees
+                             [6]: storageFees
+                             [7]: feesUnitType
+                             [8]: feesUnitAddress
+                             [9]: feesUnitId
+                            [10]: n
+                    [11 -> 10+n]: feesRecipients
+                 [11+n -> 10+2n]: feesRecipientsPercentage
+
      * @param id ID of the token to be updated
-     * @param metadataHash Metadata file hash
-     * @param transactionFees transaction fees: [lumpSumFees (in WEI), valueProportionalFees (ratio of transfered amount * 10**8), storageFees (in storageCredit * 10**8)]
-     * @param feesRecipients list of addresses receiving transfer fees
-     * @param feesRecipientsPercentage list of percentage, each one for the corresponding feesRecipients
-     * @param minHoldingForCallback minimum holding to propose a callback
-     * @param isPrivate true if holder need approval
-     * @param legalAuthority address of the legal authority
+     * @param params Token information
      */
-    function updateToken(uint256 id,
-                         uint256 metadataHash,
-                         uint256[6] memory transactionFees,
-                         address[] memory feesRecipients,
-                         uint256[] memory feesRecipientsPercentage,
-                         uint256 minHoldingForCallback,
-                         bool isPrivate,
-                         address legalAuthority) external onlyMaintener(id) {
+    function updateToken(uint256 id, uint256[] memory params) external onlyMaintener(id) {
         require(_tokens[id].supply > 0, "Unknown token");
 
-        _setToken(id,
-                  metadataHash,
-                  transactionFees,
-                  feesRecipients,
-                  feesRecipientsPercentage,
-                  minHoldingForCallback,
-                  isPrivate,
-                  legalAuthority);
+        _setToken(id, params);
 
-        emit TokenUpdated(id, metadataHash);
+        emit TokenUpdated(id, params[0]);
     }
 
 
