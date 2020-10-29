@@ -2,9 +2,10 @@
 pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
+import "../interfaces/IERC1155Receiver.sol";
 import "./GSNCapable.sol";
 
-contract Withdrawable is GSNCapable {
+contract Withdrawable is GSNCapable, IERC1155Receiver {
 
     using SafeMath for uint256;
 
@@ -41,5 +42,31 @@ contract Withdrawable is GSNCapable {
         _accounts[_msgSender()].ethBalance = _accounts[_msgSender()].ethBalance.add(msg.value);
     }
 
+    function onERC1155Received(address operator,
+                               address from,
+                               uint256 id,
+                               uint256 value,
+                               bytes calldata data)
+    external override returns(bytes4) {
+        // here msg.sender is the ERC1155 contract
+        address erc1155Address = _msgSender();
+        _accounts[from].erc1155Balance[erc1155Address][id] = _accounts[from].erc1155Balance[erc1155Address][id].add(value);
+        return RECEIVER_SINGLE_MAGIC_VALUE;
+    }
+
+
+    function onERC1155BatchReceived(address operator,
+                                    address from,
+                                    uint256[] calldata ids,
+                                    uint256[] calldata values,
+                                    bytes calldata data)
+    external override returns(bytes4) {
+        // here msg.sender is the ERC1155 contract
+        address erc1155Address = _msgSender();
+        for (uint256 i = 0; i < ids.length; i++) {
+          _accounts[from].erc1155Balance[erc1155Address][ids[i]] = _accounts[from].erc1155Balance[erc1155Address][ids[i]].add(values[i]);
+        }
+        return RECEIVER_BATCH_MAGIC_VALUE;
+    }
 
 }

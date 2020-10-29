@@ -78,6 +78,8 @@ contract Data {
 
     bytes4 constant internal INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
     bytes4 constant internal INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
+    bytes4 constant internal RECEIVER_SINGLE_MAGIC_VALUE = 0xf23a6e61;
+    bytes4 constant internal RECEIVER_BATCH_MAGIC_VALUE = 0xbc197c81;
 
 
     /***************************************
