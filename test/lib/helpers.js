@@ -21,7 +21,7 @@ var DATA = {
       supply: 1000 * 10**8,
       decimals: 8,
       metadataHash: random(),
-      transactionFees: [4, 0, 1, 0, 0, ZERO_ADDRESS],
+      transactionFees: [4, 0, 1, 0, ZERO_ADDRESS, 0],
       feesRecipients: [accounts[6], accounts[7]],
       feesRecipientsPercentage: [7500, 2500], //75%, 25%
       minHoldingForCallback: 8000, //80%
@@ -34,7 +34,7 @@ var DATA = {
       supply: 1000 * 10**8,
       decimals: 8,
       metadataHash: random(),
-      transactionFees: [4, 0, 2, 0, 0, ZERO_ADDRESS],
+      transactionFees: [4, 0, 2, 0, ZERO_ADDRESS, 0],
       feesRecipients: [accounts[6], accounts[7]],
       feesRecipientsPercentage: [7500, 2500], //75%, 25%
       minHoldingForCallback: 8000, //80%

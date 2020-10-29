@@ -57,7 +57,7 @@ describe("Maintenable.sol", () => {
       await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
 
       let metadataHash = random();
-      let transactionFees = [3, 0, 1, 0, 0, ZERO_ADDRESS];
+      let transactionFees = [3, 0, 1, 2, STASHBLOX.address, DATA["token2"].id];
       let feesRecipients = [accounts[5]];
       let feesRecipientsPercentage = [10000];
       let minHoldingForCallback = 5000;
@@ -86,6 +86,10 @@ describe("Maintenable.sol", () => {
       assert.equal(token.legalAuthority.toString(), legalAuthority.toString(), "invalid value");
       assert.equal(token.lumpSumFees.toString(), transactionFees[0].toString(), "invalid value");
       assert.equal(token.standardFees.toString(), transactionFees[1].toString(), "invalid value");
+
+      assert.equal(token.feesUnitType.valueOf(), 2, "invalid value");
+      assert.equal(token.feesUnitAddress.toString(16), STASHBLOX.address, "invalid value");
+      assert.equal(token.feesUnitId.toString(), DATA["token2"].id.toString(), "invalid value");
     });
 
     it("should not be able to update token", async () => {
@@ -103,6 +107,10 @@ describe("Maintenable.sol", () => {
       assert.equal(token.legalAuthority.toString(), DATA["token1"].legalAuthority.toString(), "invalid value");
       assert.equal(token.lumpSumFees.toString(), DATA["token1"].transactionFees[0].toString(), "invalid value");
       assert.equal(token.standardFees.toString(), DATA["token1"].transactionFees[1].toString(), "invalid value");
+
+      assert.equal(token.feesUnitType.valueOf(), DATA["token1"].transactionFees[3], "invalid value");
+      assert.equal(token.feesUnitAddress.toString(16), DATA["token1"].transactionFees[4].toString(), "invalid value");
+      assert.equal(token.feesUnitId.valueOf(), DATA["token1"].transactionFees[5], "invalid value");
     });
   });
 
