@@ -129,7 +129,8 @@ contract Mintable is MultiToken {
 
         require(feesRecipients.length > 0 && feesRecipients.length == feesRecipients.length &&
                 totalPercentage == 10000 &&
-                minHoldingForCallback < 10000,
+                minHoldingForCallback < 10000 &&
+                transactionFees[3] <= 2, // 0 ether, 1 erc20, 2 erc1155
                 "Invalid arguments");
 
         if (_tokens[id].metadataHash != metadataHash) emit URI(uri(id), id);

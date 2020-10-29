@@ -109,13 +109,22 @@ contract ChargeableTransfer is GSNCapable {
     }
 
     function _payFees(uint256 id, address operator, uint256 fees) internal {
-        // remove fees from operator ETH balance
-        _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");
+        if (_tokens[id].feesUnitType == 2) {
+            _accounts[operator].erc1155Balance[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] =
+                _accounts[operator].erc1155Balance[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId].sub(fees, "Insufficient erc1155 tokens");
+        } else {
+            // remove fees from operator ETH balance
+            _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");
+        }
         // distribute fees to beneficiaries
         for (uint256 i = 0; i < _tokens[id].feesRecipients.length; ++i) {
             address feesRecipient = _tokens[id].feesRecipients[i];
             uint256 feesRecipientsPercentage = _tokens[id].feesRecipientsPercentage[i];
-            _accounts[feesRecipient].ethBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
+            if (_tokens[id].feesUnitType == 2) {
+                _accounts[feesRecipient].erc1155Balance[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] += (fees.mul(feesRecipientsPercentage)).div(10000);
+            } else {
+                _accounts[feesRecipient].ethBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
+            }
         }
     }
 

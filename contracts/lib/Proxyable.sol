@@ -11,21 +11,6 @@ interface ProxyRegistry {
 
 contract Proxyable is Ownable {
 
-
-    /****************************
-    EXTERNAL FUNCTIONS
-    *****************************/
-
-
-    /**
-     * @dev Function to update the operator whitelist
-     * @param account Proxy address
-     */
-    function setProxyRegistryAccount(address account) external onlyOwner {
-        _config.proxyRegistryAccount = account;
-    }
-
-
     /****************************
     INTERNAL FUNCTIONS
     *****************************/

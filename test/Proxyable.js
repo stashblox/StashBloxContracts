@@ -25,10 +25,22 @@ describe("Proxyable.sol", () => {
     DATA = await initFixtures();
   });
 
+  const setProxyRegistryAccount = async (address) => {
+    return await STASHBLOX.updateConfig.send(
+      50,
+      "baseURI",
+      "versionRecipient",
+      defaultSender,
+      address,
+      address
+    );
+  }
+
   describe("#setProxyRegistryAccount", async () => {
 
     it("should update proxy registry account", async () => {
-      await STASHBLOX.setProxyRegistryAccount.send(accounts[5]);
+      await setProxyRegistryAccount(accounts[5]);
+
       const config = await STASHBLOX._config();
 
       assert.equal(config.proxyRegistryAccount, accounts[5], "invalid proxy registry account");
@@ -42,7 +54,7 @@ describe("Proxyable.sol", () => {
       const delegateProxy = await OwnableDelegateProxyMock.new(STASHBLOX.address);
       const proxyRegistry = await ProxyRegistryMock.new(accounts[1], delegateProxy.address);
 
-      await STASHBLOX.setProxyRegistryAccount.send(proxyRegistry.address);
+      await setProxyRegistryAccount(proxyRegistry.address);
 
       let balanceBefore = await STASHBLOX.balanceOf.call(accounts[2], DATA["token1"].id);
 
@@ -69,7 +81,7 @@ describe("Proxyable.sol", () => {
       const delegateProxy = await OwnableDelegateProxyMock.new(STASHBLOX.address);
       const proxyRegistry = await ProxyRegistryMock.new(accounts[1], delegateProxy.address);
 
-      await STASHBLOX.setProxyRegistryAccount(proxyRegistry.address);
+      await setProxyRegistryAccount(proxyRegistry.address);
 
       let balanceBefore = await STASHBLOX.balanceOf.call(accounts[2], DATA["token2"].id);
 
@@ -95,7 +107,7 @@ describe("Proxyable.sol", () => {
       const delegateProxy = await OwnableDelegateProxyMock.new(STASHBLOX.address);
       const proxyRegistry = await ProxyRegistryMock.new(accounts[1], delegateProxy.address);
 
-      await STASHBLOX.setProxyRegistryAccount(proxyRegistry.address);
+      await setProxyRegistryAccount(proxyRegistry.address);
 
       let balanceBefore1 = await STASHBLOX.balanceOf.call(accounts[3], DATA["token1"].id);
       let balanceBefore2 = await STASHBLOX.balanceOf.call(accounts[3], DATA["token2"].id);
@@ -137,7 +149,7 @@ describe("Proxyable.sol", () => {
       const delegateProxy = await OwnableDelegateProxyMock.new(STASHBLOX.address);
       const proxyRegistry = await ProxyRegistryMock.new(accounts[2], delegateProxy.address);
 
-      await STASHBLOX.setProxyRegistryAccount(proxyRegistry.address);
+      await setProxyRegistryAccount(proxyRegistry.address);
 
       let balanceBefore1 = await STASHBLOX.balanceOf.call(accounts[1], DATA["token1"].id);
       let balanceBefore2 = await STASHBLOX.balanceOf.call(accounts[1], DATA["token2"].id);

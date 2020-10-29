@@ -3,6 +3,7 @@ pragma solidity ^0.7.1;
 
 import "../utils/SafeMath.sol";
 import "../interfaces/IERC1155Receiver.sol";
+import "../interfaces/IERC1155.sol";
 import "./GSNCapable.sol";
 
 contract Withdrawable is GSNCapable, IERC1155Receiver {
@@ -67,6 +68,17 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
           _accounts[from].erc1155Balance[erc1155Address][ids[i]] = _accounts[from].erc1155Balance[erc1155Address][ids[i]].add(values[i]);
         }
         return RECEIVER_BATCH_MAGIC_VALUE;
+    }
+
+    function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external {
+        IERC1155(erc1155Address).safeTransferFrom(
+            address(this),
+            account,
+            tokenId,
+            amount,
+            ''
+        );
+        _accounts[account].erc1155Balance[erc1155Address][tokenId].sub(amount, "Insufficient balance");
     }
 
 }
