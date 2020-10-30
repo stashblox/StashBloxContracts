@@ -5,7 +5,7 @@ contract Data {
 
     /***************************************
     TYPES
-    TODO: pack members
+    TODO: pack struct members
     ****************************************/
 
     struct Config {

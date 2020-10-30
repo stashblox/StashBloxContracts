@@ -94,14 +94,14 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      * Because an account already has operator privileges for itself, this function will revert
      * if the account attempts to set the approval status for itself.
      *
-     * @param account address to set the approval
+     * @param operator address to set the approval
      * @param approved representing the status of the approval to be set
      */
-    function setApprovalForAll(address account, bool approved) external override {
-        address operator = _msgSender();
+    function setApprovalForAll(address operator, bool approved) external override {
+        address account = _msgSender();
         require(operator != account, "invalid account");
         _operatorApprovals[account][operator] = approved;
-        emit ApprovalForAll(operator, account, approved);
+        emit ApprovalForAll(account, operator, approved);
     }
 
     /**
@@ -141,7 +141,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             "operator not approved"
         );
         // increase ETH balance
-        _externalBalances[operator][address(0)][0] = _externalBalances[operator][address(0)][0].add(msg.value);
+        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
 
         _moveTokens(operator, from, to, id, value);
 
@@ -179,7 +179,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             "operator not approved"
         );
         // increase ETH balance
-        _externalBalances[operator][address(0)][0] = _externalBalances[operator][address(0)][0].add(msg.value);
+        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
 
         _moveTokensBatch(operator, from, to, ids, values);
 

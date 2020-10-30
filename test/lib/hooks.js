@@ -70,15 +70,15 @@ exports.mochaHooks = async() => {
         table.push([
           functionName,
           consumptions[functionName].length,
-          average[functionName],
+          Math.round(average[functionName]),
           toEth(stationPrices.fastest * average[functionName]),
           toEth(stationPrices.safeLow * average[functionName])
         ]);
       }
 
       console.log("Gas price from https://ethgasstation.info/");
-      console.log("Fastest price: ", stationPrices.fastest / 10, " GWEI (", toEth(stationPrices.fastest), ")");
-      console.log("Safe slow price: ", stationPrices.safeLow / 10, " GWEI (", toEth(stationPrices.safeLow), ")");
+      console.log("Fastest price: ", stationPrices.fastest / 10, " GWEI");
+      console.log("Safe slow price: ", stationPrices.safeLow / 10, " GWEI");
       console.log(table.toString());
 
       done();

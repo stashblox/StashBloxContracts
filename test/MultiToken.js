@@ -157,6 +157,7 @@ describe("MultiToken.sol", () => {
 
       it("should successfully transfer tokens by approved operator", async () => {
         await STASHBLOX.setApprovalForAll.send(accounts[3], true, {from: accounts[1]});
+
         await transferTokens({
           operator: accounts[3],
           from: accounts[1],

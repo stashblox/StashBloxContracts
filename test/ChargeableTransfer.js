@@ -27,27 +27,34 @@ describe("ChargeableTransfer.sol", () => {
     it("should return correct storage fees", async () => {
         await travelOneYear(); // travel 365 days ahead
 
-        const storageCost1 = DATA["token1"].transactionFees[2];
-        const lumpSumCost1 = DATA["token1"].transactionFees[0];
+        const storageCost1 = DATA["token1"].storageFees;
+        const lumpSumCost1 = DATA["token1"].lumpSumFees;
         const expectedFees1 = (365 * storageCost1) + lumpSumCost1;
         const fees1 = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 10**8);
 
         assert.equal(fees1.valueOf(), expectedFees1, "Incorrect fees");
 
-        DATA["token1"].transactionFees[2] += 5;
+        DATA["token1"].storageFees += 5;
 
         await STASHBLOX.updateToken.send(DATA["token1"].id,
-                                         DATA["token1"].metadataHash,
-                                         DATA["token1"].transactionFees,
-                                         DATA["token1"].feesRecipients,
-                                         DATA["token1"].feesRecipientsPercentage,
-                                         DATA["token1"].minHoldingForCallback,
-                                         DATA["token1"].isPrivate,
-                                         DATA["token1"].legalAuthority);
+                                        [
+                                          DATA["token1"].metadataHash,
+                                          DATA["token1"].isPrivate,
+                                          DATA["token1"].minHoldingForCallback,
+                                          DATA["token1"].legalAuthority,
+                                          DATA["token1"].standardFees,
+                                          DATA["token1"].lumpSumFees,
+                                          DATA["token1"].storageFees,
+                                          DATA["token1"].feesUnitType,
+                                          DATA["token1"].feesUnitAddress,
+                                          DATA["token1"].feesUnitId,
+                                          DATA["token1"].feesRecipient,
+                                          DATA["token1"].decimals
+                                        ]);
 
         await travelOneYear(); // travel 365 days ahead
 
-        const storageCost2 = DATA["token1"].transactionFees[2];
+        const storageCost2 = DATA["token1"].storageFees;
         const expectedFees2 = expectedFees1 + (365 * storageCost2);
         const fees2 = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 10**8);
 
@@ -126,18 +133,16 @@ describe("ChargeableTransfer.sol", () => {
 
 
     it("it should split fees between feesRecipients", async () => {
-      let ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[0])).ethBalance
+      let ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipient)).ethBalance
       assert.equal(ethBalance.valueOf(), 0, "Incorrect ETH balance");
 
       let transferAmount = 38 * 10**8;
-      let balance1 = await balance.current(DATA["token1"].feesRecipients[0]);
+      let balance1 = await balance.current(DATA["token1"].feesRecipient);
 
       // travel 365 days ahead
       await travelOneYear();
 
       const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, transferAmount);
-      const storageGain1  = storageFees * 0.75;
-      const storageGain2  = storageFees * 0.25;
 
       // try to send 50 tokens to account[2]..
       await transferTokens({
@@ -147,10 +152,8 @@ describe("ChargeableTransfer.sol", () => {
         amount: transferAmount
       });
 
-      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[0])).ethBalance
-      assert.equal(ethBalance.toString(), storageGain1.toString(), "Incorrect balance increase");
-      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipients[1])).ethBalance
-      assert.equal(ethBalance.toString(), storageGain2.toString(), "Incorrect balance increase");
+      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipient)).ethBalance;
+      assert.equal(ethBalance.toString(), storageFees.toString(), "Incorrect balance increase");
     });
 
   });

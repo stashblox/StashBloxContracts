@@ -64,11 +64,12 @@ contract Maintenable is Mintable {
                              [8]: feesUnitAddress
                              [9]: feesUnitId
                             [10]: feesRecipient
+                            [11]: decimals
 
      * @param id ID of the token to be updated
      * @param params Token information
      */
-    function updateToken(uint256 id, uint256[11] memory params) external onlyMaintener(id) {
+    function updateToken(uint256 id, uint256[12] memory params) external onlyMaintener(id) {
         require(_tokens[id].supply > 0, "Unknown token");
 
         _setToken(id, params);

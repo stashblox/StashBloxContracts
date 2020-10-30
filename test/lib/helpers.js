@@ -13,33 +13,57 @@ const ZERO_BYTES32 = constants.ZERO_BYTES32;
 var GAS_LOGS = [];
 var STASHBLOX;
 
+/*
+[0]: metadataHash
+[1]: isPrivate
+[2]: minHoldingForCallback
+[3]: legalAuthority
+[4]: standardFees
+[5]: lumpSumFees
+[6]: storageFees
+[7]: feesUnitType
+[8]: feesUnitAddress
+[9]: feesUnitId
+[10]: feesRecipient
+[11]: decimals
+*/
 
 var DATA = {
   "token1": {
       recipient: accounts[1],
       id: random(),
       supply: 1000 * 10**8,
-      decimals: 8,
+
       metadataHash: random(),
-      transactionFees: [4, 0, 1, 0, ZERO_ADDRESS, 0],
-      feesRecipients: [accounts[6], accounts[7]],
-      feesRecipientsPercentage: [7500, 2500], //75%, 25%
+      isPrivate: 0,
       minHoldingForCallback: 8000, //80%
-      isPrivate: false,
-      legalAuthority: accounts[9]
+      legalAuthority: accounts[9],
+      standardFees: 0,
+      lumpSumFees: 4,
+      storageFees: 1,
+      feesUnitType: 0,
+      feesUnitAddress: ZERO_ADDRESS,
+      feesUnitId: 0,
+      feesRecipient: accounts[6],
+      decimals: 8
   },
   "token2": {
       recipient: accounts[2],
       id: random(),
       supply: 1000 * 10**8,
-      decimals: 8,
+
       metadataHash: random(),
-      transactionFees: [4, 0, 2, 0, ZERO_ADDRESS, 0],
-      feesRecipients: [accounts[6], accounts[7]],
-      feesRecipientsPercentage: [7500, 2500], //75%, 25%
+      isPrivate: 0,
       minHoldingForCallback: 8000, //80%
-      isPrivate: false,
-      legalAuthority: accounts[9]
+      legalAuthority: accounts[9],
+      standardFees: 0,
+      lumpSumFees: 4,
+      storageFees: 2,
+      feesUnitType: 0,
+      feesUnitAddress: ZERO_ADDRESS,
+      feesUnitId: 0,
+      feesRecipient: accounts[7],
+      decimals: 8
   }
 }
 
@@ -65,30 +89,43 @@ const initContract =  async() => {
 }
 
 const initFixtures = async() => {
-    DATA["token1"].receipt = await STASHBLOX.createToken(DATA["token1"].recipient,
+
+    DATA["token1"].receipt = await STASHBLOX.createToken.send(DATA["token1"].recipient,
                                                          DATA["token1"].id,
                                                          DATA["token1"].supply,
-                                                         DATA["token1"].decimals,
-                                                         DATA["token1"].metadataHash,
-                                                         DATA["token1"].transactionFees,
-                                                         DATA["token1"].feesRecipients,
-                                                         DATA["token1"].feesRecipientsPercentage,
-                                                         DATA["token1"].minHoldingForCallback,
-                                                         DATA["token1"].isPrivate,
-                                                         DATA["token1"].legalAuthority);
+                                                         [
+                                                           DATA["token1"].metadataHash,
+                                                           DATA["token1"].isPrivate,
+                                                           DATA["token1"].minHoldingForCallback,
+                                                           DATA["token1"].legalAuthority,
+                                                           DATA["token1"].standardFees,
+                                                           DATA["token1"].lumpSumFees,
+                                                           DATA["token1"].storageFees,
+                                                           DATA["token1"].feesUnitType,
+                                                           DATA["token1"].feesUnitAddress,
+                                                           DATA["token1"].feesUnitId,
+                                                           DATA["token1"].feesRecipient,
+                                                           DATA["token1"].decimals
+                                                         ]);
     DATA["token1"].createdAt = await time.latest();
 
-    DATA["token2"].receipt = await STASHBLOX.createToken(DATA["token2"].recipient,
+    DATA["token2"].receipt = await STASHBLOX.createToken.send(DATA["token2"].recipient,
                                                          DATA["token2"].id,
                                                          DATA["token2"].supply,
-                                                         DATA["token2"].decimals,
-                                                         DATA["token2"].metadataHash,
-                                                         DATA["token2"].transactionFees,
-                                                         DATA["token2"].feesRecipients,
-                                                         DATA["token2"].feesRecipientsPercentage,
-                                                         DATA["token2"].minHoldingForCallback,
-                                                         DATA["token2"].isPrivate,
-                                                         DATA["token2"].legalAuthority);
+                                                         [
+                                                           DATA["token2"].metadataHash,
+                                                           DATA["token2"].isPrivate,
+                                                           DATA["token2"].minHoldingForCallback,
+                                                           DATA["token2"].legalAuthority,
+                                                           DATA["token2"].standardFees,
+                                                           DATA["token2"].lumpSumFees,
+                                                           DATA["token2"].storageFees,
+                                                           DATA["token2"].feesUnitType,
+                                                           DATA["token2"].feesUnitAddress,
+                                                           DATA["token2"].feesUnitId,
+                                                           DATA["token2"].feesRecipient,
+                                                           DATA["token2"].decimals
+                                                         ]);
     DATA["token2"].createdAt = await time.latest();
 
     return DATA;
@@ -185,8 +222,8 @@ module.exports = exports = {
   transferTokens,
   transferTokensBatch,
   bigN,
-  expectEvent,
   expectRevert,
+  expectEvent,
   ZERO_ADDRESS,
   ZERO_BYTES32,
   travelOneYear,

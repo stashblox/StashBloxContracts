@@ -12,13 +12,28 @@ const {
   expectRevert
 } = require("./lib/helpers.js");
 
-var STASHBLOX, DATA;
+var STASHBLOX, DATA, tokenParams;
+
 
 describe("Mintable.sol", () => {
 
   beforeEach(async function () {
     STASHBLOX = await initContract();
     DATA = await initFixtures();
+    tokenParams = [
+      DATA["token1"].metadataHash,
+      DATA["token1"].isPrivate,
+      DATA["token1"].minHoldingForCallback,
+      DATA["token1"].legalAuthority,
+      DATA["token1"].standardFees,
+      DATA["token1"].lumpSumFees,
+      DATA["token1"].storageFees,
+      DATA["token1"].feesUnitType,
+      DATA["token1"].feesUnitAddress,
+      DATA["token1"].feesUnitId,
+      DATA["token1"].feesRecipient,
+      DATA["token1"].decimals
+    ];
   });
 
   describe("#authorizeTokenizer", () => {
@@ -38,17 +53,25 @@ describe("Mintable.sol", () => {
 
       const tokenId = random();
 
+      /*
+      [0]: metadataHash
+      [1]: isPrivate
+      [2]: minHoldingForCallback
+      [3]: legalAuthority
+      [4]: standardFees
+      [5]: lumpSumFees
+      [6]: storageFees
+      [7]: feesUnitType
+      [8]: feesUnitAddress
+      [9]: feesUnitId
+     [10]: feesRecipient
+     [11]: decimals
+      */
+
       await STASHBLOX.createToken.send(accounts[5],
                                        tokenId,
                                        DATA["token1"].supply,
-                                       DATA["token1"].decimals,
-                                       DATA["token1"].metadataHash,
-                                       DATA["token1"].transactionFees,
-                                       DATA["token1"].feesRecipients,
-                                       DATA["token1"].feesRecipientsPercentage,
-                                       DATA["token1"].minHoldingForCallback,
-                                       DATA["token1"].isPrivate,
-                                       DATA["token1"].legalAuthority, {from: accounts[5]});
+                                       tokenParams, {from: accounts[5]});
 
       const balance = await STASHBLOX.balanceOf.call(accounts[5], tokenId);
       assert.equal(balance.valueOf(), DATA["token1"].supply, "token wasn't in the first account");
@@ -60,14 +83,7 @@ describe("Mintable.sol", () => {
       await expectRevert(STASHBLOX.createToken(accounts[5],
                                   tokenId,
                                   DATA["token1"].supply,
-                                  DATA["token1"].decimals,
-                                  DATA["token1"].metadataHash,
-                                  DATA["token1"].transactionFees,
-                                  DATA["token1"].feesRecipients,
-                                  DATA["token1"].feesRecipientsPercentage,
-                                  DATA["token1"].minHoldingForCallback,
-                                  DATA["token1"].isPrivate,
-                                  DATA["token1"].legalAuthority, {from: accounts[5]}), "Insufficient permission");
+                                  tokenParams, {from: accounts[5]}), "Insufficient permission");
 
     });
   });
@@ -95,14 +111,7 @@ describe("Mintable.sol", () => {
       await expectRevert(STASHBLOX.createToken(accounts[5],
                                   tokenId,
                                   DATA["token1"].supply,
-                                  DATA["token1"].decimals,
-                                  DATA["token1"].metadataHash,
-                                  DATA["token1"].transactionFees,
-                                  DATA["token1"].feesRecipients,
-                                  DATA["token1"].feesRecipientsPercentage,
-                                  DATA["token1"].minHoldingForCallback,
-                                  DATA["token1"].isPrivate,
-                                  DATA["token1"].legalAuthority, {from: accounts[5]}), "Insufficient permission");
+                                  tokenParams, {from: accounts[5]}), "Insufficient permission");
 
     });
 

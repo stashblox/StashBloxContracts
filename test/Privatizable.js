@@ -22,13 +22,20 @@ describe("Privatizable.sol", () => {
 
   const makePrivate = async () => {
       await STASHBLOX.updateToken.send(DATA["token1"].id,
-                                       DATA["token1"].metadataHash,
-                                       DATA["token1"].transactionFees,
-                                       DATA["token1"].feesRecipients,
-                                       DATA["token1"].feesRecipientsPercentage,
-                                       DATA["token1"].minHoldingForCallback,
-                                       true,
-                                       DATA["token1"].legalAuthority);
+                                      [
+                                        DATA["token1"].metadataHash,
+                                        1,
+                                        DATA["token1"].minHoldingForCallback,
+                                        DATA["token1"].legalAuthority,
+                                        DATA["token1"].standardFees,
+                                        DATA["token1"].lumpSumFees,
+                                        DATA["token1"].storageFees,
+                                        DATA["token1"].feesUnitType,
+                                        DATA["token1"].feesUnitAddress,
+                                        DATA["token1"].feesUnitId,
+                                        DATA["token1"].feesRecipient,
+                                        DATA["token1"].decimals
+                                      ]);
   }
 
   describe("#approveAccount", async () => {

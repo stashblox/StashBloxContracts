@@ -56,23 +56,21 @@ contract Mintable is MultiToken {
                               [8]: feesUnitAddress
                               [9]: feesUnitId
                              [10]: feesRecipient
+                             [11]: decimals
 
      * @param recipient The address that will own the minted tokens
      * @param id ID of the token to be minted
      * @param supply Amount of the token to be minted
-     * @param decimals Number of decimals
      * @param params Token information
      */
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
-                         uint256 decimals,
-                         uint256[11] memory params)
+                         uint256[12] memory params)
     external onlyTokenizer {
         _createToken(recipient,
                      id,
                      supply,
-                     decimals,
                      params);
         emit TransferSingle(_msgSender(), address(0), recipient, id, supply);
     }
@@ -122,17 +120,10 @@ contract Mintable is MultiToken {
                     [8]: feesUnitAddress
                     [9]: feesUnitId
                    [10]: feesRecipient
+                   [11]: decimals
     */
-    function _setToken(uint256 id, uint256[11] memory params) internal {
-        uint256 n = params[10];
-        uint256 totalPercentage = 0;
-
-        for (uint256 i = 11 + n; i <= 10 + (2 * n); ++i)
-            totalPercentage += params[i];
-
-        require(params.length == 11 + (2 * n) &&
-                totalPercentage == 10000 &&
-                params[2] < 10000 &&      // minHoldingForCallback
+    function _setToken(uint256 id, uint256[12] memory params) internal {
+        require(params[2] < 10000 &&      // minHoldingForCallback
                 params[7] <= 2,         // 0 ether, 1 erc20, 2 erc1155
                 "Invalid arguments");
 
@@ -148,19 +139,18 @@ contract Mintable is MultiToken {
         _tokens[id].feesUnitAddress = address(uint160(params[8]));
         _tokens[id].feesUnitId = params[9];
         _tokens[id].feesRecipient = address(uint160(params[10]));
+        _tokens[id].decimals = params[11];
     }
 
 
     function _createToken(address recipient,
                           uint256 id,
                           uint256 supply,
-                          uint256 decimals,
-                          uint256[11] memory params)
+                          uint256[12] memory params)
     internal {
         require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 
         _tokens[id].supply = supply;
-        _tokens[id].decimals = decimals;
         _holders[id][_msgSender()].isMaintener = true;
         _holders[id][recipient].isApproved = true;
 
@@ -173,7 +163,6 @@ contract Mintable is MultiToken {
         _createToken(_holderList[id][0],
                      cloneId,
                      _tokens[id].supply,
-                     _tokens[id].decimals,
                      [
                          metadataHash,
                          _tokens[id].isPrivate ? 1 : 0,
@@ -185,7 +174,8 @@ contract Mintable is MultiToken {
                          _tokens[id].feesUnitType,
                          uint256(uint160(_tokens[id].feesUnitAddress)),
                          _tokens[id].feesUnitId,
-                         uint256(uint160(_tokens[id].feesRecipient))
+                         uint256(uint160(_tokens[id].feesRecipient)),
+                         _tokens[id].decimals
                      ]);
     }
 

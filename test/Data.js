@@ -47,52 +47,6 @@ describe("Data.sol", () => {
     });
   });
 
-  describe("#tokenDetails", async () => {
-
-    it("should return correct token details", async () => {
-
-      await transferTokens({
-        operator: accounts[1],
-        from: accounts[1],
-        to: accounts[2],
-        tokenID: DATA["token1"].id,
-        amount: 50
-      });
-
-      const tokenDetails = await STASHBLOX.tokenDetails(DATA["token1"].id);
-
-      assert.equal(tokenDetails[0][0], DATA["token1"].recipient.toString(16), "invalid holder list");
-      assert.equal(tokenDetails[0][1], accounts[2], "invalid holder list");
-
-      assert.equal(tokenDetails[1][0], DATA["token1"].feesRecipients[0], "invalid fees recipients");
-      assert.equal(tokenDetails[1][1], DATA["token1"].feesRecipients[1], "invalid fees recipients");
-
-      assert.equal(tokenDetails[2][0].valueOf(), DATA["token1"].feesRecipientsPercentage[0], "invalid fees recipient percentage");
-      assert.equal(tokenDetails[2][1].valueOf(), DATA["token1"].feesRecipientsPercentage[1], "invalid fees recipient percentage");
-
-      assert.equal(tokenDetails[3][0][0].toString(), DATA["token1"].createdAt.toString(), "invalid timestamp");
-
-    });
-
-  });
-
-  describe("#tokenList", async () => {
-
-    it("should return correct token details", async () => {
-      await transferTokens({
-        operator: accounts[2],
-        from: accounts[2],
-        to: accounts[1],
-        tokenID: DATA["token2"].id,
-        amount: 50
-      });
-
-      const tokenList = await STASHBLOX.tokenList(accounts[1]);
-
-      assert.equal(tokenList[0].toString(16), DATA["token1"].id.toString(16), "invalid token list");
-      assert.equal(tokenList[1].toString(16), DATA["token2"].id.toString(16), "invalid token list");
-    });
-
-  });
+  
 
 });
