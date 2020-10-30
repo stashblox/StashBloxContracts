@@ -26,6 +26,6 @@ contract Proxyable is Ownable {
     }
 
     function _isApprovedForAll(address account, address operator) internal view returns (bool) {
-        return _isWhitelistedOperator(account, operator) || _accounts[account].operatorApprovals[operator];
+        return _isWhitelistedOperator(account, operator) || _operatorApprovals[account][operator];
     }
 }

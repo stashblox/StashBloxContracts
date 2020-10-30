@@ -32,7 +32,7 @@ contract ChargeableTransfer is GSNCapable {
      * @return average age in seconds
      */
     function averageAge(address account, uint256 id) public view returns (uint256) {
-        return block.timestamp.sub(_tokens[id].holders[account].birthday);
+        return block.timestamp.sub(_holders[id][account].birthday);
     }
 
 
@@ -42,21 +42,21 @@ contract ChargeableTransfer is GSNCapable {
 
 
     function _registerNewHolder(address account, uint256 id) internal {
-        if (!_tokens[id].holders[account].isHolder) {
-            _accounts[account].tokens.push(id);
-            _tokens[id].holderList.push(account);
-            _tokens[id].holders[account].isHolder = true;
+        if (!_holders[id][account].isHolder) {
+            _tokenList[account].push(id);
+            _holderList[id].push(account);
+            _holders[id][account].isHolder = true;
         }
     }
 
     function _updateBirthday(address account, uint256 id, uint256 newBalance) internal {
-        uint256 currentBalance = _tokens[id].holders[account].balance ;
+        uint256 currentBalance = _holders[id][account].balance ;
         if (currentBalance == 0) {
             // first tokens no need to calculate avarage age
-            _tokens[id].holders[account].birthday = block.timestamp;
+            _holders[id][account].birthday = block.timestamp;
         } else {
             // now - [((now - birthday) * B1) / B2]
-            _tokens[id].holders[account].birthday = block.timestamp.sub(
+            _holders[id][account].birthday = block.timestamp.sub(
                 (currentBalance.mul(averageAge(account, id))).div(newBalance)
             );
         }
@@ -64,32 +64,34 @@ contract ChargeableTransfer is GSNCapable {
 
     // update balance, lists of holders and token average age of the recipient
     function _addToBalance(address account, uint256 id, uint256 value) internal virtual {
-        uint256 newBalance = _tokens[id].holders[account].balance.add(value);
+        uint256 newBalance = _holders[id][account].balance.add(value);
         _registerNewHolder(account, id);
         _updateBirthday(account, id, newBalance);
-        _tokens[id].holders[account].balance = newBalance;
+        _holders[id][account].balance = newBalance;
     }
 
-    function _storageFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
+    function _storageCost(address account, uint256 id, uint256 value) internal view returns (uint256) {
         uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
+        // pay storage for a full token
+        uint256 paidValue = value < 10**_tokens[id].decimals ? 10**_tokens[id].decimals : value;
 
-        for (uint i = _tokens[id].storageFees.length - 1; i >= 0; i--) {
+        for (uint i = _storageFees[id].length - 1; i >= 0; i--) {
 
-            uint256 costStartAt = _tokens[id].storageFees[i][0];
-            uint256 cost = _tokens[id].storageFees[i][1];
+            uint256 costStartAt = _storageFees[id][i][0];
+            uint256 cost = _storageFees[id][i][1];
             uint256 storageDays;
 
-            if (_tokens[id].holders[account].birthday >= costStartAt) {
-                storageDays = (timeCursor.sub(_tokens[id].holders[account].birthday)).div(86400);
+            if (_holders[id][account].birthday >= costStartAt) {
+                storageDays = (timeCursor.sub(_holders[id][account].birthday)).div(86400);
                 if (storageDays == 0) storageDays = 1; // TODO: test this case!
-                totalCost += (storageDays.mul(cost)).mul(value);
+                totalCost += (storageDays.mul(cost)).mul(paidValue);
                 break;
             } else {
                 storageDays = (timeCursor.sub(costStartAt)).div(86400);
                 if (storageDays == 0) storageDays = 1;
                 timeCursor = costStartAt;
-                totalCost += (storageDays.mul(cost)).mul(value);
+                totalCost += (storageDays.mul(cost)).mul(paidValue);
             }
         }
         // TODO!
@@ -101,7 +103,7 @@ contract ChargeableTransfer is GSNCapable {
     // Calculate transaction fees
     function _transactionFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         // calculate cost proportional to time and value
-        uint256 storageFees = _storageFees(account, id, value);
+        uint256 storageFees = _storageCost(account, id, value);
         // calculate cost proportional to value only
         uint256 standardFees = (value.mul(_tokens[id].standardFees)).div(10**8);
         // add them to lump sum cost
@@ -109,29 +111,31 @@ contract ChargeableTransfer is GSNCapable {
     }
 
     function _payFees(uint256 id, address operator, uint256 fees) internal {
+        // remove fees from operator balance
         if (_tokens[id].feesUnitType == 2) {
-            _accounts[operator].erc1155Balance[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] =
-                _accounts[operator].erc1155Balance[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId].sub(fees, "Insufficient erc1155 tokens");
+            // erc1155
+            _externalBalances[operator][_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] =
+                _externalBalances[operator][_tokens[id].feesUnitAddress][_tokens[id].feesUnitId].sub(fees, "Insufficient erc1155 tokens");
         } else {
-            // remove fees from operator ETH balance
+            // eth
             _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");
         }
-        // distribute fees to beneficiaries
-        for (uint256 i = 0; i < _tokens[id].feesRecipients.length; ++i) {
-            address feesRecipient = _tokens[id].feesRecipients[i];
-            uint256 feesRecipientsPercentage = _tokens[id].feesRecipientsPercentage[i];
-            if (_tokens[id].feesUnitType == 2) {
-                _accounts[feesRecipient].erc1155Balance[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] += (fees.mul(feesRecipientsPercentage)).div(10000);
-            } else {
-                _accounts[feesRecipient].ethBalance += (fees.mul(feesRecipientsPercentage)).div(10000);
-            }
+
+        // distribute fees to beneficiary
+        if (_tokens[id].feesUnitType == 2) {
+            // erc1155
+            _externalBalances[_tokens[id].feesRecipient][_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] += fees;
+        } else {
+            // eth
+            _accounts[_tokens[id].feesRecipient].ethBalance += fees;
         }
+
     }
 
     // Used by ERC1155 implementation in safeTransferFrom
     function _moveTokens(address operator, address from, address to, uint256 id, uint256 value) internal virtual returns (uint256 fees) {
         // remove tokens from sender balance
-        _tokens[id].holders[from].balance = _tokens[id].holders[from].balance.sub(value, "Insufficient balance");
+        _holders[id][from].balance = _holders[id][from].balance.sub(value, "Insufficient balance");
         // add tokens to receiver balance
         _addToBalance(to, id, value);
         // calculate StashBlox fees

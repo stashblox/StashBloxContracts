@@ -3,9 +3,9 @@ pragma solidity ^0.7.1;
 
 contract Data {
 
-
     /***************************************
     TYPES
+    TODO: pack members
     ****************************************/
 
     struct Config {
@@ -21,10 +21,6 @@ contract Data {
         bool isTokenizer;
         bool isLocked;
         uint256 ethBalance;
-        uint256[] tokens;
-        mapping(address => bool) operatorApprovals;
-        mapping(address => uint256) erc20Balance;
-        mapping(address => mapping(uint256 => uint256)) erc1155Balance;
     }
 
     struct Holder {
@@ -45,14 +41,10 @@ contract Data {
         uint256 feesUnitType; // 0 ether, 1 erc20, 2 erc1155
         uint256 feesUnitId;
         address feesUnitAddress;
+        address feesRecipient;
         address legalAuthority;
         bool isPrivate;
         bool locked;
-        mapping(address => Holder) holders;
-        address[] holderList; // Can contains zero balance
-        address[] feesRecipients;
-        uint256[] feesRecipientsPercentage;
-        uint256[2][] storageFees; //list of tuple [timestamp, price]
     }
 
     struct Callback {
@@ -67,7 +59,6 @@ contract Data {
         bool refused;
         bool accepted;
         bool completed;
-        address[] callees;
     }
 
 
@@ -88,28 +79,21 @@ contract Data {
 
 
     Config public  _config;
-    mapping (address => Account) public _accounts;
-    mapping (uint256 => Token) public _tokens;
-    mapping (uint256 => Callback) public _callbacks;
 
+    // mappings by address
+    mapping(address => Account) public _accounts;
+    mapping(address => uint256[]) public _tokenList;
+    mapping(address => mapping(address => bool)) _operatorApprovals;
+    mapping(address => mapping(address => mapping(uint256 => uint256))) _externalBalances;
 
-    /***************************************
-    EXTERNAL FUNCTIONS
-    ****************************************/
+    // mappings by tokenId
+    mapping(uint256 => Token) public _tokens;
+    mapping(uint256 => address[]) public _holderList;
+    mapping(uint256 => mapping(address => Holder)) public _holders;
+    mapping(uint256 => uint256[2][]) public _storageFees; //list of tuple [timestamp, price]
 
-
-    function tokenDetails(uint256 id) public view returns (address[] memory,
-                                                           address[] memory,
-                                                           uint256[] memory,
-                                                           uint256[2][] memory) {
-        return (_tokens[id].holderList,
-                _tokens[id].feesRecipients,
-                _tokens[id].feesRecipientsPercentage,
-                _tokens[id].storageFees);
-    }
-
-    function tokenList(address account) public view returns (uint256[] memory) {
-        return _accounts[account].tokens;
-    }
+    // mappings by callbackId
+    mapping(uint256 => Callback) public _callbacks;
+    mapping(uint256 => address[]) public _callees;
 
 }

@@ -22,10 +22,9 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
      * @param amount amount to withdraw
      */
     function withdraw(address account, uint256 amount) external {
-        require(_accounts[account].ethBalance >= amount, "Insufficient balance");
+        _accounts[account].ethBalance = _accounts[account].ethBalance.sub(amount, "Insufficient balance");
         (bool success, ) = account.call{value: amount}(""); // solhint-disable-line avoid-low-level-calls
         require(success, "Withdrawal failed");
-        _accounts[account].ethBalance -= amount;
     }
 
     /**
@@ -51,7 +50,7 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
     external override returns(bytes4) {
         // here msg.sender is the ERC1155 contract
         address erc1155Address = _msgSender();
-        _accounts[from].erc1155Balance[erc1155Address][id] = _accounts[from].erc1155Balance[erc1155Address][id].add(value);
+        _externalBalances[from][erc1155Address][id] = _externalBalances[from][erc1155Address][id].add(value);
         return RECEIVER_SINGLE_MAGIC_VALUE;
     }
 
@@ -65,7 +64,7 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
         // here msg.sender is the ERC1155 contract
         address erc1155Address = _msgSender();
         for (uint256 i = 0; i < ids.length; i++) {
-          _accounts[from].erc1155Balance[erc1155Address][ids[i]] = _accounts[from].erc1155Balance[erc1155Address][ids[i]].add(values[i]);
+          _externalBalances[from][erc1155Address][ids[i]] = _externalBalances[from][erc1155Address][ids[i]].add(values[i]);
         }
         return RECEIVER_BATCH_MAGIC_VALUE;
     }
@@ -78,7 +77,7 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
             amount,
             ''
         );
-        _accounts[account].erc1155Balance[erc1155Address][tokenId].sub(amount, "Insufficient balance");
+        _externalBalances[account][erc1155Address][tokenId] = _externalBalances[account][erc1155Address][tokenId].sub(amount, "Insufficient balance");
     }
 
 }

@@ -35,7 +35,7 @@ contract Maintenable is Mintable {
      * @param account The authorized address
      */
     function setMaintenerAuthorization(uint256 id, address account, bool isMaintener) external onlyOwner {
-        _tokens[id].holders[account].isMaintener = isMaintener;
+        _holders[id][account].isMaintener = isMaintener;
     }
 
 
@@ -63,14 +63,12 @@ contract Maintenable is Mintable {
                              [7]: feesUnitType
                              [8]: feesUnitAddress
                              [9]: feesUnitId
-                            [10]: n
-                    [11 -> 10+n]: feesRecipients
-                 [11+n -> 10+2n]: feesRecipientsPercentage
+                            [10]: feesRecipient
 
      * @param id ID of the token to be updated
      * @param params Token information
      */
-    function updateToken(uint256 id, uint256[] memory params) external onlyMaintener(id) {
+    function updateToken(uint256 id, uint256[11] memory params) external onlyMaintener(id) {
         require(_tokens[id].supply > 0, "Unknown token");
 
         _setToken(id, params);
@@ -85,7 +83,7 @@ contract Maintenable is Mintable {
 
 
     function _isMaintener(uint256 id, address account) internal view returns (bool) {
-        return _tokens[id].holders[account].isMaintener || (account == _config.owner);
+        return _holders[id][account].isMaintener || (account == _config.owner);
     }
 
 }

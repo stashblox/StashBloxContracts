@@ -37,7 +37,6 @@ contract Callable is Lockable {
         _callbacks[callbackId] = Callback({
             tokenId: tokenId,
             caller: _msgSender(),
-            callees: callees,
             price: price,
             escrowedAmount: msg.value,
             needLegalApproval: _needLegalApproval(_msgSender(), tokenId, price, callees),
@@ -48,6 +47,7 @@ contract Callable is Lockable {
             completed: false,
             documentHash: documentHash
         });
+        _callees[callbackId] = callees;
 
         emit CallbackUpdated(callbackId);
     }
@@ -101,15 +101,15 @@ contract Callable is Lockable {
                 (!callback.needLegalApproval || callback.approvedByLegal) &&
                 callback.refused == false &&
                 callback.accepted == false &&
-                callback.escrowedAmount >= _callbackPrice(callback.caller, callback.tokenId, callback.price, callback.callees),
+                callback.escrowedAmount >= _callbackPrice(callback.caller, callback.tokenId, callback.price, _callees[callbackId]),
                 "callback cannot be accepted");
 
         _callbacks[callbackId].accepted = true;
 
-        if (callback.callees.length > 0) {
-            _executeCallback(callbackId, callback.callees.length);
-        } else if (_tokens[callback.tokenId].holderList.length <= _config.callbackAutoExecuteMaxAccounts) {
-            _executeCallback(callbackId, _tokens[callback.tokenId].holderList.length);
+        if (_callees[callbackId].length > 0) {
+            _executeCallback(callbackId, _callees[callbackId].length);
+        } else if (_holderList[callback.tokenId].length <= _config.callbackAutoExecuteMaxAccounts) {
+            _executeCallback(callbackId, _holderList[callback.tokenId].length);
         } else {
             emit CallbackUpdated(callbackId);
             _setTokenLock(callback.tokenId, true, callback.documentHash);
@@ -145,16 +145,16 @@ contract Callable is Lockable {
         uint256 minHolding = (_tokens[tokenId].supply.mul(_tokens[tokenId].minHoldingForCallback)).div(10000);
 
         return price == 0 ||
-               _tokens[tokenId].holders[caller].balance < minHolding ||
+               _holders[tokenId][caller].balance < minHolding ||
                callees.length > 0;
     }
 
     function _executeCallback(uint256 callbackId, uint256 maxCall) internal {
         uint256 tokenId = _callbacks[callbackId].tokenId;
 
-        address[] memory callees = _callbacks[callbackId].callees.length > 0 ?
-                                   _callbacks[callbackId].callees :
-                                   _tokens[tokenId].holderList;
+        address[] memory callees = _callees[callbackId].length > 0 ?
+                                   _callees[callbackId] :
+                                   _holderList[tokenId];
 
         uint256 start = _callbacks[callbackId].callCounter;
         uint256 end = start + maxCall <  callees.length - 1 ? start + maxCall : callees.length - 1;
@@ -164,14 +164,14 @@ contract Callable is Lockable {
 
         for (uint256 i = start; i <= end; i++) {
             if (callees[i] == _callbacks[callbackId].caller) continue;
-            uint256 calleeBalance = _tokens[tokenId].holders[callees[i]].balance;
+            uint256 calleeBalance = _holders[tokenId][callees[i]].balance;
             if (calleeBalance == 0) continue;
 
             uint256 price = calleeBalance.mul(_callbacks[callbackId].price);
             // pay the callee
             _accounts[callees[i]].ethBalance = _accounts[callees[i]].ethBalance.add(price);
             // and remove token from his account
-            _tokens[tokenId].holders[callees[i]].balance = 0;
+            _holders[tokenId][callees[i]].balance = 0;
             // increment total amount and total price for the caller
             callbackAmount = callbackAmount.add(calleeBalance);
             callbackPrice = callbackPrice.add(price);
@@ -193,12 +193,12 @@ contract Callable is Lockable {
     function _callbackPrice(address caller, uint256 tokenId, uint256 price, address[] memory callees) internal view returns (uint256) {
         if (callees.length == 0) {
             // price for all the supply less the caller holding
-            return (_tokens[tokenId].supply.sub(_tokens[tokenId].holders[caller].balance)).mul(price);
+            return (_tokens[tokenId].supply.sub(_holders[tokenId][caller].balance)).mul(price);
         }
 
         uint256 callbackAmount = 0;
         for (uint i; i < callees.length; i++) {
-            callbackAmount += _tokens[tokenId].holders[callees[i]].balance;
+            callbackAmount += _holders[tokenId][callees[i]].balance;
         }
         return callbackAmount.mul(price);
     }

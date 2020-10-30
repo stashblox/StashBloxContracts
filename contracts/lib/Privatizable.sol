@@ -17,7 +17,7 @@ contract Privatizable is Maintenable {
      * @param account The authorized address
      */
     function setAccountApproval(uint256 id, address account, bool isApproved) external onlyMaintener(id) {
-        _tokens[id].holders[account].isApproved = isApproved;
+        _holders[id][account].isApproved = isApproved;
     }
 
 
@@ -26,7 +26,7 @@ contract Privatizable is Maintenable {
      * @param id The token ID
      */
     function isApprovedAccount(uint256 id, address account) external view returns (bool){
-        return _tokens[id].holders[account].isApproved;
+        return _holders[id][account].isApproved;
     }
 
     /****************************
@@ -36,7 +36,7 @@ contract Privatizable is Maintenable {
 
     // override ChargeableTransfer._addToBalance()
     function _addToBalance(address account, uint256 id, uint256 value) internal override {
-        require(!_tokens[id].isPrivate || _tokens[id].holders[account].isApproved, "Account not approved");
+        require(!_tokens[id].isPrivate || _holders[id][account].isApproved, "Account not approved");
         super._addToBalance(account, id, value);
     }
 

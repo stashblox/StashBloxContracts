@@ -54,7 +54,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      */
     function balanceOf(address account, uint256 id) public view override returns (uint256) {
         require(account != address(0), "invalid account");
-        return _tokens[id].holders[account].balance;
+        return _holders[id][account].balance;
     }
 
     /**
@@ -80,7 +80,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
 
         for (uint256 i = 0; i < accounts.length; ++i) {
             require(accounts[i] != address(0), "invalid account");
-            batchBalances[i] = _tokens[ids[i]].holders[accounts[i]].balance;
+            batchBalances[i] = _holders[ids[i]][accounts[i]].balance;
         }
 
         return batchBalances;
@@ -100,7 +100,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     function setApprovalForAll(address account, bool approved) external override {
         address operator = _msgSender();
         require(operator != account, "invalid account");
-        _accounts[operator].operatorApprovals[account] = approved;
+        _operatorApprovals[account][operator] = approved;
         emit ApprovalForAll(operator, account, approved);
     }
 
@@ -140,7 +140,8 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             from == operator || isApprovedForAll(from, operator) == true,
             "operator not approved"
         );
-        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
+        // increase ETH balance
+        _externalBalances[operator][address(0)][0] = _externalBalances[operator][address(0)][0].add(msg.value);
 
         _moveTokens(operator, from, to, id, value);
 
@@ -177,7 +178,8 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             from == operator || isApprovedForAll(from, operator) == true,
             "operator not approved"
         );
-        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
+        // increase ETH balance
+        _externalBalances[operator][address(0)][0] = _externalBalances[operator][address(0)][0].add(msg.value);
 
         _moveTokensBatch(operator, from, to, ids, values);
 
