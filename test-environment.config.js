@@ -1,7 +1,7 @@
 module.exports = {
   accounts: {
     amount: 10, // Number of unlocked accounts
-    ether: 2000, // Initial balance of unlocked accounts (in ether)
+    ether: 100, // Initial balance of unlocked accounts (in ether)
   },
   contracts: {
     type: 'truffle', // Contract abstraction to use: 'truffle' for @truffle/contract or 'web3' for web3-eth-contract
