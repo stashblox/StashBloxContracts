@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/StashBlox.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">all files</a> / <a href="index.html">contracts/</a> StashBlox.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>4/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/1</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>4/4</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">85×</span>
+<span class="cline-any cline-yes">85×</span>
+<span class="cline-any cline-yes">85×</span>
+<span class="cline-any cline-yes">85×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: GPL-3.0-or-later
+pragma solidity ^0.7.1;
+&nbsp;
+import "./lib/Callable.sol";
+import "./lib/Withdrawable.sol";
+import "./lib/Configurable.sol";
+&nbsp;
+contract StashBlox is Callable, Withdrawable, Configurable {
+function c_0x630b9a7d(bytes32 c__0x630b9a7d) public pure {}
+&nbsp;
+&nbsp;
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor () {c_0x630b9a7d(0x6ab8635098d6378d45d7c865f1d04ebc2a6ba51e2a6bd8c240ebb249a78ed27e); /* function */ 
+&nbsp;
+c_0x630b9a7d(0xed9e280be9f6eb4ddf18f4854d985a3c9a060b755ce5790506661bdb08e5576c); /* line */ 
+        c_0x630b9a7d(0xdb55883d833a5adac29ec3832d3bd199825c02c67d11262d8d3b53b648de9922); /* statement */ 
+_config.callbackAutoExecuteMaxAccounts = 50;
+c_0x630b9a7d(0xed8aa75a99a677ebf47cc450b38e3e6a3fdf8275d13b1b320671a273d5c11fec); /* line */ 
+        c_0x630b9a7d(0x5cc2f6efcf7e5843d20d3147d2d03685771460fd245c8d4d0f8d17e28a468115); /* statement */ 
+_config.baseURI = "http://stashblox.com/tokens/";
+c_0x630b9a7d(0xb60a071e4da339ccfa11327cbb45d08e50e88d672d04b0fef454f470b78689d7); /* line */ 
+        c_0x630b9a7d(0x9b99c5c77705f263ce18a83c0b3272f47c251fe75b28759393a59d64b5da356d); /* statement */ 
+_config.versionRecipient = "1.0.0+opengsn.stashblox";
+c_0x630b9a7d(0x4f641075b264d2a56fc4a0927f49f92f360dad6b05d7e8f5be301bfea9264708); /* line */ 
+        c_0x630b9a7d(0x22e4fb7403d53cd1202fb54eecede50e814937944b538a31054f07efe68be348); /* statement */ 
+_transferOwnership(msg.sender);
+    }
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

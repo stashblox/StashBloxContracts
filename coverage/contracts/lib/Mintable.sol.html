@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/lib/Mintable.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">contracts/lib/</a> Mintable.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>32/32</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">70% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>7/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/9</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>32/32</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">176×</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">171×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">171×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">180×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-yes">188×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181×</span>
+<span class="cline-any cline-yes">181×</span>
+<span class="cline-any cline-yes">181×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: GPL-3.0-or-later
+pragma solidity ^0.7.1;
+&nbsp;
+import "../utils/SafeMath.sol";
+import "./MultiToken.sol";
+&nbsp;
+contract Mintable is MultiToken {
+function c_0x057e0b4d(bytes32 c__0x057e0b4d) public pure {}
+&nbsp;
+&nbsp;
+    using SafeMath for uint256;
+&nbsp;
+&nbsp;
+    /****************************
+    MODIFIERS
+    *****************************/
+&nbsp;
+&nbsp;
+    modifier onlyTokenizer() {c_0x057e0b4d(0x4d0f55ea2cd1e176d1d4bdafc20699a38506978d916cfa9283caa45e210bb5a8); /* function */ 
+&nbsp;
+c_0x057e0b4d(0x9c3b2cf1a114a01328d9c25d924c93e3d4de35bb2a313c1eaf8a2cb674f122d5); /* line */ 
+        c_0x057e0b4d(0xb74e2538503e27399a4c2a93a25424c87769a4b2caf4b973ed1565248c19f134); /* assertPre */ 
+c_0x057e0b4d(0xf67524002384aa20a5913e83bebef98edea5585fc43f81e69e47037fa00eccc9); /* statement */ 
+require(_isTokenizer(_msgSender()), "Insufficient permission");c_0x057e0b4d(0x16583d864ecde3da0218021ee39750161e62201b579d48e819a90ea79f858560); /* assertPost */ 
+&nbsp;
+c_0x057e0b4d(0x335caa3c6a4b60df9e4e38fb631c70a424e98fdf36f1df79413ddc533d7f180a); /* line */ 
+        _;
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    /**
+     * @dev Function to authorize an address to create a token.
+     * @param account The authorized address
+     */
+    function setTokenizerAuthorization(address account, bool isTokenizer) external onlyOwner {c_0x057e0b4d(0xd5ad70e82c7ae4fe1508b415ff2eb06e665e7e81ed5302fc844021c68d278805); /* function */ 
+&nbsp;
+c_0x057e0b4d(0xc8e223de8d61eee3ab4f91051764b8d6b5198241f228954b81bdbde4a16d86a5); /* line */ 
+        c_0x057e0b4d(0xf66386f67c818e4dfd1537a4d168a5f1461fe70a227a17e1422c9b91014ed743); /* statement */ 
+_accounts[account].isTokenizer = isTokenizer;
+    }
+&nbsp;
+    /**
+     * @dev Function to check if an address is authorized to create a token.
+     * @param account The authorized address
+     */
+    function isTokenizer(address account) external view returns (bool) {c_0x057e0b4d(0x1640e2021b479e8ebe1c762d3f96bb9be76c423e952c755762e23f855045ca01); /* function */ 
+&nbsp;
+c_0x057e0b4d(0xffaeedd8e0c9b04dc9dff5be4a20aa7ff8420abb7396b496ffe9b3a0dac8d679); /* line */ 
+        c_0x057e0b4d(0xf31aac63532d678936ddfdafd82f1af028f673e2b90574f3d24feffe8e5e3d03); /* statement */ 
+return _isTokenizer(account);
+    }
+&nbsp;
+    /**
+     * @dev Function to mint an amount of a token with the given ID.
+      `params` must contains the following informations:
+&nbsp;
+                              [0]: metadataHash
+                              [1]: isPrivate
+                              [2]: minHoldingForCallback
+                              [3]: legalAuthority
+                              [4]: standardFees
+                              [5]: lumpSumFees
+                              [6]: storageFees
+                              [7]: feesUnitType
+                              [8]: feesUnitAddress
+                              [9]: feesUnitId
+                             [10]: feesRecipient
+                             [11]: decimals
+&nbsp;
+     * @param recipient The address that will own the minted tokens
+     * @param id ID of the token to be minted
+     * @param supply Amount of the token to be minted
+     * @param params Token information
+     */
+    function createToken(address recipient,
+                         uint256 id,
+                         uint256 supply,
+                         uint256[12] memory params)
+    external onlyTokenizer {c_0x057e0b4d(0xf027b55875cb9f5dfc41c01130a534d502c3980315b92284d232cff817b1d9cb); /* function */ 
+&nbsp;
+c_0x057e0b4d(0xf0961a1f7a4a6ee667a7136bd0f6e921300d5cdf6f6a4180bbef4b7ee0326cb9); /* line */ 
+        c_0x057e0b4d(0x4cdccf40d01f12f1505278884982c6357bb7677d0c8e938ab092144b570f6e1f); /* statement */ 
+_createT<span class="missing-if-branch" title="else path not taken" >E</span>oken(recipient,
+                     id,
+                     supply,
+                     params);
+c_0x057e0b4d(0xb36640e70a34aa72eae8cf1033e9e028b07ad971b6713e3b7d1b62d83723c0ec); /* line */ 
+        c_0x057e0b4d(0xf86eb6feb7f5b3b19ba6c7c5a270657f28eedb6c43ad683f44687b0bd976ff36); /* statement */ 
+emit TransferSingle(_msgSender(), address(0), recipient, id, supply);
+    }
+&nbsp;
+    /**
+     * @dev Function to mint tokens in batch.
+     * @param id Identifier of the template
+     * @param ids list of IDs of the tokens to be minted
+     * @param metadataHashes list of metadata file hashes
+     */
+    function cloneToken(uint256 id,
+                        uint256[] memory ids,
+                        uint256[] memory metadataHashes)
+    external onlyTokenizer {c_0x057e0b4d(0xf7a9199cf060814aec5f820b41df826e41a64730f2f1fc9f75d5eded55dd2fdf); /* function */ 
+&nbsp;
+c_0x057e0b4d(0xcf3243fc6724e4334798313780fe3af4b58ff6fa117f4950ab8ff47062becd6e); /* line */ 
+        c_0x057e0b4d(0x05ca821db65c3462fa87e86401db242b48d6162df66f4ebf3aee39bb6644b303); /* assertPre */ 
+c_0x057e0b4d(0xfb6c7cd8ee7552efaf9cb1c3637873bb7b66ea7a8d8a824f167c41d0e91d7673); /* statement */ 
+require(_tokens[id].supply &gt; 0 &amp;&amp;
+                ids.length == metadataHashes.length, "Invalid arguments");c_0x057e0b4d(0x6e2034da010c87e76f5c849c235313522b61f0688f1ac0125dd35612831dafb0); /* assertPost */ 
+&nbsp;
+&nbsp;
+c_0x057e0b4d(0x2eb0381e2078592f0dafcd1a06afaac0781a1bd98d8b69aba398a84ec1178391); /* line */ 
+        c_0x057e0b4d(0xbac5868aec1e95850aab28bdfd39bc7753a773fa96284d73de96f5cbd6e57498); /* statement */ 
+for (uint256 i = 0; i &lt; ids.length; ++i) {
+c_0x057e0b4d(0x7230ad5d5366a219160a3933862c4c1cb542ea3461f4bcdeb0612491907394b3); /* line */ 
+            c_0x057e0b4d(0xe0d6a59824c256e8c076be18e975642b561ddaa2e0d4aadf93ef1e20cccdcfea); /* statement */ 
+_cloneToken(id, ids[i], metadataHashes[i]);
+&nbsp;
+c_0x057e0b4d(0x0cecab36d19a28b0a5940ae7f0e84fe33ada95a554c35a6600b3f9527868d72b); /* line */ 
+            c_0x057e0b4d(0x675e3c4c684b99995b920efbf448e245d2d856d6a857cef0909e34f122dcdc1c); /* statement */ 
+emit TransferSingle(_msgSender(),
+                                address(0),
+        <span class="missing-if-branch" title="else path not taken" >E</span>                        _holderList[id][0],
+                                ids[i],
+                                _tokens[id].supply);
+        }
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    function _isTokenizer(address account) internal view returns (bool) {c_0x057e0b4d(0x61824429b7db02fbe9b37048d887cb25f7600b0ccaafeef90779ebcd04ac9984); /* function */ 
+&nbsp;
+c_0x057e0b4d(0xfda6bdd8458366ff0c9a8aea0af5d7f5fab78c7f2ffa3f44b891e079d0f0f429); /* line */ 
+        c_0x057e0b4d(0x01b0267664ebb1171162f4fccabe106ad3f5caab25f383aa86db40fd48745d22); /* statement */ 
+return _accounts[account].isTokenizer || (account == _config.owner);
+    }
+    /*
+                    [0]: metadataHash
+                    [1]: isPrivate
+                    [2]: minHoldingForCallback
+                    [3]: legalAuthority
+                    [4]: standardFees
+                    [5]: lumpSumFees
+        <span class="missing-if-branch" title="else path not taken" >E</span>            [6]: storageFees
+                    [7]: feesUnitType
+                    [8]: feesUnitAddress
+                    [9]: feesUnitId
+                   [10]: feesRecipient
+                   [11]: decimals
+    */
+    function _setToken(uint256 id, uint256[12] memory params) internal {c_0x057e0b4d(0x2ffe87090a2ac8ba8a54ae3ae75a62fbf57b8ceb6aefe77ecdd5c0d5cbb29ada); /* function */ 
+&nbsp;
+c_0x057e0b4d(0x625a2772b11eb2db3252b6e2f734bb894e4347b405e60d0be5a62cca0cff06d2); /* line */ 
+        c_0x057e0b4d(0x7023ff8c934b2748e873ba2ea1c7b847ecfaf55103db6bb6543bb7cdcd5f02cd); /* assertPre */ 
+c_0x057e0b4d(0x5126753441bb0403244647daabfa8611e991a3a71c596dc11ef09f91a14e2ac7); /* statement */ 
+require(params[2] &lt; 10000 &amp;&amp;      // minHoldingForCallback
+                params[7] &lt;= 2,         // 0 ether, 1 erc20, 2 erc1155
+                "Invalid arguments");c_0x057e0b4d(0xf4368e76d5c6074d18eef0525a5c78dd2ebf68a027edd43cbd15937bf96a3fe2); /* assertPost */ 
+&nbsp;
+&nbsp;
+c_0x057e0b4d(0x2334568dc79067cce9becd282b2444672166848ac0d3852fff64dd760b399350); /* line */ 
+        c_0x057e0b4d(0x0dec8a0cc7203da450ce19b187b5c8890c177f03bd8a7f1cffae841154e1271e); /* statement */ 
+if (_tokens[id].metadataHash != params[0]) {c_0x057e0b4d(0x084f9d46916e7bc622d15851a62d95ab837a543c428270131f598739d4e39bc2); /* statement */ 
+c_0x057e0b4d(0x143f3fa0c01aaca06c08be191cbab368a9c6f5ceccb1bbcb026dffc9d4ba3d83); /* branch */ 
+emit URI(uri(id), id);}else { c_0x057e0b4d(0x447d191cdba25a02f8c147d4cd7327a3e5827889a1463b96ed7e88a302a0baf9); /* branch */ 
+}
+c_0x057e0b4d(0x1b1cb0670f220986c2633299584ed3213600bb9cbf77211a65ca340997ee33e0); /* line */ 
+        c_0x057e0b4d(0x3a06dafb8c707e385ea7fe239a64011b0d6422140c0267d1a588474505b127a9); /* statement */ 
+_tokens[id].metadataHash = params[0];
+c_0x057e0b4d(0x8225aa2446c697814f45377d7f21d62b8555ec5c56e57e80017e860aec9bd168); /* line */ 
+        c_0x057e0b4d(0x4280c31466a542984ec99a8c37baf808315d475d8dfdf075a30829cfe61649c3); /* statement */ 
+_tokens[id].isPrivate = params[1] &gt; 0;
+c_0x057e0b4d(0xf4e6d34e11f438014b75c9e45973c7366fa1e8d005cf1d9cf7653c63d36e8116); /* line */ 
+        c_0x057e0b4d(0xbbbd8d2a30ee96d83fd4a1f8eed8ca8d7ee35a99f24284b1d5f64568c22f8f57); /* statement */ 
+_tokens[id].minHoldingForCallback = params[2];
+c_0x057e0b4d(0x87dbfb9c272808621a074324e4ccd83887298744ce0aa45b04dd39af4868ba62); /* line */ 
+        c_0x057e0b4d(0x6c8ecfc5ec387d96cbc6023acd528a1602218962e3aa639285b6568a4a9a2e43); /* statement */ 
+_tokens[id].legalAuthority = address(uint160(params[3]));
+c_0x057e0b4d(0x1b13a7ce18dbdd2892eda9bb1fd1d42b4feeaed9f60aa16809730677b74b8c9c); /* line */ 
+        c_0x057e0b4d(0xcf75bc66bb770c992f885e983f1c93a524a23ccd8c37f117e39fe9318662df51); /* statement */ 
+_tokens[id].standardFees = params[4];
+c_0x057e0b4d(0x82f9046bce79b3af801ab95fa3836d8432c60e1a236523e001dc34e9fedf79e8); /* line */ 
+        c_0x057e0b4d(0x22a60130227a7a406bb01f069cef84c5ca18f41e5d33498e168f172f2a835e1e); /* statement */ 
+_tokens[id].lumpSumFees = params[5];
+c_0x057e0b4d(0xfbf7078abd3d24cb839ce408f6d58a2773c994f2cadb236281357ab0bed595e3); /* line */ 
+        c_0x057e0b4d(0x4766fbc968e48efaaf89fc0666281c54f58d27b64ceaccfbdf2669af0676ca13); /* statement */ 
+_storageFees[id].push([block.timestamp, params[6]]);
+c_0x057e0b4d(0xa8c459ef176e4e4a5c174c273d0eb595284f995b3afdea5017f93e071a1b732e); /* line */ 
+        c_0x057e0b4d(0x7c663bab819ff09d8ac3e568193beb111ea424903670d661d72e930252d969d0); /* statement */ 
+_tokens[id].feesUnitType = params[7];
+c_0x057e0b4d(0x346a44a043198327ec897b67e1755420df933f49dfcbf26810fa5e90e33af864); /* line */ 
+        c_0x057e0b4d(0xdb039b7698d17da410ef5ed341b6ff1e7101988cff84134a30c5ed2046ea8e9b); /* statement */ 
+_tokens[id].feesUnitAddress = address(uint160(params[8]));
+c_0x057e0b4d(0x74a199908bbb2277c60a1221de96758c91ebaa8ab2359b6a0169ee7e7082ed1e); /* line */ 
+        c_0x057e0b4d(0x0a76c95eb5018fcba7158dd638e452df208d562e52d358906d9e44a4958a272b); /* statement */ 
+_tokens[id].feesUnitId = params[9];
+c_0x057e0b4d(0x37d87d47caab5fe47d9a139f2203d12a7c3c1955c5b0ce4bfc1bd69adad37026); /* line */ 
+        c_0x057e0b4d(0x5686c7b1b7fa5a7cfd0f170b974e7d1663db576b417ae409d2969bf7ab6df4b5); /* statement */ 
+_tokens[id].feesRecipient = address(uint160(params[10]));
+c_0x057e0b4d(0x1df425019b6753611bfbc43bb6b5d0bf1566e090856dd00fe2e37533625e6389); /* line */ 
+        c_0x057e0b4d(0xa9e44859af6f414db2e8cf5c6e2624e310f7995b997ea3428207df533663ec68); /* statement */ 
+_tokens[id].decimals = params[11];
+    }
+&nbsp;
+&nbsp;
+    function _createToken(address recipient,
+                          uint256 id,
+                          uint256 supply,
+                          uint256[12] memory params)
+    internal {c_0x057e0b4d(0xd123de15e6c445118c2be9160836b19154a603861205fb552dcc064a9ea05961); /* function */ 
+&nbsp;
+c_0x057e0b4d(0xbae6e96cf026f4060bca399751bdf7c3e96ba44d12e7ba3e4962df656fc0a8c6); /* line */ 
+        c_0x057e0b4d(0x6ecdcdab13f2aa91ae48abde5fccdf4f2fdab80e865b57c10d48879129b95ced); /* assertPre */ 
+c_0x057e0b4d(0x3778d9829218a41595a5abe43dc2aefd8ef6cfe376ffd5b1e26a3b1b015e28c9); /* statement */ 
+require(_tokens[id].supply == 0 &amp;&amp; supply &gt; 0, "Invalid arguments");c_0x057e0b4d(0x5d810caec06fa4f2fd1de646cbf488d36d253cc18160a14baa7ddf452fab398e); /* assertPost */ 
+&nbsp;
+&nbsp;
+c_0x057e0b4d(0x55dd3c75c5d5069cc4b0ee6b550a8438d9dd55b98932e3c22d926e8265b8c275); /* line */ 
+        c_0x057e0b4d(0xf7b2b7f6b80749d0f75035de919e881469533714205231b23f1d81d35ba46873); /* statement */ 
+_tokens[id].supply = supply;
+c_0x057e0b4d(0x5f08e14c119412d0743f8a4a3bc5f7bdb069733a4ee80e02202779029cdc1c1f); /* line */ 
+        c_0x057e0b4d(0x6f0c6211d8c088dabf4a057e1d67e8f9cb562ab6f3da78ec546294b53061a5b7); /* statement */ 
+_holders[id][_msgSender()].isMaintener = true;
+c_0x057e0b4d(0x991af4ad8bf6f40da5224c7241117c020e76d4564a8a134a5f11bdabc6b1f7e3); /* line */ 
+        c_0x057e0b4d(0xb495fc8e3582b654fe8663681e33e424a6058dfbafdd4a1b81247a3db25a6032); /* statement */ 
+_holders[id][recipient].isApproved = true;
+&nbsp;
+c_0x057e0b4d(0x33bd7d65d410a958c635d4e216e9e701353805d514e78d820a0a11f223eec836); /* line */ 
+        c_0x057e0b4d(0xc5095666de37f4b723b57b61a7e12159f02da0d66623fc1fe104f23ad8a1a801); /* statement */ 
+_setToken(id, params);
+&nbsp;
+c_0x057e0b4d(0xc0196ee68e49d1bdfd8409ebb8e29e3230961dd8b309378e47745491fc92732a); /* line */ 
+        c_0x057e0b4d(0x4a272aca5f99166ddf72fba9b56aed89774cc1a2338696a6bdbcd662fd040cbd); /* statement */ 
+_addToBalance(recipient, id, supply);
+    }
+&nbsp;
+    function _cloneToken(uint256 id, uint256 cloneId, uint256 metadataHash) internal {c_0x057e0b4d(0xc1799bdb0fc16fffefca7bf1688cd1b65957185057edd0b35d7dfaf0aad5a21a); /* function */ 
+&nbsp;
+c_0x057e0b4d(0x1253c4960a737a1f301c5ee8393f10fc1841dd48122c8484bf1d53ab7ecebda6); /* line */ 
+        c_0x057e0b4d(0x119d44f6215a38945523440808f306d0cf05295dcc4e214d9037e19a4da008e4); /* statement */ 
+_createToken(_holderList[id][0],
+                     cloneId,
+                     _tokens[id].supply,
+                     [
+                         metadataHash,
+                         _tokens[id].isPrivate ? 1 : 0,
+                         _tokens[id].minHoldingForCallback,
+                         uint256(uint160(_tokens[id].legalAuthority)),
+                         _tokens[id].standardFees,
+                         _tokens[id].lumpSumFees,
+                         _storageFees[id][0][1],
+                         _tokens[id].feesUnitType,
+                         uint256(uint160(_tokens[id].feesUnitAddress)),
+                         _tokens[id].feesUnitId,
+                         uint256(uint160(_tokens[id].feesRecipient)),
+                         _tokens[id].decimals
+                     ]);
+    }
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

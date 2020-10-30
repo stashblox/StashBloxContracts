@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/lib/Ownable.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">contracts/lib/</a> Ownable.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>8/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>2/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>6/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>9/9</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">85×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-yes">172×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.1;
+&nbsp;
+import "./GSNCapable.sol";
+import "../interfaces/IERC173.sol";
+/**
+ * @dev Contract module which provides a basic access control mechanism, where
+ * there is an account (an owner) that can be granted exclusive access to
+ * specific functions.
+ *
+ * This module is used through inheritance. It will make available the modifier
+ * `onlyOwner`, which can be applied to your functions to restrict their use to
+ * the owner.
+ */
+contract Ownable is IERC173, GSNCapable {
+function c_0xd81d7bab(bytes32 c__0xd81d7bab) public pure {}
+&nbsp;
+&nbsp;
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor () {c_0xd81d7bab(0x575809099c82218dc40ff0625b4abfccb5fbbdaea798a48ba5c6efb7e54bc394); /* function */ 
+&nbsp;
+c_0xd81d7bab(0x9e9802d926dbe36b98091925268b2c0cfbe913e88142f4f6088ddfb36ae15de2); /* line */ 
+        c_0xd81d7bab(0x90850d1f81e78ca147160e04f83a09e3d7d768a4aeadd90b5fa729cfb9501ce5); /* statement */ 
+_transferOwnership(_msgSender());
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    MODIFIERS
+    *****************************/
+&nbsp;
+<span class="missing-if-branch" title="else path not taken" >E</span>
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {c_0xd81d7bab(0x63bf25f1254815497720600fe7217038307bc221c27826066af67a6e665da3c6); /* function */ 
+&nbsp;
+c_0xd81d7bab(0xc4a2202bb40e6194459577120ad2582f1ee26a1f11aa597d00b09ee7b8b616ed); /* line */ 
+        c_0xd81d7bab(0xe2e2f2aa74953fec33d4194bc23cd55ab5a1d58132ce619799187d3e8a5e8d92); /* assertPre */ 
+c_0xd81d7bab(0x746048558b7955ebb22c4819a366e8350c82e6aa992dc2763419872e4559e83e); /* statement */ 
+require(_isOwner(), "Ownable: caller is not the owner");c_0xd81d7bab(0x1a75419720c2a4cb3b984a89e3d3d00dad663410abc94418937d63b7b000109c); /* assertPost */ 
+&nbsp;
+c_0xd81d7bab(0x334fd113794cd8401feb099f2d8b40a20d9e7e4d1499906ecca5638db020b52e); /* line */ 
+        _;
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view override returns (address) {c_0xd81d7bab(0xa21d88d5f0a8739eb615a6a39203c8c0ab5339ff2b64282b2267950321d68c7a); /* function */ 
+&nbsp;
+c_0xd81d7bab(0x1ff95dd37a16e4c0c84cb60f2d0ed715c2c13432c0ecede00a584c1caed94c2e); /* line */ 
+        c_0xd81d7bab(0xd324399f56c66cef7ff4cff6fd44c0505b5abe9dc1da207af98cf4eaacbca85d); /* statement */ 
+return _config.owner;
+    }
+&nbsp;
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * @param account address of the new owner
+     * Can only be called by the current owner.
+     */
+    func<span class="missing-if-branch" title="else path not taken" >E</span>tion transferOwnership(address account) public override onlyOwner {c_0xd81d7bab(0x98c314996f321bfb89291bd8ec3c3ba0219328cd858788edbce6c5d9f5861c92); /* function */ 
+&nbsp;
+c_0xd81d7bab(0x3bfbe4f61743f3c26152734427abb4a9b4d31b35b806f5baf437fd809eeaa644); /* line */ 
+        c_0xd81d7bab(0xbba212111b3eae65be50fd2ff2f0dd3f62ed58dd2ee26047b491434ec141b471); /* statement */ 
+_transferOwnership(account);
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     */
+    function _transferOwnership(address account) internal {c_0xd81d7bab(0x071bc41ce1a09a34d42b35549e67081dfa267dfd82098cb0793c3cf0867549a9); /* function */ 
+&nbsp;
+c_0xd81d7bab(0xf28b2f02f8b7bd50e48e48d4d5344a6c5c472918576cb707a5ac865a77f6e44c); /* line */ 
+        c_0xd81d7bab(0x3bfbbe9f8eb6874addb7b76820f9a000e93e952ff03c165294991bb90a1e6c02); /* assertPre */ 
+c_0xd81d7bab(0xb762417c3c4f1ebdf54fd10d3fd36d3375c121b19f1bb0afdd91d50c7e714b11); /* statement */ 
+require(account != address(0), "invalid account");c_0xd81d7bab(0xacff303f6a1a4c04b203f6e00425e35dabd495ccceeff224ec73ae7fc599f799); /* assertPost */ 
+&nbsp;
+c_0xd81d7bab(0xbd8c732053d5df57ea4babe7688b661ee05e35025c484c552b276e45a8e8b75a); /* line */ 
+        c_0xd81d7bab(0x0cc4cb6e68f9e040d97ff6692e93fa6454a572c10375326291808a9db87cc4d1); /* statement */ 
+emit OwnershipTransferred(_config.owner, account);
+c_0xd81d7bab(0xcf31a5e49789410850b4408b92cb8411858e00b09fc3e7618155aef5ce5d8435); /* line */ 
+        c_0xd81d7bab(0xd4705c3b836da7b196423cc5791a7ba0af06d8ae10fc777dcc518fde153fab98); /* statement */ 
+_config.owner = account;
+    }
+&nbsp;
+    /**
+     * @dev Returns true if the caller is the current owner.
+     */
+    function _isOwner() internal view returns (bool) {c_0xd81d7bab(0xea349edd8781ae2d90a32e2e6153a9af47278eb8f99c7f03908f969e3de7238a); /* function */ 
+&nbsp;
+c_0xd81d7bab(0x58184004f6d582ab68eff9303e8f1b05cd104c1ba4d885041bc23f6f5344841f); /* line */ 
+        c_0xd81d7bab(0x381846e7a0f6392af06250990c118c5ae6affa8bdf3d5e0943a4342ba6cea06a); /* statement */ 
+return _msgSender() == _config.owner;
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

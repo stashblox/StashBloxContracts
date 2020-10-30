@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/lib/Maintenable.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">contracts/lib/</a> Maintenable.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>7/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">75% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>3/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>8/8</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: GPL-3.0-or-later
+pragma solidity ^0.7.1;
+&nbsp;
+import "./Mintable.sol";
+&nbsp;
+contract Maintenable is Mintable {
+function c_0xb9fc248e(bytes32 c__0xb9fc248e) public pure {}
+&nbsp;
+&nbsp;
+&nbsp;
+    /****************************
+    EVENTS
+    *****************************/
+&nbsp;
+&nbsp;
+    event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
+&nbsp;
+&nbsp;
+    /****************************
+    MODIFIERS
+    *****************************/
+&nbsp;
+&nbsp;
+    modifier onlyMaintener(uint256 id) {c_0xb9fc248e(0x0f1c750e476fdc95588442695b2d24474dbc0076749e01ad6cb1f10b3c686655); /* function */ 
+&nbsp;
+c_0xb9fc248e(0xbf259bcd95dac73322e3e34d85266b3c0202f6dc34e0c71d88042e0a41d346a6); /* line */ 
+        c_0xb9fc248e(0xd225f77a0019aa038990df4d42a70b764a4c0aaadcf71587b5011880fd9396c9); /* assertPre */ 
+c_0xb9fc248e(0xbe7bfb80d80db4ed44ce0cff0177957e042ce408e3aa602c8f42d580306f507c); /* statement */ 
+require(_isMaintener(id, _msgSender()), "Insufficient permission");c_0xb9fc248e(0xfdbfaddba8bacc9b6553ee4f5dad6dc39498057be773096ce6f0a9e02e62cad5); /* assertPost */ 
+&nbsp;
+c_0xb9fc248e(0x4f150c9faeb6469526b6fd7769b560d417110c2f94200d4bb936e46eaeedf4d0); /* line */ 
+        _;
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    /**
+     * @dev Function to authorize an address to maintain a token.
+     * @param account The authorized address
+     */
+    function setMaintenerAuthorization(uint256 id, address account, bool isMaintener) external onlyOwner {c_0xb9fc248e(0x2046573cd5f0fa757fa6b5b19eccefb817b43d9d1c6028aaa203b3aaf024e6a8); /* function */ 
+&nbsp;
+c_0xb9fc248e(0xc815cee9e7227303d44d3103af061e80a58c930319c3eb17edd96cc78ca10126); /* line */ 
+        c_0xb9fc248e(0x488f6685c30e3633b6498f6795474f26eb64802953cdf4c88843931d9acc415a); /* statement */ 
+_holders[id][account].isMaintener = isMaintener;
+    }
+&nbsp;
+&nbsp;
+    /**
+     * @dev Function to check if an address is authorized to maintain a token.
+     * @param id the token id
+     * @param account The authorized address
+     * @return true if it"s a maintener address
+     */
+    function isMaintener(uint256 id, address account) external view returns (bool) {c_0xb9fc248e(0x07df93ee8edf56b06a9d5e610ca379377bd2f4dca4038a101d7a084864926817); /* function */ 
+&nbsp;
+c_0xb9fc248e(0xe47346cf1e202df091932dc6240870ac9a1ea4e57307d76d42689e786317967a); /* line */ 
+        c_0xb9fc248e(0x3621eaf44cc02e4ba996b9bba7472384c80f69884923fbde40a16481bd9b71f1); /* statement */ 
+return _isMaintener(id, account);
+    }
+&nbsp;
+    /**
+     * @dev Function to update a token with the given ID.
+     `params` must contains the following informations:
+&nbsp;
+                             [0]: metadataHash
+                             [1]: isPrivate
+                             [2]: minHoldingForCallback
+        <span class="missing-if-branch" title="else path not taken" >E</span>                     [3]: legalAuthority
+                             [4]: standardFees
+                             [5]: lumpSumFees
+                             [6]: storageFees
+                             [7]: feesUnitType
+                             [8]: feesUnitAddress
+                             [9]: feesUnitId
+                            [10]: feesRecipient
+                            [11]: decimals
+&nbsp;
+     * @param id ID of the token to be updated
+     * @param params Token information
+     */
+    function updateToken(uint256 id, uint256[12] memory params) external onlyMaintener(id) {c_0xb9fc248e(0x35349ea77890203ba14bdc8acb7f5475ab6227e21c5cca443ac89d8b76a978d7); /* function */ 
+&nbsp;
+c_0xb9fc248e(0x9fc1bffd8e241d0accf05a98d06f6c57ec943b4ccaa3171937814b7694642934); /* line */ 
+        c_0xb9fc248e(0x565bcb1af63e9256bf99ed86fddc7b9456bf64747e2b0dd8059902aa3426ca42); /* assertPre */ 
+c_0xb9fc248e(0x23d19165c1a615a7b61d125f0dd77c615b5a50d78be91704e4f32040486519d3); /* statement */ 
+require(_tokens[id].supply &gt; 0, "Unknown token");c_0xb9fc248e(0xc770d0956d7d8f8e2064008a2a5dee4d4cfcffba1bdc679dfe37e80f6bd16356); /* assertPost */ 
+&nbsp;
+&nbsp;
+c_0xb9fc248e(0x78a63b423bae774f5192479c30489d03c0cdfad9298f74c3c7da5131fb3b895f); /* line */ 
+        c_0xb9fc248e(0x8b8d9090eeb09aa6799658c03940075ba88a996f773e3b22c9d94d750396e04b); /* statement */ 
+_setToken(id, params);
+&nbsp;
+c_0xb9fc248e(0x8a5d408690fa2a1b9d145d17fc9fcbc62a9a50706564644cb1fc3bdee25e4a10); /* line */ 
+        c_0xb9fc248e(0x7597b85687ec790afe93cfcb2be8b5143230f6a2a6fc61d19157a5ecd8593612); /* statement */ 
+emit TokenUpdated(id, params[0]);
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    function _isMaintener(uint256 id, address account) internal view returns (bool) {c_0xb9fc248e(0xdff3676a2073bb241c1b2227358288f8b61b1120e3c5cb40eba21e2e2e132430); /* function */ 
+&nbsp;
+c_0xb9fc248e(0x64973e1a5de0d9fa13886b4b878b184ca2de942aece1cfa8ffdf5a36fac296e2); /* line */ 
+        c_0xb9fc248e(0x3084c3b3818c349364fd5e9426d9fdacf22fc3403c8738572b11fa30948d5453); /* statement */ 
+return _holders[id][account].isMaintener || (account == _config.owner);
+    }
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

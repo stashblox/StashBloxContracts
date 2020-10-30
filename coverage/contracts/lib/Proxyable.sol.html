@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/lib/Proxyable.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">contracts/lib/</a> Proxyable.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>5/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>5/5</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: GPL-3.0-or-later
+pragma solidity ^0.7.1;
+&nbsp;
+import "./Ownable.sol";
+&nbsp;
+contract OwnableDelegateProxy {
+function c_0x07971d20(bytes32 c__0x07971d20) public pure {}
+ } // solhint-disable-line no-empty-blocks
+&nbsp;
+interface ProxyRegistry {
+  function proxies(address account) view external returns (OwnableDelegateProxy);
+}
+&nbsp;
+contract Proxyable is Ownable {
+function c_0x53a364d6(bytes32 c__0x53a364d6) public pure {}
+&nbsp;
+&nbsp;
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    function _isWhitelistedOperator(address account, address operator) internal view returns (bool) {c_0x53a364d6(0x1cadb78acf9b7cf0e00940524bfd41ff19d6ceb3bed676b109a90b9f77b84103); /* function */ 
+&nbsp;
+c_0x53a364d6(0xfc6409b948908a7689cb6394a2946fed57e19102ea86cac38d5e5b8f8a190b44); /* line */ 
+        c_0x53a364d6(0xddef0b81711ff890531684e89d979a2488b1df07834473ba19462a0a1c11b935); /* statement */ 
+if (_config.proxyRegistryAccount != address(0)) {c_0x53a364d6(0xe8a30d214969513b16f08e75d7f9367f87611914c27b6721cb7743fe87b250b3); /* branch */ 
+&nbsp;
+c_0x53a364d6(0x90bab8d7ed6d8700d3b18b4da4f1f1fbe3551cc49ab2f7781c8a8f227ab78c94); /* line */ 
+            c_0x53a364d6(0xde1cc21430897dbe3d159c8d23dd4499e67dc8766a08a7b4dc0e008b4d155680); /* statement */ 
+if (address(ProxyRegistry(_config.proxyRegistryAccount).proxies(account)) == operator) {c_0x53a364d6(0x81c4671e37d65e15c385dae3c1b26a2f0a0851e8905fb37fdd9d9d5ff1337b8a); /* branch */ 
+&nbsp;
+c_0x53a364d6(0x7823c9bd9eb02145c9028c33ba88418fb5945151032376658891e7f3890e21f9); /* line */ 
+                c_0x53a364d6(0xab83831ab263caf8946a2e0a043c6ef99d99e3a2f1ee3e2fc3d170557ee8ddf2); /* statement */ 
+return true;
+            }else { c_0x53a364d6(0x09ea7e101cb8b24e15b7b130932ce26c5b405c9b61e8a88dc88581c9306d676f); /* branch */ 
+}
+        }else { c_0x53a364d6(0xeb603e7bd193771b65a2c2329641df16a01dd942a19165c2fbb34c9506bfe089); /* branch */ 
+}
+c_0x53a364d6(0x2cbdfa804b2c485ea425b90d962d0b2ea19258470d6cc1def7f42f37e63acd77); /* line */ 
+        c_0x53a364d6(0x0fb1ade1eed4936ebfb64ddf00b8787110f9cf49051e7f5a321467c482ce2bb8); /* statement */ 
+return false;
+    }
+&nbsp;
+    function _isApprovedForAll(address account, address operator) internal view returns (bool) {c_0x53a364d6(0x66889dd17152253c655e22224a1aa6437343f4668dc43a20dcfa64c18e4a1f48); /* function */ 
+&nbsp;
+c_0x53a364d6(0x365e07fe6addb8458c457bab6e56a123acac1e56c6bf4bb3fd9ad4e062ac2aa6); /* line */ 
+        c_0x53a364d6(0xa941f0e4e7fa5ba8da273387b78cd7f4d03cfd21914b3a8a68e3b2164f0636e8); /* statement */ 
+return _isWhitelistedOperator(account, operator) || _operatorApprovals[account][operator];
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

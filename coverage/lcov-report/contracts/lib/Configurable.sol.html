@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/lib/Configurable.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">contracts/lib/</a> Configurable.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>8/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>2/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/1</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>7/7</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: GPL-3.0-or-later
+pragma solidity ^0.7.1;
+&nbsp;
+import "./Ownable.sol";
+&nbsp;
+contract Configurable is Ownable {
+function c_0x203dcd6f(bytes32 c__0x203dcd6f) public pure {}
+&nbsp;
+&nbsp;
+&nbsp;
+    /****************************
+    EVENTS
+    *****************************/
+&nbsp;
+&nbsp;
+    event ConfigUpdated();
+&nbsp;
+&nbsp;
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    /**
+     * @dev Function to update the contract configuration
+     * @param callbackAutoExecuteMaxAccounts max holders to execute the callback on acceptation
+     * @param baseURI base URI for the metadata URLs
+     * @param versionRecipient version needed by GSN relay
+     * @param owner ew owner of the contract
+     * @param gsnTrustedForwarder trusted GSN relay
+     * @param proxyRegistryAccount trusted delegate proxy
+     */
+    function updateConfig(uint256 callbackAutoExecuteMaxAccounts,
+                          string calldata baseURI,
+                          string calldata versionRecipient,
+                          address owner,
+                          address gsnTrustedForwarder,
+                          address proxyRegistryAccount) external onlyOwner {c_0x203dcd6f(0x41b8af71a8c191074ee08dd6bcd737d4e2543ad67e74051628f7fde5256c3729); /* function */ 
+&nbsp;
+c_0x203dcd6f(0xc92ca6040af68b4d8c235d8cdf9e9ea192b11f58737791d3c338532ffa69363e); /* line */ 
+        c_0x203dcd6f(0x4d34cc686fe5e7e93a08e1b70196c68a1d212b42984ab1ba5b0dcfc48426212a); /* statement */ 
+_config.callbackAutoExecuteMaxAccounts = callbackAutoExecuteMaxAccounts;
+c_0x203dcd6f(0xe9b65089eae6ecff6232c00702f6639099e57fbcd514e0d92b1bc270c7fd2bfe); /* line */ 
+        c_0x203dcd6f(0xae94cf53ed45441cd9c0f4232c3cfd020f6bff38126ae1d61a866ac9f9a9bad6); /* statement */ 
+_config.baseURI = baseURI;
+c_0x203dcd6f(0x10e63f559ed78348f8f8f78946e3725e8bd9c12f5ef01208c8437d33e64fa9d5); /* line */ 
+        c_0x203dcd6f(0x2a081fca99f186f2be4ed1d6ec9c843b3f31e332b27c85252c6d031a76b8a887); /* statement */ 
+_config.versionRecipient = versionRecipient;
+c_0x203dcd6f(0xd428e19aea679abf6331264d2997fa18851cd4e64c08716ce0bf1e67b95199da); /* line */ 
+        c_0x203dcd6f(0xb8f6c0bf7b90e836329b41508102007d384ac7855cf92a0d85ac4634716b4263); /* statement */ 
+if (_config.owner != owner) {c_0x203dcd6f(0x7c0681142484a936c3f49a09566bb15ebddc795c8d892de23c44243488878d0c); /* statement */ 
+c_0x203dcd6f(0xf4d9634aeb388dec0cc9f12f41f086e91696d133b23bec4ea5e3ee04317a30a8); /* branch */ 
+_transferOwnership(owner);}else { c_0x203dcd6f(0xecca2044ecea08b308f79d43462f26700734ad5baf1e300ceb4cd892ebc995a6); /* branch */ 
+}
+c_0x203dcd6f(0xd8eac19a30ca424f65848805db26f8f6cec0ada74acd470c2d9b8f5644a113a0); /* line */ 
+        c_0x203dcd6f(0xc6781653b4a355181727729d199dc1d7d103452bde6ec29ee150ecfb64d4772a); /* statement */ 
+_config.gsnTrustedForwarder = gsnTrustedForwarder;
+c_0x203dcd6f(0x8013d02f320515c222c5810375e8b2798867d66cd7f0a495a75f9b23e03fb466); /* line */ 
+        c_0x203dcd6f(0x39dc2694a58232e6fedddcbf7e189c5750df2bef2b2652be78f53a531ed0f83f); /* statement */ 
+_config.proxyRegistryAccount = proxyRegistryAccount;
+&nbsp;
+c_0x203dcd6f(0x118d06341210227eec55917f90740e09d320a831477aa82e3a179304289c1b49); /* line */ 
+        c_0x203dcd6f(0x2b3ce7c50aa6b1f4d2e08b3e7bb7e2938ca74e1493d97ad5c1e70e32eae9e580); /* statement */ 
+emit ConfigUpdated();
+    }
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

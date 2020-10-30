@@ -1,0 +1,1127 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/lib/MultiToken.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">contracts/lib/</a> MultiToken.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>36/36</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>28/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>10/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>36/36</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">482×</span>
+<span class="cline-any cline-yes">481×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104×</span>
+<span class="cline-any cline-yes">102×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">98×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">98×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">88×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">88×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19×</span>
+<span class="cline-any cline-yes">17×</span>
+<span class="cline-any cline-yes">15×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">183×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">88×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: MIT
+pragma solidity ^0.7.1;
+&nbsp;
+import "../interfaces/IERC1155.sol";
+import "../interfaces/IERC1155Metadata.sol";
+import "../interfaces/IERC1155Receiver.sol";
+import "../interfaces/IERC165.sol";
+&nbsp;
+import "../utils/SafeMath.sol";
+import "../utils/Address.sol";
+import "../utils/StringUtils.sol";
+&nbsp;
+import "./ChargeableTransfer.sol";
+import "./Proxyable.sol";
+/**
+ * @title Standard ERC1155 token
+ *
+ * @dev Implementation of the basic standard multi-token.
+ * See https://eips.ethereum.org/EIPS/eip-1155
+ * Originally based on code by Enjin: https://github.com/enjin/erc-1155
+ */
+contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Proxyable {
+function c_0xd062a091(bytes32 c__0xd062a091) public pure {}
+&nbsp;
+&nbsp;
+    using SafeMath for uint256;
+    using Address for address;
+&nbsp;
+&nbsp;
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    /**
+     * @notice Query if a contract implements an interface
+     * @param _interfaceID  The interface identifier, as specified in ERC-165
+     * @return `true` if the contract implements `_interfaceID` and
+     */
+    function supportsInterface(bytes4 _interfaceID) external pure override returns (bool) {c_0xd062a091(0x548357030f0cf688f459020f2757c62ef736db4b9d04aa0bef78765f73f193c9); /* function */ 
+&nbsp;
+c_0xd062a091(0xaa2c648cfac24f7a6546570a26d8f114ceb3290990dc98deef4db841320c8860); /* line */ 
+      c_0xd062a091(0xb3ee13c3dc16b5b08d24f4f7cc1587ed67bb44c1a7f67d3fcc7e1f9b79d0ef94); /* statement */ 
+if (_interfaceID == INTERFACE_SIGNATURE_ERC165 ||
+          _interfaceID == INTERFACE_SIGNATURE_ERC1155) {c_0xd062a091(0x39372b0ba040adf8b7bd74e1fcbbb9c03c59088c292b61f87350dba7dd272aa6); /* branch */ 
+&nbsp;
+c_0xd062a091(0x25b7387f64f83e4139e237f20c9a003462ecad3137cd6a98fabeaec7ef0d77ca); /* line */ 
+        c_0xd062a091(0x3734fa0b01ee5e699d0242e9534abdafcb3b4f487d9052c71b7bd52ac717d29a); /* statement */ 
+return true;
+      }else { c_0xd062a091(0xed3895ea038c6a1897dafef30197dcfd3d9e72581172201fa0a8a909bca2fadb); /* branch */ 
+}
+c_0xd062a091(0x02d0f42cde5e5f645cb596613f4cfeab47174ba683091b77d3244f8a462e1132); /* line */ 
+      c_0xd062a091(0xa270b0c35a2f40c648daaab09aa675a4096409d3ebd9599f73777aef493296d0); /* statement */ 
+return false;
+    }
+&nbsp;
+    /**
+        @dev Get the specified address' balance for token with specified ID.
+&nbsp;
+        Attempting to query the zero account for a balance will result in a revert.
+&nbsp;
+        @param account The address of the token holder
+        @param id ID of the token
+        @return The account's balance of the token type requested
+     */
+    function balanceOf(address account, uint256 id) public view override returns (uint256) {c_0xd062a091(0x4a9f6fa3ed35d0b2857554509bd7147efacd3abafb20d862f3fa2c2cf8122622); /* function */ 
+&nbsp;
+c_0xd062a091(0x82e86c47712a5fbcbeb1da83c5b6ee79b5ce873b43a8265079be55008439f836); /* line */ 
+        c_0xd062a091(0x8c6dbe9bcc3e103f7de107dcb04ea8c615883a323c9263b96433114eef08136d); /* assertPre */ 
+c_0xd062a091(0xebc64232174f8fbcfa4f4c5fbab986562ce5cd72be908944068ff0e667a15ac9); /* statement */ 
+require(account != address(0), "invalid account");c_0xd062a091(0x1ae7c86f5e2be782046f34c17040cdb4c0c3a73611ef432e5b08ced5ff6dc17f); /* assertPost */ 
+&nbsp;
+c_0xd062a091(0x3e4778c19f51f65dde4208a12698db4b633ad1657fb6ac7d7ec42d7f4008103b); /* line */ 
+        c_0xd062a091(0x19e1f3b361f21ac3e1a798461147c0804cc2c2274643fcab2eeeff9f262459f6); /* statement */ 
+return _holders[id][account].balance;
+    }
+&nbsp;
+    /**
+        @dev Get the balance of multiple account/token pairs.
+&nbsp;
+        If any of the query accounts is the zero account, this query will revert.
+&nbsp;
+        @param accounts The addresses of the token holders
+        @param ids IDs of the tokens
+        @return Balances for each account and token id pair
+     */
+    function balanceOfBatch(
+        address[] memory accounts,
+        uint256[] memory ids
+    )
+        public
+        view
+        override returns (uint256[] memory)
+    {c_0xd062a091(0x0594223d1b1bd87b248c1a925b565b5685dcbe79bf51e12cb0896f86bb8b8a17); /* function */ 
+&nbsp;
+c_0xd062a091(0xca00fb1d573c605544ab567d1910948c2775b92db48600829a878101242c142c); /* line */ 
+        c_0xd062a091(0x32fa2911da6bf5c84f3100a2243f24614f1d18a9243a4c56dbd634eb6bf0001c); /* assertPre */ 
+c_0xd062a091(0xa41a4dbe381a6df3a477543c28980d123000c900585c1674f99bf3b44e106f52); /* statement */ 
+require(accounts.length == ids.length, "invalid arguments");c_0xd062a091(0xb5c41bdd374585b6b06c5329025e6aeaaa245df8a142def0d28b774de7da60e4); /* assertPost */ 
+&nbsp;
+&nbsp;
+c_0xd062a091(0xc5474caf3818ee471a1c327f95c8055d40a596c588e40f95e8dba192286caf1e); /* line */ 
+        c_0xd062a091(0xf280a54096748399c166dba5d4b2ff9e7ca33f5675eb6c7610136a6bac00eae5); /* statement */ 
+uint256[] memory batchBalances = new uint256[](accounts.length);
+&nbsp;
+c_0xd062a091(0x104d46f80fa37dba8a5014bd2c4e40f242fc3109299d91906b89e331252a7dbe); /* line */ 
+        c_0xd062a091(0x9b3ee014535536034a8d7bc1f6ab99e8908f2f3210eef632b08f019e21fee191); /* statement */ 
+for (uint256 i = 0; i &lt; accounts.length; ++i) {
+c_0xd062a091(0xb298ed4f60b2c34b3602129e88fd20ad556778147d1ab21fe8fb60344dd15289); /* line */ 
+            c_0xd062a091(0x9db91931a8d79ff01a91da3a680c4e99f547198f90a31b7a8a6758ea6a977292); /* assertPre */ 
+c_0xd062a091(0x9b5ba851718bfe20b7ca85cc97911453180e861f624f02956e3d76ed73bfa6a2); /* statement */ 
+require(accounts[i] != address(0), "invalid account");c_0xd062a091(0x9633c334a4741c7bc6c68577b2d2fac3b431ac02d5802900aac54ef3a5a022fb); /* assertPost */ 
+&nbsp;
+c_0xd062a091(0xf039902f684699261e955693ccc49082bf7ce877ee01e3566e8a78c617f966ce); /* line */ 
+            c_0xd062a091(0x3a014ab9c288899a58ba5d17cc980250ee8576133445b4d16efdb0d8dee7d523); /* statement */ 
+batchBalances[i] = _holders[ids[i]][accounts[i]].balance;
+        }
+&nbsp;
+c_0xd062a091(0x579762f49b327c4a53137853ec3826bdb2eec8746b2290f4dbeb2a17dd2940a3); /* line */ 
+        c_0xd062a091(0x7201e21516d24a82a52a8de29dd63bcccf3a42bef73285799b65363e19e5cdea); /* statement */ 
+return batchBalances;
+    }
+&nbsp;
+    /**
+     * @dev Sets or unsets the approval of a given operator.
+     *
+     * An operator is allowed to transfer all tokens of the sender on their behalf.
+     *
+     * Because an account already has operator privileges for itself, this function will revert
+     * if the account attempts to set the approval status for itself.
+     *
+     * @param operator address to set the approval
+     * @param approved representing the status of the approval to be set
+     */
+    function setApprovalForAll(address operator, bool approved) external override {c_0xd062a091(0x6a3aebb8634530926fe49deb1e141fc0d9b2163ae2114d8cdcdbd8bb56bf44e6); /* function */ 
+&nbsp;
+c_0xd062a091(0xd0710b0f07fae0e4d6ce47fa29c4997e3b560f84bd9ae012973ba7adb09d6cec); /* line */ 
+        c_0xd062a091(0xd7080238086b6f177b8560ee436ea81dd3f399494ce18f02bd6e5c3f0ea5be6a); /* statement */ 
+address account = _msgSender();
+c_0xd062a091(0x838c8d0e39da8d962ff1caa309ab3ca2c2d9220532c26269c803f6ecd5e47583); /* line */ 
+        c_0xd062a091(0xdc0d4f75f0ad1af1c1600bd963a6ce07524bd6811a48e525f0616450c4641644); /* assertPre */ 
+c_0xd062a091(0x18293a85b47adfdf36d68e547d77a7aaccd838298af943ead02febbf72d43bd1); /* statement */ 
+require(operator != account, "invalid account");c_0xd062a091(0x871ee2bdc74325722265e7a92dc8f333f55ab1e86c2b67b08390628120558cf5); /* assertPost */ 
+&nbsp;
+c_0xd062a091(0x97ef30a27432be677758a101693dd0fda0e9fe226b5e69aba92b9ce0715dff0c); /* line */ 
+        c_0xd062a091(0x51df691edfecc17f6c979239a86128a580f71e9c94cc22a460272ed4dae78883); /* statement */ 
+_operatorApprovals[account][operator] = approved;
+c_0xd062a091(0x6ffded96ecb2fc9daad859d9a9de9e5335a460f207011d9b83cf73cf9693b309); /* line */ 
+        c_0xd062a091(0x4f720c2311657be093824f10aa83f7a20a020709a962150fe492807629d5dc2b); /* statement */ 
+emit ApprovalForAll(account, operator, approved);
+    }
+&nbsp;
+    /**
+        @notice Queries the approval status of an operator for a given account.
+        @param account   The account of the Tokens
+        @param operator  Address of authorized operator
+        @return           True if the operator is approved, false if not
+    */
+    function isApprovedForAll(address account, address operator) public view override returns (bool) {c_0xd062a091(0x61b2260096c93cb60ce2c764f995f78d6cd3e93e4701b605cb3edbfcae8ffaf0); /* function */ 
+&nbsp;
+c_0xd062a091(0x0e9cfeb28a38818ecbc5324521f04e1a5ad3d641348e9998a6e64bff94d03493); /* line */ 
+        c_0xd062a091(0xe241fbda3256cab7b2e201b3a669ecd50d5120f8ed7b41c9174226749f80b637); /* statement */ 
+return _isApprovedForAll(account, operator);
+    }
+&nbsp;
+    /**
+        @dev Transfers `value` amount of an `id` from the `from` address to the `to` address specified.
+        Caller must be approved to manage the tokens being transferred out of the `from` account.
+        If `to` is a smart contract, will call `onERC1155Received` on `to` and act appropriately.
+        @param from Source address
+        @param to Target address
+        @param id ID of the token type
+        @param value Transfer amount
+        @param data Data forwarded to `onERC1155Received` if `to` is a contract receiver
+    */
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 value,
+        bytes calldata data
+    )
+        external payable override
+    {c_0xd062a091(0xbf12ae08731a9e96c1b7ae9efe6704f980d34238e85fe80bfbfce7549848f156); /* function */ 
+&nbsp;
+c_0xd062a091(0x6f4a7350a7f309cc1b7d1c3ec6dac99a7181a3057767d39f2a0c98debfb641b4); /* line */ 
+        c_0xd062a091(0x28bbd93f55bb8ea5c301864f51ce7c8528034624c63a3b93adf527ab4218cc78); /* statement */ 
+address operator = _msgSender();
+&nbsp;
+c_0xd062a091(0x9a58fadb367fa33697d10b2a72d42bff6ffe31f2035808db6f197e05a4e84c50); /* line */ 
+        c_0xd062a091(0x66ab826fe70363c6f337a063780b6dbf2c41186ad4a962b9533a989551b59768); /* assertPre */ 
+c_0xd062a091(0x3e93f2c4e251af9b33b4b72f5612ba358c8105754801803549e4f3c40d1ad8a0); /* statement */ 
+require(to != address(0), "invalid recipient");c_0xd062a091(0x96a5efd55fa7b62e9ed10824d49db03cb08435167dcc727e385f87c831eff264); /* assertPost */ 
+&nbsp;
+c_0xd062a091(0x340113d414c6ecd4f8dd7b8a482fbe34d6fb442fc4fe614be701c6620317acb8); /* line */ 
+        c_0xd062a091(0x3f9793895afe885a6be131fad9cdf8583b3c08c9d2183bdd3875909cedf082ea); /* assertPre */ 
+c_0xd062a091(0x6650932c030449855fe794055c310bbf42471c77bbaf7be85030c1649f68aace); /* statement */ 
+require(
+            from == operator || isApprovedForAll(from, operator) == true,
+            "operator not approved"
+        );c_0xd062a091(0xb83e1fb8e6e306a001ea5664213f5788a3c0520e5cfc9c71da0aba3d439f34a5); /* assertPost */ 
+&nbsp;
+        // increase ETH balance
+c_0xd062a091(0x3b17af0d140c18712ce43fd8e02aca369d8330e25f8ba396d373d8b978a3fabf); /* line */ 
+        c_0xd062a091(0xb4688d850aac9882dcce88f8efd9e2464b44f2c288f665818f510184dd1fae3e); /* statement */ 
+_accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
+&nbsp;
+c_0xd062a091(0x93b338563601e8589ad845e6fea49b1c0c5d4cf820fbed761c13a2601f61c7f7); /* line */ 
+        c_0xd062a091(0x72c00b8c4b61f3dff6c7c8a2e1f17185615f9e518e8aeec447ef5d2298e843d4); /* statement */ 
+_moveTokens(operator, from, to, id, value);
+&nbsp;
+c_0xd062a091(0xd9b773db48d8c1a165c5d2c12789c60380f2fb0dbc3391c06b2ac91d5d739897); /* line */ 
+        c_0xd062a091(0x8ae93c60ab6d09db38b9ddba7f3c4d1b8b7c0fa8ec903db0c37ba73d735d8576); /* statement */ 
+emit TransferSingle(operator, from, to, id, value);
+&nbsp;
+c_0xd062a091(0x6889943e400fed4d325fdbc605bb776183ecbc065c04ae8e181bb73bd16c5ff2); /* line */ 
+        c_0xd062a091(0xf50124a0880aaaa2d0be73fe0b283cd773378a4d275a6dfa216076940cf2325c); /* statement */ 
+_doSafeTransferAcceptanceCheck(operator, from, to, id, value, data);
+    }
+&nbsp;
+    /**
+        @dev Transfers `values` amount(s) of `ids` from the `from` address to the
+        `to` address specified. Caller must be approved to manage the tokens being
+        transferred out of the `from` account. If `to` is a smart contract, will
+        call `onERC1155BatchReceived` on `to` and act appropriately.
+        @param from Source address
+        @param to Target address
+        @param ids IDs of each token type
+        @param values Transfer amounts per token type
+        @param data Data forwarded to `onERC1155Received` if `to` is a contract receiver
+    */
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] calldata ids,
+        uint256[] calldata values,
+        bytes calldata data
+    )
+        external payable override
+    {c_0xd062a091(0x1da18071695832f0b0bab05759f8b92c36cd3b4cbf75331dc95493dd6fc2d5e1); /* function */ 
+&nbsp;
+c_0xd062a091(0xdf60df1e91880c7a3b49eb1618d39b9d07b6c6d877de0cad89b44e0bb2da99b4); /* line */ 
+        c_0xd062a091(0xe458df6ee033037221e747b2563b41e8488394645352d8c9956c0a1c940b30d6); /* statement */ 
+address operator = _msgSender();
+&nbsp;
+c_0xd062a091(0x09bdbfda6461942ccc7e21ede32eccb76cabca379d5a1e822a7900916d04049b); /* line */ 
+        c_0xd062a091(0xf90801c13e4d858a6c2a25709d0da13f2c227282e68487f2ca1922b48a730fa1); /* assertPre */ 
+c_0xd062a091(0x830394c494f724610396f859d056a72b9a11d40a9afcfb65ab6ae6c767fc678a); /* statement */ 
+require(ids.length == values.length, "invalid arguments");c_0xd062a091(0xc84f56781ccfe4511f8af168070f8ae92d6d8727fd42302ad4bbe00e899a5f67); /* assertPost */ 
+&nbsp;
+c_0xd062a091(0x96765738e999c0d2adfc958c6f1a78e0f23a307c729266243bb0efb2b239f3bb); /* line */ 
+        c_0xd062a091(0x2f8e466c45292e6bb4c5a0db454fa0f4c2bd239318b640a6880bf8791ea3e37c); /* assertPre */ 
+c_0xd062a091(0x35f530a1d4c5338ef2eb9c78314bf84f668701cfa6addd4c25c743158a97828b); /* statement */ 
+require(to != address(0), "invalid account");c_0xd062a091(0x4faaff342ddf0424cc98c0eb964b94a4bcc0dd07dcafc69e5cd9f8eaa198d54d); /* assertPost */ 
+&nbsp;
+c_0xd062a091(0xee2664c3ea2300dc5eda040ad1b5b70784a733f8a0f180c39f9f7829a4dac85d); /* line */ 
+        c_0xd062a091(0xf7f890fdb90880172445934fef09088b5713f1e25961ef9477463ad127d99a96); /* assertPre */ 
+c_0xd062a091(0x76305135e345e7d97fe2c4f7df28300b8cc440a349685ec8376a4b4737811621); /* statement */ 
+require(
+            from == operator || isApprovedForAll(from, operator) == true,
+            "operator not approved"
+        );c_0xd062a091(0x516ce5a276afa04f2fd7232495e13860abc52c74e9dbf0d0ba43593366e15c45); /* assertPost */ 
+&nbsp;
+        // increase ETH balance
+c_0xd062a091(0x2f7dcecdefb6c0951149d123714a31ffaad6236303673936e34a52e3245432be); /* line */ 
+        c_0xd062a091(0xcd2cab63a730be00854a76f295314db7a2013610d34eb85ff931bd1bdf4fd215); /* statement */ 
+_accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
+&nbsp;
+c_0xd062a091(0x1dd82aaa9d501c3618c8469aa795fcd53da00dadbff1e493d0b66a2eed4c4428); /* line */ 
+        c_0xd062a091(0x0a215d6aea0dbadc72125b8d8e6bab921668ed89c06aa070c5ea7bd76103519c); /* statement */ 
+_moveTokensBatch(operator, from, to, ids, values);
+&nbsp;
+c_0xd062a091(0x9b0fa33f6f05ec3fc0e739d4ecc9f52a2e950810c380eb84da8dcb002885542e); /* line */ 
+        c_0xd062a091(0x76142ab7c058c7fc89cdac589b91d3ac559600ff93de6af3f913e9767174b3b5); /* statement */ 
+emit TransferBatch(operator, from, to, ids, values);
+&nbsp;
+c_0xd062a091(0xe147d1143a8e34bd40761ccd4d86855ac3f0fdc9f07b0584fbdccaf5ec765c97); /* line */ 
+        c_0xd062a091(0x5d2c8bc54c4378e43dda11218b1b3f25b62a53e38d6d10f9512183613d9a387d); /* statement */ 
+_doSafeBatchTransferAcceptanceCheck(operator, from, to, ids, values, data);
+    }
+&nbsp;
+    /**
+     * @param id Token ID
+     * @return URI string
+     */
+    function uri(uint256 id) public view override returns (string memory) {c_0xd062a091(0xb88cc793804eada6c5b90fc24f784a92b4b722c9eeb64d23381eb5d2e6d64076); /* function */ 
+&nbsp;
+c_0xd062a091(0x064689ec0cfed0dce84e0e80d4c134e1109ad98da233726466ea86e9bafe9249); /* line */ 
+        c_0xd062a091(0xb2d186d7be625f345013bda369675a1792fdb8db9a4ac8f3f9ff789399d1a1cc); /* statement */ 
+return _strConcat(_config.baseURI, _toHexString(id));
+    }
+&nbsp;
+&nbsp;
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    function _doSafeTransferAcceptanceCheck(
+        address operator,
+        address from,
+        address to,
+        uint256 id,
+        uint256 value,
+        bytes memory data
+    )
+        internal
+    {c_0xd062a091(0x02cac39186ccbdf67e4b19f8e51e0a1305dc036b69d390cbdffb8afbedf394a8); /* function */ 
+&nbsp;
+c_0xd062a091(0x5880b883130979db8a4911e46afffc29c1d1bdd5baaf21f57b946275f59eeafe); /* line */ 
+        c_0xd062a091(0x71c4838d5a131145e806ac6a366b828500bae6c6fc13bc7943ce75d2f9278daf); /* statement */ 
+if(to.isContract()) {c_0xd062a091(0x2081b921273db0b78d5693f801921c487e484af9669fb9d8aaa0f7f7a4c2a44c); /* branch */ 
+&nbsp;
+c_0xd062a091(0x733552d0abc572a7cd6f185759f05c31a59c903afd851e713ce4fb244d06715e); /* line */ 
+            c_0xd062a091(0x5f8582dae9fdd66c68c86e3314e180c31fb3120573b5d3df42ca76350943c260); /* assertPre */ 
+c_0xd062a091(0x4631240a67521bdbab75d47091db6ee5e40e8010b7d16a7bedf0a203cdbc72b4); /* statement */ 
+require(
+                IERC1155Receiver(to).onERC1155Received(operator, from, id, value, data) ==
+                    IERC1155Receiver(to).onERC1155Received.selector,
+                "unknown value from receiver"
+            );c_0xd062a091(0xaa8e7f94dd0e4af119e60274238fafa107a504e44bf9ae688fe47e18b6b4237a); /* assertPost */ 
+&nbsp;
+        }else { c_0xd062a091(0xab2603ebda371d65d59c218a1bf4ca5e2e73eca31146da22fff8727e9ee250ed); /* branch */ 
+}
+    }
+&nbsp;
+    function _doSafeBatchTransferAcceptanceCheck(
+        address operator,
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory values,
+        bytes memory data
+    )
+        internal
+    {c_0xd062a091(0x1d02f8ab02dd29a35dc4872065030d674d6da52b703b2917344c63d996ab8146); /* function */ 
+&nbsp;
+c_0xd062a091(0xddadca166f01be03b2d4ff0c77291c9e2240d9cc308d1efdd2c2cea324b677a4); /* line */ 
+        c_0xd062a091(0xbb93fdd66cb68a450de7607fa54c6f792d1e2462ec6770a96087257fc40359d5); /* statement */ 
+if(to.isContract()) {c_0xd062a091(0xe28ddc5a9386f0498343b5cd57757a7ff97cae016c086358ae9c2251808f78b6); /* branch */ 
+&nbsp;
+c_0xd062a091(0xb9f4e4a2f0e5d3871b32d98d83e5809251b9e13a19f722056e4fe16a2caff90e); /* line */ 
+            c_0xd062a091(0x5dac15e07d901792a019360d5b51d472b37e3b3ca5d41f309abee869761a6f89); /* assertPre */ 
+c_0xd062a091(0x8aa6e5bbae7c4bad9f58331fcbb288c06707370d79f23ce8455b4237ec911b94); /* statement */ 
+require(
+                IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, values, data) ==
+                    IERC1155Receiver(to).onERC1155BatchReceived.selector,
+                "unknown value from receiver"
+            );c_0xd062a091(0x0b1130a45b61de69b736a412c6caaefe249e770bdb297c0de102ab351eac4df1); /* assertPost */ 
+&nbsp;
+        }else { c_0xd062a091(0xc17ec71d23d735ad7cdee0938bcbf54c26b35236ecfee48482885ae4d25f2b96); /* branch */ 
+}
+    }
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

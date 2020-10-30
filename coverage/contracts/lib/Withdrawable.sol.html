@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for contracts/lib/Withdrawable.sol</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">contracts/lib/</a> Withdrawable.sol
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">30.77% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>4/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>1/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">40% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">35.71% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>5/14</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: GPL-3.0-or-later
+pragma solidity ^0.7.1;
+&nbsp;
+import "../utils/SafeMath.sol";
+import "../interfaces/IERC1155Receiver.sol";
+import "../interfaces/IERC1155.sol";
+import "./GSNCapable.sol";
+&nbsp;
+contract Withdrawable is GSNCapable, IERC1155Receiver {
+function c_0xf11c2b31(bytes32 c__0xf11c2b31) public pure {}
+&nbsp;
+&nbsp;
+    using SafeMath for uint256;
+&nbsp;
+&nbsp;
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+&nbsp;
+&nbsp;
+    /**
+     * @dev Function to withdraw ETH from the contract. TODO: Add permission ??
+     * @param account recipent address
+     * @param amount amount to withdraw
+     */
+    function withdraw(address account, uint256 amount) external {c_0xf11c2b31(0x4489719f2ca8ed034a87e5cc53faf36fe141573e98f0e1d7403e13c7f7dee020); /* function */ 
+<span class="missing-if-branch" title="else path not taken" >E</span>
+c_0xf11c2b31(0x3d58337fc06cd61ea4e3ceea02f655844b44baac8f2739ec2c3e07d6923c8cc9); /* line */ 
+        c_0xf11c2b31(0x163c72c0c7afb00ea399a13fd6e075e2c5b6375c5c951f20df29353ad0e814ea); /* statement */ 
+_accounts[account].ethBalance = _accounts[account].ethBalance.sub(amount, "Insufficient balance");
+c_0xf11c2b31(0x25d75796b3d40e77932890e2bdb93fd549b8c1bb000fc740338831a6cf477d83); /* line */ 
+        c_0xf11c2b31(0xf9b9205d0d603646ebfdbf1c28a3f065b40d7b8de9062bcb799911357b08e2fa); /* statement */ 
+(bool success, ) = account.call{value: amount}(""); // solhint-disable-line avoid-low-level-calls
+c_0xf11c2b31(0xaa86d68a88be819977c6f70da911945c6a13bc9e36b84a0c0f26c953ab4ade23); /* line */ 
+        c_0xf11c2b31(0x4a5d9b792bdb4cde732d247b10b933a350e46755d58f9c081edf38d6535eb68a); /* assertPre */ 
+c_0xf11c2b31(0x109ddb590f405ff3b26269fb59aaa27305b52453e7e187225330d7105ee4acd2); /* statement */ 
+require(success, "Withdrawal failed");c_0xf11c2b31(0xc3f5ccc8c4126cbd349f6e211d88e689140c30cbed85a9781fd565dfd3d3685a); /* assertPost */ 
+&nbsp;
+    }
+&nbsp;
+    /**
+     * @dev Function to make an ETH deposit that can be used to pay token transfer .
+     * @param account recipent address
+     */
+<span class="fstat-no" title="function not covered" >    function deposit(address account) external payable {c_0xf11c2b31(0xfd03e73c6c626e1c10e4bce8d8741c24534745e3f6aba32e5c08171bc74d3646); /* function */ </span>
+&nbsp;
+c_0xf11c2b31(0x9fa2ff796203c9e086aee55afc2511034991dfb433085cfd4e12f3ed30d89036); /* line */ 
+        c_0xf11c2b31(0x756b1cca5176d8c79b96cb7ea182e856139439f50a6dff1f58fda6389eb20a67); /* statement */ 
+_accounts[account].ethBalance = _accounts[account].ethBalance.add(msg.value);
+    }
+&nbsp;
+    /**<span class="cstat-no" title="statement not covered" ></span>
+     * @<span class="cstat-no" title="statement not covered" >dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via </span>.send() or .transfer()).
+     */<span class="cstat-no" title="statement not covered" ></span>
+    receive() external payable {
+c_0xf11c2b31(0x835362612bae02df1b35f82139e7031d36c0178fe89c266a344ebf5206008a79); /* line */ 
+        _accounts[_msgSender()].ethBalance = _accounts[_msgSender()].ethBalance.add(msg.value);
+<span class="fstat-no" title="function not covered" >    }</span>
+&nbsp;
+    function onERC1155Received(address operator,
+                               address from,
+                               uint256 id,
+                               uint256 value,
+                               bytes calldata data)
+    exte<span class="cstat-no" title="statement not covered" >rnal override returns(bytes4) {c_0xf11</span>c2b31(0x5ab621fa8529898e1a89fa74c13e56db2fc76c6068259aeb920d96fbbdf75656); /* function */ 
+<span class="cstat-no" title="statement not covered" ></span>
+        //<span class="cstat-no" title="statement not covered" > here msg.sender is the ERC1155 contract</span>
+c_0xf11c2b31(0x3e27ddd5367407c39c17da26c7200b4c77dad263ec1d794487e9a93974ba1558); /* line */ 
+<span class="cstat-no" title="statement not covered" >        c_0xf11c2b31(0x01036b9c1c740092451</span>0c598b2e82517256d4efb353f5c6a7533b46d58c164a3); /* statement */ 
+address erc1155Address = _msgSender();
+c_0xf11c2b31(0x82da6ff3a727e8e0c870a3992f4380a52b969ddf3436dd9a7192ceed472292a9); /* line */ 
+<span class="fstat-no" title="function not covered" >        c_0xf11c2b31(0x6132664dd673cf5226c0a62a6acd6f8a6af80ccafb57cf552b7a7d91fb7f685f); /* statement */ </span>
+_externa<span class="cstat-no" title="statement not covered" >lBalances[from][erc1155Address][id] = _externalBalances[from][erc1155Address][id].add(value);</span>
+c_0xf11c2b31(0xbf3633c43e5df7acc9750ffda1a732d4d1278d6e6e46ddf84c2ac0662333090b); /* line */ 
+        c_0xf11c2b31(0xbcac347189522bfc231c396c6846bbb1d9becee6bbfbc656ee47857be654caab); /* statement */ 
+return RECEIVER_SINGLE_MAGIC_VALUE;
+    }
+&nbsp;
+&nbsp;
+    func<span class="cstat-no" title="statement not covered" >tion onERC1155BatchReceived(address operator,</span>
+                                    address from,
+                                    uint256[] calldata ids,
+                                    uint256[] calldata values,
+                                    bytes calldata data)
+    external override returns(bytes4) {c_0xf11c2b31(0xc304ea529901e5cfcd28f90acbeee8fe36eb30480f11e78516403ad78aa406ad); /* function */ 
+&nbsp;
+        // here msg.sender is the ERC1155 contract
+c_0xf11c2b31(0xd6e9129952d110167e25e1beb6c5aa2b1c4ca0ada1a785e03a539ecf57279294); /* line */ 
+        c_0xf11c2b31(0x60a0cb606594dd15c56b44990559a174a776425883e6d62d1bf05d8df2df6af2); /* statement */ 
+address erc1155Address = _msgSender();
+c_0xf11c2b31(0x585d943f0dc7b6fb64cb5ea8ff91c4ae938e139fa94259d673acb30a661e4a04); /* line */ 
+        c_0xf11c2b31(0xb789c81570338afba62b868c8a11ff9f21b3fa5dccff53ee38f51a27ef913dd5); /* statement */ 
+for (uint256 i = 0; i &lt; ids.length; i++) {
+c_0xf11c2b31(0xc378c9829788da5f37c2993d78862e40a96721a4819bd37f1d48997db55bca88); /* line */ 
+          c_0xf11c2b31(0x652089d54cbca3a17311d7a32cec065c4244ab3aa59d8481d84759d6a15bf213); /* statement */ 
+_externalBalances[from][erc1155Address][ids[i]] = _externalBalances[from][erc1155Address][ids[i]].add(values[i]);
+        }
+c_0xf11c2b31(0x6e1d6b6d68732673ea973d5a073a2cbdf9221594071c9c7c0dfce4448964ffca); /* line */ 
+        c_0xf11c2b31(0xf64f4171fc057b16d05d80ae66ee52e1ab6afbecb69f82149f0ba0fb71231b30); /* statement */ 
+return RECEIVER_BATCH_MAGIC_VALUE;
+    }
+&nbsp;
+    function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external {c_0xf11c2b31(0x749c217d822c1c36211b62315ad915ea0b4ca7760f8fdbfd669cdfa5aa8d7e3c); /* function */ 
+&nbsp;
+c_0xf11c2b31(0x7eb2a39314b3e95f3f668265ad3a591768d5a34c71a009297eb95cccba7ad7a3); /* line */ 
+        c_0xf11c2b31(0x006f1a45cf9f98508ff9bfcb52c6358372cfb911f294091cba08b28a0b93a95d); /* statement */ 
+IERC1155(erc1155Address).safeTransferFrom(
+            address(this),
+            account,
+            tokenId,
+            amount,
+            ''
+        );
+c_0xf11c2b31(0xb1f6e1767b59cff02c8e80d05ddd9ac3ec12ac0d22fd51c8fac1aea9aae4d6a9); /* line */ 
+        c_0xf11c2b31(0x931d2f3e6aea9dd45b5e3dcd395f7ba6694c904f051581217c8946c5d49fe2e6); /* statement */ 
+_externalBalances[account][erc1155Address][tokenId] = _externalBalances[account][erc1155Address][tokenId].sub(amount, "Insufficient balance");
+    }
+&nbsp;
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Oct 30 2020 18:47:50 GMT+0100 (GMT+01:00)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
