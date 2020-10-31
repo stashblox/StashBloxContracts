@@ -87,7 +87,13 @@ contract Data {
     mapping(address => mapping(address => mapping(uint256 => uint256))) _externalBalances;
 
     // mappings by tokenId
+
+    /**
+     * @notice emitted when a token is updated.
+     * @dev use _tokens getter to obtain the new state
+     */
     mapping(uint256 => Token) public _tokens;
+    
     mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => mapping(address => Holder)) public _holders;
     mapping(uint256 => uint256[2][]) public _storageFees; //list of tuple [timestamp, price]

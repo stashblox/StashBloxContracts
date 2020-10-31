@@ -13,7 +13,10 @@ async function runCoverage(skipFiles, compileCommand, testCommand) {
     const client = require('ganache-cli');
     const CoverageAPI = require('solidity-coverage/api');
     const utils = require('solidity-coverage/utils');
+    const TruffleConfig = require('@truffle/config');
 
+    console.log(TruffleConfig.contracts_directory.get());
+    
     const api = new CoverageAPI({
       client,
       providerOptions: {
@@ -56,7 +59,8 @@ async function runCoverage(skipFiles, compileCommand, testCommand) {
         fs_extra.moveSync(tempContractsDir, './contracts/');
 
         // compile instrumented contracts
-        child_process.execSync(compileCommand);
+        console.log('truffle compile');
+        child_process.execSync('truffle compile');
 
         // run tests
         const forked = child_process.fork(testCommand[0], testCommand.slice(1), {

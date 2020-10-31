@@ -10,7 +10,10 @@ contract Maintenable is Mintable {
     EVENTS
     *****************************/
 
-
+    /**
+        @dev  TokenUpdated when token is updated
+        @notice  TokenUpdated when token is updated
+    */
     event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
 
 

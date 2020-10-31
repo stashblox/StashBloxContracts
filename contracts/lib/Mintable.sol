@@ -42,27 +42,28 @@ contract Mintable is MultiToken {
     }
 
     /**
+     * @notice create token
      * @dev Function to mint an amount of a token with the given ID.
-      `params` must contains the following informations:
-
-                              [0]: metadataHash
-                              [1]: isPrivate
-                              [2]: minHoldingForCallback
-                              [3]: legalAuthority
-                              [4]: standardFees
-                              [5]: lumpSumFees
-                              [6]: storageFees
-                              [7]: feesUnitType
-                              [8]: feesUnitAddress
-                              [9]: feesUnitId
-                             [10]: feesRecipient
-                             [11]: decimals
-
+     * `params` must contains the following informations:<br />
+     * <br />
+     *                          [0]: metadataHas<br />
+     *                          [1]: isPrivate<br />
+     *                          [2]: minHoldingForCallback<br />
+     *                          [3]: legalAuthority<br />
+     *                          [4]: standardFees<br />
+     *                          [5]: lumpSumFees<br />
+     *                          [6]: storageFees<br />
+     *                          [7]: feesUnitType<br />
+     *                          [8]: feesUnitAddress<br />
+     *                          [9]: feesUnitId<br />
+     *                         [10]: feesRecipient<br />
+     *                         [11]: decimals<br />
+     * <br />
      * @param recipient The address that will own the minted tokens
      * @param id ID of the token to be minted
      * @param supply Amount of the token to be minted
      * @param params Token information
-     */
+    */
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,

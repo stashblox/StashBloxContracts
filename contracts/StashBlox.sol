@@ -5,6 +5,12 @@ import "./lib/Callable.sol";
 import "./lib/Withdrawable.sol";
 import "./lib/Configurable.sol";
 
+/**
+    @title A simulator for trees
+    @author Larry A. Gardner
+    @notice You can use this contract for only the most basic simulation
+    @dev All function calls are currently implemented without side effects
+ */
 contract StashBlox is Callable, Withdrawable, Configurable {
 
     /**
