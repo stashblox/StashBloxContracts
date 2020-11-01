@@ -18,27 +18,14 @@ Compiler: solc 0.7.1+commit.f4a555be.Emscripten.clang
 
 #### constructor
 
-
-
-
-
-
 #### receive
-
-
-
-
-
-
 
 ### event
 
 #### AccountUpdated
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_account</td>
@@ -52,14 +39,10 @@ Compiler: solc 0.7.1+commit.f4a555be.Emscripten.clang
   </td>
 </tr>
 </table>
-
-
 #### ApprovalForAll
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_owner</td>
@@ -78,14 +61,10 @@ Compiler: solc 0.7.1+commit.f4a555be.Emscripten.clang
   </td>
 </tr>
 </table>
-
-
 #### CallbackUpdated
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_callbackId</td>
@@ -94,21 +73,12 @@ Compiler: solc 0.7.1+commit.f4a555be.Emscripten.clang
   </td>
 </tr>
 </table>
-
-
 #### ConfigUpdated
-
-
-
-
-
 
 #### OwnershipTransferred
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>previousOwner</td>
@@ -122,14 +92,10 @@ Compiler: solc 0.7.1+commit.f4a555be.Emscripten.clang
   </td>
 </tr>
 </table>
-
-
 #### TokenUpdated
-
-TokenUpdated when token is updated
-
+TokenUpdated when token is updated<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_id</td>
@@ -143,14 +109,10 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
 #### TransferBatch
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_operator</td>
@@ -179,14 +141,10 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
 #### TransferSingle
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_operator</td>
@@ -215,14 +173,10 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
 #### URI
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_value</td>
@@ -236,17 +190,12 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
-
 ### view
 
 #### _accounts
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -255,14 +204,30 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td>isTokenizer</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>isLocked</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>ethBalance</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### _callbacks
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -271,14 +236,70 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td>tokenId</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>price</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>escrowedAmount</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>callCounter</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>documentHash</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>caller</td>
+  <td>address</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>needLegalApproval</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>approvedByLegal</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>refused</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>accepted</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>completed</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### _callees
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -292,21 +313,57 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>address</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### _config
 
-
-
-
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td>callbackAutoExecuteMaxAccounts</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>baseURI</td>
+  <td>string</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>versionRecipient</td>
+  <td>string</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>owner</td>
+  <td>address</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>gsnTrustedForwarder</td>
+  <td>address</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>proxyRegistryAccount</td>
+  <td>address</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### _holderList
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -320,14 +377,20 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>address</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### _holders
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -341,14 +404,40 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td>balance</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>birthday</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>isMaintener</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>isHolder</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>isApproved</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### _storageFees
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -367,14 +456,20 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### _tokenList
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -388,14 +483,8 @@ TokenUpdated when token is updated
   </td>
 </tr>
 </table>
-
-
-#### _tokens
-
-emitted when a token is updated.
-
-<table>
-<tr><th colspan="3">Arguments</th></tr>
+##### Returns
+<table>  
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td></td>
@@ -404,14 +493,92 @@ emitted when a token is updated.
   </td>
 </tr>
 </table>
-
-
-#### averageAge
-
-
-Function to get the average age of the token hold by the given address.
+#### _tokens
+emitted when a token is updated.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr>
+</table>
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td>supply</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>decimals</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>lumpSumFees</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>standardFees</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>minHoldingForCallback</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>metadataHash</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>feesUnitType</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>feesUnitId</td>
+  <td>uint256</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>feesUnitAddress</td>
+  <td>address</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>feesRecipient</td>
+  <td>address</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>legalAuthority</td>
+  <td>address</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>isPrivate</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr><tr>
+  <td>locked</td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
+#### averageAge
+Function to get the average age of the token hold by the given address.<br />
+##### Arguments
+<table>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -425,14 +592,20 @@ Function to get the average age of the token hold by the given address.
   The token ID</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>uint256</td>
+  <td>
+  average age in seconds</td>
+</tr>
+</table>
 #### balanceOf
-
-
-Get the specified address' balance for token with specified ID. Attempting to query the zero account for a balance will result in a revert.
+Get the specified address' balance for token with specified ID. Attempting to query the zero account for a balance will result in a revert.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -446,14 +619,20 @@ Get the specified address' balance for token with specified ID. Attempting to qu
   ID of the token</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>uint256</td>
+  <td>
+  The account&#39;s balance of the token type requested</td>
+</tr>
+</table>
 #### balanceOfBatch
-
-
-Get the balance of multiple account/token pairs. If any of the query accounts is the zero account, this query will revert.
+Get the balance of multiple account/token pairs. If any of the query accounts is the zero account, this query will revert.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>accounts</td>
@@ -467,14 +646,20 @@ Get the balance of multiple account/token pairs. If any of the query accounts is
   IDs of the tokens</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>uint256[]</td>
+  <td>
+  Balances for each account and token id pair</td>
+</tr>
+</table>
 #### isApprovedAccount
-
-
-Function to check if an account is approved for a given token.
+Function to check if an account is approved for a given token.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -488,14 +673,20 @@ Function to check if an account is approved for a given token.
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### isApprovedForAll
-
-Queries the approval status of an operator for a given account.
-
+Queries the approval status of an operator for a given account.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -509,14 +700,20 @@ Queries the approval status of an operator for a given account.
   Address of authorized operator</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  True if the operator is approved, false if not</td>
+</tr>
+</table>
 #### isLockedAccount
-
-
-Function to check if an address is lockec.
+Function to check if an address is lockec.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -525,14 +722,20 @@ Function to check if an address is lockec.
   The address to check</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### isLockedToken
-
-
-Function to check if a token is locked.
+Function to check if a token is locked.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -541,14 +744,20 @@ Function to check if a token is locked.
   The token ID</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### isMaintener
-
-
-Function to check if an address is authorized to maintain a token.
+Function to check if an address is authorized to maintain a token.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -562,14 +771,20 @@ Function to check if an address is authorized to maintain a token.
   The authorized address</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  true if it&#34;s a maintener address</td>
+</tr>
+</table>
 #### isTokenizer
-
-
-Function to check if an address is authorized to create a token.
+Function to check if an address is authorized to create a token.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -578,14 +793,20 @@ Function to check if an address is authorized to create a token.
   The authorized address</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### isTrustedForwarder
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -594,21 +815,32 @@ Function to check if an address is authorized to create a token.
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### owner
-
-
-Returns the address of the current owner.
-
-
-
+Returns the address of the current owner.<br />
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>address</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### transactionFees
-
-
-Function to get the transaction price to transfer tokens.
+Function to get the transaction price to transfer tokens.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -627,14 +859,20 @@ Function to get the transaction price to transfer tokens.
   The amount to transfer</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>uint256</td>
+  <td>
+  transfer price</td>
+</tr>
+</table>
 #### uri
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -643,24 +881,34 @@ Function to get the transaction price to transfer tokens.
   Token ID</td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>string</td>
+  <td>
+  URI string</td>
+</tr>
+</table>
 #### versionRecipient
 
-
-
-
-
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>string</td>
+  <td>
+  </td>
+</tr>
+</table>
 ### nonpayable
 
 #### acceptCallback
-
-
-Accept a callback
+Accept a callback<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>callbackId</td>
@@ -669,14 +917,10 @@ Accept a callback
   callback proposition ID</td>
 </tr>
 </table>
-
-
 #### approveCallback
-
-
-Approve a callback
+Approve a callback<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>callbackId</td>
@@ -685,14 +929,10 @@ Approve a callback
   callback proposition ID</td>
 </tr>
 </table>
-
-
 #### cloneToken
-
-
-Function to mint tokens in batch.
+Function to mint tokens in batch.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -711,14 +951,10 @@ Function to mint tokens in batch.
   list of metadata file hashes</td>
 </tr>
 </table>
-
-
 #### createToken
-
-create token
-Function to mint an amount of a token with the given ID. `params` must contains the following informations:<br/> <br />                          [0]: metadataHas<br />                          [1]: isPrivate<br />                          [2]: minHoldingForCallback<br />                          [3]: legalAuthority<br />                          [4]: standardFees<br />                          [5]: lumpSumFees<br />                          [6]: storageFees<br />                          [7]: feesUnitType<br />                          [8]: feesUnitAddress<br />                          [9]: feesUnitId<br />                         [10]: feesRecipient<br />                         [11]: decimals<br /> <br />
+create token<br />Function to mint an amount of a token with the given ID. `params` must contains the following informations:<br/> <br />                          [0]: metadataHas<br />                          [1]: isPrivate<br />                          [2]: minHoldingForCallback<br />                          [3]: legalAuthority<br />                          [4]: standardFees<br />                          [5]: lumpSumFees<br />                          [6]: storageFees<br />                          [7]: feesUnitType<br />                          [8]: feesUnitAddress<br />                          [9]: feesUnitId<br />                         [10]: feesRecipient<br />                         [11]: decimals<br /> <br /><br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>recipient</td>
@@ -742,14 +978,10 @@ Function to mint an amount of a token with the given ID. `params` must contains 
   Token information</td>
 </tr>
 </table>
-
-
 #### executeCallback
-
-
-Accept a callback. Caller need to recall the function to continue the callback until completed.
+Accept a callback. Caller need to recall the function to continue the callback until completed.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>callbackId</td>
@@ -763,14 +995,10 @@ Accept a callback. Caller need to recall the function to continue the callback u
   maximal call to excute</td>
 </tr>
 </table>
-
-
 #### onERC1155BatchReceived
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>operator</td>
@@ -799,14 +1027,20 @@ Accept a callback. Caller need to recall the function to continue the callback u
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bytes4</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### onERC1155Received
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>operator</td>
@@ -835,14 +1069,20 @@ Accept a callback. Caller need to recall the function to continue the callback u
   </td>
 </tr>
 </table>
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bytes4</td>
+  <td>
+  </td>
+</tr>
+</table>
 #### refuseCallback
-
-
-Refuse a callback if the price is not enough.
+Refuse a callback if the price is not enough.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>callbackId</td>
@@ -851,14 +1091,10 @@ Refuse a callback if the price is not enough.
   callback proposition ID</td>
 </tr>
 </table>
-
-
 #### setAccountApproval
-
-
-Function to approve holder for a private token.
+Function to approve holder for a private token.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -877,14 +1113,10 @@ Function to approve holder for a private token.
   </td>
 </tr>
 </table>
-
-
 #### setAccountLock
-
-
-Function to unlock an address.
+Function to unlock an address.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -903,14 +1135,10 @@ Function to unlock an address.
   </td>
 </tr>
 </table>
-
-
 #### setApprovalForAll
-
-
-Sets or unsets the approval of a given operator. An operator is allowed to transfer all tokens of the sender on their behalf. Because an account already has operator privileges for itself, this function will revert if the account attempts to set the approval status for itself.
+Sets or unsets the approval of a given operator. An operator is allowed to transfer all tokens of the sender on their behalf. Because an account already has operator privileges for itself, this function will revert if the account attempts to set the approval status for itself.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>operator</td>
@@ -924,14 +1152,10 @@ Sets or unsets the approval of a given operator. An operator is allowed to trans
   representing the status of the approval to be set</td>
 </tr>
 </table>
-
-
 #### setMaintenerAuthorization
-
-
-Function to authorize an address to maintain a token.
+Function to authorize an address to maintain a token.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -950,14 +1174,10 @@ Function to authorize an address to maintain a token.
   </td>
 </tr>
 </table>
-
-
 #### setTokenLock
-
-
-Function to unlock a token.
+Function to unlock a token.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -976,14 +1196,10 @@ Function to unlock a token.
   </td>
 </tr>
 </table>
-
-
 #### setTokenizerAuthorization
-
-
-Function to authorize an address to create a token.
+Function to authorize an address to create a token.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -997,14 +1213,10 @@ Function to authorize an address to create a token.
   </td>
 </tr>
 </table>
-
-
 #### transferOwnership
-
-
-Transfers ownership of the contract to a new account (`newOwner`).
+Transfers ownership of the contract to a new account (`newOwner`).<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -1013,14 +1225,10 @@ Transfers ownership of the contract to a new account (`newOwner`).
   address of the new owner Can only be called by the current owner.</td>
 </tr>
 </table>
-
-
 #### updateConfig
-
-
-Function to update the contract configuration
+Function to update the contract configuration<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>callbackAutoExecuteMaxAccounts</td>
@@ -1054,14 +1262,10 @@ Function to update the contract configuration
   trusted delegate proxy</td>
 </tr>
 </table>
-
-
 #### updateToken
-
-
-Function to update a token with the given ID. `params` must contains the following informations: [0]: metadataHash [1]: isPrivate [2]: minHoldingForCallback [3]: legalAuthority [4]: standardFees [5]: lumpSumFees [6]: storageFees [7]: feesUnitType [8]: feesUnitAddress [9]: feesUnitId [10]: feesRecipient [11]: decimals
+Function to update a token with the given ID. `params` must contains the following informations: [0]: metadataHash [1]: isPrivate [2]: minHoldingForCallback [3]: legalAuthority [4]: standardFees [5]: lumpSumFees [6]: storageFees [7]: feesUnitType [8]: feesUnitAddress [9]: feesUnitId [10]: feesRecipient [11]: decimals<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>id</td>
@@ -1075,14 +1279,10 @@ Function to update a token with the given ID. `params` must contains the followi
   Token information</td>
 </tr>
 </table>
-
-
 #### withdraw
-
-
-Function to withdraw ETH from the contract. TODO: Add permission ??
+Function to withdraw ETH from the contract. TODO: Add permission ??<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -1096,14 +1296,10 @@ Function to withdraw ETH from the contract. TODO: Add permission ??
   amount to withdraw</td>
 </tr>
 </table>
-
-
 #### withdrawERC1155
 
-
-
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>erc1155Address</td>
@@ -1127,17 +1323,12 @@ Function to withdraw ETH from the contract. TODO: Add permission ??
   </td>
 </tr>
 </table>
-
-
-
 ### payable
 
 #### deposit
-
-
-Function to make an ETH deposit that can be used to pay token transfer .
+Function to make an ETH deposit that can be used to pay token transfer .<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>account</td>
@@ -1146,14 +1337,10 @@ Function to make an ETH deposit that can be used to pay token transfer .
   recipent address</td>
 </tr>
 </table>
-
-
 #### proposeCallback
-
-
-Propose to buy the whole supply of a token. The proposer must hold minHoldingForCallback% of the total supply. StashBlox must approve the price with acceptCallback();
+Propose to buy the whole supply of a token. The proposer must hold minHoldingForCallback% of the total supply. StashBlox must approve the price with acceptCallback();<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>callbackId</td>
@@ -1182,14 +1369,10 @@ Propose to buy the whole supply of a token. The proposer must hold minHoldingFor
   </td>
 </tr>
 </table>
-
-
 #### safeBatchTransferFrom
-
-
-Transfers `values` amount(s) of `ids` from the `from` address to the `to` address specified. Caller must be approved to manage the tokens being transferred out of the `from` account. If `to` is a smart contract, will call `onERC1155BatchReceived` on `to` and act appropriately.
+Transfers `values` amount(s) of `ids` from the `from` address to the `to` address specified. Caller must be approved to manage the tokens being transferred out of the `from` account. If `to` is a smart contract, will call `onERC1155BatchReceived` on `to` and act appropriately.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>from</td>
@@ -1218,14 +1401,10 @@ Transfers `values` amount(s) of `ids` from the `from` address to the `to` addres
   Data forwarded to `onERC1155Received` if `to` is a contract receiver</td>
 </tr>
 </table>
-
-
 #### safeTransferFrom
-
-
-Transfers `value` amount of an `id` from the `from` address to the `to` address specified. Caller must be approved to manage the tokens being transferred out of the `from` account. If `to` is a smart contract, will call `onERC1155Received` on `to` and act appropriately.
+Transfers `value` amount of an `id` from the `from` address to the `to` address specified. Caller must be approved to manage the tokens being transferred out of the `from` account. If `to` is a smart contract, will call `onERC1155Received` on `to` and act appropriately.<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>from</td>
@@ -1254,17 +1433,12 @@ Transfers `value` amount of an `id` from the `from` address to the `to` address 
   Data forwarded to `onERC1155Received` if `to` is a contract receiver</td>
 </tr>
 </table>
-
-
-
 ### pure
 
 #### supportsInterface
-
-Query if a contract implements an interface
-
+Query if a contract implements an interface<br />
+##### Arguments
 <table>
-<tr><th colspan="3">Arguments</th></tr>
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 <tr>
   <td>_interfaceID</td>
@@ -1273,7 +1447,13 @@ Query if a contract implements an interface
   The interface identifier, as specified in ERC-165</td>
 </tr>
 </table>
-
-
-
-
+##### Returns
+<table>  
+<tr><th>Name</th><th>Type</th><th>Description</th></tr>
+<tr>
+  <td></td>
+  <td>bool</td>
+  <td>
+  `true` if the contract implements `_interfaceID` and</td>
+</tr>
+</table>
