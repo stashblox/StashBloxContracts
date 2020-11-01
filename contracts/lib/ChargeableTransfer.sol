@@ -70,32 +70,40 @@ contract ChargeableTransfer is GSNCapable {
         _holders[id][account].balance = newBalance;
     }
 
+    function _ceilDiv(uint256 a, uint256 m) internal pure returns (uint ) {
+        return (a + m - 1) / m;
+    }
+
     function _demurrageCost(address account, uint256 id, uint256 value) internal view returns (uint256) {
         uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
         // pay demurrage for a full token
-        uint256 paidValue = value < 10**_tokens[id].decimals ? 10**_tokens[id].decimals : value;
+        uint256 paidValue = _tokens[id].decimals != 0 ? _ceilDiv(value, 10**_tokens[id].decimals) : value;
 
         for (uint i = _demurrageFees[id].length - 1; i >= 0; i--) {
 
             uint256 costStartAt = _demurrageFees[id][i][0];
-            uint256 cost = _demurrageFees[id][i][1];
             uint256 demurrageDays;
 
             if (_holders[id][account].birthday >= costStartAt) {
+
                 demurrageDays = (timeCursor.sub(_holders[id][account].birthday)).div(86400);
+
                 if (demurrageDays == 0) demurrageDays = 1; // TODO: test this case!
-                totalCost += (demurrageDays.mul(cost)).mul(paidValue);
+                totalCost += (demurrageDays.mul(_demurrageFees[id][i][1])).mul(paidValue);
+
                 break;
+
             } else {
+
                 demurrageDays = (timeCursor.sub(costStartAt)).div(86400);
-                if (demurrageDays == 0) demurrageDays = 1;
                 timeCursor = costStartAt;
-                totalCost += (demurrageDays.mul(cost)).mul(paidValue);
+
+                if (demurrageDays == 0) demurrageDays = 1;
+                totalCost += (demurrageDays.mul(_demurrageFees[id][i][1])).mul(paidValue);
+
             }
         }
-        // TODO!
-        totalCost = totalCost.div(10**_tokens[id].decimals); // demurrage cost are for one full token
 
         return totalCost;
     }
