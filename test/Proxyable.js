@@ -32,7 +32,8 @@ describe("Proxyable.sol", () => {
       "versionRecipient",
       defaultSender,
       address,
-      address
+      address,
+      defaultSender
     );
   }
 

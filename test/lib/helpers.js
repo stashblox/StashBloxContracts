@@ -216,6 +216,20 @@ const transferTokensBatch = async (params) => {
     return receipt;
 }
 
+const setTokenizerAuthorization = async (account, auhtorized) => {
+  let config = await STASHBLOX._config();
+
+  return await STASHBLOX.updateConfig.send(
+    config.callbackAutoExecuteMaxAccounts,
+    config.baseURI,
+    config.versionRecipient,
+    config.owner,
+    config.gsnTrustedForwarder,
+    config.proxyRegistryAccount,
+    auhtorized ? account : ZERO_ADDRESS
+  );
+}
+
 const setMaintenerAuthorization = async (tokenId, account, auhtorized) => {
 
     return await STASHBLOX.updateToken.send(tokenId,
@@ -276,6 +290,7 @@ module.exports = exports = {
   transferTokens,
   transferTokensBatch,
   setMaintenerAuthorization,
+  setTokenizerAuthorization,
   setTokenLock,
   bigN,
   expectRevert,

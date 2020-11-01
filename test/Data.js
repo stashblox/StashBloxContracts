@@ -27,9 +27,9 @@ describe("Data.sol", () => {
     });
 
     it("_accounts should have free getter", async () => {
-      await STASHBLOX.setTokenizerAuthorization.send(DATA["token1"].recipient, true);
+      await STASHBLOX.setAccountLock.send(DATA["token1"].recipient, true, random());
       const account = await STASHBLOX._accounts(DATA["token1"].recipient);
-      assert.equal(account.isTokenizer, true, "invalid account");
+      assert.equal(account.isLocked, true, "invalid account");
     });
 
     it("_callbacks should have free getter", async () => {
@@ -47,6 +47,6 @@ describe("Data.sol", () => {
     });
   });
 
-  
+
 
 });

@@ -15,10 +15,10 @@ contract Data {
         address owner;
         address gsnTrustedForwarder;
         address proxyRegistryAccount;
+        address tokenizer; // should be a contract managing permission
     }
 
     struct Account {
-        bool isTokenizer;
         bool isLocked;
         uint256 ethBalance;
     }

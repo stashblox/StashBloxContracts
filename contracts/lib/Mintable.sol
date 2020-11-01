@@ -15,7 +15,8 @@ contract Mintable is MultiToken {
 
 
     modifier onlyTokenizer() {
-        require(_isTokenizer(_msgSender()), "Insufficient permission");
+        address account = _msgSender();
+        require((account == _config.tokenizer) || (account == _config.owner), "Insufficient permission");
         _;
     }
 
@@ -23,23 +24,6 @@ contract Mintable is MultiToken {
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
-
-
-    /**
-     * @dev Function to authorize an address to create a token.
-     * @param account The authorized address
-     */
-    function setTokenizerAuthorization(address account, bool isTokenizer) external onlyOwner {
-        _accounts[account].isTokenizer = isTokenizer;
-    }
-
-    /**
-     * @dev Function to check if an address is authorized to create a token.
-     * @param account The authorized address
-     */
-    function isTokenizer(address account) external view returns (bool) {
-        return _isTokenizer(account);
-    }
 
     /**
      * @notice create token
@@ -71,10 +55,7 @@ contract Mintable is MultiToken {
                          uint256 supply,
                          uint256[14] memory params)
     external onlyTokenizer {
-        _createToken(recipient,
-                     id,
-                     supply,
-                     params);
+        _createToken(recipient, id, supply, params);
         emit TransferSingle(_msgSender(), address(0), recipient, id, supply);
     }
 
@@ -88,17 +69,10 @@ contract Mintable is MultiToken {
                         uint256[] memory ids,
                         uint256[] memory metadataHashes)
     external onlyTokenizer {
-        require(_tokens[id].supply > 0 &&
-                ids.length == metadataHashes.length, "Invalid arguments");
-
+        require(_tokens[id].supply > 0 && ids.length == metadataHashes.length, "Invalid arguments");
         for (uint256 i = 0; i < ids.length; ++i) {
             _cloneToken(id, ids[i], metadataHashes[i]);
-
-            emit TransferSingle(_msgSender(),
-                                address(0),
-                                _holderList[id][0],
-                                ids[i],
-                                _tokens[id].supply);
+            emit TransferSingle(_msgSender(), address(0),  _holderList[id][0], ids[i], _tokens[id].supply);
         }
     }
 
@@ -108,9 +82,6 @@ contract Mintable is MultiToken {
     *****************************/
 
 
-    function _isTokenizer(address account) internal view returns (bool) {
-        return _accounts[account].isTokenizer || (account == _config.owner);
-    }
     /*
                     [0]: metadataHash
                     [1]: isPrivate

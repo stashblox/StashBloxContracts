@@ -184,7 +184,8 @@ describe("Callable.sol", () => {
         config.versionRecipient,
         config.owner,
         config.gsnTrustedForwarder,
-        config.proxyRegistryAccount
+        config.proxyRegistryAccount,
+        config.tokenizer
       );
 
       let totalDistributed = await distributeTokens();
@@ -224,7 +225,8 @@ describe("Callable.sol", () => {
         config.versionRecipient,
         config.owner,
         config.gsnTrustedForwarder,
-        config.proxyRegistryAccount
+        config.proxyRegistryAccount,
+        config.tokenizer
       );
 
       let totalDistributed = await distributeTokens();

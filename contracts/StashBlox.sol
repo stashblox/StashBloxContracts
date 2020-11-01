@@ -20,6 +20,7 @@ contract StashBlox is Callable, Withdrawable, Configurable {
         _config.callbackAutoExecuteMaxAccounts = 50;
         _config.baseURI = "http://stashblox.com/tokens/";
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
+        _config.tokenizer = msg.sender;
         _transferOwnership(msg.sender);
     }
 

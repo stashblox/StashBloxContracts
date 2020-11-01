@@ -9,7 +9,8 @@ const {
   now,
   accounts,
   random,
-  expectRevert
+  expectRevert,
+  setTokenizerAuthorization
 } = require("./lib/helpers.js");
 
 var STASHBLOX, DATA, tokenParams;
@@ -41,17 +42,17 @@ describe("Mintable.sol", () => {
   describe("#authorizeTokenizer", () => {
 
     it("should authorize tokenizser", async () => {
-      authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
-      assert.equal(authorized, false, "invalid authorization");
+      let config = await STASHBLOX._config();
+      assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
 
-      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
+      await setTokenizerAuthorization(accounts[5], true);
 
-      authorized = await STASHBLOX.isTokenizer(accounts[5]);
-      assert.equal(authorized, true, "invalid authorization");
+      config = await STASHBLOX._config();
+      assert.equal(config.tokenizer == accounts[5], true, "invalid authorization");
     });
 
     it("should be able to tokenize", async () => {
-      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
+      await setTokenizerAuthorization(accounts[5], true);
 
       const tokenId = random();
 
@@ -95,20 +96,20 @@ describe("Mintable.sol", () => {
 
   describe("#revokeTokenizer", () => {
 
-    it("should revoke tokeniser", async () => {
-      authorized = await STASHBLOX.isTokenizer.call(accounts[5]);
-      assert.equal(authorized, false, "invalid authorization");
+    it("should revoke tokenizer", async () => {
+      let config = await STASHBLOX._config();
+      assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
 
-      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
-      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], false);
+      await setTokenizerAuthorization(accounts[5], true);
+      await setTokenizerAuthorization(accounts[5], false);
 
-      authorized = await STASHBLOX.isTokenizer(accounts[5]);
-      assert.equal(authorized, false, "invalid authorization");
+      config = await STASHBLOX._config();
+      assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
     });
 
     it("should not be able to tokenize", async () => {
-      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], true);
-      await STASHBLOX.setTokenizerAuthorization.send(accounts[5], false);
+      await setTokenizerAuthorization(accounts[5], true);
+      await setTokenizerAuthorization(accounts[5], false);
 
       const tokenId = random();
 
