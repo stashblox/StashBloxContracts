@@ -192,11 +192,11 @@ describe("MultiToken.sol", () => {
 
       it("should revert if receiver is not a valid contract", async () => {
         const receiver = await DummyMock.new();
-        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+        const demurrageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
 
         expectRevert.unspecified(STASHBLOX.safeTransferFrom(
           accounts[1], receiver.address, DATA["token1"].id, 50, ZERO_BYTES32,
-          {from: accounts[1], value: storageFees}
+          {from: accounts[1], value: demurrageFees}
         ));
       });
 
@@ -205,11 +205,11 @@ describe("MultiToken.sol", () => {
           RECEIVER_SINGLE_MAGIC_VALUE, true,
           RECEIVER_BATCH_MAGIC_VALUE, true,
         );
-        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+        const demurrageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
 
         expectRevert(STASHBLOX.safeTransferFrom(
           accounts[1], receiver.address, DATA["token1"].id, 50, ZERO_BYTES32,
-          {from: accounts[1], value: storageFees}
+          {from: accounts[1], value: demurrageFees}
         ), "reverting on receive");
       });
 
@@ -317,11 +317,11 @@ describe("MultiToken.sol", () => {
         });
 
         const receiver = await DummyMock.new();
-        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+        const demurrageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
 
         expectRevert(STASHBLOX.safeBatchTransferFrom(
           accounts[1], receiver.address, [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
-          {from: accounts[1], value: storageFees * 2}
+          {from: accounts[1], value: demurrageFees * 2}
         ), "error");
       });
 
@@ -340,11 +340,11 @@ describe("MultiToken.sol", () => {
           amount: 50
         });
 
-        const storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+        const demurrageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
 
         expectRevert(STASHBLOX.safeBatchTransferFrom(
           accounts[1], receiver.address, [DATA["token1"].id, DATA["token1"].id], [50, 50], ZERO_BYTES32,
-          {from: accounts[1], value: storageFees * 2}
+          {from: accounts[1], value: demurrageFees * 2}
         ), "reverting on batch receive");
       });
 

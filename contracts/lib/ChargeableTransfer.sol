@@ -70,32 +70,32 @@ contract ChargeableTransfer is GSNCapable {
         _holders[id][account].balance = newBalance;
     }
 
-    function _storageCost(address account, uint256 id, uint256 value) internal view returns (uint256) {
+    function _demurrageCost(address account, uint256 id, uint256 value) internal view returns (uint256) {
         uint256 totalCost = 0;
         uint256 timeCursor = block.timestamp;
-        // pay storage for a full token
+        // pay demurrage for a full token
         uint256 paidValue = value < 10**_tokens[id].decimals ? 10**_tokens[id].decimals : value;
 
-        for (uint i = _storageFees[id].length - 1; i >= 0; i--) {
+        for (uint i = _demurrageFees[id].length - 1; i >= 0; i--) {
 
-            uint256 costStartAt = _storageFees[id][i][0];
-            uint256 cost = _storageFees[id][i][1];
-            uint256 storageDays;
+            uint256 costStartAt = _demurrageFees[id][i][0];
+            uint256 cost = _demurrageFees[id][i][1];
+            uint256 demurrageDays;
 
             if (_holders[id][account].birthday >= costStartAt) {
-                storageDays = (timeCursor.sub(_holders[id][account].birthday)).div(86400);
-                if (storageDays == 0) storageDays = 1; // TODO: test this case!
-                totalCost += (storageDays.mul(cost)).mul(paidValue);
+                demurrageDays = (timeCursor.sub(_holders[id][account].birthday)).div(86400);
+                if (demurrageDays == 0) demurrageDays = 1; // TODO: test this case!
+                totalCost += (demurrageDays.mul(cost)).mul(paidValue);
                 break;
             } else {
-                storageDays = (timeCursor.sub(costStartAt)).div(86400);
-                if (storageDays == 0) storageDays = 1;
+                demurrageDays = (timeCursor.sub(costStartAt)).div(86400);
+                if (demurrageDays == 0) demurrageDays = 1;
                 timeCursor = costStartAt;
-                totalCost += (storageDays.mul(cost)).mul(paidValue);
+                totalCost += (demurrageDays.mul(cost)).mul(paidValue);
             }
         }
         // TODO!
-        totalCost = totalCost.div(10**_tokens[id].decimals); // storage cost are for one full token
+        totalCost = totalCost.div(10**_tokens[id].decimals); // demurrage cost are for one full token
 
         return totalCost;
     }
@@ -103,11 +103,11 @@ contract ChargeableTransfer is GSNCapable {
     // Calculate transaction fees
     function _transactionFees(address account, uint256 id, uint256 value) internal view returns (uint256) {
         // calculate cost proportional to time and value
-        uint256 storageFees = _storageCost(account, id, value);
+        uint256 demurrageFees = _demurrageCost(account, id, value);
         // calculate cost proportional to value only
         uint256 standardFees = (value.mul(_tokens[id].standardFees)).div(10**8);
         // add them to lump sum cost
-        return _tokens[id].lumpSumFees.add(storageFees).add(standardFees);
+        return _tokens[id].lumpSumFees.add(demurrageFees).add(standardFees);
     }
 
     function _payFees(uint256 id, address operator, uint256 fees) internal {

@@ -42,7 +42,7 @@ contract Maintenable is Mintable {
                              [3]: legalAuthority
                              [4]: standardFees
                              [5]: lumpSumFees
-                             [6]: storageFees
+                             [6]: demurrageFees
                              [7]: feesUnitType
                              [8]: feesUnitAddress
                              [9]: feesUnitId

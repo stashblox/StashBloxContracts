@@ -43,10 +43,10 @@ describe("Lockable.sol", () => {
       const docHash = random();
       let receipt = await setTokenLock(DATA["token1"].id, true, docHash);
 
-      const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
+      const demurrageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
       await expectRevert(STASHBLOX.safeTransferFrom(DATA["token1"].recipient, accounts[2], DATA["token1"].id, 50 * 10**8, ZERO_BYTES32, {
         from: DATA["token1"].recipient,
-        value: storageFees
+        value: demurrageFees
       }), "Locked");
     });
 
@@ -103,10 +103,10 @@ describe("Lockable.sol", () => {
       const docHash = random();
       let receipt = await STASHBLOX.setAccountLock.send(accounts[2], true, docHash);
 
-      const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
+      const demurrageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
       await expectRevert(STASHBLOX.safeTransferFrom(DATA["token1"].recipient, accounts[2], DATA["token1"].id, 50 * 10**8, ZERO_BYTES32, {
         from: DATA["token1"].recipient,
-        value: storageFees
+        value: demurrageFees
       }), "Locked");
 
     });

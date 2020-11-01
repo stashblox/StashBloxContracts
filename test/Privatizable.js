@@ -29,7 +29,7 @@ describe("Privatizable.sol", () => {
                                         DATA["token1"].legalAuthority,
                                         DATA["token1"].standardFees,
                                         DATA["token1"].lumpSumFees,
-                                        DATA["token1"].storageFees,
+                                        DATA["token1"].demurrageFees,
                                         DATA["token1"].feesUnitType,
                                         DATA["token1"].feesUnitAddress,
                                         DATA["token1"].feesUnitId,
@@ -57,10 +57,10 @@ describe("Privatizable.sol", () => {
     it("should raise error on transfer", async () => {
       await makePrivate()
 
-      const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
+      const demurrageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
       await expectRevert(STASHBLOX.safeTransferFrom(DATA["token1"].recipient, accounts[2], DATA["token1"].id, 50 * 10**8, ZERO_BYTES32, {
         from: DATA["token1"].recipient,
-        value: storageFees
+        value: demurrageFees
       }), "Account not approved");
     });
 
@@ -109,10 +109,10 @@ describe("Privatizable.sol", () => {
 
       await STASHBLOX.setAccountApproval.send(DATA["token1"].id, accounts[2], false);
 
-      const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
+      const demurrageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
       await expectRevert(STASHBLOX.safeTransferFrom(DATA["token1"].recipient, accounts[2], DATA["token1"].id, 50 * 10**8, ZERO_BYTES32, {
         from: DATA["token1"].recipient,
-        value: storageFees
+        value: demurrageFees
       }), "Account not approved");
     });
 

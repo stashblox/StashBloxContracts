@@ -68,7 +68,7 @@ describe("Maintenable.sol", () => {
       let legalAuthority = accounts[5];
       let standardFees = 0;
       let lumpSumFees = 3;
-      let storageFees = 1;
+      let demurrageFees = 1;
       let feesUnitType = 2;
       let feesUnitAddress = STASHBLOX.address;
       let feesUnitId = DATA["token2"].id;
@@ -85,7 +85,7 @@ describe("Maintenable.sol", () => {
                                                       legalAuthority,
                                                       standardFees,
                                                       lumpSumFees,
-                                                      storageFees,
+                                                      demurrageFees,
                                                       feesUnitType,
                                                       feesUnitAddress,
                                                       feesUnitId,
@@ -121,7 +121,7 @@ describe("Maintenable.sol", () => {
       let legalAuthority = accounts[5];
       let standardFees = 0;
       let lumpSumFees = 3;
-      let storageFees = 1;
+      let demurrageFees = 1;
       let feesUnitType = 2;
       let feesUnitAddress = STASHBLOX.address;
       let feesUnitId = DATA["token2"].id;
@@ -140,7 +140,7 @@ describe("Maintenable.sol", () => {
             legalAuthority,
             standardFees,
             lumpSumFees,
-            storageFees,
+            demurrageFees,
             feesUnitType,
             feesUnitAddress,
             feesUnitId,

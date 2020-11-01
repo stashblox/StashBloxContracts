@@ -59,9 +59,9 @@ describe("Proxyable.sol", () => {
 
       let balanceBefore = await STASHBLOX.balanceOf.call(accounts[2], DATA["token1"].id);
 
-      let storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+      let demurrageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
       let receipt = await delegateProxy.safeTransferFrom(accounts[1], accounts[2], DATA["token1"].id, 50, ZERO_BYTES32, {
-        value: storageFees,
+        value: demurrageFees,
         from: accounts[1]
       });
 
@@ -86,9 +86,9 @@ describe("Proxyable.sol", () => {
 
       let balanceBefore = await STASHBLOX.balanceOf.call(accounts[2], DATA["token2"].id);
 
-      let storageFees = await STASHBLOX.transactionFees.call(accounts[2], DATA["token2"].id, 50);
+      let demurrageFees = await STASHBLOX.transactionFees.call(accounts[2], DATA["token2"].id, 50);
       expectRevert(delegateProxy.safeTransferFrom(accounts[2], accounts[1], DATA["token2"].id, 50, ZERO_BYTES32, {
-        value: storageFees,
+        value: demurrageFees,
         from: accounts[2]
       }), "operator not approved");
 
@@ -113,12 +113,12 @@ describe("Proxyable.sol", () => {
       let balanceBefore1 = await STASHBLOX.balanceOf.call(accounts[3], DATA["token1"].id);
       let balanceBefore2 = await STASHBLOX.balanceOf.call(accounts[3], DATA["token2"].id);
 
-      let storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
-      storageFees += await STASHBLOX.transactionFees.call(accounts[1], DATA["token2"].id, 50);
+      let demurrageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+      demurrageFees += await STASHBLOX.transactionFees.call(accounts[1], DATA["token2"].id, 50);
       let receipt = await delegateProxy.safeBatchTransferFrom(accounts[1], accounts[3],
                                                              [DATA["token1"].id, DATA["token2"].id],
                                                              [50, 50], ZERO_BYTES32, {
-        value: storageFees,
+        value: demurrageFees,
         from: accounts[1]
       });
 
@@ -155,12 +155,12 @@ describe("Proxyable.sol", () => {
       let balanceBefore1 = await STASHBLOX.balanceOf.call(accounts[1], DATA["token1"].id);
       let balanceBefore2 = await STASHBLOX.balanceOf.call(accounts[1], DATA["token2"].id);
 
-      let storageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
-      storageFees += await STASHBLOX.transactionFees.call(accounts[1], DATA["token2"].id, 50);
+      let demurrageFees = await STASHBLOX.transactionFees.call(accounts[1], DATA["token1"].id, 50);
+      demurrageFees += await STASHBLOX.transactionFees.call(accounts[1], DATA["token2"].id, 50);
       expectRevert(delegateProxy.safeBatchTransferFrom(accounts[1], accounts[3],
                                                              [DATA["token1"].id, DATA["token2"].id],
                                                              [50, 50], ZERO_BYTES32, {
-        value: storageFees,
+        value: demurrageFees,
         from: accounts[1]
       }), "operator not approved");
 

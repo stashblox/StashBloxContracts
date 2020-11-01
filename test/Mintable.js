@@ -28,7 +28,7 @@ describe("Mintable.sol", () => {
       DATA["token1"].legalAuthority,
       DATA["token1"].standardFees,
       DATA["token1"].lumpSumFees,
-      DATA["token1"].storageFees,
+      DATA["token1"].demurrageFees,
       DATA["token1"].feesUnitType,
       DATA["token1"].feesUnitAddress,
       DATA["token1"].feesUnitId,
@@ -63,7 +63,7 @@ describe("Mintable.sol", () => {
       [3]: legalAuthority
       [4]: standardFees
       [5]: lumpSumFees
-      [6]: storageFees
+      [6]: demurrageFees
       [7]: feesUnitType
       [8]: feesUnitAddress
       [9]: feesUnitId

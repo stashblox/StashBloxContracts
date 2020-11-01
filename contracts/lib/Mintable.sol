@@ -36,7 +36,7 @@ contract Mintable is MultiToken {
      *                          [3]: legalAuthority<br />
      *                          [4]: standardFees<br />
      *                          [5]: lumpSumFees<br />
-     *                          [6]: storageFees<br />
+     *                          [6]: demurrageFees<br />
      *                          [7]: feesUnitType<br />
      *                          [8]: feesUnitAddress<br />
      *                          [9]: feesUnitId<br />
@@ -89,7 +89,7 @@ contract Mintable is MultiToken {
                     [3]: legalAuthority
                     [4]: standardFees
                     [5]: lumpSumFees
-                    [6]: storageFees
+                    [6]: demurrageFees
                     [7]: feesUnitType
                     [8]: feesUnitAddress
                     [9]: feesUnitId
@@ -111,7 +111,7 @@ contract Mintable is MultiToken {
         token.legalAuthority = address(uint160(params[3]));
         token.standardFees = params[4];
         token.lumpSumFees = params[5];
-        _storageFees[id].push([block.timestamp, params[6]]);
+        _demurrageFees[id].push([block.timestamp, params[6]]);
         token.feesUnitType = params[7];
         token.feesUnitAddress = address(uint160(params[8]));
         token.feesUnitId = params[9];
@@ -152,7 +152,7 @@ contract Mintable is MultiToken {
                          uint256(uint160(_tokens[id].legalAuthority)),
                          _tokens[id].standardFees,
                          _tokens[id].lumpSumFees,
-                         _storageFees[id][0][1],
+                         _demurrageFees[id][0][1],
                          _tokens[id].feesUnitType,
                          uint256(uint160(_tokens[id].feesUnitAddress)),
                          _tokens[id].feesUnitId,

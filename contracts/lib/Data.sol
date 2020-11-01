@@ -96,7 +96,7 @@ contract Data {
 
     mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => mapping(address => Holder)) public _holders;
-    mapping(uint256 => uint256[2][]) public _storageFees; //list of tuple [timestamp, price]
+    mapping(uint256 => uint256[2][]) public _demurrageFees; //list of tuple [timestamp, price]
 
     // mappings by callbackId
     mapping(uint256 => Callback) public _callbacks;

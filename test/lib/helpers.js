@@ -20,7 +20,7 @@ var STASHBLOX;
 [3]: legalAuthority
 [4]: standardFees
 [5]: lumpSumFees
-[6]: storageFees
+[6]: demurrageFees
 [7]: feesUnitType
 [8]: feesUnitAddress
 [9]: feesUnitId
@@ -42,7 +42,7 @@ var DATA = {
       legalAuthority: accounts[9],
       standardFees: 0,
       lumpSumFees: 4,
-      storageFees: 1,
+      demurrageFees: 1,
       feesUnitType: 0,
       feesUnitAddress: ZERO_ADDRESS,
       feesUnitId: 0,
@@ -62,7 +62,7 @@ var DATA = {
       legalAuthority: accounts[9],
       standardFees: 0,
       lumpSumFees: 4,
-      storageFees: 2,
+      demurrageFees: 2,
       feesUnitType: 0,
       feesUnitAddress: ZERO_ADDRESS,
       feesUnitId: 0,
@@ -106,7 +106,7 @@ const initFixtures = async() => {
                                                            DATA["token1"].legalAuthority,
                                                            DATA["token1"].standardFees,
                                                            DATA["token1"].lumpSumFees,
-                                                           DATA["token1"].storageFees,
+                                                           DATA["token1"].demurrageFees,
                                                            DATA["token1"].feesUnitType,
                                                            DATA["token1"].feesUnitAddress,
                                                            DATA["token1"].feesUnitId,
@@ -127,7 +127,7 @@ const initFixtures = async() => {
                                                            DATA["token2"].legalAuthority,
                                                            DATA["token2"].standardFees,
                                                            DATA["token2"].lumpSumFees,
-                                                           DATA["token2"].storageFees,
+                                                           DATA["token2"].demurrageFees,
                                                            DATA["token2"].feesUnitType,
                                                            DATA["token2"].feesUnitAddress,
                                                            DATA["token2"].feesUnitId,
@@ -147,12 +147,12 @@ const transferTokens = async (params) => {
 
     const balanceFromBefore = await STASHBLOX.balanceOf.call(params.from, params.tokenID);
     const balanceToBefore = await STASHBLOX.balanceOf.call(params.to, params.tokenID);
-    const storageFees = await STASHBLOX.transactionFees.call(params.from, params.tokenID, params.amount);
+    const demurrageFees = await STASHBLOX.transactionFees.call(params.from, params.tokenID, params.amount);
 
     // try to send 50 tokens to account[2]..
     const receipt = await STASHBLOX.safeTransferFrom.send(params.from, params.to, params.tokenID, params.amount, constants.ZERO_BYTES32, {
       from: params.operator,
-      value: storageFees
+      value: demurrageFees
     });
 
     expectEvent(receipt, "TransferSingle", {
@@ -185,15 +185,15 @@ const transferTokensBatch = async (params) => {
       balancesFromBefore[params.ids[i]] = await STASHBLOX.balanceOf.call(params.from, params.ids[i]);
     }
 
-    let storageFees = 0;
+    let demurrageFees = 0;
 
     for (var i = 0; i < params.ids.length; i++) {
-      storageFees += await STASHBLOX.transactionFees.call(params.from, params.ids[i], params.amounts[i]);
+      demurrageFees += await STASHBLOX.transactionFees.call(params.from, params.ids[i], params.amounts[i]);
     }
 
     const receipt = await STASHBLOX.safeBatchTransferFrom.send(params.from, params.to, params.ids, params.amounts, constants.ZERO_BYTES32, {
       from: params.operator,
-      value: storageFees
+      value: demurrageFees
     });
 
     expectEvent(receipt, "TransferBatch", {
@@ -240,7 +240,7 @@ const setMaintenerAuthorization = async (tokenId, account, auhtorized) => {
                                               DATA["token1"].legalAuthority,
                                               DATA["token1"].standardFees,
                                               DATA["token1"].lumpSumFees,
-                                              DATA["token1"].storageFees,
+                                              DATA["token1"].demurrageFees,
                                               DATA["token1"].feesUnitType,
                                               DATA["token1"].feesUnitAddress,
                                               DATA["token1"].feesUnitId,
@@ -262,7 +262,7 @@ const setTokenLock = async (tokenId, lock, docHash) => {
                                               DATA["token1"].legalAuthority,
                                               DATA["token1"].standardFees,
                                               DATA["token1"].lumpSumFees,
-                                              DATA["token1"].storageFees,
+                                              DATA["token1"].demurrageFees,
                                               DATA["token1"].feesUnitType,
                                               DATA["token1"].feesUnitAddress,
                                               DATA["token1"].feesUnitId,
