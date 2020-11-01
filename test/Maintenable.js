@@ -2,6 +2,7 @@ const {
   initContract,
   initFixtures,
   transferTokens,
+  setMaintenerAuthorization,
   bigN,
   expectEvent,
   ZERO_ADDRESS,
@@ -24,12 +25,14 @@ describe("Maintenable.sol", () => {
   describe("#authorizeMaintener", () => {
 
     it("should authorize maintener", async () => {
-      let authorized = await STASHBLOX.isMaintener.call(DATA["token1"].id, accounts[5]);
+      let token = await STASHBLOX._tokens(DATA["token1"].id);
+      let authorized = token.maintener == accounts[5];
       assert.equal(authorized, false, "invalid authorization");
 
       await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
 
-      authorized = await STASHBLOX.isMaintener(DATA["token1"].id, accounts[5]);
+      token = await STASHBLOX._tokens(DATA["token1"].id);
+      authorized = token.maintener == accounts[5];
       assert.equal(authorized, true, "invalid authorization");
     });
 
@@ -39,13 +42,16 @@ describe("Maintenable.sol", () => {
   describe("#revokeMaintener", () => {
 
     it("should revoke maintener", async () => {
-      let authorized = await STASHBLOX.isMaintener.call(DATA["token1"].id, accounts[5]);
+      let token = await STASHBLOX._tokens(DATA["token1"].id);
+      let authorized = token.maintener == accounts[5];
       assert.equal(authorized, false, "invalid authorization");
 
       await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
       await setMaintenerAuthorization(DATA["token1"].id, accounts[5], false);
 
-      authorized = await STASHBLOX.isMaintener(DATA["token1"].id, accounts[5]);
+
+      token = await STASHBLOX._tokens(DATA["token1"].id);
+      authorized = token.maintener == accounts[5];
       assert.equal(authorized, false, "invalid authorization");
     });
 
@@ -68,6 +74,8 @@ describe("Maintenable.sol", () => {
       let feesUnitId = DATA["token2"].id;
       let feesRecipient = accounts[5];
       let decimals = 8;
+      let maintener = accounts[5];
+      let locked = 0;
 
       let receipt = await STASHBLOX.updateToken.send(DATA["token1"].id,
                                                     [
@@ -82,7 +90,9 @@ describe("Maintenable.sol", () => {
                                                       feesUnitAddress,
                                                       feesUnitId,
                                                       feesRecipient,
-                                                      decimals
+                                                      decimals,
+                                                      maintener,
+                                                      locked
                                                     ], {from: accounts[5]});
 
       expectEvent(receipt, "TokenUpdated", {

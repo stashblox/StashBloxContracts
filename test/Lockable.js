@@ -10,7 +10,8 @@ const {
   assert,
   defaultSender,
   ZERO_ADDRESS,
-  ZERO_BYTES32
+  ZERO_BYTES32,
+  setTokenLock
 } = require("./lib/helpers.js");
 
 describe("Lockable.sol", () => {
@@ -23,24 +24,24 @@ describe("Lockable.sol", () => {
   describe("#lockToken", async () => {
 
     it("should lock token", async () => {
-      let locked = await STASHBLOX.isLockedToken(DATA["token1"].id);
-      assert.equal(locked, false, "invalid lock");
+      let token = await STASHBLOX._tokens(DATA["token1"].id);
+      assert.equal(token.locked, false, "invalid lock");
 
       const docHash = random();
-      const receipt = await STASHBLOX.setTokenLock.send(DATA["token1"].id, true, docHash);
+      const receipt = await setTokenLock(DATA["token1"].id, true, docHash);
 
       expectEvent(receipt, "TokenUpdated", {
         _id: DATA["token1"].id,
-        _documentHash: docHash
+        _documentHash: DATA["token1"].metadataHash
       });
 
-      locked = await STASHBLOX.isLockedToken(DATA["token1"].id);
-      assert.equal(locked, true, "invalid lock");
+      token = await STASHBLOX._tokens(DATA["token1"].id);
+      assert.equal(token.locked, true, "invalid lock");
     });
 
     it("should raise error on transfer", async () => {
       const docHash = random();
-      let receipt = await STASHBLOX.setTokenLock.send(DATA["token1"].id, true, docHash);
+      let receipt = await setTokenLock(DATA["token1"].id, true, docHash);
 
       const storageFees = await STASHBLOX.transactionFees.call(DATA["token1"].recipient, DATA["token1"].id, 50 * 10**8);
       await expectRevert(STASHBLOX.safeTransferFrom(DATA["token1"].recipient, accounts[2], DATA["token1"].id, 50 * 10**8, ZERO_BYTES32, {
@@ -55,19 +56,19 @@ describe("Lockable.sol", () => {
 
     it("should unlock token", async () => {
       const docHash = random();
-      let receipt = await STASHBLOX.setTokenLock.send(DATA["token1"].id, true, docHash);
+      let receipt = await setTokenLock(DATA["token1"].id, true, docHash);
 
-      locked = await STASHBLOX.isLockedToken(DATA["token1"].id);
-      assert.equal(locked, true, "invalid lock");
+      token = await STASHBLOX._tokens(DATA["token1"].id);
+      assert.equal(token.locked, true, "invalid lock");
 
-      receipt = await STASHBLOX.setTokenLock.send(DATA["token1"].id, false, docHash);
+      receipt = await setTokenLock(DATA["token1"].id, false, docHash);
       expectEvent(receipt, "TokenUpdated", {
         _id: DATA["token1"].id,
-        _documentHash: docHash
+        _documentHash: DATA["token1"].metadataHash
       });
 
-      locked = await STASHBLOX.isLockedToken(DATA["token1"].id);
-      assert.equal(locked, false, "invalid lock");
+      token = await STASHBLOX._tokens(DATA["token1"].id);
+      assert.equal(token.locked, false, "invalid lock");
 
       await transferTokens({
         from: DATA["token1"].recipient,

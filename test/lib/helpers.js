@@ -48,7 +48,7 @@ var DATA = {
       feesUnitId: 0,
       feesRecipient: accounts[6],
       decimals: 8,
-      maintener: accounts[5],
+      maintener: accounts[1],
       locked: 0
   },
   "token2": {
@@ -68,7 +68,7 @@ var DATA = {
       feesUnitId: 0,
       feesRecipient: accounts[7],
       decimals: 8,
-      maintener: accounts[5],
+      maintener: accounts[2],
       locked: 0
   }
 }
@@ -238,6 +238,28 @@ const setMaintenerAuthorization = async (tokenId, account, auhtorized) => {
 
 }
 
+const setTokenLock = async (tokenId, lock, docHash) => {
+
+    return await STASHBLOX.updateToken.send(tokenId,
+                                            [
+                                              DATA["token1"].metadataHash,
+                                              DATA["token2"].isPrivate,
+                                              DATA["token1"].minHoldingForCallback,
+                                              DATA["token1"].legalAuthority,
+                                              DATA["token1"].standardFees,
+                                              DATA["token1"].lumpSumFees,
+                                              DATA["token1"].storageFees,
+                                              DATA["token1"].feesUnitType,
+                                              DATA["token1"].feesUnitAddress,
+                                              DATA["token1"].feesUnitId,
+                                              DATA["token1"].feesRecipient,
+                                              DATA["token1"].decimals,
+                                              DATA["token1"].maintener,
+                                              lock ? 1 : 0
+                                            ]);
+
+}
+
 
 
 const travelOneYear = async() => {
@@ -253,6 +275,8 @@ module.exports = exports = {
   initFixtures,
   transferTokens,
   transferTokensBatch,
+  setMaintenerAuthorization,
+  setTokenLock,
   bigN,
   expectRevert,
   expectEvent,

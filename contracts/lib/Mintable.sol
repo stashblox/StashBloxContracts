@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.7.1;
+pragma solidity ^0.7.4;
 
 import "../utils/SafeMath.sol";
 import "./MultiToken.sol";
@@ -69,7 +69,7 @@ contract Mintable is MultiToken {
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
-                         uint256[] memory params)
+                         uint256[14] memory params)
     external onlyTokenizer {
         _createToken(recipient,
                      id,
@@ -127,7 +127,7 @@ contract Mintable is MultiToken {
                    [12]: maintener
                    [13]: locked
     */
-    function _setToken(uint256 id, uint256[] memory params) internal {
+    function _setToken(uint256 id, uint256[14] memory params) internal {
         require(params[2] < 10000 &&      // minHoldingForCallback
                 params[7] <= 2,         // 0 ether, 1 erc20, 2 erc1155
                 "Invalid arguments");
@@ -158,7 +158,7 @@ contract Mintable is MultiToken {
     function _createToken(address recipient,
                           uint256 id,
                           uint256 supply,
-                          uint256[] memory params)
+                          uint256[14] memory params)
     internal {
         require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 

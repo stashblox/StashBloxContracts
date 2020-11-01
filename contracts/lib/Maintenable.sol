@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-pragma solidity ^0.7.1;
+pragma solidity ^0.7.4;
 
 import "./Mintable.sol";
 
@@ -54,7 +54,7 @@ contract Maintenable is Mintable {
      * @param id ID of the token to be updated
      * @param params Token information
      */
-    function updateToken(uint256 id, uint256[] memory params) external onlyMaintener(id) {
+    function updateToken(uint256 id, uint256[14] memory params) external onlyMaintener(id) {
         require(_tokens[id].supply > 0, "Unknown token");
         _setToken(id, params);
         emit TokenUpdated(id, params[0]);
