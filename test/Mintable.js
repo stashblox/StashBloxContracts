@@ -32,7 +32,9 @@ describe("Mintable.sol", () => {
       DATA["token1"].feesUnitAddress,
       DATA["token1"].feesUnitId,
       DATA["token1"].feesRecipient,
-      DATA["token1"].decimals
+      DATA["token1"].decimals,
+      DATA["token1"].maintener,
+      DATA["token1"].locked
     ];
   });
 
@@ -66,6 +68,8 @@ describe("Mintable.sol", () => {
       [9]: feesUnitId
      [10]: feesRecipient
      [11]: decimals
+     [12]: maintener
+     [13]: locked
       */
 
       await STASHBLOX.createToken.send(accounts[5],

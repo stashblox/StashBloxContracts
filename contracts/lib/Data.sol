@@ -26,7 +26,6 @@ contract Data {
     struct Holder {
         uint256 balance;
         uint256 birthday;
-        bool isMaintener;
         bool isHolder; // never come back to false
         bool isApproved; // for private tokens
     }
@@ -43,6 +42,7 @@ contract Data {
         address feesUnitAddress;
         address feesRecipient;
         address legalAuthority;
+        address maintener;
         bool isPrivate;
         bool locked;
     }
@@ -93,7 +93,7 @@ contract Data {
      * @dev use _tokens getter to obtain the new state
      */
     mapping(uint256 => Token) public _tokens;
-    
+
     mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => mapping(address => Holder)) public _holders;
     mapping(uint256 => uint256[2][]) public _storageFees; //list of tuple [timestamp, price]

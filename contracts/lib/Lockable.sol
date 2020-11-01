@@ -18,22 +18,6 @@ contract Lockable is Privatizable {
     *****************************/
 
     /**
-     * @dev Function to unlock a token.
-     * @param id The token ID
-     */
-    function setTokenLock(uint256 id, bool lock, uint256 documentHash) external onlyMaintener(id) {
-        _setTokenLock(id, lock, documentHash);
-    }
-
-    /**
-     * @dev Function to check if a token is locked.
-     * @param id The token ID
-     */
-    function isLockedToken(uint256 id) external view returns (bool){
-        return _isLockedToken(id);
-    }
-
-    /**
      * @dev Function to unlock an address.
      * @param account The address to unlock
      */
@@ -61,16 +45,12 @@ contract Lockable is Privatizable {
         emit TokenUpdated(id, documentHash);
     }
 
-    function _isLockedToken(uint256 id) internal view returns (bool) {
-        return _tokens[id].locked;
-    }
-
     function _isLockedAccount(address account) internal view returns (bool) {
         return _accounts[account].isLocked;
     }
 
     function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
-        return _isLockedToken(id) || _isLockedAccount(from) || _isLockedAccount(to) || (value == 0);
+        return _tokens[id].locked || _isLockedAccount(from) || _isLockedAccount(to) || (value == 0);
     }
 
     // override ChargeableTransfer._moveTokens

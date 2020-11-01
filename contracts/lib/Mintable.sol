@@ -58,6 +58,8 @@ contract Mintable is MultiToken {
      *                          [9]: feesUnitId<br />
      *                         [10]: feesRecipient<br />
      *                         [11]: decimals<br />
+     *                         [12]: maintener<br />
+     *                         [13]: locked<br />
      * <br />
      * @param recipient The address that will own the minted tokens
      * @param id ID of the token to be minted
@@ -67,7 +69,7 @@ contract Mintable is MultiToken {
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
-                         uint256[12] memory params)
+                         uint256[] memory params)
     external onlyTokenizer {
         _createToken(recipient,
                      id,
@@ -122,37 +124,45 @@ contract Mintable is MultiToken {
                     [9]: feesUnitId
                    [10]: feesRecipient
                    [11]: decimals
+                   [12]: maintener
+                   [13]: locked
     */
-    function _setToken(uint256 id, uint256[12] memory params) internal {
+    function _setToken(uint256 id, uint256[] memory params) internal {
         require(params[2] < 10000 &&      // minHoldingForCallback
                 params[7] <= 2,         // 0 ether, 1 erc20, 2 erc1155
                 "Invalid arguments");
 
-        if (_tokens[id].metadataHash != params[0]) emit URI(uri(id), id);
-        _tokens[id].metadataHash = params[0];
-        _tokens[id].isPrivate = params[1] > 0;
-        _tokens[id].minHoldingForCallback = params[2];
-        _tokens[id].legalAuthority = address(uint160(params[3]));
-        _tokens[id].standardFees = params[4];
-        _tokens[id].lumpSumFees = params[5];
+        Token memory token;
+        token.supply = _tokens[id].supply;
+        token.metadataHash = params[0];
+        token.isPrivate = params[1] > 0;
+        token.minHoldingForCallback = params[2];
+        token.legalAuthority = address(uint160(params[3]));
+        token.standardFees = params[4];
+        token.lumpSumFees = params[5];
         _storageFees[id].push([block.timestamp, params[6]]);
-        _tokens[id].feesUnitType = params[7];
-        _tokens[id].feesUnitAddress = address(uint160(params[8]));
-        _tokens[id].feesUnitId = params[9];
-        _tokens[id].feesRecipient = address(uint160(params[10]));
-        _tokens[id].decimals = params[11];
+        token.feesUnitType = params[7];
+        token.feesUnitAddress = address(uint160(params[8]));
+        token.feesUnitId = params[9];
+        token.feesRecipient = address(uint160(params[10]));
+        token.decimals = params[11];
+        token.maintener = address(uint160(params[12]));
+        token.locked = params[13] > 0;
+
+        if (_tokens[id].metadataHash != params[0]) emit URI(uri(id), id);
+
+        _tokens[id] = token;
     }
 
 
     function _createToken(address recipient,
                           uint256 id,
                           uint256 supply,
-                          uint256[12] memory params)
+                          uint256[] memory params)
     internal {
         require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 
         _tokens[id].supply = supply;
-        _holders[id][_msgSender()].isMaintener = true;
         _holders[id][recipient].isApproved = true;
 
         _setToken(id, params);
@@ -176,7 +186,9 @@ contract Mintable is MultiToken {
                          uint256(uint160(_tokens[id].feesUnitAddress)),
                          _tokens[id].feesUnitId,
                          uint256(uint160(_tokens[id].feesRecipient)),
-                         _tokens[id].decimals
+                         _tokens[id].decimals,
+                         uint256(uint160(_tokens[id].maintener)),
+                         _tokens[id].locked ? 1 : 0
                      ]);
     }
 

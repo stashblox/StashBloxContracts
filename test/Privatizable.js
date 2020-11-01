@@ -34,7 +34,9 @@ describe("Privatizable.sol", () => {
                                         DATA["token1"].feesUnitAddress,
                                         DATA["token1"].feesUnitId,
                                         DATA["token1"].feesRecipient,
-                                        DATA["token1"].decimals
+                                        DATA["token1"].decimals,
+                                        DATA["token1"].maintener,
+                                        DATA["token1"].locked
                                       ]);
   }
 

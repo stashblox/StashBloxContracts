@@ -27,7 +27,7 @@ describe("Maintenable.sol", () => {
       let authorized = await STASHBLOX.isMaintener.call(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
+      await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
 
       authorized = await STASHBLOX.isMaintener(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, true, "invalid authorization");
@@ -42,8 +42,8 @@ describe("Maintenable.sol", () => {
       let authorized = await STASHBLOX.isMaintener.call(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
 
-      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
-      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], false);
+      await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
+      await setMaintenerAuthorization(DATA["token1"].id, accounts[5], false);
 
       authorized = await STASHBLOX.isMaintener(DATA["token1"].id, accounts[5]);
       assert.equal(authorized, false, "invalid authorization");
@@ -54,7 +54,7 @@ describe("Maintenable.sol", () => {
   describe("#updateToken", () => {
 
     it("should be able to update token", async () => {
-      await STASHBLOX.setMaintenerAuthorization.send(DATA["token1"].id, accounts[5], true);
+      await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
 
       let metadataHash = random();
       let isPrivate = 1;
@@ -117,6 +117,8 @@ describe("Maintenable.sol", () => {
       let feesUnitId = DATA["token2"].id;
       let feesRecipient = accounts[5];
       let decimals = 8;
+      let maintener = accounts[5];
+      let locked = 0;
 
       expectRevert(
         STASHBLOX.updateToken(
@@ -133,7 +135,9 @@ describe("Maintenable.sol", () => {
             feesUnitAddress,
             feesUnitId,
             feesRecipient,
-            decimals
+            decimals,
+            maintener,
+            locked
           ], {from: accounts[5]}),
         "Insufficient permission"
       );

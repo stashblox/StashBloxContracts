@@ -26,6 +26,8 @@ var STASHBLOX;
 [9]: feesUnitId
 [10]: feesRecipient
 [11]: decimals
+[12]: maintener
+[13]: locked
 */
 
 var DATA = {
@@ -45,7 +47,9 @@ var DATA = {
       feesUnitAddress: ZERO_ADDRESS,
       feesUnitId: 0,
       feesRecipient: accounts[6],
-      decimals: 8
+      decimals: 8,
+      maintener: accounts[5],
+      locked: 0
   },
   "token2": {
       recipient: accounts[2],
@@ -63,7 +67,9 @@ var DATA = {
       feesUnitAddress: ZERO_ADDRESS,
       feesUnitId: 0,
       feesRecipient: accounts[7],
-      decimals: 8
+      decimals: 8,
+      maintener: accounts[5],
+      locked: 0
   }
 }
 
@@ -105,7 +111,9 @@ const initFixtures = async() => {
                                                            DATA["token1"].feesUnitAddress,
                                                            DATA["token1"].feesUnitId,
                                                            DATA["token1"].feesRecipient,
-                                                           DATA["token1"].decimals
+                                                           DATA["token1"].decimals,
+                                                           DATA["token1"].maintener,
+                                                           DATA["token1"].locked
                                                          ]);
     DATA["token1"].createdAt = await time.latest();
 
@@ -124,7 +132,9 @@ const initFixtures = async() => {
                                                            DATA["token2"].feesUnitAddress,
                                                            DATA["token2"].feesUnitId,
                                                            DATA["token2"].feesRecipient,
-                                                           DATA["token2"].decimals
+                                                           DATA["token2"].decimals,
+                                                           DATA["token1"].maintener,
+                                                           DATA["token1"].locked
                                                          ]);
     DATA["token2"].createdAt = await time.latest();
 
@@ -204,6 +214,28 @@ const transferTokensBatch = async (params) => {
     }
 
     return receipt;
+}
+
+const setMaintenerAuthorization = async (tokenId, account, auhtorized) => {
+
+    return await STASHBLOX.updateToken.send(tokenId,
+                                            [
+                                              DATA["token1"].metadataHash,
+                                              DATA["token2"].isPrivate,
+                                              DATA["token1"].minHoldingForCallback,
+                                              DATA["token1"].legalAuthority,
+                                              DATA["token1"].standardFees,
+                                              DATA["token1"].lumpSumFees,
+                                              DATA["token1"].storageFees,
+                                              DATA["token1"].feesUnitType,
+                                              DATA["token1"].feesUnitAddress,
+                                              DATA["token1"].feesUnitId,
+                                              DATA["token1"].feesRecipient,
+                                              DATA["token1"].decimals,
+                                              auhtorized ? account : 0,
+                                              DATA["token1"].locked
+                                            ]);
+
 }
 
 

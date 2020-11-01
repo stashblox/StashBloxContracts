@@ -11,7 +11,7 @@ import "./lib/Configurable.sol";
     @notice You can use this contract for only the most basic simulation
     @dev All function calls are currently implemented without side effects
  */
-contract StashBlox is Callable, Withdrawable, Configurable {
+contract StashBlox is Lockable, Withdrawable, Configurable {
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
