@@ -22,6 +22,22 @@ contract StashBlox is Callable, Withdrawable, Configurable {
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
         _config.tokenizer = msg.sender;
         _transferOwnership(msg.sender);
+
+        string[13] memory fieldList = [
+          "decimals", "metadataHash", "minHoldingForCallback",
+          "lumpSumFees", "standardFees", "feesUnitType",
+          "feesUnitId", "feesUnitAddress", "feesRecipient",
+          "legalAuthority", "maintener", "isPrivate",
+          "locked"
+        ];
+        for (uint8 i = 0; i < fieldList.length; i++) {
+            string memory skey = fieldList[i];
+            bytes32 key;
+            assembly {
+                key := mload(add(skey, 32))
+            }
+            tokenStructMap[key] = i + 1;
+        }
     }
 
 }

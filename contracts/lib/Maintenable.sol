@@ -60,6 +60,10 @@ contract Maintenable is Mintable {
         emit TokenUpdated(id, params[0]);
     }
 
+    function setTokenProperty(uint256 id, string memory property, uint256 value) internal {
+        _setTokenProperty(id, property, value);
+    }
+
 
     /****************************
     INTERNAL FUNCTIONS

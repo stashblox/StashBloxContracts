@@ -97,14 +97,16 @@ contract Mintable is MultiToken {
                    [11]: decimals
                    [12]: maintener
                    [13]: locked
+
+
     */
     function _setToken(uint256 id, uint256[14] memory params) internal {
         require(params[2] < 10000 &&      // minHoldingForCallback
                 params[7] <= 2,         // 0 ether, 1 erc20, 2 erc1155
                 "Invalid arguments");
 
-        Token memory token;
-        token.supply = _tokens[id].supply;
+        Token memory token = _tokens[id];
+
         token.metadataHash = params[0];
         token.isPrivate = params[1] > 0;
         token.minHoldingForCallback = params[2];
@@ -121,6 +123,24 @@ contract Mintable is MultiToken {
         token.locked = params[13] > 0;
 
         if (_tokens[id].metadataHash != params[0]) emit URI(uri(id), id);
+
+        _tokens[id] = token;
+    }
+
+    function _setTokenProperty(uint256 id, string memory property, uint256 value) internal {
+        Token memory token = _tokens[id];
+        require(token.supply > 0, "invalid token id");
+
+        bytes32 key;
+        assembly {
+            key := mload(add(property, 32))
+        }
+        uint8 index = tokenStructMap[key];
+        require(index > 0, "invalid property name");
+
+        assembly {
+            mstore(add(token, mul(32, index)), value)
+        }
 
         _tokens[id] = token;
     }

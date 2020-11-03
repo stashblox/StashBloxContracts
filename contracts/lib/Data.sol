@@ -33,10 +33,10 @@ contract Data {
     struct Token {
         uint256 supply;
         uint256 decimals;
+        uint256 metadataHash;
+        uint256 minHoldingForCallback;
         uint256 lumpSumFees;
         uint256 standardFees;
-        uint256 minHoldingForCallback;
-        uint256 metadataHash;
         uint256 feesUnitType; // 0 ether, 1 erc20, 2 erc1155
         uint256 feesUnitId;
         address feesUnitAddress;
@@ -46,6 +46,7 @@ contract Data {
         bool isPrivate;
         bool locked;
     }
+    mapping(bytes32 => uint8) internal tokenStructMap;
 
     struct Callback {
         uint256 tokenId;
