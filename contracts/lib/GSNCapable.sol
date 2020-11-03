@@ -1,4 +1,5 @@
 // SPDX-License-Identifier:MIT
+// (c) Copyright 2020 Stashblox, all rights reserved.
 // solhint-disable no-inline-assembly
 pragma solidity ^0.7.4;
 

@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: UNLICENSED
+// (c) Copyright 2020 Stashblox, all rights reserved.
 pragma solidity ^0.7.4;
 
 import "./Ownable.sol";
@@ -42,7 +43,7 @@ contract Configurable is Ownable {
         _config.gsnTrustedForwarder = gsnTrustedForwarder;
         _config.proxyRegistryAccount = proxyRegistryAccount;
         _config.tokenizer = tokenizer;
-        
+
         emit ConfigUpdated();
     }
 
