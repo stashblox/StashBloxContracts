@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 // (c) Copyright 2020 Stashblox, all rights reserved.
 pragma solidity ^0.7.4;
+pragma experimental ABIEncoderV2;
 
 import "./lib/Callable.sol";
 import "./lib/Withdrawable.sol";
@@ -24,21 +25,7 @@ contract StashBlox is Callable, Withdrawable, Configurable {
         _config.tokenizer = msg.sender;
         _transferOwnership(msg.sender);
 
-        string[13] memory fieldList = [
-          "decimals", "metadataHash", "minHoldingForCallback",
-          "lumpSumFees", "standardFees", "feesUnitType",
-          "feesUnitId", "feesUnitAddress", "feesRecipient",
-          "legalAuthority", "maintener", "isPrivate",
-          "locked"
-        ];
-        for (uint8 i = 0; i < fieldList.length; i++) {
-            string memory skey = fieldList[i];
-            bytes32 key;
-            assembly {
-                key := mload(add(skey, 32))
-            }
-            tokenStructMap[key] = i + 1;
-        }
+        _initTokenStructMap();
     }
 
 }

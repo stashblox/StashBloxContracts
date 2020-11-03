@@ -82,6 +82,25 @@ contract Mintable is MultiToken {
     INTERNAL FUNCTIONS
     *****************************/
 
+    function _initTokenStructMap() internal {
+        string[13] memory fieldList = [
+          "decimals", "metadataHash", "minHoldingForCallback",
+          "lumpSumFees", "standardFees", "feesUnitType",
+          "feesUnitId", "feesUnitAddress", "feesRecipient",
+          "legalAuthority", "maintener", "isPrivate",
+          "locked"
+        ];
+        for (uint8 i = 0; i < fieldList.length; i++) {
+            string memory skey = fieldList[i];
+            bytes32 key;
+            assembly {
+                key := mload(add(skey, 32))
+            }
+            tokenStructMap[key] = i + 1;
+        }
+        tokenStructMap["demurrageFees"] = 100;
+    }
+
 
     /*
                     [0]: metadataHash
@@ -130,7 +149,6 @@ contract Mintable is MultiToken {
 
     function _setTokenProperty(uint256 id, string memory property, uint256 value) internal {
         Token memory token = _tokens[id];
-        require(token.supply > 0, "invalid token id");
 
         bytes32 key;
         assembly {
@@ -139,11 +157,14 @@ contract Mintable is MultiToken {
         uint8 index = tokenStructMap[key];
         require(index > 0, "invalid property name");
 
-        assembly {
-            mstore(add(token, mul(32, index)), value)
+        if (index == 100) {
+            _demurrageFees[id].push([block.timestamp, value]);
+        } else {
+            assembly {
+                mstore(add(token, mul(32, index)), value)
+            }
+            _tokens[id] = token;
         }
-
-        _tokens[id] = token;
     }
 
 

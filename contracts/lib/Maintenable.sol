@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 // (c) Copyright 2020 Stashblox, all rights reserved.
 pragma solidity ^0.7.4;
+pragma experimental ABIEncoderV2;
 
 import "./Mintable.sol";
 
@@ -32,37 +33,15 @@ contract Maintenable is Mintable {
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
+    
 
-    /**
-     * @dev Function to update a token with the given ID.
-     `params` must contains the following informations:
+    function setTokenProperties(uint256 id, string[] memory properties, uint256[] memory values) external onlyMaintener(id) {
+        require(properties.length == values.length, "invalid arguments");
 
-                             [0]: metadataHash
-                             [1]: isPrivate
-                             [2]: minHoldingForCallback
-                             [3]: legalAuthority
-                             [4]: standardFees
-                             [5]: lumpSumFees
-                             [6]: demurrageFees
-                             [7]: feesUnitType
-                             [8]: feesUnitAddress
-                             [9]: feesUnitId
-                            [10]: feesRecipient
-                            [11]: decimals
-                            [12]: maintener
-                            [13]: locked
-
-     * @param id ID of the token to be updated
-     * @param params Token information
-     */
-    function updateToken(uint256 id, uint256[14] memory params) external onlyMaintener(id) {
-        require(_tokens[id].supply > 0, "Unknown token");
-        _setToken(id, params);
-        emit TokenUpdated(id, params[0]);
-    }
-
-    function setTokenProperty(uint256 id, string memory property, uint256 value) internal {
-        _setTokenProperty(id, property, value);
+        for (uint256 i = 0; i < properties.length; i++) {
+            _setTokenProperty(id, properties[i], values[i]);
+        }
+        emit TokenUpdated(id, _tokens[id].metadataHash);
     }
 
 

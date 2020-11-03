@@ -59,6 +59,38 @@ describe("Maintenable.sol", () => {
 
   describe("#updateToken", () => {
 
+    it("should be able to update token property one by one", async () => {
+      // fieldList = [
+      //   "decimals", "metadataHash", "minHoldingForCallback",
+      //   "lumpSumFees", "standardFees", "feesUnitType",
+      //   "feesUnitId", "feesUnitAddress", "feesRecipient",
+      //   "legalAuthority", "maintener", "isPrivate",
+      //   "locked"
+      // ];
+
+      let fieldListUint256 = ["decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees", "feesUnitType", "feesUnitId"];
+      let originalToken = await STASHBLOX._tokens(DATA["token1"].id);
+
+      for (var i = 0; i < fieldListUint256.length; i++) {
+          let property = fieldListUint256[i];
+          let receipt = await STASHBLOX.setTokenProperty.send(DATA["token1"].id, property, 123456);
+
+          let token = await STASHBLOX._tokens(DATA["token1"].id);
+          assert.equal(token[property].valueOf(), 123456, "invalid value");
+          // preserve other properties
+          for (var j = 0; j < fieldListUint256.length; j++) {
+            if (i != j) {
+              assert.equal(token[fieldListUint256[j]].toString(), originalToken[fieldListUint256[j]].toString(), "invalid value");
+            }
+          }
+
+          receipt = await STASHBLOX.setTokenProperty.send(DATA["token1"].id, property, originalToken[property]);
+          token = await STASHBLOX._tokens(DATA["token1"].id);
+          assert.equal(token[property].toString(), originalToken[property].toString(), "invalid value");
+      }
+
+    });
+
     it("should be able to update token", async () => {
       await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
 

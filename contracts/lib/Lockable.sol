@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 // (c) Copyright 2020 Stashblox, all rights reserved.
 pragma solidity ^0.7.4;
+pragma experimental ABIEncoderV2;
 
 import "./Privatizable.sol";
 
