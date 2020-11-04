@@ -36,6 +36,7 @@ contract Configurable is Ownable {
                           address gsnTrustedForwarder,
                           address proxyRegistryAccount,
                           address tokenizer) external onlyOwner {
+                            
         _config.callbackAutoExecuteMaxAccounts = callbackAutoExecuteMaxAccounts;
         _config.baseURI = baseURI;
         _config.versionRecipient = versionRecipient;

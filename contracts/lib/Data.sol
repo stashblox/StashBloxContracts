@@ -44,8 +44,8 @@ contract Data {
         address feesRecipient;
         address legalAuthority;
         address maintener;
-        bool isPrivate;
-        bool locked;
+        bool    isPrivate;
+        bool    locked;
     }
     mapping(bytes32 => uint8) internal tokenStructMap;
 
@@ -90,11 +90,10 @@ contract Data {
 
     // mappings by tokenId
 
-    /**
-     * @notice emitted when a token is updated.
-     * @dev use _tokens getter to obtain the new state
-     */
-    mapping(uint256 => Token) public _tokens;
+
+    mapping(uint256 => Token) internal _tokens;
+
+
 
     mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => mapping(address => Holder)) public _holders;

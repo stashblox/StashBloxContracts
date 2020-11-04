@@ -3,9 +3,9 @@
 pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
-import "./Maintenable.sol";
+import "./Mintable.sol";
 
-contract Privatizable is Maintenable {
+contract Privatizable is Mintable {
 
 
     /****************************

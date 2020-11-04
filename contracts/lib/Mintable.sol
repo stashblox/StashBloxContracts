@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 // (c) Copyright 2020 Stashblox, all rights reserved.
 pragma solidity ^0.7.4;
+pragma experimental ABIEncoderV2;
 
 import "../utils/SafeMath.sol";
 import "./MultiToken.sol";
@@ -8,6 +9,16 @@ import "./MultiToken.sol";
 contract Mintable is MultiToken {
 
     using SafeMath for uint256;
+
+    /****************************
+    EVENTS
+    *****************************/
+
+    /**
+        @dev  TokenUpdated when token is updated
+        @notice  TokenUpdated when token is updated
+    */
+    event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
 
 
     /****************************
@@ -21,42 +32,36 @@ contract Mintable is MultiToken {
         _;
     }
 
+    modifier onlyMaintener(uint256 id) {
+        require(_isMaintener(id, _msgSender()), "Insufficient permission");
+        _;
+    }
+
 
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
+    function getToken(uint256 id) public returns (Token memory) {
+        return _tokens[id];
+    }
+
     /**
      * @notice create token
      * @dev Function to mint an amount of a token with the given ID.
-     * `params` must contains the following informations:<br />
-     * <br />
-     *                          [0]: metadataHas<br />
-     *                          [1]: isPrivate<br />
-     *                          [2]: minHoldingForCallback<br />
-     *                          [3]: legalAuthority<br />
-     *                          [4]: standardFees<br />
-     *                          [5]: lumpSumFees<br />
-     *                          [6]: demurrageFees<br />
-     *                          [7]: feesUnitType<br />
-     *                          [8]: feesUnitAddress<br />
-     *                          [9]: feesUnitId<br />
-     *                         [10]: feesRecipient<br />
-     *                         [11]: decimals<br />
-     *                         [12]: maintener<br />
-     *                         [13]: locked<br />
-     * <br />
      * @param recipient The address that will own the minted tokens
      * @param id ID of the token to be minted
      * @param supply Amount of the token to be minted
-     * @param params Token information
+     * @param properties Token information
+     * @param values Token information
     */
     function createToken(address recipient,
                          uint256 id,
                          uint256 supply,
-                         uint256[14] memory params)
+                         string[] memory properties,
+                         uint256[] memory values)
     external onlyTokenizer {
-        _createToken(recipient, id, supply, params);
+        _createToken(recipient, id, supply, properties, values);
         emit TransferSingle(_msgSender(), address(0), recipient, id, supply);
     }
 
@@ -77,132 +82,92 @@ contract Mintable is MultiToken {
         }
     }
 
+    function updateToken(uint256 id, string[] memory properties, uint256[] memory values) external onlyMaintener(id) {
+        require(properties.length == values.length, "invalid arguments");
+
+        for (uint256 i = 0; i < properties.length; i++) {
+            _setTokenProperty(id, properties[i], values[i]);
+        }
+        emit TokenUpdated(id, _tokens[id].metadataHash);
+    }
+
 
     /****************************
     INTERNAL FUNCTIONS
     *****************************/
 
+    // called once by the constructor
     function _initTokenStructMap() internal {
         string[13] memory fieldList = [
-          "decimals", "metadataHash", "minHoldingForCallback",
-          "lumpSumFees", "standardFees", "feesUnitType",
-          "feesUnitId", "feesUnitAddress", "feesRecipient",
-          "legalAuthority", "maintener", "isPrivate",
-          "locked"
+          "decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees", "feesUnitType", "feesUnitId",
+          "feesUnitAddress", "feesRecipient", "legalAuthority", "maintener",
+          "isPrivate", "locked"
         ];
         for (uint8 i = 0; i < fieldList.length; i++) {
             string memory skey = fieldList[i];
             bytes32 key;
-            assembly {
-                key := mload(add(skey, 32))
-            }
+            assembly { key := mload(add(skey, 32)) }
             tokenStructMap[key] = i + 1;
         }
         tokenStructMap["demurrageFees"] = 100;
     }
 
+    function _setTokenProperties(uint256 id, string[] memory properties, uint256[] memory values) internal {
+        require(properties.length == values.length, "invalid arguments");
 
-    /*
-                    [0]: metadataHash
-                    [1]: isPrivate
-                    [2]: minHoldingForCallback
-                    [3]: legalAuthority
-                    [4]: standardFees
-                    [5]: lumpSumFees
-                    [6]: demurrageFees
-                    [7]: feesUnitType
-                    [8]: feesUnitAddress
-                    [9]: feesUnitId
-                   [10]: feesRecipient
-                   [11]: decimals
-                   [12]: maintener
-                   [13]: locked
-
-
-    */
-    function _setToken(uint256 id, uint256[14] memory params) internal {
-        require(params[2] < 10000 &&      // minHoldingForCallback
-                params[7] <= 2,         // 0 ether, 1 erc20, 2 erc1155
-                "Invalid arguments");
-
-        Token memory token = _tokens[id];
-
-        token.metadataHash = params[0];
-        token.isPrivate = params[1] > 0;
-        token.minHoldingForCallback = params[2];
-        token.legalAuthority = address(uint160(params[3]));
-        token.standardFees = params[4];
-        token.lumpSumFees = params[5];
-        _demurrageFees[id].push([block.timestamp, params[6]]);
-        token.feesUnitType = params[7];
-        token.feesUnitAddress = address(uint160(params[8]));
-        token.feesUnitId = params[9];
-        token.feesRecipient = address(uint160(params[10]));
-        token.decimals = params[11];
-        token.maintener = address(uint160(params[12]));
-        token.locked = params[13] > 0;
-
-        if (_tokens[id].metadataHash != params[0]) emit URI(uri(id), id);
-
-        _tokens[id] = token;
+        for (uint256 i = 0; i < properties.length; i++) {
+            _setTokenProperty(id, properties[i], values[i]);
+        }
     }
 
     function _setTokenProperty(uint256 id, string memory property, uint256 value) internal {
         Token memory token = _tokens[id];
 
         bytes32 key;
-        assembly {
-            key := mload(add(property, 32))
-        }
+        assembly { key := mload(add(property, 32)) }
+
         uint8 index = tokenStructMap[key];
         require(index > 0, "invalid property name");
 
         if (index == 100) {
             _demurrageFees[id].push([block.timestamp, value]);
         } else {
-            assembly {
-                mstore(add(token, mul(32, index)), value)
-            }
+            assembly { mstore(add(token, mul(32, index)), value) }
             _tokens[id] = token;
         }
     }
 
-
     function _createToken(address recipient,
                           uint256 id,
                           uint256 supply,
-                          uint256[14] memory params)
+                          string[] memory properties,
+                          uint256[] memory values)
     internal {
         require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 
         _tokens[id].supply = supply;
+        _setTokenProperties(id, properties, values);
+
         _holders[id][recipient].isApproved = true;
-
-        _setToken(id, params);
-
         _addToBalance(recipient, id, supply);
     }
 
     function _cloneToken(uint256 id, uint256 cloneId, uint256 metadataHash) internal {
-        _createToken(_holderList[id][0],
-                     cloneId,
-                     _tokens[id].supply,
-                     [
-                         metadataHash,
-                         _tokens[id].isPrivate ? 1 : 0,
-                         _tokens[id].minHoldingForCallback,
-                         uint256(uint160(_tokens[id].legalAuthority)),
-                         _tokens[id].standardFees,
-                         _tokens[id].lumpSumFees,
-                         _demurrageFees[id][0][1],
-                         _tokens[id].feesUnitType,
-                         uint256(uint160(_tokens[id].feesUnitAddress)),
-                         _tokens[id].feesUnitId,
-                         uint256(uint160(_tokens[id].feesRecipient)),
-                         _tokens[id].decimals,
-                         uint256(uint160(_tokens[id].maintener)),
-                         _tokens[id].locked ? 1 : 0
-                     ]);
+        require(_tokens[cloneId].supply == 0, "invalid clone ID");
+
+        Token memory token = _tokens[id];
+        token.metadataHash = metadataHash;
+        _tokens[cloneId] = token;
+        uint256 latestDemurrageFees = _demurrageFees[id][_demurrageFees[id].length-1][1];
+        _demurrageFees[cloneId].push([block.timestamp, latestDemurrageFees]);
+
+        address recipient = _holderList[id][0];
+        _holders[id][recipient].isApproved = true;
+        _addToBalance(recipient, cloneId, _tokens[cloneId].supply);
+    }
+
+    function _isMaintener(uint256 id, address account) internal view returns (bool) {
+        return _tokens[id].maintener == account || _config.owner == account;
     }
 
 }
