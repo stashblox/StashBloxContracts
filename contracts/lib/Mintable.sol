@@ -26,12 +26,6 @@ contract Mintable is MultiToken {
     *****************************/
 
 
-    modifier onlyTokenizer() {
-        address account = _msgSender();
-        require((account == _config.tokenizer) || (account == _config.owner), "Insufficient permission");
-        _;
-    }
-
     modifier onlyMaintener(uint256 id) {
         require(_isMaintener(id, _msgSender()), "Insufficient permission");
         _;
@@ -50,37 +44,26 @@ contract Mintable is MultiToken {
      * @notice create token
      * @dev Function to mint an amount of a token with the given ID.
      * @param recipient The address that will own the minted tokens
-     * @param id ID of the token to be minted
+     * @param ids ID of the token to be minted
      * @param supply Amount of the token to be minted
      * @param properties Token information
      * @param values Token information
     */
-    function createToken(address recipient,
-                         uint256 id,
-                         uint256 supply,
-                         string[] memory properties,
-                         uint256[] memory values)
-    external onlyTokenizer {
-        _createToken(recipient, id, supply, properties, values);
-        emit TransferSingle(_msgSender(), address(0), recipient, id, supply);
-    }
+    function createTokens(address recipient,
+                          uint256[] memory ids,
+                          uint256 supply,
+                          string[] memory properties,
+                          uint256[] memory values)
+    external {
+        address account = _msgSender();
+        require((account == _config.tokenizer) || (account == _config.owner), "Insufficient permission");
 
-    /**
-     * @dev Function to mint tokens in batch.
-     * @param id Identifier of the template
-     * @param ids list of IDs of the tokens to be minted
-     * @param metadataHashes list of metadata file hashes
-     */
-    function cloneToken(uint256 id,
-                        uint256[] memory ids,
-                        uint256[] memory metadataHashes)
-    external onlyTokenizer {
-        require(_tokens[id].supply > 0 && ids.length == metadataHashes.length, "Invalid arguments");
-        for (uint256 i = 0; i < ids.length; ++i) {
-            _cloneToken(id, ids[i], metadataHashes[i]);
-            emit TransferSingle(_msgSender(), address(0),  _holderList[id][0], ids[i], _tokens[id].supply);
+        for (uint256 i = 0; i < ids.length; i++) {
+            _createToken(recipient, ids[i], supply, properties, values);
+            emit TransferSingle(_msgSender(), address(0), recipient, ids[i], supply);
         }
     }
+
 
     function updateToken(uint256 id, string[] memory properties, uint256[] memory values) external onlyMaintener(id) {
         require(properties.length == values.length, "invalid arguments");
