@@ -18,10 +18,26 @@ describe("Privatizable.sol", () => {
   beforeEach(async function () {
     STASHBLOX = await initContract();
     DATA = await initFixtures();
+    propertiesNames = [
+      "metadataHash",
+      "isPrivate",
+      "minHoldingForCallback",
+      "legalAuthority",
+      "standardFees",
+      "lumpSumFees",
+      "demurrageFees",
+      "feesUnitType",
+      "feesUnitAddress",
+      "feesUnitId",
+      "feesRecipient",
+      "decimals",
+      "maintener",
+      "locked"
+    ];
   });
 
   const makePrivate = async () => {
-      await STASHBLOX.updateToken.send(DATA["token1"].id,
+      await STASHBLOX.updateToken.send(DATA["token1"].id, propertiesNames,
                                       [
                                         DATA["token1"].metadataHash,
                                         1,

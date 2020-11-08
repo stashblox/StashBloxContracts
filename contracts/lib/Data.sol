@@ -89,12 +89,7 @@ contract Data {
     mapping(address => mapping(address => mapping(uint256 => uint256))) _externalBalances;
 
     // mappings by tokenId
-
-
     mapping(uint256 => Token) internal _tokens;
-
-
-
     mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => mapping(address => Holder)) public _holders;
     mapping(uint256 => uint256[2][]) public _demurrageFees; //list of tuple [timestamp, price]

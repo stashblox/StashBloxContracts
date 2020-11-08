@@ -96,9 +96,25 @@ const initContract =  async() => {
 
 const initFixtures = async() => {
 
-    DATA["token1"].receipt = await STASHBLOX.createToken.send(DATA["token1"].recipient,
-                                                         DATA["token1"].id,
+    DATA["token1"].receipt = await STASHBLOX.createTokens.send(DATA["token1"].recipient,
+                                                         [DATA["token1"].id],
                                                          DATA["token1"].supply,
+                                                         [
+                                                           "metadataHash",
+                                                           "isPrivate",
+                                                           "minHoldingForCallback",
+                                                           "legalAuthority",
+                                                           "standardFees",
+                                                           "lumpSumFees",
+                                                           "demurrageFees",
+                                                           "feesUnitType",
+                                                           "feesUnitAddress",
+                                                           "feesUnitId",
+                                                           "feesRecipient",
+                                                           "decimals",
+                                                           "maintener",
+                                                           "locked"
+                                                         ],
                                                          [
                                                            DATA["token1"].metadataHash,
                                                            DATA["token1"].isPrivate,
@@ -117,9 +133,25 @@ const initFixtures = async() => {
                                                          ]);
     DATA["token1"].createdAt = await time.latest();
 
-    DATA["token2"].receipt = await STASHBLOX.createToken.send(DATA["token2"].recipient,
-                                                         DATA["token2"].id,
+    DATA["token2"].receipt = await STASHBLOX.createTokens.send(DATA["token2"].recipient,
+                                                         [DATA["token2"].id],
                                                          DATA["token2"].supply,
+                                                         [
+                                                           "metadataHash",
+                                                           "isPrivate",
+                                                           "minHoldingForCallback",
+                                                           "legalAuthority",
+                                                           "standardFees",
+                                                           "lumpSumFees",
+                                                           "demurrageFees",
+                                                           "feesUnitType",
+                                                           "feesUnitAddress",
+                                                           "feesUnitId",
+                                                           "feesRecipient",
+                                                           "decimals",
+                                                           "maintener",
+                                                           "locked"
+                                                         ],
                                                          [
                                                            DATA["token2"].metadataHash,
                                                            DATA["token2"].isPrivate,
@@ -234,6 +266,22 @@ const setMaintenerAuthorization = async (tokenId, account, auhtorized) => {
 
     return await STASHBLOX.updateToken.send(tokenId,
                                             [
+                                              "metadataHash",
+                                              "isPrivate",
+                                              "minHoldingForCallback",
+                                              "legalAuthority",
+                                              "standardFees",
+                                              "lumpSumFees",
+                                              "demurrageFees",
+                                              "feesUnitType",
+                                              "feesUnitAddress",
+                                              "feesUnitId",
+                                              "feesRecipient",
+                                              "decimals",
+                                              "maintener",
+                                              "locked"
+                                            ],
+                                            [
                                               DATA["token1"].metadataHash,
                                               DATA["token2"].isPrivate,
                                               DATA["token1"].minHoldingForCallback,
@@ -255,6 +303,22 @@ const setMaintenerAuthorization = async (tokenId, account, auhtorized) => {
 const setTokenLock = async (tokenId, lock, docHash) => {
 
     return await STASHBLOX.updateToken.send(tokenId,
+                                            [
+                                              "metadataHash",
+                                              "isPrivate",
+                                              "minHoldingForCallback",
+                                              "legalAuthority",
+                                              "standardFees",
+                                              "lumpSumFees",
+                                              "demurrageFees",
+                                              "feesUnitType",
+                                              "feesUnitAddress",
+                                              "feesUnitId",
+                                              "feesRecipient",
+                                              "decimals",
+                                              "maintener",
+                                              "locked"
+                                            ],
                                             [
                                               DATA["token1"].metadataHash,
                                               DATA["token2"].isPrivate,

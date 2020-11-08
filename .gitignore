@@ -4,3 +4,5 @@ secrets/
 build/
 coverage/
 coverage.json
+contracts2/
+test2/

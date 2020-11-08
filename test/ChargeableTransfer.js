@@ -38,6 +38,22 @@ describe("ChargeableTransfer.sol", () => {
 
         await STASHBLOX.updateToken.send(DATA["token1"].id,
                                         [
+                                          "metadataHash",
+                                          "isPrivate",
+                                          "minHoldingForCallback",
+                                          "legalAuthority",
+                                          "standardFees",
+                                          "lumpSumFees",
+                                          "demurrageFees",
+                                          "feesUnitType",
+                                          "feesUnitAddress",
+                                          "feesUnitId",
+                                          "feesRecipient",
+                                          "decimals",
+                                          "maintener",
+                                          "locked"
+                                        ],
+                                        [
                                           DATA["token1"].metadataHash,
                                           DATA["token1"].isPrivate,
                                           DATA["token1"].minHoldingForCallback,

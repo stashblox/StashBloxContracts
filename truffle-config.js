@@ -51,6 +51,7 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
+  contracts_directory: "./contracts",
   plugins: ["truffle-contract-size", "solidity-coverage"],
 
   networks: {

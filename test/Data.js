@@ -22,7 +22,7 @@ describe("Data.sol", () => {
   describe("Public variables", async () => {
 
     it("_tokens should have free getter", async () => {
-      const token = await STASHBLOX._tokens(DATA["token1"].id);
+      const token = await STASHBLOX.getToken.call(DATA["token1"].id);
       assert.equal(token.supply.valueOf(), DATA["token1"].supply, "invalid token");
     });
 
