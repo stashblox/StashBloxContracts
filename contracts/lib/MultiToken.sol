@@ -113,6 +113,38 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         emit ApprovalForAll(account, operator, approved);
     }
 
+    function freeSetApprovalForAll(
+        address operator,
+        address account,
+        uint256 nonce,
+        uint256 expiry,
+        bool approved,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    )
+        external
+    {
+        bytes32 digest =
+            keccak256(abi.encodePacked(
+                "\x19\x01",
+                DOMAIN_SEPARATOR,
+                keccak256(abi.encode(PERMIT_TYPEHASH,
+                                     operator,
+                                     account,
+                                     nonce,
+                                     expiry,
+                                     approved))
+        ));
+
+        require(account == ecrecover(digest, v, r, s) &&  // invalid address
+                expiry == 0 || block.timestamp <= expiry &&  // permit expired
+                nonce == _accounts[account].nonce++, "invalid signature");
+
+        _operatorApprovals[account][operator] = approved;
+        emit ApprovalForAll(account, operator, approved);
+    }
+
     /**
         @notice Queries the approval status of an operator for a given account.
         @param account   The account of the Tokens
@@ -121,11 +153,13 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     */
     function isApprovedForAll(address account, address operator) public view override returns (bool) {
         if (_operatorApprovals[account][operator]) return true;
+
         if (_config.proxyRegistryAccount != address(0)) {
             if (address(ProxyRegistry(_config.proxyRegistryAccount).proxies(account)) == operator) {
                 return true;
             }
         }
+
         return false;
     }
 

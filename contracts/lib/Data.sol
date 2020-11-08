@@ -22,6 +22,7 @@ contract Data {
     struct Account {
         bool isLocked;
         uint256 ethBalance;
+        uint256 nonce;
     }
 
     struct Holder {
@@ -97,5 +98,9 @@ contract Data {
     // mappings by callbackId
     mapping(uint256 => Callback) public _callbacks;
     mapping(uint256 => address[]) public _callees;
+
+    // --- EIP712 niceties ---
+    bytes32 public DOMAIN_SEPARATOR;
+    bytes32 public PERMIT_TYPEHASH;
 
 }
