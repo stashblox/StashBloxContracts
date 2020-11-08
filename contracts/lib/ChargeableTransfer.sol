@@ -65,6 +65,7 @@ contract ChargeableTransfer is GSNCapable {
 
     // update balance, lists of holders and token average age of the recipient
     function _addToBalance(address account, uint256 id, uint256 value) internal virtual {
+        require(!_tokens[id].isPrivate || _holders[id][account].isApproved, "Account not approved");
         uint256 newBalance = _holders[id][account].balance.add(value);
         _registerNewHolder(account, id);
         _updateBirthday(account, id, newBalance);

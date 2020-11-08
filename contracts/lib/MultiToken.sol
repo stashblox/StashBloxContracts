@@ -12,7 +12,15 @@ import "../utils/Address.sol";
 import "../utils/StringUtils.sol";
 
 import "./ChargeableTransfer.sol";
-import "./Proxyable.sol";
+import "./Ownable.sol";
+
+contract OwnableDelegateProxy { } // solhint-disable-line no-empty-blocks
+
+interface ProxyRegistry {
+  function proxies(address account) view external returns (OwnableDelegateProxy);
+}
+
+
 /**
  * @title Standard ERC1155 token
  *
@@ -20,7 +28,7 @@ import "./Proxyable.sol";
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Proxyable {
+contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Ownable {
 
     using SafeMath for uint256;
     using Address for address;
@@ -112,7 +120,13 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address account, address operator) public view override returns (bool) {
-        return _isApprovedForAll(account, operator);
+        if (_operatorApprovals[account][operator]) return true;
+        if (_config.proxyRegistryAccount != address(0)) {
+            if (address(ProxyRegistry(_config.proxyRegistryAccount).proxies(account)) == operator) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -31,15 +31,6 @@ contract Privatizable is Mintable {
         return _holders[id][account].isApproved;
     }
 
-    /****************************
-    INTERNAL FUNCTIONS
-    *****************************/
-
-
-    // override ChargeableTransfer._addToBalance()
-    function _addToBalance(address account, uint256 id, uint256 value) internal override {
-        require(!_tokens[id].isPrivate || _holders[id][account].isApproved, "Account not approved");
-        super._addToBalance(account, id, value);
-    }
+  
 
 }
