@@ -113,7 +113,7 @@ contract Mintable is MultiToken {
         require(index > 0, "invalid property name");
 
         if (index == 100) {
-            _demurrageFees[id].push([block.timestamp, value]);
+            _demurrageFees[id].push(DemurrageFees(block.timestamp, value));
         } else {
             assembly { mstore(add(token, mul(32, index)), value) }
             _tokens[id] = token;
@@ -141,8 +141,8 @@ contract Mintable is MultiToken {
         Token memory token = _tokens[id];
         token.metadataHash = metadataHash;
         _tokens[cloneId] = token;
-        uint256 latestDemurrageFees = _demurrageFees[id][_demurrageFees[id].length-1][1];
-        _demurrageFees[cloneId].push([block.timestamp, latestDemurrageFees]);
+        uint256 latestDemurrageFees = _demurrageFees[id][_demurrageFees[id].length-1].price;
+        _demurrageFees[cloneId].push(DemurrageFees(block.timestamp, latestDemurrageFees));
 
         address recipient = _holderList[id][0];
         _holders[id][recipient].isApproved = true;

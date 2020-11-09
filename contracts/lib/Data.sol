@@ -32,6 +32,11 @@ contract Data {
         bool isApproved; // for private tokens
     }
 
+    struct DemurrageFees {
+        uint256 startAt;
+        uint256 price;
+    }
+
     struct Token {
         uint256 supply;
         uint256 decimals;
@@ -93,7 +98,7 @@ contract Data {
     mapping(uint256 => Token) internal _tokens;
     mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => mapping(address => Holder)) public _holders;
-    mapping(uint256 => uint256[2][]) public _demurrageFees; //list of tuple [timestamp, price]
+    mapping(uint256 => DemurrageFees[]) public _demurrageFees; //list of tuple [timestamp, price]
 
     // mappings by callbackId
     mapping(uint256 => Callback) public _callbacks;

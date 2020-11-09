@@ -84,7 +84,7 @@ contract ChargeableTransfer is GSNCapable {
 
         for (uint i = _demurrageFees[id].length - 1; i >= 0; i--) {
 
-            uint256 costStartAt = _demurrageFees[id][i][0];
+            uint256 costStartAt = _demurrageFees[id][i].startAt;
             uint256 demurrageDays;
 
             if (_holders[id][account].birthday >= costStartAt) {
@@ -92,7 +92,7 @@ contract ChargeableTransfer is GSNCapable {
                 demurrageDays = (timeCursor.sub(_holders[id][account].birthday)).div(86400);
 
                 if (demurrageDays == 0) demurrageDays = 1; // TODO: test this case!
-                totalCost += (demurrageDays.mul(_demurrageFees[id][i][1])).mul(paidValue);
+                totalCost += (demurrageDays.mul(_demurrageFees[id][i].price)).mul(paidValue);
 
                 break;
 
@@ -102,7 +102,7 @@ contract ChargeableTransfer is GSNCapable {
                 timeCursor = costStartAt;
 
                 if (demurrageDays == 0) demurrageDays = 1;
-                totalCost += (demurrageDays.mul(_demurrageFees[id][i][1])).mul(paidValue);
+                totalCost += (demurrageDays.mul(_demurrageFees[id][i].price)).mul(paidValue);
 
             }
         }
