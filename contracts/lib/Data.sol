@@ -11,12 +11,12 @@ contract Data {
 
     struct Config {
         uint256 callbackAutoExecuteMaxAccounts;
-        string baseURI;
-        string versionRecipient;
         address owner;
         address gsnTrustedForwarder;
         address proxyRegistryAccount;
         address tokenizer; // should be a contract managing permission
+        string baseURI;
+        string versionRecipient;
     }
 
     struct Account {
@@ -53,7 +53,6 @@ contract Data {
         bool    isPrivate;
         bool    locked;
     }
-    mapping(bytes32 => uint8) internal tokenStructMap;
 
     struct Callback {
         uint256 tokenId;
@@ -98,7 +97,9 @@ contract Data {
     mapping(uint256 => Token) internal _tokens;
     mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => mapping(address => Holder)) public _holders;
-    mapping(uint256 => DemurrageFees[]) public _demurrageFees; //list of tuple [timestamp, price]
+    mapping(uint256 => DemurrageFees[]) public _demurrageFees;
+    // initialized in constructor and used to set token properties
+    mapping(bytes32 => uint8) internal tokenStructMap;
 
     // mappings by callbackId
     mapping(uint256 => Callback) public _callbacks;

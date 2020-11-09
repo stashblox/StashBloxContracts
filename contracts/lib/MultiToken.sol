@@ -17,7 +17,7 @@ import "./Ownable.sol";
 contract OwnableDelegateProxy { } // solhint-disable-line no-empty-blocks
 
 interface ProxyRegistry {
-  function proxies(address account) view external returns (OwnableDelegateProxy);
+    function proxies(address account) view external returns (OwnableDelegateProxy);
 }
 
 
