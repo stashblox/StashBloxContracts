@@ -162,7 +162,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         return keccak256(abi.encodePacked(
                 "\x19\x01",
                 DOMAIN_SEPARATOR,
-                keccak256(abi.encode(PERMIT_TYPEHASH,
+                keccak256(abi.encode(APPROVAL_TYPEHASH,
                                      operator,
                                      account,
                                      nonce,
@@ -171,6 +171,19 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     }
 
 
+    function _initFreeSetApprovalForAll() internal {
+        uint256 chainId;
+        assembly { chainId := chainid() }
+
+        DOMAIN_SEPARATOR = keccak256(abi.encode(
+            keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+            keccak256(bytes("StashBloxContract")),
+            keccak256(bytes("1.0.0")),
+            chainId,
+            address(this)
+        ));
+        APPROVAL_TYPEHASH = keccak256("FreeSetApprovalForAll(address operator,address account,uint256 nonce,uint256 expiry,bool approved)");
+    }
 
     /**
         @notice Queries the approval status of an operator for a given account.

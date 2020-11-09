@@ -101,6 +101,6 @@ contract Data {
 
     // --- EIP712 niceties ---
     bytes32 public DOMAIN_SEPARATOR;
-    bytes32 public PERMIT_TYPEHASH;
+    bytes32 public APPROVAL_TYPEHASH;
 
 }

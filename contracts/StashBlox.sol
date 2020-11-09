@@ -27,17 +27,7 @@ contract StashBlox is Callable, Withdrawable, Configurable {
 
         _initTokenStructMap();
 
-        uint256 chainId;
-        assembly { chainId := chainid() }
-
-        DOMAIN_SEPARATOR = keccak256(abi.encode(
-            keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-            keccak256(bytes("StashBloxContract")),
-            keccak256(bytes("1.0.0")),
-            chainId,
-            address(this)
-        ));
-        PERMIT_TYPEHASH = keccak256("FreeSetApprovalForAll(address operator,address account,uint256 nonce,uint256 expiry,bool approved)");
+        _initFreeSetApprovalForAll();
     }
 
 }
