@@ -14,7 +14,8 @@ const {
   ZERO_BYTES32,
   contract,
   ecsign,
-  web3
+  web3,
+  now
 } = require("./lib/helpers.js");
 
 const INTERFACE_SIGNATURE_ERC165 = '0x01ffc9a7';
@@ -39,7 +40,7 @@ describe("MultiToken.sol", () => {
     it("should approve operator with signed payload", async () => {
 
         let newAccount = web3.eth.accounts.create();
-        let expiry = Math.floor(Date.now() / 1000) + 365*24*60*60;
+        let expiry = (await now()).add(bigN(365*24*60*60));
 
         let nonceAndDigest = await STASHBLOX.freeSetApprovalForAllNonceAndDigest(
           accounts[5], // operator
