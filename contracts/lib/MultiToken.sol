@@ -108,7 +108,6 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      */
     function setApprovalForAll(address operator, bool approved) external override {
         address account = _msgSender();
-        require(operator != account, "invalid account");
         _operatorApprovals[account][operator] = approved;
         emit ApprovalForAll(account, operator, approved);
     }
@@ -125,8 +124,42 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     )
         external
     {
-        bytes32 digest =
-            keccak256(abi.encodePacked(
+        bytes32 digest = _freeSetApprovalForAllDigest(operator, account, nonce, expiry, approved);
+        uint256 expectedNonce =  _accounts[account].nonce + 1;
+
+        require(account == ecrecover(digest, v, r, s), "invalid signature0");
+        require(expiry == 0 || block.timestamp <= expiry, "invalid signature1");
+        require(nonce == expectedNonce, "invalid signature2");
+
+        _accounts[account].nonce += 1;
+        _operatorApprovals[account][operator] = approved;
+        emit ApprovalForAll(account, operator, approved);
+    }
+
+
+    function freeSetApprovalForAllNonceAndDigest(
+        address operator,
+        address account,
+        uint256 expiry,
+        bool approved
+    )
+        external view returns (uint256, bytes32)
+    {
+        return (_accounts[account].nonce + 1,
+               _freeSetApprovalForAllDigest(operator, account, _accounts[account].nonce + 1, expiry, approved));
+    }
+
+
+    function _freeSetApprovalForAllDigest(
+        address operator,
+        address account,
+        uint256 nonce,
+        uint256 expiry,
+        bool approved
+    )
+        internal view returns (bytes32)
+    {
+        return keccak256(abi.encodePacked(
                 "\x19\x01",
                 DOMAIN_SEPARATOR,
                 keccak256(abi.encode(PERMIT_TYPEHASH,
@@ -134,16 +167,10 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
                                      account,
                                      nonce,
                                      expiry,
-                                     approved))
-        ));
-
-        require(account == ecrecover(digest, v, r, s) &&  // invalid address
-                expiry == 0 || block.timestamp <= expiry &&  // permit expired
-                nonce == _accounts[account].nonce++, "invalid signature");
-
-        _operatorApprovals[account][operator] = approved;
-        emit ApprovalForAll(account, operator, approved);
+                                     approved))));
     }
+
+
 
     /**
         @notice Queries the approval status of an operator for a given account.

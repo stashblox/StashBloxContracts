@@ -12,7 +12,9 @@ const {
   defaultSender,
   ZERO_ADDRESS,
   ZERO_BYTES32,
-  contract
+  contract,
+  ecsign,
+  web3
 } = require("./lib/helpers.js");
 
 const INTERFACE_SIGNATURE_ERC165 = '0x01ffc9a7';
@@ -31,6 +33,44 @@ describe("MultiToken.sol", () => {
     STASHBLOX = await initContract();
     DATA = await initFixtures();
   });
+
+  describe("#freeSetApprovalForAll", async () => {
+
+    it("should approve operator with signed payload", async () => {
+
+        let newAccount = web3.eth.accounts.create();
+        let expiry = Math.floor(Date.now() / 1000) + 365*24*60*60;
+
+        let nonceAndDigest = await STASHBLOX.freeSetApprovalForAllNonceAndDigest(
+          accounts[5], // operator
+          newAccount.address, // account
+          expiry, // expiration
+          true // approved
+        )
+        let nonce = bigN(nonceAndDigest["0"]);
+        let digest = nonceAndDigest["1"];
+        let sign = ecsign(Buffer.from(digest.slice(2), 'hex'), Buffer.from(newAccount.privateKey.slice(2), 'hex'));
+
+        let receipt = await STASHBLOX.freeSetApprovalForAll.send(
+            accounts[5], // operator
+            newAccount.address, // account
+            nonce,
+            expiry,
+            true,
+            sign.v,
+            "0x" + sign.r.toString("hex"),
+            "0x" + sign.s.toString("hex")
+        );
+
+        expectEvent(receipt, "ApprovalForAll", {
+          _owner: newAccount.address,
+          _operator: accounts[5],
+          _approved: true
+        });
+        //console.log(receipt.logs);
+    });
+  })
+
 
   describe("ERC165", async () => {
     describe("#supportsInterface", async () => {
@@ -92,10 +132,6 @@ describe("MultiToken.sol", () => {
 
     describe("#setApprovalForAll", async () => {
 
-      it("should revert when someone approve for self", async () => {
-        expectRevert(STASHBLOX.setApprovalForAll.send(accounts[3], true, {from: accounts[3]}),
-                     "invalid account");
-      });
 
       it("should emit event", async () => {
         let receipt = await STASHBLOX.setApprovalForAll.send(accounts[1], true, {from: accounts[3]});

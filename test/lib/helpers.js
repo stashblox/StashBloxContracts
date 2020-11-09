@@ -1,5 +1,6 @@
 var assert = require("assert")
 const crypto = require("crypto");
+const { ecsign } = require('ethereumjs-util');
 
 const { accounts, contract, defaultSender, web3 } = require('@openzeppelin/test-environment');
 const { BN, constants, expectEvent, expectRevert, time, balance, send } = require('@openzeppelin/test-helpers');
@@ -371,5 +372,6 @@ module.exports = exports = {
   send,
   contract,
   web3,
-  GAS_LOGS
+  GAS_LOGS,
+  ecsign
 }
