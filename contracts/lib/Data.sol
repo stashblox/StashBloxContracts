@@ -23,6 +23,7 @@ contract Data {
         bytes4 RECEIVER_BATCH_MAGIC_VALUE;
         string baseURI;
         string versionRecipient;
+        mapping(address => bool) whitelistedERC1155;
     }
 
 

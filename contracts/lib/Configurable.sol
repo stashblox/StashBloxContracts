@@ -36,7 +36,7 @@ contract Configurable is Ownable {
                           address gsnTrustedForwarder,
                           address proxyRegistryAccount,
                           address tokenizer) external onlyOwner {
-                            
+
         _config.callbackAutoExecuteMaxAccounts = callbackAutoExecuteMaxAccounts;
         _config.baseURI = baseURI;
         _config.versionRecipient = versionRecipient;
@@ -46,6 +46,11 @@ contract Configurable is Ownable {
         _config.tokenizer = tokenizer;
 
         emit ConfigUpdated();
+    }
+
+
+    function setWhitelistedERC1155(address erc1155Address, bool whitelisted) external onlyOwner {
+        _config.whitelistedERC1155[erc1155Address] = whitelisted;
     }
 
 }

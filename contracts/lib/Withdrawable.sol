@@ -51,6 +51,8 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
     external override returns(bytes4) {
         // here msg.sender is the ERC1155 contract
         address erc1155Address = _msgSender();
+        require(_config.whitelistedERC1155[erc1155Address], "unknown erc1155");
+        
         _accounts[from].externalBalances[erc1155Address][id] = _accounts[from].externalBalances[erc1155Address][id].add(value);
         return _config.RECEIVER_SINGLE_MAGIC_VALUE;
     }
@@ -64,6 +66,8 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
     external override returns(bytes4) {
         // here msg.sender is the ERC1155 contract
         address erc1155Address = _msgSender();
+        require(_config.whitelistedERC1155[erc1155Address], "unknown erc1155");
+
         for (uint256 i = 0; i < ids.length; i++) {
           _accounts[from].externalBalances[erc1155Address][ids[i]] = _accounts[from].externalBalances[erc1155Address][ids[i]].add(values[i]);
         }
