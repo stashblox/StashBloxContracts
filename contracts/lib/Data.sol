@@ -19,17 +19,20 @@ contract Data {
         string versionRecipient;
     }
 
+
+    struct AccountToken {
+        uint256 balance;
+        uint256 birthday;
+        bool isApproved; // for private tokens
+    }
+
     struct Account {
         bool isLocked;
         uint256 ethBalance;
         uint256 nonce;
-    }
-
-    struct Holder {
-        uint256 balance;
-        uint256 birthday;
-        bool isHolder; // never come back to false
-        bool isApproved; // for private tokens
+        uint256[] tokenList;
+        mapping(uint256 => AccountToken) tokens;
+        mapping(address => bool) approvedOperator;
     }
 
     struct DemurrageFees {
@@ -52,6 +55,8 @@ contract Data {
         address maintener;
         bool    isPrivate;
         bool    locked;
+
+        address[] holderList;
     }
 
     struct Callback {
@@ -89,14 +94,12 @@ contract Data {
 
     // mappings by address
     mapping(address => Account) public _accounts;
-    mapping(address => uint256[]) public _tokenList;
-    mapping(address => mapping(address => bool)) _operatorApprovals;
+    //mapping(address => mapping(address => bool)) _operatorApprovals;
     mapping(address => mapping(address => mapping(uint256 => uint256))) _externalBalances;
 
     // mappings by tokenId
-    mapping(uint256 => Token) internal _tokens;
-    mapping(uint256 => address[]) public _holderList;
-    mapping(uint256 => mapping(address => Holder)) public _holders;
+    mapping(uint256 => Token) public _tokens;
+    //mapping(uint256 => address[]) public _holderList;
     mapping(uint256 => DemurrageFees[]) public _demurrageFees;
     // initialized in constructor and used to set token properties
     mapping(bytes32 => uint8) internal tokenStructMap;

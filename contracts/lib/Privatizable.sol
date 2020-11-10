@@ -19,7 +19,7 @@ contract Privatizable is Mintable {
      * @param account The authorized address
      */
     function setAccountApproval(uint256 id, address account, bool isApproved) external onlyMaintener(id) {
-        _holders[id][account].isApproved = isApproved;
+        _accounts[account].tokens[id].isApproved = isApproved;
     }
 
 
@@ -28,7 +28,7 @@ contract Privatizable is Mintable {
      * @param id The token ID
      */
     function isApprovedAccount(uint256 id, address account) external view returns (bool){
-        return _holders[id][account].isApproved;
+        return _accounts[account].tokens[id].isApproved;
     }
 
   

@@ -36,9 +36,6 @@ contract Mintable is MultiToken {
     EXTERNAL FUNCTIONS
     *****************************/
 
-    function getToken(uint256 id) public returns (Token memory) {
-        return _tokens[id];
-    }
 
     /**
      * @notice create token
@@ -131,7 +128,7 @@ contract Mintable is MultiToken {
         _tokens[id].supply = supply;
         _setTokenProperties(id, properties, values);
 
-        _holders[id][recipient].isApproved = true;
+        _accounts[recipient].tokens[id].isApproved = true;
         _addToBalance(recipient, id, supply);
     }
 
@@ -144,8 +141,8 @@ contract Mintable is MultiToken {
         uint256 latestDemurrageFees = _demurrageFees[id][_demurrageFees[id].length-1].price;
         _demurrageFees[cloneId].push(DemurrageFees(block.timestamp, latestDemurrageFees));
 
-        address recipient = _holderList[id][0];
-        _holders[id][recipient].isApproved = true;
+        address recipient = _tokens[id].holderList[0];
+        _accounts[recipient].tokens[id].isApproved = true;
         _addToBalance(recipient, cloneId, _tokens[cloneId].supply);
     }
 

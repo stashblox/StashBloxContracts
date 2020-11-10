@@ -33,7 +33,7 @@ contract ChargeableTransfer is GSNCapable {
      * @return average age in seconds
      */
     function averageAge(address account, uint256 id) public view returns (uint256) {
-        return block.timestamp.sub(_holders[id][account].birthday);
+        return block.timestamp.sub(_accounts[account].tokens[id].birthday);
     }
 
 
@@ -43,21 +43,20 @@ contract ChargeableTransfer is GSNCapable {
 
 
     function _registerNewHolder(address account, uint256 id) internal {
-        if (!_holders[id][account].isHolder) {
-            _tokenList[account].push(id);
-            _holderList[id].push(account);
-            _holders[id][account].isHolder = true;
+        if (_accounts[account].tokens[id].birthday == 0) {
+            _accounts[account].tokenList.push(id);
+            _tokens[id].holderList.push(account);
         }
     }
 
     function _updateBirthday(address account, uint256 id, uint256 newBalance) internal {
-        uint256 currentBalance = _holders[id][account].balance ;
+        uint256 currentBalance = _accounts[account].tokens[id].balance;
         if (currentBalance == 0) {
             // first tokens no need to calculate avarage age
-            _holders[id][account].birthday = block.timestamp;
+            _accounts[account].tokens[id].birthday = block.timestamp;
         } else {
             // now - [((now - birthday) * B1) / B2]
-            _holders[id][account].birthday = block.timestamp.sub(
+            _accounts[account].tokens[id].birthday = block.timestamp.sub(
                 (currentBalance.mul(averageAge(account, id))).div(newBalance)
             );
         }
@@ -65,11 +64,11 @@ contract ChargeableTransfer is GSNCapable {
 
     // update balance, lists of holders and token average age of the recipient
     function _addToBalance(address account, uint256 id, uint256 value) internal virtual {
-        require(!_tokens[id].isPrivate || _holders[id][account].isApproved, "Account not approved");
-        uint256 newBalance = _holders[id][account].balance.add(value);
+        require(!_tokens[id].isPrivate || _accounts[account].tokens[id].isApproved, "Account not approved");
+        uint256 newBalance = _accounts[account].tokens[id].balance.add(value);
         _registerNewHolder(account, id);
         _updateBirthday(account, id, newBalance);
-        _holders[id][account].balance = newBalance;
+        _accounts[account].tokens[id].balance = newBalance;
     }
 
     function _ceilDiv(uint256 a, uint256 m) internal pure returns (uint ) {
@@ -87,9 +86,9 @@ contract ChargeableTransfer is GSNCapable {
             uint256 costStartAt = _demurrageFees[id][i].startAt;
             uint256 demurrageDays;
 
-            if (_holders[id][account].birthday >= costStartAt) {
+            if (_accounts[account].tokens[id].birthday >= costStartAt) {
 
-                demurrageDays = (timeCursor.sub(_holders[id][account].birthday)).div(86400);
+                demurrageDays = (timeCursor.sub(_accounts[account].tokens[id].birthday)).div(86400);
 
                 if (demurrageDays == 0) demurrageDays = 1; // TODO: test this case!
                 totalCost += (demurrageDays.mul(_demurrageFees[id][i].price)).mul(paidValue);
@@ -140,7 +139,7 @@ contract ChargeableTransfer is GSNCapable {
     // Used by ERC1155 implementation in safeTransferFrom
     function _moveTokens(address operator, address from, address to, uint256 id, uint256 value) internal virtual returns (uint256 fees) {
         // remove tokens from sender balance
-        _holders[id][from].balance = _holders[id][from].balance.sub(value, "Insufficient balance");
+        _accounts[from].tokens[id].balance = _accounts[from].tokens[id].balance.sub(value, "Insufficient balance");
         // add tokens to receiver balance
         _addToBalance(to, id, value);
         // calculate StashBlox fees

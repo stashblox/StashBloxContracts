@@ -211,7 +211,7 @@ describe("Mintable.sol", () => {
           _value: bigN(DATA["token1"].supply)
         });
 
-        const token = await STASHBLOX.getToken.call(ids[i]);
+        const token = await STASHBLOX._tokens.call(ids[i]);
         assert.equal(token.metadataHash.toString(), tokenParams[0].toString(), "invalid metadataHash");
 
         const balance = await STASHBLOX.balanceOf.call(accounts[5], ids[i]);

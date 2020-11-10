@@ -24,7 +24,7 @@ describe("Lockable.sol", () => {
   describe("#lockToken", async () => {
 
     it("should lock token", async () => {
-      let token = await STASHBLOX.getToken.call(DATA["token1"].id);
+      let token = await STASHBLOX._tokens.call(DATA["token1"].id);
       assert.equal(token.locked, false, "invalid lock");
 
       const docHash = random();
@@ -35,7 +35,7 @@ describe("Lockable.sol", () => {
         _documentHash: DATA["token1"].metadataHash
       });
 
-      token = await STASHBLOX.getToken.call(DATA["token1"].id);
+      token = await STASHBLOX._tokens.call(DATA["token1"].id);
       assert.equal(token.locked, true, "invalid lock");
     });
 
@@ -58,7 +58,7 @@ describe("Lockable.sol", () => {
       const docHash = random();
       let receipt = await setTokenLock(DATA["token1"].id, true, docHash);
 
-      token = await STASHBLOX.getToken.call(DATA["token1"].id);
+      token = await STASHBLOX._tokens.call(DATA["token1"].id);
       assert.equal(token.locked, true, "invalid lock");
 
       receipt = await setTokenLock(DATA["token1"].id, false, docHash);
@@ -67,7 +67,7 @@ describe("Lockable.sol", () => {
         _documentHash: DATA["token1"].metadataHash
       });
 
-      token = await STASHBLOX.getToken.call(DATA["token1"].id);
+      token = await STASHBLOX._tokens.call(DATA["token1"].id);
       assert.equal(token.locked, false, "invalid lock");
 
       await transferTokens({

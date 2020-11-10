@@ -63,7 +63,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      */
     function balanceOf(address account, uint256 id) public view override returns (uint256) {
         require(account != address(0), "invalid account");
-        return _holders[id][account].balance;
+        return _accounts[account].tokens[id].balance;
     }
 
     /**
@@ -89,7 +89,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
 
         for (uint256 i = 0; i < accounts.length; ++i) {
             require(accounts[i] != address(0), "invalid account");
-            batchBalances[i] = _holders[ids[i]][accounts[i]].balance;
+            batchBalances[i] = _accounts[accounts[i]].tokens[ids[i]].balance;
         }
 
         return batchBalances;
@@ -108,7 +108,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      */
     function setApprovalForAll(address operator, bool approved) external override {
         address account = _msgSender();
-        _operatorApprovals[account][operator] = approved;
+        _accounts[account].approvedOperator[operator] = approved;
         emit ApprovalForAll(account, operator, approved);
     }
 
@@ -132,7 +132,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         require(nonce == expectedNonce, "invalid signature2");
 
         _accounts[account].nonce += 1;
-        _operatorApprovals[account][operator] = approved;
+        _accounts[account].approvedOperator[operator] = approved;
         emit ApprovalForAll(account, operator, approved);
     }
 
@@ -192,7 +192,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address account, address operator) public view override returns (bool) {
-        if (_operatorApprovals[account][operator]) return true;
+        if (_accounts[account].approvedOperator[operator]) return true;
 
         if (_config.proxyRegistryAccount != address(0)) {
             if (address(ProxyRegistry(_config.proxyRegistryAccount).proxies(account)) == operator) {
