@@ -15,6 +15,12 @@ contract Data {
         address gsnTrustedForwarder;
         address proxyRegistryAccount;
         address tokenizer; // should be a contract managing permission
+        bytes32 DOMAIN_SEPARATOR;
+        bytes32 APPROVAL_TYPEHASH;
+        bytes4 INTERFACE_SIGNATURE_ERC165;
+        bytes4 INTERFACE_SIGNATURE_ERC1155;
+        bytes4 RECEIVER_SINGLE_MAGIC_VALUE;
+        bytes4 RECEIVER_BATCH_MAGIC_VALUE;
         string baseURI;
         string versionRecipient;
     }
@@ -33,6 +39,7 @@ contract Data {
         uint256[] tokenList;
         mapping(uint256 => AccountToken) tokens;
         mapping(address => bool) approvedOperator;
+        mapping(address => mapping(uint256 => uint256)) externalBalances;
     }
 
     struct DemurrageFees {
@@ -75,17 +82,6 @@ contract Data {
 
 
     /***************************************
-    CONSTANTS
-    ****************************************/
-
-
-    bytes4 constant internal INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
-    bytes4 constant internal INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
-    bytes4 constant internal RECEIVER_SINGLE_MAGIC_VALUE = 0xf23a6e61;
-    bytes4 constant internal RECEIVER_BATCH_MAGIC_VALUE = 0xbc197c81;
-
-
-    /***************************************
     GLOBAL VARIABLES
     ****************************************/
 
@@ -94,8 +90,6 @@ contract Data {
 
     // mappings by address
     mapping(address => Account) public _accounts;
-    //mapping(address => mapping(address => bool)) _operatorApprovals;
-    mapping(address => mapping(address => mapping(uint256 => uint256))) _externalBalances;
 
     // mappings by tokenId
     mapping(uint256 => Token) public _tokens;
@@ -108,8 +102,5 @@ contract Data {
     mapping(uint256 => Callback) public _callbacks;
     mapping(uint256 => address[]) public _callees;
 
-    // --- EIP712 niceties ---
-    bytes32 public DOMAIN_SEPARATOR;
-    bytes32 public APPROVAL_TYPEHASH;
 
 }

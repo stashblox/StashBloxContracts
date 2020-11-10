@@ -123,10 +123,10 @@ contract ChargeableTransfer is GSNCapable {
 
         if (_tokens[id].feesUnitType == 2) { // erc1155
             // remove fees from operator balance
-            _externalBalances[operator][_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] =
-                _externalBalances[operator][_tokens[id].feesUnitAddress][_tokens[id].feesUnitId].sub(fees, "Insufficient erc1155 tokens");
+            _accounts[operator].externalBalances[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] =
+                _accounts[operator].externalBalances[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId].sub(fees, "Insufficient erc1155 tokens");
             // distribute fees to beneficiary
-            _externalBalances[_tokens[id].feesRecipient][_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] += fees;
+            _accounts[_tokens[id].feesRecipient].externalBalances[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] += fees;
         } else { // eth
             // remove fees from operator balance
             _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");

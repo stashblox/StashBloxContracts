@@ -23,6 +23,12 @@ contract StashBlox is Callable, Withdrawable, Configurable {
         _config.baseURI = "http://stashblox.com/tokens/";
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
         _config.tokenizer = msg.sender;
+
+        _config.INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
+        _config.INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
+        _config.RECEIVER_SINGLE_MAGIC_VALUE = 0xf23a6e61;
+        _config.RECEIVER_BATCH_MAGIC_VALUE = 0xbc197c81;
+
         _transferOwnership(msg.sender);
 
         _initTokenStructMap();

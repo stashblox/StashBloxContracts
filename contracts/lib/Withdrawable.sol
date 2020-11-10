@@ -51,8 +51,8 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
     external override returns(bytes4) {
         // here msg.sender is the ERC1155 contract
         address erc1155Address = _msgSender();
-        _externalBalances[from][erc1155Address][id] = _externalBalances[from][erc1155Address][id].add(value);
-        return RECEIVER_SINGLE_MAGIC_VALUE;
+        _accounts[from].externalBalances[erc1155Address][id] = _accounts[from].externalBalances[erc1155Address][id].add(value);
+        return _config.RECEIVER_SINGLE_MAGIC_VALUE;
     }
 
 
@@ -65,9 +65,9 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
         // here msg.sender is the ERC1155 contract
         address erc1155Address = _msgSender();
         for (uint256 i = 0; i < ids.length; i++) {
-          _externalBalances[from][erc1155Address][ids[i]] = _externalBalances[from][erc1155Address][ids[i]].add(values[i]);
+          _accounts[from].externalBalances[erc1155Address][ids[i]] = _accounts[from].externalBalances[erc1155Address][ids[i]].add(values[i]);
         }
-        return RECEIVER_BATCH_MAGIC_VALUE;
+        return _config.RECEIVER_BATCH_MAGIC_VALUE;
     }
 
     function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external {
@@ -78,7 +78,7 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
             amount,
             ''
         );
-        _externalBalances[account][erc1155Address][tokenId] = _externalBalances[account][erc1155Address][tokenId].sub(amount, "Insufficient balance");
+        _accounts[account].externalBalances[erc1155Address][tokenId] = _accounts[account].externalBalances[erc1155Address][tokenId].sub(amount, "Insufficient balance");
     }
 
 }

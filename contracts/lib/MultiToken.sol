@@ -44,9 +44,9 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      * @param _interfaceID  The interface identifier, as specified in ERC-165
      * @return `true` if the contract implements `_interfaceID` and
      */
-    function supportsInterface(bytes4 _interfaceID) external pure override returns (bool) {
-      if (_interfaceID == INTERFACE_SIGNATURE_ERC165 ||
-          _interfaceID == INTERFACE_SIGNATURE_ERC1155) {
+    function supportsInterface(bytes4 _interfaceID) external view override returns (bool) {
+      if (_interfaceID == _config.INTERFACE_SIGNATURE_ERC165 ||
+          _interfaceID == _config.INTERFACE_SIGNATURE_ERC1155) {
         return true;
       }
       return false;
@@ -161,8 +161,8 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     {
         return keccak256(abi.encodePacked(
                 "\x19\x01",
-                DOMAIN_SEPARATOR,
-                keccak256(abi.encode(APPROVAL_TYPEHASH,
+                _config.DOMAIN_SEPARATOR,
+                keccak256(abi.encode(_config.APPROVAL_TYPEHASH,
                                      operator,
                                      account,
                                      nonce,
@@ -175,14 +175,14 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         uint256 chainId;
         assembly { chainId := chainid() }
 
-        DOMAIN_SEPARATOR = keccak256(abi.encode(
+        _config.DOMAIN_SEPARATOR = keccak256(abi.encode(
             keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
             keccak256(bytes("StashBloxContract")),
             keccak256(bytes("1.0.0")),
             chainId,
             address(this)
         ));
-        APPROVAL_TYPEHASH = keccak256("FreeSetApprovalForAll(address operator,address account,uint256 nonce,uint256 expiry,bool approved)");
+        _config.APPROVAL_TYPEHASH = keccak256("FreeSetApprovalForAll(address operator,address account,uint256 nonce,uint256 expiry,bool approved)");
     }
 
     /**
