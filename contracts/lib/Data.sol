@@ -15,8 +15,6 @@ contract Data {
         address gsnTrustedForwarder;
         address proxyRegistryAccount;
         address tokenizer; // should be a contract managing permission
-        bytes32 DOMAIN_SEPARATOR;
-        bytes32 APPROVAL_TYPEHASH;
         bytes4 INTERFACE_SIGNATURE_ERC165;
         bytes4 INTERFACE_SIGNATURE_ERC1155;
         bytes4 RECEIVER_SINGLE_MAGIC_VALUE;
@@ -24,6 +22,13 @@ contract Data {
         string baseURI;
         string versionRecipient;
         mapping(address => bool) whitelistedERC1155;
+    }
+
+    struct EIP712Config {
+        bytes32 DOMAIN_SEPARATOR;
+        bytes32 APPROVAL_TYPEHASH;
+        bytes32 TRANSFER_TYPEHASH;
+        bytes32 SALT;
     }
 
 
@@ -88,6 +93,7 @@ contract Data {
 
 
     Config public  _config;
+    EIP712Config internal _eip712Config;
 
     // mappings by address
     mapping(address => Account) public _accounts;

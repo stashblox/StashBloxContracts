@@ -112,78 +112,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         emit ApprovalForAll(account, operator, approved);
     }
 
-    function freeSetApprovalForAll(
-        address operator,
-        address account,
-        uint256 nonce,
-        uint256 expiry,
-        bool approved,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    )
-        external
-    {
-        bytes32 digest = _freeSetApprovalForAllDigest(operator, account, nonce, expiry, approved);
-        uint256 expectedNonce =  _accounts[account].nonce + 1;
 
-        require(account == ecrecover(digest, v, r, s), "invalid signature0");
-        require(expiry == 0 || block.timestamp <= expiry, "invalid signature1");
-        require(nonce == expectedNonce, "invalid signature2");
-
-        _accounts[account].nonce += 1;
-        _accounts[account].approvedOperator[operator] = approved;
-        emit ApprovalForAll(account, operator, approved);
-    }
-
-
-    function freeSetApprovalForAllNonceAndDigest(
-        address operator,
-        address account,
-        uint256 expiry,
-        bool approved
-    )
-        external view returns (uint256, bytes32)
-    {
-        return (_accounts[account].nonce + 1,
-               _freeSetApprovalForAllDigest(operator, account, _accounts[account].nonce + 1, expiry, approved));
-    }
-
-
-    function _freeSetApprovalForAllDigest(
-        address operator,
-        address account,
-        uint256 nonce,
-        uint256 expiry,
-        bool approved
-    )
-        internal view returns (bytes32)
-    {
-        return keccak256(abi.encodePacked(
-                "\x19\x01",
-                _config.DOMAIN_SEPARATOR,
-                keccak256(abi.encode(_config.APPROVAL_TYPEHASH,
-                                     operator,
-                                     account,
-                                     nonce,
-                                     expiry,
-                                     approved))));
-    }
-
-
-    function _initFreeSetApprovalForAll() internal {
-        uint256 chainId;
-        assembly { chainId := chainid() }
-
-        _config.DOMAIN_SEPARATOR = keccak256(abi.encode(
-            keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
-            keccak256(bytes("StashBloxContract")),
-            keccak256(bytes("1.0.0")),
-            chainId,
-            address(this)
-        ));
-        _config.APPROVAL_TYPEHASH = keccak256("FreeSetApprovalForAll(address operator,address account,uint256 nonce,uint256 expiry,bool approved)");
-    }
 
     /**
         @notice Queries the approval status of an operator for a given account.
@@ -226,7 +155,8 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
 
         require(to != address(0), "invalid recipient");
         require(
-            from == operator || isApprovedForAll(from, operator) == true,
+            from == operator ||
+            isApprovedForAll(from, operator) == true,
             "operator not approved"
         );
         // increase ETH balance

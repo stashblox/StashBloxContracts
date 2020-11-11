@@ -4,9 +4,9 @@ pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
 import "../utils/SafeMath.sol";
-import "./MultiToken.sol";
+import "./GasLess.sol";
 
-contract Mintable is MultiToken {
+contract Mintable is GasLess {
 
     using SafeMath for uint256;
 

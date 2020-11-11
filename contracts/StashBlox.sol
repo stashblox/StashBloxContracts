@@ -18,7 +18,7 @@ contract StashBlox is Callable, Withdrawable, Configurable {
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
      */
-    constructor () {
+    constructor (bytes32 salt) {
         _config.callbackAutoExecuteMaxAccounts = 50;
         _config.baseURI = "http://stashblox.com/tokens/";
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
@@ -29,11 +29,14 @@ contract StashBlox is Callable, Withdrawable, Configurable {
         _config.RECEIVER_SINGLE_MAGIC_VALUE = 0xf23a6e61;
         _config.RECEIVER_BATCH_MAGIC_VALUE = 0xbc197c81;
 
+
+
         _transferOwnership(msg.sender);
 
         _initTokenStructMap();
 
-        _initFreeSetApprovalForAll();
+
+        _initFreeSetApprovalForAll(salt);
     }
 
 }
