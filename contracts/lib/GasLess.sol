@@ -14,16 +14,19 @@ contract GasLess is MultiToken {
         address account,
         address operator,
         bool approved,
-
-        bool prefixed,
-        uint256 nonce,
-        uint256 expiry,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
+        bytes calldata data
     )
         external
     {
+        (
+            bool prefixed,
+            uint256 nonce,
+            uint256 expiry,
+            uint8 v,
+            bytes32 r,
+            bytes32 s
+        ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
+
         bytes32 digest = prefixed ?
                          _prefixed(_setApprovalForAll2Digest(account, operator, approved, nonce, expiry)) :
                          _setApprovalForAll2Digest(account, operator, approved, nonce, expiry);
@@ -106,7 +109,7 @@ contract GasLess is MultiToken {
             uint8 v,
             bytes32 r,
             bytes32 s
-        )  = abi.decode(data, (address, address, uint256, uint256, uint256, uint8, bytes32, bytes32));
+        ) = abi.decode(data, (address, address, uint256, uint256, uint256, uint8, bytes32, bytes32));
 
         bytes32 digest = _safeTransferFromDigest(from, to, id, value, nonce);
         uint256 expectedNonce =  _accounts[from].nonce + 1;

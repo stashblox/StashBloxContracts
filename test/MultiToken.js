@@ -57,19 +57,24 @@ describe("MultiToken.sol", () => {
         let digest = nonceAndDigest["1"];
 
         let sign = web3.eth.accounts.sign(digest, newAccount.privateKey);
-        console.log(sign);
+        //console.log(sign);
+
+        let data = web3.eth.abi.encodeParameters(
+            ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            [
+                true, // prefixed
+                nonce.toString(),
+                expiry.toString(),
+                sign.v,
+                sign.r,
+                sign.s
+            ]);
 
         let receipt = await STASHBLOX.setApprovalForAll2.send(
             newAccount.address, // account
             accounts[5], // operator
             true, // approved
-
-            true, // prefixed
-            nonce,
-            expiry,
-            sign.v,
-            sign.r,
-            sign.s
+            data
         );
 
         expectEvent(receipt, "ApprovalForAll", {
@@ -95,19 +100,24 @@ describe("MultiToken.sol", () => {
         let digest = nonceAndDigest["1"];
 
         let sign = ecsign(Buffer.from(digest.slice(2), 'hex'), Buffer.from(newAccount.privateKey.slice(2), 'hex'));
-        console.log(sign);
-        
+        //console.log(sign);
+
+        let data = web3.eth.abi.encodeParameters(
+            ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            [
+                false, // prefixed
+                nonce.toString(),
+                expiry.toString(),
+                sign.v,
+                "0x" + sign.r.toString("hex"),
+                "0x" + sign.s.toString("hex")
+            ]);
+
         let receipt = await STASHBLOX.setApprovalForAll2.send(
             newAccount.address, // account
             accounts[5], // operator
             true, // approved
-
-            false, // prefixed
-            nonce,
-            expiry,
-            sign.v,
-            "0x" + sign.r.toString("hex"),
-            "0x" + sign.s.toString("hex")
+            data
         );
 
         expectEvent(receipt, "ApprovalForAll", {
