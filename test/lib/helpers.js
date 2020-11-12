@@ -13,6 +13,7 @@ const ZERO_BYTES32 = constants.ZERO_BYTES32;
 
 var GAS_LOGS = [];
 var STASHBLOX;
+var SALT = crypto.randomBytes(32);
 
 /*
 [0]: metadataHash
@@ -75,7 +76,7 @@ var DATA = {
 }
 
 const initContract =  async() => {
-    STASHBLOX = await StashBloxClass.new();
+    STASHBLOX = await StashBloxClass.new(SALT);
 
     for (var i = 0; i < STASHBLOX.abi.length; i++) {
       if (["payable", "nonpayable"].indexOf(STASHBLOX.abi[i].stateMutability) != -1 && STASHBLOX.abi[i].type == "function") {
@@ -373,5 +374,6 @@ module.exports = exports = {
   contract,
   web3,
   GAS_LOGS,
-  ecsign
+  ecsign,
+  SALT
 }

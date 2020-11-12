@@ -4,6 +4,17 @@ pragma solidity ^0.7.4;
 
 contract StringUtils {
 
+    /* bytes32 (fixed-size array) to bytes (dynamically-sized array) */
+    function _bytes32ToBytes(bytes32 _bytes32) internal pure returns (bytes memory){
+        // string memory str = string(_bytes32);
+        // TypeError: Explicit type conversion not allowed from "bytes32" to "string storage pointer"
+        bytes memory bytesArray = new bytes(32);
+        for (uint256 i; i < 32; i++) {
+            bytesArray[i] = _bytes32[i];
+        }
+        return bytesArray;
+    }//
+
     function _strConcat(string memory a, string memory b) internal pure returns (string memory) {
         bytes memory _ba = bytes(a);
         bytes memory _bb = bytes(b);
