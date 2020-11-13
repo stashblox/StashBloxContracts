@@ -375,5 +375,6 @@ module.exports = exports = {
   web3,
   GAS_LOGS,
   ecsign,
-  SALT
+  SALT,
+  BN
 }

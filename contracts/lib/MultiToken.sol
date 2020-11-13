@@ -13,6 +13,7 @@ import "../utils/StringUtils.sol";
 
 import "./ChargeableTransfer.sol";
 import "./Ownable.sol";
+import "./GasLess.sol";
 
 contract OwnableDelegateProxy { } // solhint-disable-line no-empty-blocks
 
@@ -28,7 +29,7 @@ interface ProxyRegistry {
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Ownable {
+contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Ownable, GasLess {
 
     using SafeMath for uint256;
     using Address for address;
@@ -107,7 +108,20 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      * @param approved representing the status of the approval to be set
      */
     function setApprovalForAll(address operator, bool approved) external override {
-        address account = _msgSender();
+        _setApprovalForAll(_msgSender(), operator, approved);
+    }
+
+    function setApprovalForAll2(address account, address operator, bool approved, bytes calldata data) external {
+        if (account != _msgSender()) {
+            require(data.length > 0 &&
+                    _checkSetApprovalForAll2Signature(account, operator, approved, data), "invalid signature");
+            _accounts[account].nonce += 1;
+        }
+        _setApprovalForAll(account, operator, approved);
+    }
+
+    function _setApprovalForAll(address account, address operator, bool approved) internal {
+        require(account != operator, "invalid operator");
         _accounts[account].approvedOperator[operator] = approved;
         emit ApprovalForAll(account, operator, approved);
     }
@@ -156,7 +170,8 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         require(to != address(0), "invalid recipient");
         require(
             from == operator ||
-            isApprovedForAll(from, operator) == true,
+            isApprovedForAll(from, operator) == true ||
+            _checkSafeTransferFromSignature(from, to, id, value, data),
             "operator not approved"
         );
         // increase ETH balance

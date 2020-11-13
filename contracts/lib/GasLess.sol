@@ -1,22 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.7.4;
 
-import "./MultiToken.sol";
-import "../utils/StringUtils.sol";
+import "./Data.sol";
 
-contract GasLess is MultiToken {
+contract GasLess is Data {
 
-    function _prefixed(bytes32 hash) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
-    }
 
-    function setApprovalForAll2(
-        address account,
-        address operator,
-        bool approved,
-        bytes calldata data
+    function _checkSetApprovalForAll2Signature(
+          address account,
+          address operator,
+          bool approved,
+          bytes calldata data
     )
-        external
+        internal returns (bool)
     {
         (
             bool prefixed,
@@ -27,19 +23,11 @@ contract GasLess is MultiToken {
             bytes32 s
         ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
 
-        bytes32 digest = prefixed ?
-                         _prefixed(_setApprovalForAll2Digest(account, operator, approved, nonce, expiry)) :
-                         _setApprovalForAll2Digest(account, operator, approved, nonce, expiry);
+        bytes32 digest = _setApprovalForAll2Digest(account, operator, approved, prefixed, nonce, expiry);
 
-        uint256 expectedNonce =  _accounts[account].nonce + 1;
+        _checkSignature(account, digest, nonce, expiry, v, r, s);
 
-        require(account == ecrecover(digest, v, r, s), "invalid signature0");
-        require(expiry == 0 || block.timestamp <= expiry, "invalid signature1");
-        require(nonce == expectedNonce, "invalid signature2");
-
-        _accounts[account].nonce += 1;
-        _accounts[account].approvedOperator[operator] = approved;
-        emit ApprovalForAll(account, operator, approved);
+        return true;
     }
 
 
@@ -53,7 +41,7 @@ contract GasLess is MultiToken {
     {
         return (
             _accounts[account].nonce + 1,
-            _setApprovalForAll2Digest(account, operator, approved, _accounts[account].nonce + 1, expiry)
+            _setApprovalForAll2Digest(account, operator, approved, false, _accounts[account].nonce + 1, expiry)
         );
     }
 
@@ -61,6 +49,7 @@ contract GasLess is MultiToken {
         address account,
         address operator,
         bool approved,
+        bool prefixed,
         uint256 nonce,
         uint256 expiry
     )
@@ -72,50 +61,55 @@ contract GasLess is MultiToken {
             operator,
             approved
         ));
-        return keccak256(abi.encodePacked(
+        bytes32 digest = keccak256(abi.encodePacked(
             "\\x19\\x01",
             _eip712Config.DOMAIN_SEPARATOR,
             functionHash,
             keccak256(abi.encode(nonce, expiry))
         ));
+
+        return prefixed ? _prefixed(digest) : digest;
     }
 
 
-
-
-    function safeTransferFromNonceAndDigest(
+    function safeTransferFromDigest(
         address from,
         address to,
         uint256 id,
-        uint256 value
+        uint256 value,
+        uint256 expiry
     )
         external view returns (uint256, bytes32)
     {
         return (
             _accounts[from].nonce + 1,
-            _safeTransferFromDigest(from, to, id, value, _accounts[from].nonce + 1)
+            _safeTransferFromDigest(from, to, id, value, false, _accounts[from].nonce + 1, expiry)
         );
     }
 
 
 
-    function _checkFreeTransferSig(bytes calldata data) internal view returns (bool) {
+    function _checkSafeTransferFromSignature(
+        address from,
+        address to,
+        uint256 id,
+        uint256 value,
+        bytes calldata data
+    )
+        internal returns (bool)
+    {
         (
-            address from,
-            address to,
-            uint256 id,
-            uint256 value,
+            bool prefixed,
             uint256 nonce,
+            uint256 expiry,
             uint8 v,
             bytes32 r,
             bytes32 s
-        ) = abi.decode(data, (address, address, uint256, uint256, uint256, uint8, bytes32, bytes32));
+        ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
 
-        bytes32 digest = _safeTransferFromDigest(from, to, id, value, nonce);
-        uint256 expectedNonce =  _accounts[from].nonce + 1;
+        bytes32 digest = _safeTransferFromDigest(from, to, id, value, prefixed, nonce, expiry);
 
-        require(from == ecrecover(digest, v, r, s), "invalid signature0");
-        require(nonce == expectedNonce, "invalid signature1");
+        _checkSignature(from, digest, nonce, expiry, v, r, s);
 
         return true;
     }
@@ -126,7 +120,9 @@ contract GasLess is MultiToken {
         address to,
         uint256 id,
         uint256 value,
-        uint256 nonce
+        bool prefixed,
+        uint256 nonce,
+        uint256 expiry
     )
         internal view returns (bytes32)
     {
@@ -135,14 +131,37 @@ contract GasLess is MultiToken {
             from,
             to,
             id,
-            value,
-            nonce
+            value
         ));
-        return keccak256(abi.encodePacked(
+        bytes32 digest = keccak256(abi.encodePacked(
             "\\x19\\x01",
             _eip712Config.DOMAIN_SEPARATOR,
-            functionHash
+            functionHash,
+            keccak256(abi.encode(nonce, expiry))
         ));
+
+        return prefixed ? _prefixed(digest) : digest;
+    }
+
+
+    function _prefixed(bytes32 hash) internal pure returns (bytes32) {
+        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
+    }
+
+
+    function _checkSignature(
+        address account,
+        bytes32 digest,
+        uint256 nonce,
+        uint256 expiry,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) internal {
+        uint256 expectedNonce =  _accounts[account].nonce + 1;
+        require(account == ecrecover(digest, v, r, s), "invalid signature0");
+        require(expiry == 0 || block.timestamp <= expiry, "invalid signature1");
+        require(nonce == expectedNonce, "invalid signature2");
     }
 
 
@@ -151,6 +170,9 @@ contract GasLess is MultiToken {
         assembly { chainId := chainid() }
 
         _eip712Config.SALT = salt;
+        _eip712Config.chainId = chainId;
+        _eip712Config.contractAddress = address(this);
+
         _eip712Config.DOMAIN_SEPARATOR = keccak256(abi.encode(
             keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract,bytes32 salt)"),
             keccak256(bytes("StashBloxContract")),

@@ -29,6 +29,8 @@ contract Data {
         bytes32 APPROVAL_TYPEHASH;
         bytes32 TRANSFER_TYPEHASH;
         bytes32 SALT;
+        uint256 chainId;
+        address contractAddress;
     }
 
 
@@ -93,7 +95,7 @@ contract Data {
 
 
     Config public  _config;
-    EIP712Config internal _eip712Config;
+    EIP712Config public _eip712Config;
 
     // mappings by address
     mapping(address => Account) public _accounts;
