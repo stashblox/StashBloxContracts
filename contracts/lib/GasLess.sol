@@ -6,29 +6,9 @@ import "./Data.sol";
 contract GasLess is Data {
 
 
-    function _checkSetApprovalForAll2Signature(
-          address account,
-          address operator,
-          bool approved,
-          bytes calldata data
-    )
-        internal returns (bool)
-    {
-        (
-            bool prefixed,
-            uint256 nonce,
-            uint256 expiry,
-            uint8 v,
-            bytes32 r,
-            bytes32 s
-        ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
-
-        bytes32 digest = _setApprovalForAll2Digest(account, operator, approved, prefixed, nonce, expiry);
-
-        _checkSignature(account, digest, nonce, expiry, v, r, s);
-
-        return true;
-    }
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
 
 
     function setApprovalForAll2Digest(
@@ -44,33 +24,6 @@ contract GasLess is Data {
             _setApprovalForAll2Digest(account, operator, approved, false, _accounts[account].nonce + 1, expiry)
         );
     }
-
-    function _setApprovalForAll2Digest(
-        address account,
-        address operator,
-        bool approved,
-        bool prefixed,
-        uint256 nonce,
-        uint256 expiry
-    )
-        internal view returns (bytes32)
-    {
-        bytes32 functionHash = keccak256(abi.encode(
-            _eip712Config.APPROVAL_TYPEHASH,
-            account,
-            operator,
-            approved
-        ));
-        bytes32 digest = keccak256(abi.encodePacked(
-            "\\x19\\x01",
-            _eip712Config.DOMAIN_SEPARATOR,
-            functionHash,
-            keccak256(abi.encode(nonce, expiry))
-        ));
-
-        return prefixed ? _prefixed(digest) : digest;
-    }
-
 
     function safeTransferFromDigest(
         address from,
@@ -88,6 +41,32 @@ contract GasLess is Data {
     }
 
 
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
+
+    function _checkSetApprovalForAll2Signature(
+          address account,
+          address operator,
+          bool approved,
+          bytes calldata data
+    )
+        internal returns (bool)
+    {
+        (
+            bool prefixed,
+            uint256 nonce,
+            uint256 expiry,
+            uint8 v,
+            bytes32 r,
+            bytes32 s
+        ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
+        bytes32 digest = _setApprovalForAll2Digest(account, operator, approved, prefixed, nonce, expiry);
+
+        _requireValidSignature(account, digest, nonce, expiry, v, r, s);
+        return true;
+    }
 
     function _checkSafeTransferFromSignature(
         address from,
@@ -106,14 +85,31 @@ contract GasLess is Data {
             bytes32 r,
             bytes32 s
         ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
-
         bytes32 digest = _safeTransferFromDigest(from, to, id, value, prefixed, nonce, expiry);
 
-        _checkSignature(from, digest, nonce, expiry, v, r, s);
-
+        _requireValidSignature(from, digest, nonce, expiry, v, r, s);
         return true;
     }
 
+
+    function _setApprovalForAll2Digest(
+        address account,
+        address operator,
+        bool approved,
+        bool prefixed,
+        uint256 nonce,
+        uint256 expiry
+    )
+        internal view returns (bytes32)
+    {
+        bytes32 functionHash = keccak256(abi.encode(
+            _eip712Config.APPROVAL_TYPEHASH,
+            account,
+            operator,
+            approved
+        ));
+        return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
+    }
 
     function _safeTransferFromDigest(
         address from,
@@ -133,13 +129,17 @@ contract GasLess is Data {
             id,
             value
         ));
+        return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
+    }
+
+
+    function _callFunctionDigest(bytes32 functionHash, bool prefixed, uint256 nonce, uint256 expiry) internal view returns (bytes32) {
         bytes32 digest = keccak256(abi.encodePacked(
             "\\x19\\x01",
             _eip712Config.DOMAIN_SEPARATOR,
             functionHash,
             keccak256(abi.encode(nonce, expiry))
         ));
-
         return prefixed ? _prefixed(digest) : digest;
     }
 
@@ -149,7 +149,7 @@ contract GasLess is Data {
     }
 
 
-    function _checkSignature(
+    function _requireValidSignature(
         address account,
         bytes32 digest,
         uint256 nonce,
@@ -158,10 +158,9 @@ contract GasLess is Data {
         bytes32 r,
         bytes32 s
     ) internal {
-        uint256 expectedNonce =  _accounts[account].nonce + 1;
-        require(account == ecrecover(digest, v, r, s), "invalid signature0");
-        require(expiry == 0 || block.timestamp <= expiry, "invalid signature1");
-        require(nonce == expectedNonce, "invalid signature2");
+        require(account == ecrecover(digest, v, r, s) &&
+                expiry == 0 || block.timestamp <= expiry &&
+                nonce ==  _accounts[account].nonce + 1, "invalid signature");
     }
 
 
