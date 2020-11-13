@@ -29,14 +29,9 @@ contract StashBlox is Callable, Withdrawable, Configurable {
         _config.RECEIVER_SINGLE_MAGIC_VALUE = 0xf23a6e61;
         _config.RECEIVER_BATCH_MAGIC_VALUE = 0xbc197c81;
 
-
-
         _transferOwnership(msg.sender);
-
         _initTokenStructMap();
-
-
-        _initFreeSetApprovalForAll(salt);
+        _initGasLessTransactions(salt);
     }
 
 }

@@ -164,7 +164,7 @@ contract GasLess is Data {
     }
 
 
-    function _initFreeSetApprovalForAll(bytes32 salt) internal {
+    function _initGasLessTransactions(bytes32 salt) internal {
         uint256 chainId;
         assembly { chainId := chainid() }
 

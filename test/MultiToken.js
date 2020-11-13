@@ -39,7 +39,7 @@ describe("MultiToken.sol", () => {
     DATA = await initFixtures();
   });
 
-  describe("#freeSetApprovalForAll", async () => {
+  describe("#setApprovalForAll2", async () => {
 
     it("should approve operator with signed and prefixed payload", async () => {
 
@@ -126,6 +126,120 @@ describe("MultiToken.sol", () => {
         });
     });
 
+
+    it("should transfer with signed and prefixed payload", async () => {
+
+        let newAccount = web3.eth.accounts.create();
+        let expiry = (await now()).add(bigN(365*24*60*60));
+
+        await transferTokens({
+          operator: accounts[1],
+          from: accounts[1],
+          to: newAccount.address,
+          tokenID: DATA["token1"].id,
+          amount: 50
+        });
+
+        let nonceAndDigest = await STASHBLOX.safeTransferFromDigest(
+          newAccount.address, // from
+          accounts[5], // to
+          DATA["token1"].id, // token id
+          10, // value
+          expiry // expiration
+        )
+        let nonce = bigN(nonceAndDigest["0"]);
+        let digest = nonceAndDigest["1"];
+
+        let sign = web3.eth.accounts.sign(digest, newAccount.privateKey);
+        //console.log(sign);
+
+        let data = web3.eth.abi.encodeParameters(
+            ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            [
+                true, // prefixed
+                nonce.toString(),
+                expiry.toString(),
+                sign.v,
+                sign.r,
+                sign.s
+            ]);
+
+        let receipt = await STASHBLOX.safeTransferFrom.send(
+            newAccount.address, // from
+            accounts[5], // to
+            DATA["token1"].id, // token id
+            10, // value
+            data,
+            {from: accounts[6]}
+        );
+
+
+        expectEvent(receipt, "TransferSingle", {
+          _operator: accounts[6],
+          _from: newAccount.address,
+          _to: accounts[5],
+          _id: DATA["token1"].id,
+          _value: bigN(10)
+        });
+
+    });
+
+
+    it("should transfer with signed and NOT prefixed payload", async () => {
+
+        let newAccount = web3.eth.accounts.create();
+        let expiry = (await now()).add(bigN(365*24*60*60));
+
+        await transferTokens({
+          operator: accounts[1],
+          from: accounts[1],
+          to: newAccount.address,
+          tokenID: DATA["token1"].id,
+          amount: 50
+        });
+
+        let nonceAndDigest = await STASHBLOX.safeTransferFromDigest(
+          newAccount.address, // from
+          accounts[5], // to
+          DATA["token1"].id, // token id
+          10, // value
+          expiry // expiration
+        )
+        let nonce = bigN(nonceAndDigest["0"]);
+        let digest = nonceAndDigest["1"];
+
+        let sign = ecsign(Buffer.from(digest.slice(2), 'hex'), Buffer.from(newAccount.privateKey.slice(2), 'hex'));
+        //console.log(sign);
+
+        let data = web3.eth.abi.encodeParameters(
+            ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            [
+                false, // prefixed
+                nonce.toString(),
+                expiry.toString(),
+                sign.v,
+                "0x" + sign.r.toString("hex"),
+                "0x" + sign.s.toString("hex")
+            ]);
+
+        let receipt = await STASHBLOX.safeTransferFrom.send(
+            newAccount.address, // from
+            accounts[5], // to
+            DATA["token1"].id, // token id
+            10, // value
+            data,
+            {from: accounts[6]}
+        );
+
+
+        expectEvent(receipt, "TransferSingle", {
+          _operator: accounts[6],
+          _from: newAccount.address,
+          _to: accounts[5],
+          _id: DATA["token1"].id,
+          _value: bigN(10)
+        });
+    });
 
   })
 
