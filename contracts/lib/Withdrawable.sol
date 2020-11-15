@@ -29,6 +29,10 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
         );
     }
 
+    function getExternalBalance(address account, uint256 currencyId) public view returns (uint256) {
+        return _accounts[account].externalBalances[currencyId];
+    }
+
 
     /**
      * @dev Function to withdraw ETH from the contract. TODO: Add permission ??

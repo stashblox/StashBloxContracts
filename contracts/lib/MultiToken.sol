@@ -114,7 +114,8 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     function setApprovalForAll2(address account, address operator, bool approved, bytes calldata data) external {
         if (account != _msgSender()) {
             require(data.length > 0 &&
-                    _checkSetApprovalForAll2Signature(account, operator, approved, data), "invalid signature");
+                    _checkSetApprovalForAll2Signature(account, operator, approved, data),
+                    "invalid signature");
             _accounts[account].nonce += 1;
         }
         _setApprovalForAll(account, operator, approved);
@@ -171,7 +172,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         require(
             from == operator ||
             isApprovedForAll(from, operator) == true ||
-            _checkSafeTransferFromSignature(from, to, id, value, data),
+            (data.length == 192 && _checkSafeTransferFromSignature(from, to, id, value, data)),
             "operator not approved"
         );
         // increase ETH balance

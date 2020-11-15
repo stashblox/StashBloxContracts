@@ -45,9 +45,7 @@ describe("ChargeableTransfer.sol", () => {
                                           "standardFees",
                                           "lumpSumFees",
                                           "demurrageFees",
-                                          "feesUnitType",
-                                          "feesUnitAddress",
-                                          "feesUnitId",
+                                          "feesCurrencyId",
                                           "feesRecipient",
                                           "decimals",
                                           "maintener",
@@ -61,9 +59,7 @@ describe("ChargeableTransfer.sol", () => {
                                           DATA["token1"].standardFees,
                                           DATA["token1"].lumpSumFees,
                                           DATA["token1"].demurrageFees,
-                                          DATA["token1"].feesUnitType,
-                                          DATA["token1"].feesUnitAddress,
-                                          DATA["token1"].feesUnitId,
+                                          DATA["token1"].feesCurrencyId,
                                           DATA["token1"].feesRecipient,
                                           DATA["token1"].decimals,
                                           DATA["token1"].maintener,
@@ -151,7 +147,7 @@ describe("ChargeableTransfer.sol", () => {
 
 
     it("it should split fees between feesRecipients", async () => {
-      let ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipient)).ethBalance
+      let ethBalance = await STASHBLOX.getExternalBalance(DATA["token1"].feesRecipient, 0)
       assert.equal(ethBalance.valueOf(), 0, "Incorrect ETH balance");
 
       let transferAmount = 38 * 10**8;
@@ -170,7 +166,7 @@ describe("ChargeableTransfer.sol", () => {
         amount: transferAmount
       });
 
-      ethBalance = (await STASHBLOX._accounts(DATA["token1"].feesRecipient)).ethBalance;
+      ethBalance = await STASHBLOX.getExternalBalance(DATA["token1"].feesRecipient, 0);
       assert.equal(ethBalance.toString(), demurrageFees.toString(), "Incorrect balance increase");
     });
 

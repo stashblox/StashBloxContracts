@@ -42,7 +42,7 @@ describe("Callable.sol", () => {
   const getethBalances = async () => {
     let ethBalance = {};
     for (var i = 0; i <= 9; i++) {
-      ethBalance[i] = (await STASHBLOX._accounts(accounts[i])).ethBalance;
+      ethBalance[i] = await STASHBLOX.getExternalBalance(accounts[i], 0);
     }
     return ethBalance;
   }

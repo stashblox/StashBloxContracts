@@ -91,6 +91,11 @@ describe("Proxyable.sol", () => {
         value: demurrageFees,
         from: accounts[2]
       }), "operator not approved");
+      // console.log(ZERO_BYTES32);
+      // delegateProxy.safeTransferFrom(accounts[2], accounts[1], DATA["token2"].id, 50, ZERO_BYTES32, {
+      //   value: demurrageFees,
+      //   from: accounts[2]
+      // });
 
       let balanceAfter = await STASHBLOX.balanceOf.call(accounts[2], DATA["token2"].id);
       assert.equal(balanceBefore.toString(), balanceAfter.toString(), "invalid balance");

@@ -64,8 +64,7 @@ contract GasLess is Data {
         ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
         bytes32 digest = _setApprovalForAll2Digest(account, operator, approved, prefixed, nonce, expiry);
 
-        _requireValidSignature(account, digest, nonce, expiry, v, r, s);
-        return true;
+        return _requireValidSignature(account, digest, nonce, expiry, v, r, s);
     }
 
     function _checkSafeTransferFromSignature(
@@ -87,8 +86,7 @@ contract GasLess is Data {
         ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
         bytes32 digest = _safeTransferFromDigest(from, to, id, value, prefixed, nonce, expiry);
 
-        _requireValidSignature(from, digest, nonce, expiry, v, r, s);
-        return true;
+        return _requireValidSignature(from, digest, nonce, expiry, v, r, s);
     }
 
 
@@ -158,10 +156,10 @@ contract GasLess is Data {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) internal {
-        require(account == ecrecover(digest, v, r, s) &&
+    ) internal returns (bool) {
+        return (account == ecrecover(digest, v, r, s) &&
                 expiry == 0 || block.timestamp <= expiry &&
-                nonce ==  _accounts[account].nonce + 1, "invalid signature");
+                nonce ==  _accounts[account].nonce + 1);
     }
 
 

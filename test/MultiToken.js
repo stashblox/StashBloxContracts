@@ -163,6 +163,7 @@ describe("MultiToken.sol", () => {
                 sign.r,
                 sign.s
             ]);
+        //console.log(data, data.length);
 
         let receipt = await STASHBLOX.safeTransferFrom.send(
             newAccount.address, // from

@@ -28,9 +28,7 @@ describe("Maintenable.sol", () => {
       "standardFees",
       "lumpSumFees",
       "demurrageFees",
-      "feesUnitType",
-      "feesUnitAddress",
-      "feesUnitId",
+      "feesCurrencyId",
       "feesRecipient",
       "decimals",
       "maintener",
@@ -84,7 +82,7 @@ describe("Maintenable.sol", () => {
       //   "locked"
       // ];
 
-      let fieldListUint256 = ["decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees", "feesUnitType", "feesUnitId"];
+      let fieldListUint256 = ["decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees", "feesCurrencyId"];
       let originalToken = await STASHBLOX._tokens.call(DATA["token1"].id);
 
       for (var i = 0; i < fieldListUint256.length; i++) {
@@ -117,9 +115,7 @@ describe("Maintenable.sol", () => {
       let standardFees = 0;
       let lumpSumFees = 3;
       let demurrageFees = 1;
-      let feesUnitType = 2;
-      let feesUnitAddress = STASHBLOX.address;
-      let feesUnitId = DATA["token2"].id;
+      let feesCurrencyId = 0;
       let feesRecipient = accounts[5];
       let decimals = 8;
       let maintener = accounts[5];
@@ -134,9 +130,7 @@ describe("Maintenable.sol", () => {
                                                       standardFees,
                                                       lumpSumFees,
                                                       demurrageFees,
-                                                      feesUnitType,
-                                                      feesUnitAddress,
-                                                      feesUnitId,
+                                                      feesCurrencyId,
                                                       feesRecipient,
                                                       decimals,
                                                       maintener,
@@ -157,9 +151,7 @@ describe("Maintenable.sol", () => {
       assert.equal(token.lumpSumFees.toString(), lumpSumFees.toString(), "invalid value");
       assert.equal(token.standardFees.toString(), standardFees.toString(), "invalid value");
 
-      assert.equal(token.feesUnitType.valueOf(), 2, "invalid value");
-      assert.equal(token.feesUnitAddress.toString(16), STASHBLOX.address, "invalid value");
-      assert.equal(token.feesUnitId.toString(), DATA["token2"].id.toString(), "invalid value");
+      assert.equal(token.feesCurrencyId.valueOf(), 0, "invalid value");
     });
 
     it("should not be able to update token", async () => {
@@ -170,9 +162,7 @@ describe("Maintenable.sol", () => {
       let standardFees = 0;
       let lumpSumFees = 3;
       let demurrageFees = 1;
-      let feesUnitType = 2;
-      let feesUnitAddress = STASHBLOX.address;
-      let feesUnitId = DATA["token2"].id;
+      let feesCurrencyId = 0;
       let feesRecipient = accounts[5];
       let decimals = 8;
       let maintener = accounts[5];
@@ -189,9 +179,7 @@ describe("Maintenable.sol", () => {
             standardFees,
             lumpSumFees,
             demurrageFees,
-            feesUnitType,
-            feesUnitAddress,
-            feesUnitId,
+            feesCurrencyId,
             feesRecipient,
             decimals,
             maintener,
@@ -209,9 +197,7 @@ describe("Maintenable.sol", () => {
       assert.equal(token.lumpSumFees.toString(), DATA["token1"].lumpSumFees.toString(), "invalid value");
       assert.equal(token.standardFees.toString(), DATA["token1"].standardFees.toString(), "invalid value");
 
-      assert.equal(token.feesUnitType.valueOf(), DATA["token1"].feesUnitType, "invalid value");
-      assert.equal(token.feesUnitAddress.toString(16), DATA["token1"].feesUnitAddress.toString(), "invalid value");
-      assert.equal(token.feesUnitId.valueOf(), DATA["token1"].feesUnitId, "invalid value");
+      assert.equal(token.feesCurrencyId.valueOf(), DATA["token1"].feesCurrencyId, "invalid value");
     });
   });
 
