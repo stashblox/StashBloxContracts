@@ -175,7 +175,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             "operator not approved"
         );
         // increase ETH balance
-        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
+        _accounts[operator].externalBalances[0] = _accounts[operator].externalBalances[0].add(msg.value);
 
         _moveTokens(operator, from, to, id, value);
 
@@ -213,7 +213,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             "operator not approved"
         );
         // increase ETH balance
-        _accounts[operator].ethBalance = _accounts[operator].ethBalance.add(msg.value);
+        _accounts[operator].externalBalances[0] = _accounts[operator].externalBalances[0].add(msg.value);
 
         _moveTokensBatch(operator, from, to, ids, values);
 

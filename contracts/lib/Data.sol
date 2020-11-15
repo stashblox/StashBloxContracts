@@ -21,7 +21,7 @@ contract Data {
         bytes4 RECEIVER_BATCH_MAGIC_VALUE;
         string baseURI;
         string versionRecipient;
-        mapping(address => bool) whitelistedERC1155;
+        //mapping(address => bool) whitelistedERC1155;
     }
 
     struct EIP712Config {
@@ -42,17 +42,22 @@ contract Data {
 
     struct Account {
         bool isLocked;
-        uint256 ethBalance;
         uint256 nonce;
         uint256[] tokenList;
         mapping(uint256 => AccountToken) tokens;
         mapping(address => bool) approvedOperator;
-        mapping(address => mapping(uint256 => uint256)) externalBalances;
+        mapping(uint256 => uint256) externalBalances; // currencyId => balance
     }
 
     struct DemurrageFees {
         uint256 startAt;
         uint256 price;
+    }
+
+    struct Currency {
+        uint256 currencyType; // 0 ether, 1 erc20, 2 erc1155
+        uint256 id; // for erc1155
+        address contractAddress; // for erc1155 and erc20
     }
 
     struct Token {
@@ -62,9 +67,7 @@ contract Data {
         uint256 minHoldingForCallback;
         uint256 lumpSumFees;
         uint256 standardFees;
-        uint256 feesUnitType; // 0 ether, 1 erc20, 2 erc1155
-        uint256 feesUnitId;
-        address feesUnitAddress;
+        uint256 feesCurrencyId;
         address feesRecipient;
         address legalAuthority;
         address maintener;
@@ -107,9 +110,11 @@ contract Data {
     // initialized in constructor and used to set token properties
     mapping(bytes32 => uint8) internal tokenStructMap;
 
+    mapping(address => mapping(uint256 => uint256)) internal _currencyIDs;
+    mapping(uint256 => Currency) internal _currencies;
+
     // mappings by callbackId
     mapping(uint256 => Callback) public _callbacks;
     mapping(uint256 => address[]) public _callees;
-
 
 }

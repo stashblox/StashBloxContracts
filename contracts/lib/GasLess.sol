@@ -104,9 +104,7 @@ contract GasLess is Data {
     {
         bytes32 functionHash = keccak256(abi.encode(
             _eip712Config.APPROVAL_TYPEHASH,
-            account,
-            operator,
-            approved
+            account, operator, approved
         ));
         return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
     }
@@ -124,16 +122,19 @@ contract GasLess is Data {
     {
         bytes32 functionHash = keccak256(abi.encode(
             _eip712Config.TRANSFER_TYPEHASH,
-            from,
-            to,
-            id,
-            value
+            from, to, id, value
         ));
         return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
     }
 
-
-    function _callFunctionDigest(bytes32 functionHash, bool prefixed, uint256 nonce, uint256 expiry) internal view returns (bytes32) {
+    function _callFunctionDigest(
+        bytes32 functionHash,
+        bool prefixed,
+        uint256 nonce,
+        uint256 expiry
+    )
+        internal view returns (bytes32)
+    {
         bytes32 digest = keccak256(abi.encodePacked(
             "\\x19\\x01",
             _eip712Config.DOMAIN_SEPARATOR,

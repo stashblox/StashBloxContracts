@@ -32,6 +32,8 @@ contract StashBlox is Callable, Withdrawable, Configurable {
         _transferOwnership(msg.sender);
         _initTokenStructMap();
         _initGasLessTransactions(salt);
+
+        _currencies[0] = Currency(0, 0, address(0)); //register ETH currency
     }
 
 }

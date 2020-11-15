@@ -78,9 +78,9 @@ contract Mintable is MultiToken {
 
     // called once by the constructor
     function _initTokenStructMap() internal {
-        string[13] memory fieldList = [
-          "decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees", "feesUnitType", "feesUnitId",
-          "feesUnitAddress", "feesRecipient", "legalAuthority", "maintener",
+        string[11] memory fieldList = [
+          "decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees",
+          "feesCurrencyId", "feesRecipient", "legalAuthority", "maintener",
           "isPrivate", "locked"
         ];
         for (uint8 i = 0; i < fieldList.length; i++) {

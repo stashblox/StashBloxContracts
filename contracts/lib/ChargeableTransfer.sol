@@ -121,17 +121,17 @@ contract ChargeableTransfer is GSNCapable {
 
     function _payFees(uint256 id, address operator, uint256 fees) internal {
 
-        if (_tokens[id].feesUnitType == 2) { // erc1155
+        if (_currencies[_tokens[id].feesCurrencyId].currencyType == 2) { // erc1155
             // remove fees from operator balance
-            _accounts[operator].externalBalances[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] =
-                _accounts[operator].externalBalances[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId].sub(fees, "Insufficient erc1155 tokens");
+            _accounts[operator].externalBalances[_tokens[id].feesCurrencyId] =
+                _accounts[operator].externalBalances[_tokens[id].feesCurrencyId].sub(fees, "Insufficient erc1155 tokens");
             // distribute fees to beneficiary
-            _accounts[_tokens[id].feesRecipient].externalBalances[_tokens[id].feesUnitAddress][_tokens[id].feesUnitId] += fees;
+            _accounts[_tokens[id].feesRecipient].externalBalances[_tokens[id].feesCurrencyId] += fees;
         } else { // eth
             // remove fees from operator balance
-            _accounts[operator].ethBalance = _accounts[operator].ethBalance.sub(fees, "Insufficient ETH");
+            _accounts[operator].externalBalances[0] = _accounts[operator].externalBalances[0].sub(fees, "Insufficient ETH");
             // distribute fees to beneficiary
-            _accounts[_tokens[id].feesRecipient].ethBalance += fees;
+            _accounts[_tokens[id].feesRecipient].externalBalances[0] += fees;
         }
 
     }

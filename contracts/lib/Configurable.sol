@@ -48,9 +48,4 @@ contract Configurable is Ownable {
         emit ConfigUpdated();
     }
 
-
-    function setWhitelistedERC1155(address erc1155Address, bool whitelisted) external onlyOwner {
-        _config.whitelistedERC1155[erc1155Address] = whitelisted;
-    }
-
 }

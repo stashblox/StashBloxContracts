@@ -16,6 +16,19 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
     EXTERNAL FUNCTIONS
     *****************************/
 
+    function registerCurreny(uint256 currencyId, address contractAddress, uint256 tokenId) external  {
+        require(currencyId !=0 &&
+                contractAddress != address(0) &&
+                _currencies[currencyId].contractAddress == address(0),
+                "invalid arguments");
+
+        _currencies[currencyId] = Currency(
+            tokenId == 0 ? 1 : 2, // erc20 if no tokenId, else erc1155
+            tokenId,
+            contractAddress
+        );
+    }
+
 
     /**
      * @dev Function to withdraw ETH from the contract. TODO: Add permission ??
@@ -23,7 +36,7 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
      * @param amount amount to withdraw
      */
     function withdraw(address account, uint256 amount) external {
-        _accounts[account].ethBalance = _accounts[account].ethBalance.sub(amount, "Insufficient balance");
+        _accounts[account].externalBalances[0] = _accounts[account].externalBalances[0].sub(amount, "Insufficient balance");
         (bool success, ) = account.call{value: amount}(""); // solhint-disable-line avoid-low-level-calls
         require(success, "Withdrawal failed");
     }
@@ -33,14 +46,14 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
      * @param account recipent address
      */
     function deposit(address account) external payable {
-        _accounts[account].ethBalance = _accounts[account].ethBalance.add(msg.value);
+        _accounts[account].externalBalances[0] = _accounts[account].externalBalances[0].add(msg.value);
     }
 
     /**
      * @dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()).
      */
     receive() external payable {
-        _accounts[_msgSender()].ethBalance = _accounts[_msgSender()].ethBalance.add(msg.value);
+        _accounts[_msgSender()].externalBalances[0] = _accounts[_msgSender()].externalBalances[0].add(msg.value);
     }
 
     function onERC1155Received(address operator,
@@ -50,10 +63,10 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
                                bytes calldata data)
     external override returns(bytes4) {
         // here msg.sender is the ERC1155 contract
-        address erc1155Address = _msgSender();
-        require(_config.whitelistedERC1155[erc1155Address], "unknown erc1155");
-        
-        _accounts[from].externalBalances[erc1155Address][id] = _accounts[from].externalBalances[erc1155Address][id].add(value);
+        uint256 currencyId = _currencyIDs[_msgSender()][id];
+        require(currencyId > 0, "unknown erc1155");
+
+        _accounts[from].externalBalances[currencyId] = _accounts[from].externalBalances[currencyId].add(value);
         return _config.RECEIVER_SINGLE_MAGIC_VALUE;
     }
 
@@ -65,24 +78,27 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
                                     bytes calldata data)
     external override returns(bytes4) {
         // here msg.sender is the ERC1155 contract
-        address erc1155Address = _msgSender();
-        require(_config.whitelistedERC1155[erc1155Address], "unknown erc1155");
-
+        address sender = _msgSender();
         for (uint256 i = 0; i < ids.length; i++) {
-          _accounts[from].externalBalances[erc1155Address][ids[i]] = _accounts[from].externalBalances[erc1155Address][ids[i]].add(values[i]);
+            uint256 currencyId = _currencyIDs[sender][ids[i]];
+            require(currencyId > 0, "unknown erc1155");
+            _accounts[from].externalBalances[currencyId] = _accounts[from].externalBalances[currencyId].add(values[i]);
         }
         return _config.RECEIVER_BATCH_MAGIC_VALUE;
     }
 
     function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external {
+        uint256 currencyId = _currencyIDs[erc1155Address][tokenId];
+        require(currencyId > 0, "unknown erc1155");
+
         IERC1155(erc1155Address).safeTransferFrom(
             address(this),
             account,
             tokenId,
             amount,
             ''
-        );
-        _accounts[account].externalBalances[erc1155Address][tokenId] = _accounts[account].externalBalances[erc1155Address][tokenId].sub(amount, "Insufficient balance");
+        ); // TODO test success ?
+        _accounts[account].externalBalances[currencyId] = _accounts[account].externalBalances[currencyId].sub(amount, "Insufficient balance");
     }
 
 }
