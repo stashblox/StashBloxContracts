@@ -16,7 +16,7 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
     EXTERNAL FUNCTIONS
     *****************************/
 
-    function registerCurreny(uint256 currencyId, address contractAddress, uint256 tokenId) external  {
+    function registerCurreny(uint256 currencyId, address contractAddress, uint256 tokenId) external  { // TODO: only owner
         require(currencyId !=0 &&
                 contractAddress != address(0) &&
                 _currencies[currencyId].contractAddress == address(0),

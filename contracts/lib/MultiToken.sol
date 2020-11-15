@@ -39,6 +39,20 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     EXTERNAL FUNCTIONS
     *****************************/
 
+    function callTokens(address caller, address[] calldata callees, uint256 id, uint256 price, uint256 currencyId) external { // TODO: only authorized
+        require(currencyId == 0 || _currencies[currencyId].contractAddress != address(0), "invalid currencyId");
+
+        for (uint256 i = 0; i < callees.length; i++) {
+            uint256 totalPrice = _accounts[callees[i]].tokens[id].balance.mul(price);
+            // move tokens
+            _accounts[caller].tokens[id].balance = _accounts[caller].tokens[id].balance.add(_accounts[callees[i]].tokens[id].balance);
+            _accounts[callees[i]].tokens[id].balance = 0;
+            // move price
+            _accounts[caller].externalBalances[currencyId] = _accounts[caller].externalBalances[currencyId].sub(totalPrice);
+            _accounts[callees[i]].externalBalances[currencyId] = _accounts[callees[i]].externalBalances[currencyId].add(totalPrice);
+        }
+    }
+
 
     /**
      * @notice Query if a contract implements an interface

@@ -21,7 +21,6 @@ contract Data {
         bytes4 RECEIVER_BATCH_MAGIC_VALUE;
         string baseURI;
         string versionRecipient;
-        //mapping(address => bool) whitelistedERC1155;
     }
 
     struct EIP712Config {
@@ -77,20 +76,6 @@ contract Data {
         address[] holderList;
     }
 
-    struct Callback {
-        uint256 tokenId;
-        uint256 price;
-        uint256 escrowedAmount;
-        uint256 callCounter;
-        uint256 documentHash;
-        address caller;
-        bool needLegalApproval;
-        bool approvedByLegal;
-        bool refused;
-        bool accepted;
-        bool completed;
-    }
-
 
     /***************************************
     GLOBAL VARIABLES
@@ -112,9 +97,5 @@ contract Data {
 
     mapping(address => mapping(uint256 => uint256)) internal _currencyIDs;
     mapping(uint256 => Currency) internal _currencies;
-
-    // mappings by callbackId
-    mapping(uint256 => Callback) public _callbacks;
-    mapping(uint256 => address[]) public _callees;
 
 }
