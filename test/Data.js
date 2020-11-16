@@ -32,19 +32,7 @@ describe("Data.sol", () => {
       assert.equal(account.isLocked, true, "invalid account");
     });
 
-    it("_callbacks should have free getter", async () => {
-      await STASHBLOX.proposeCallback.send(1, DATA["token1"].id, 100, [], random(), {
-        from: accounts[1],
-        value: 100 * DATA["token1"].supply
-      });
-      const callback = await STASHBLOX._callbacks(bigN(1));
-      assert.equal(callback.price.valueOf(), 100, "invalid callback");
-    });
 
-    it("_config should have free getter", async () => {
-      const config = await STASHBLOX._config();
-      assert.equal(config.callbackAutoExecuteMaxAccounts, 50, "Invalid config value");
-    });
   });
 
 

@@ -54,12 +54,12 @@ describe("Mintable.sol", () => {
   describe("#authorizeTokenizer", () => {
 
     it("should authorize tokenizser", async () => {
-      let config = await STASHBLOX._config();
+      let config = await STASHBLOX.getConfig.call();
       assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
 
       await setTokenizerAuthorization(accounts[5], true);
 
-      config = await STASHBLOX._config();
+      config = await STASHBLOX.getConfig.call();
       assert.equal(config.tokenizer == accounts[5], true, "invalid authorization");
     });
 
@@ -111,13 +111,13 @@ describe("Mintable.sol", () => {
   describe("#revokeTokenizer", () => {
 
     it("should revoke tokenizer", async () => {
-      let config = await STASHBLOX._config();
+      let config = await STASHBLOX.getConfig.call();
       assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
 
       await setTokenizerAuthorization(accounts[5], true);
       await setTokenizerAuthorization(accounts[5], false);
 
-      config = await STASHBLOX._config();
+      config = await STASHBLOX.getConfig.call();
       assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
     });
 

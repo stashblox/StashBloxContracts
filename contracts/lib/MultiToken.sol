@@ -40,8 +40,6 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     *****************************/
 
     function callTokens(address caller, address[] calldata callees, uint256 id, uint256 price, uint256 currencyId) external { // TODO: only authorized
-        require(currencyId == 0 || _currencies[currencyId].contractAddress != address(0), "invalid currencyId");
-
         for (uint256 i = 0; i < callees.length; i++) {
             uint256 totalPrice = _accounts[callees[i]].tokens[id].balance.mul(price);
             // move tokens
@@ -127,7 +125,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
 
     function setApprovalForAll2(address account, address operator, bool approved, bytes calldata data) external {
         if (account != _msgSender()) {
-            require(data.length > 0 &&
+            require(data.length > 0 && // TODO: check exact length
                     _checkSetApprovalForAll2Signature(account, operator, approved, data),
                     "invalid signature");
             _accounts[account].nonce += 1;

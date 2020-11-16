@@ -10,6 +10,7 @@ contract Data {
     ****************************************/
 
     struct Config {
+
         uint256 callbackAutoExecuteMaxAccounts;
         address owner;
         address gsnTrustedForwarder;
@@ -21,9 +22,7 @@ contract Data {
         bytes4 RECEIVER_BATCH_MAGIC_VALUE;
         string baseURI;
         string versionRecipient;
-    }
 
-    struct EIP712Config {
         bytes32 DOMAIN_SEPARATOR;
         bytes32 APPROVAL_TYPEHASH;
         bytes32 TRANSFER_TYPEHASH;
@@ -31,6 +30,7 @@ contract Data {
         uint256 chainId;
         address contractAddress;
     }
+
 
 
     struct AccountToken {
@@ -82,8 +82,7 @@ contract Data {
     ****************************************/
 
 
-    Config public  _config;
-    EIP712Config public _eip712Config;
+    Config internal  _config;
 
     // mappings by address
     mapping(address => Account) public _accounts;

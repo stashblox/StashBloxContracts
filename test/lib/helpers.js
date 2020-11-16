@@ -239,7 +239,7 @@ const transferTokensBatch = async (params) => {
 }
 
 const setTokenizerAuthorization = async (account, auhtorized) => {
-  let config = await STASHBLOX._config();
+  let config = await STASHBLOX.getConfig.call();
 
   return await STASHBLOX.updateConfig.send(
     config.callbackAutoExecuteMaxAccounts,

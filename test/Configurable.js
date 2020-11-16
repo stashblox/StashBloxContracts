@@ -22,7 +22,8 @@ describe("Configurable.sol", () => {
   describe("#updateConfig", async () => {
 
     it("should have correct initial config", async () => {
-      const newConfig = await STASHBLOX._config();
+      const newConfig = await STASHBLOX.getConfig.call();
+      //console.log(newConfig);
 
       assert.equal(newConfig.callbackAutoExecuteMaxAccounts, 50, "Invalid config value");
       assert.equal(newConfig.baseURI, "http://stashblox.com/tokens/", "Invalid config value");
@@ -58,7 +59,7 @@ describe("Configurable.sol", () => {
 
       expectEvent(receipt, "ConfigUpdated");
 
-      const newConfig = await STASHBLOX._config();
+      const newConfig = await STASHBLOX.getConfig.call();
 
       assert.equal(newConfig.callbackAutoExecuteMaxAccounts, callbackAutoExecuteMaxAccounts, "Invalid config value");
       assert.equal(newConfig.baseURI, baseURI, "Invalid config value");

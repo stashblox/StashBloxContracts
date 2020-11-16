@@ -132,20 +132,6 @@ contract Mintable is MultiToken {
         _addToBalance(recipient, id, supply);
     }
 
-    function _cloneToken(uint256 id, uint256 cloneId, uint256 metadataHash) internal {
-        require(_tokens[cloneId].supply == 0, "invalid clone ID");
-
-        Token memory token = _tokens[id];
-        token.metadataHash = metadataHash;
-        _tokens[cloneId] = token;
-        uint256 latestDemurrageFees = _demurrageFees[id][_demurrageFees[id].length-1].price;
-        _demurrageFees[cloneId].push(DemurrageFees(block.timestamp, latestDemurrageFees));
-
-        address recipient = _tokens[id].holderList[0];
-        _accounts[recipient].tokens[id].isApproved = true;
-        _addToBalance(recipient, cloneId, _tokens[cloneId].supply);
-    }
-
     function _isMaintener(uint256 id, address account) internal view returns (bool) {
         return _tokens[id].maintener == account || _config.owner == account;
     }

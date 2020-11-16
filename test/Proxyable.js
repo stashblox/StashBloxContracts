@@ -42,7 +42,7 @@ describe("Proxyable.sol", () => {
     it("should update proxy registry account", async () => {
       await setProxyRegistryAccount(accounts[5]);
 
-      const config = await STASHBLOX._config();
+      const config = await STASHBLOX.getConfig.call();
 
       assert.equal(config.proxyRegistryAccount, accounts[5], "invalid proxy registry account");
     });

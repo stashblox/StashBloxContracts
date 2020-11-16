@@ -25,7 +25,7 @@ describe("Ownable.sol", () => {
       const owner = await STASHBLOX.owner();
       assert.equal(owner, defaultSender, "Invalid owner");
 
-      const config = await STASHBLOX._config();
+      const config = await STASHBLOX.getConfig.call();
       assert.equal(config.owner, defaultSender, "Invalid owner");
 
     });

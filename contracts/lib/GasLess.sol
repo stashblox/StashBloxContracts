@@ -101,7 +101,7 @@ contract GasLess is Data {
         internal view returns (bytes32)
     {
         bytes32 functionHash = keccak256(abi.encode(
-            _eip712Config.APPROVAL_TYPEHASH,
+            _config.APPROVAL_TYPEHASH,
             account, operator, approved
         ));
         return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
@@ -119,7 +119,7 @@ contract GasLess is Data {
         internal view returns (bytes32)
     {
         bytes32 functionHash = keccak256(abi.encode(
-            _eip712Config.TRANSFER_TYPEHASH,
+            _config.TRANSFER_TYPEHASH,
             from, to, id, value
         ));
         return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
@@ -135,7 +135,7 @@ contract GasLess is Data {
     {
         bytes32 digest = keccak256(abi.encodePacked(
             "\\x19\\x01",
-            _eip712Config.DOMAIN_SEPARATOR,
+            _config.DOMAIN_SEPARATOR,
             functionHash,
             keccak256(abi.encode(nonce, expiry))
         ));
@@ -167,11 +167,11 @@ contract GasLess is Data {
         uint256 chainId;
         assembly { chainId := chainid() }
 
-        _eip712Config.SALT = salt;
-        _eip712Config.chainId = chainId;
-        _eip712Config.contractAddress = address(this);
+        _config.SALT = salt;
+        _config.chainId = chainId;
+        _config.contractAddress = address(this);
 
-        _eip712Config.DOMAIN_SEPARATOR = keccak256(abi.encode(
+        _config.DOMAIN_SEPARATOR = keccak256(abi.encode(
             keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract,bytes32 salt)"),
             keccak256(bytes("StashBloxContract")),
             keccak256(bytes("1.0.0")),
@@ -179,8 +179,8 @@ contract GasLess is Data {
             address(this),
             salt
         ));
-        _eip712Config.APPROVAL_TYPEHASH = keccak256("SetApprovalForAll(address account,address operator,bool approved)");
-        _eip712Config.TRANSFER_TYPEHASH = keccak256("SafeTransferFrom(address from,address to,uint256 id,uint256 value)");
+        _config.APPROVAL_TYPEHASH = keccak256("SetApprovalForAll(address account,address operator,bool approved)");
+        _config.TRANSFER_TYPEHASH = keccak256("SafeTransferFrom(address from,address to,uint256 id,uint256 value)");
     }
 
 }

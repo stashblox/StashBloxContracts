@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 // (c) Copyright 2020 Stashblox, all rights reserved.
 pragma solidity ^0.7.4;
+pragma experimental ABIEncoderV2;
 
 import "./Ownable.sol";
 
@@ -46,6 +47,10 @@ contract Configurable is Ownable {
         _config.tokenizer = tokenizer;
 
         emit ConfigUpdated();
+    }
+
+    function getConfig() public returns (Config memory) {
+        return _config;
     }
 
 }
