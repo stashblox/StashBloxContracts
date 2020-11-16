@@ -65,7 +65,7 @@ contract Mintable is MultiToken {
         }
         emit TokenUpdated(id, _tokens[id].metadataHash);
     }
-    
+
 
     /**
      * @dev Function to approve holder for a private token.
@@ -89,9 +89,9 @@ contract Mintable is MultiToken {
 
     // called once by the constructor
     function _initTokenStructMap() internal {
-        string[11] memory fieldList = [
-          "decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees",
-          "feesCurrencyId", "feesRecipient", "legalAuthority", "maintener",
+        string[8] memory fieldList = [
+          "decimals", "metadataHash", "lumpSumFees", "standardFees",
+          "feesCurrencyId", "feesRecipient",
           "isPrivate", "locked"
         ];
         for (uint8 i = 0; i < fieldList.length; i++) {

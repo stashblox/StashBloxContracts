@@ -11,10 +11,36 @@ contract Withdrawable is Authorizable, IERC1155Receiver {
 
     using SafeMath for uint256;
 
+    event AccountUpdated(address indexed _account, uint256 _documentHash);
+
 
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
+
+    /**
+     * @dev Function to unlock an address.
+     * @param account The address to unlock
+     */
+    function setAccountLock(
+        address account,
+        bool lock,
+        uint256 documentHash
+    )
+        external onlyAuthorized(_msgSender(), Actions.LOCK_ACCOUNT, 0)
+    {
+        _accounts[account].isLocked = lock;
+        emit AccountUpdated(account, documentHash);
+    }
+
+    /**
+     * @dev Function to check if an address is lockec.
+     * @param account The address to check
+     */
+    function isLockedAccount(address account) external view returns (bool){
+        return _accounts[account].isLocked;
+    }
+
 
     function registerCurreny(
         uint256 currencyId,
@@ -77,7 +103,7 @@ contract Withdrawable is Authorizable, IERC1155Receiver {
         require(currencyId > 0, "unknown erc1155");
 
         _accounts[from].externalBalances[currencyId] = _accounts[from].externalBalances[currencyId].add(value);
-        return _config.RECEIVER_SINGLE_MAGIC_VALUE;
+        return 0xf23a6e61; //RECEIVER_SINGLE_MAGIC_VALUE
     }
 
 
@@ -94,7 +120,7 @@ contract Withdrawable is Authorizable, IERC1155Receiver {
             require(currencyId > 0, "unknown erc1155");
             _accounts[from].externalBalances[currencyId] = _accounts[from].externalBalances[currencyId].add(values[i]);
         }
-        return _config.RECEIVER_BATCH_MAGIC_VALUE;
+        return 0xbc197c81; //RECEIVER_BATCH_MAGIC_VALUE
     }
 
     function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external {

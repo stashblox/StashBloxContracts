@@ -26,17 +26,10 @@ contract Data {
     struct Config {
         address owner;
         address proxyRegistryAccount;
-
-        bytes4 INTERFACE_SIGNATURE_ERC165;
-        bytes4 INTERFACE_SIGNATURE_ERC1155;
-        bytes4 RECEIVER_SINGLE_MAGIC_VALUE;
-        bytes4 RECEIVER_BATCH_MAGIC_VALUE;
-
         bytes32 DOMAIN_SEPARATOR;
         bytes32 APPROVAL_TYPEHASH;
         bytes32 TRANSFER_TYPEHASH;
         bytes32 SALT;
-
         string baseURI;
         string versionRecipient;
     }
@@ -69,16 +62,12 @@ contract Data {
         uint256 supply;
         uint256 decimals;
         uint256 metadataHash;
-        uint256 minHoldingForCallback;
         uint256 lumpSumFees;
         uint256 standardFees;
         uint256 feesCurrencyId;
         address feesRecipient;
-        address legalAuthority;
-        address maintener;
         bool    isPrivate;
         bool    locked;
-
         address[] holderList;
     }
 
@@ -104,5 +93,7 @@ contract Data {
 
     mapping(address => mapping(uint256 => uint256)) internal _currencyIDs;
     mapping(uint256 => Currency) internal _currencies;
+
+    mapping(bytes4 => bool) internal _supportedInterfaces;
 
 }

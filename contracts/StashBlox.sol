@@ -3,9 +3,9 @@
 pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
-import "./lib/Lockable.sol";
 import "./lib/Withdrawable.sol";
 import "./lib/Configurable.sol";
+import "./lib/Mintable.sol";
 
 /**
     @title A simulator for trees
@@ -13,7 +13,7 @@ import "./lib/Configurable.sol";
     @notice You can use this contract for only the most basic simulation
     @dev All function calls are currently implemented without side effects
  */
-contract StashBlox is Lockable, Withdrawable, Configurable {
+contract StashBlox is Mintable, Withdrawable, Configurable {
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
@@ -22,10 +22,10 @@ contract StashBlox is Lockable, Withdrawable, Configurable {
         _config.baseURI = "http://stashblox.com/tokens/";
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
 
-        _config.INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
-        _config.INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;
-        _config.RECEIVER_SINGLE_MAGIC_VALUE = 0xf23a6e61;
-        _config.RECEIVER_BATCH_MAGIC_VALUE = 0xbc197c81;
+        _supportedInterfaces[0x01ffc9a7] = true; // ERC165
+        _supportedInterfaces[0xd9b67a26] = true; // ERC1155
+        _supportedInterfaces[0x0e89341c] = true; // ERC1155Metadata
+        // TODO: complete interfaces
 
         _transferOwnership(msg.sender);
         _initTokenStructMap();

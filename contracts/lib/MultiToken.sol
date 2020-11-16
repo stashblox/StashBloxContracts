@@ -54,7 +54,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
             _accounts[caller].tokens[id].balance = _accounts[caller].tokens[id].balance.add(_accounts[callees[i]].tokens[id].balance);
             _accounts[callees[i]].tokens[id].balance = 0;
             // move price
-            _accounts[caller].externalBalances[currencyId] = _accounts[caller].externalBalances[currencyId].sub(totalPrice);
+            _accounts[caller].externalBalances[currencyId] = _accounts[caller].externalBalances[currencyId].sub(totalPrice, "Insufficient balance");
             _accounts[callees[i]].externalBalances[currencyId] = _accounts[callees[i]].externalBalances[currencyId].add(totalPrice);
         }
     }
@@ -66,11 +66,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
      * @return `true` if the contract implements `_interfaceID` and
      */
     function supportsInterface(bytes4 _interfaceID) external view override returns (bool) {
-      if (_interfaceID == _config.INTERFACE_SIGNATURE_ERC165 ||
-          _interfaceID == _config.INTERFACE_SIGNATURE_ERC1155) {
-        return true;
-      }
-      return false;
+        return _supportedInterfaces[_interfaceID];
     }
 
     /**
@@ -156,14 +152,14 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address account, address operator) public view override returns (bool) {
-        if (_permissions[operator][Actions.TRANSFER_TOKEN_FOR][uint256(uint160(account))]) return true;
-
+        if (_permissions[operator][Actions.TRANSFER_TOKEN_FOR][uint256(uint160(account))]) {
+            return true;
+        }
         if (_config.proxyRegistryAccount != address(0)) {
             if (address(ProxyRegistry(_config.proxyRegistryAccount).proxies(account)) == operator) {
                 return true;
             }
         }
-
         return false;
     }
 

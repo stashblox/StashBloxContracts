@@ -25,6 +25,9 @@ contract Authorizable is IERC173, GSNCapable {
         _;
     }
 
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
 
     function setAuthorization(
         address account,
@@ -38,15 +41,16 @@ contract Authorizable is IERC173, GSNCapable {
     }
 
 
-    function isAuthorized(address account, Actions action, uint256 objectId) public view returns (bool) {
+    function isAuthorized(
+        address account,
+        Actions action,
+        uint256 objectId
+    )
+        public view returns (bool)
+    {
         if (account == _config.owner) return true;
         return _permissions[account][action][objectId];
     }
-
-
-    /****************************
-    EXTERNAL FUNCTIONS
-    *****************************/
 
 
     /**

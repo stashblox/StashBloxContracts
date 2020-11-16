@@ -16,6 +16,11 @@ abstract contract GSNCapable is IRelayRecipient, Data {
         return _permissions[account][Actions.GSN_FORWARDER][0];
     }
 
+    function versionRecipient() external override view returns (string memory) {
+        //return "1.0.0+opengsn.stashblox";
+        return _config.versionRecipient;
+    }
+
     /**
      * return the sender of this call.
      * if the call came through our trusted forwarder, return the original sender.
@@ -60,10 +65,5 @@ abstract contract GSNCapable is IRelayRecipient, Data {
         } else {
             return msg.data;
         }
-    }
-
-    function versionRecipient() external override view returns (string memory) {
-        //return "1.0.0+opengsn.stashblox";
-        return _config.versionRecipient;
     }
 }

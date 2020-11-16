@@ -138,6 +138,7 @@ contract ChargeableTransfer is GSNCapable {
 
     // Used by ERC1155 implementation in safeTransferFrom
     function _moveTokens(address operator, address from, address to, uint256 id, uint256 value) internal virtual returns (uint256 fees) {
+        require(!(_tokens[id].locked || _accounts[from].isLocked || _accounts[to].isLocked || value == 0), "Locked");
         // remove tokens from sender balance
         _accounts[from].tokens[id].balance = _accounts[from].tokens[id].balance.sub(value, "Insufficient balance");
         // add tokens to receiver balance
