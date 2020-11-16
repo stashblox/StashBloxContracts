@@ -3,9 +3,9 @@
 pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
-import "./Privatizable.sol";
+import "./Mintable.sol";
 
-contract Lockable is Privatizable {
+contract Lockable is Mintable {
 
     /****************************
     EVENTS
@@ -23,7 +23,13 @@ contract Lockable is Privatizable {
      * @dev Function to unlock an address.
      * @param account The address to unlock
      */
-    function setAccountLock(address account, bool lock, uint256 documentHash) external onlyOwner {
+    function setAccountLock(
+        address account,
+        bool lock,
+        uint256 documentHash
+    )
+        external onlyAuthorized(_msgSender(), Actions.LOCK_ACCOUNT, 0)
+    {
         _accounts[account].isLocked = lock;
         emit AccountUpdated(account, documentHash);
     }
@@ -33,7 +39,7 @@ contract Lockable is Privatizable {
      * @param account The address to check
      */
     function isLockedAccount(address account) external view returns (bool){
-        return _isLockedAccount(account);
+        return _accounts[account].isLocked;
     }
 
 
@@ -41,23 +47,9 @@ contract Lockable is Privatizable {
     INTERNAL FUNCTIONS
     *****************************/
 
-
-    function _setTokenLock(uint256 id, bool lock, uint256 documentHash) internal {
-        _tokens[id].locked = lock;
-        emit TokenUpdated(id, documentHash);
-    }
-
-    function _isLockedAccount(address account) internal view returns (bool) {
-        return _accounts[account].isLocked;
-    }
-
-    function _isLockedMove(address from, address to, uint256 id, uint256 value) internal view returns (bool) {
-        return _tokens[id].locked || _isLockedAccount(from) || _isLockedAccount(to) || (value == 0);
-    }
-
     // override ChargeableTransfer._moveTokens
     function _moveTokens(address operator, address from, address to, uint256 id, uint256 value) internal override returns (uint256 fees) {
-        require(!_isLockedMove(from, to, id, value), "Locked");
+        require(!(_tokens[id].locked || _accounts[from].isLocked || _accounts[to].isLocked || value == 0), "Locked");
         return super._moveTokens(operator, from, to, id, value);
     }
 }

@@ -13,27 +13,34 @@ import "../interfaces/IERC173.sol";
  * `onlyOwner`, which can be applied to your functions to restrict their use to
  * the owner.
  */
-contract Ownable is IERC173, GSNCapable {
-
-    /**
-     * @dev Initializes the contract setting the deployer as the initial owner.
-     */
-    constructor () {
-        _transferOwnership(_msgSender());
-    }
+contract Authorizable is IERC173, GSNCapable {
 
 
     /****************************
     MODIFIERS
     *****************************/
 
-
-    /**
-     * @dev Throws if called by any account other than the owner.
-     */
-    modifier onlyOwner() {
-        require(_isOwner(), "Ownable: caller is not the owner");
+    modifier onlyAuthorized(address account, Actions action, uint256 objectId) {
+        require(isAuthorized(account, action, objectId), "not authorized");
         _;
+    }
+
+
+    function setAuthorization(
+        address account,
+        Actions action,
+        uint256 objectId,
+        bool authorized
+    )
+        external onlyAuthorized(_msgSender(), Actions.SET_AUTHORIZATION, 0)
+    {
+        _permissions[account][action][objectId] = authorized;
+    }
+
+
+    function isAuthorized(address account, Actions action, uint256 objectId) public view returns (bool) {
+        if (account == _config.owner) return true;
+        return _permissions[account][action][objectId];
     }
 
 
@@ -54,7 +61,11 @@ contract Ownable is IERC173, GSNCapable {
      * @param account address of the new owner
      * Can only be called by the current owner.
      */
-    function transferOwnership(address account) public override onlyOwner {
+    function transferOwnership(
+        address account
+    )
+        public override onlyAuthorized(_msgSender(), Actions.TRANSFER_OWNERSHIP, 0)
+    {
         _transferOwnership(account);
     }
 
@@ -73,10 +84,4 @@ contract Ownable is IERC173, GSNCapable {
         _config.owner = account;
     }
 
-    /**
-     * @dev Returns true if the caller is the current owner.
-     */
-    function _isOwner() internal view returns (bool) {
-        return _msgSender() == _config.owner;
-    }
 }

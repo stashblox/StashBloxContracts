@@ -167,10 +167,6 @@ contract GasLess is Data {
         uint256 chainId;
         assembly { chainId := chainid() }
 
-        _config.SALT = salt;
-        _config.chainId = chainId;
-        _config.contractAddress = address(this);
-
         _config.DOMAIN_SEPARATOR = keccak256(abi.encode(
             keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract,bytes32 salt)"),
             keccak256(bytes("StashBloxContract")),
@@ -181,6 +177,7 @@ contract GasLess is Data {
         ));
         _config.APPROVAL_TYPEHASH = keccak256("SetApprovalForAll(address account,address operator,bool approved)");
         _config.TRANSFER_TYPEHASH = keccak256("SafeTransferFrom(address from,address to,uint256 id,uint256 value)");
+        _config.SALT = salt;
     }
 
 }

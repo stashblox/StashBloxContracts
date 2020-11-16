@@ -6,7 +6,7 @@ import "../lib/GSNCapable.sol";
 contract GSNCapableMock is GSNCapable {
 
     constructor(address trustedForwarder) {
-        _config.gsnTrustedForwarder = trustedForwarder;
+        _permissions[trustedForwarder][Actions.GSN_FORWARDER][0] = true;
     }
 
     function publicMsgSender() public view returns (address) {

@@ -12,7 +12,7 @@ import "../utils/Address.sol";
 import "../utils/StringUtils.sol";
 
 import "./ChargeableTransfer.sol";
-import "./Ownable.sol";
+import "./Authorizable.sol";
 import "./GasLess.sol";
 
 contract OwnableDelegateProxy { } // solhint-disable-line no-empty-blocks
@@ -29,7 +29,7 @@ interface ProxyRegistry {
  * See https://eips.ethereum.org/EIPS/eip-1155
  * Originally based on code by Enjin: https://github.com/enjin/erc-1155
  */
-contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Ownable, GasLess {
+contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, ChargeableTransfer, Authorizable, GasLess {
 
     using SafeMath for uint256;
     using Address for address;
@@ -39,7 +39,15 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
     EXTERNAL FUNCTIONS
     *****************************/
 
-    function callTokens(address caller, address[] calldata callees, uint256 id, uint256 price, uint256 currencyId) external { // TODO: only authorized
+    function callTokens(
+        address caller,
+        address[] calldata callees,
+        uint256 id,
+        uint256 price,
+        uint256 currencyId
+    )
+        external onlyAuthorized(_msgSender(), Actions.CALL_TOKENS, id)
+    {
         for (uint256 i = 0; i < callees.length; i++) {
             uint256 totalPrice = _accounts[callees[i]].tokens[id].balance.mul(price);
             // move tokens
@@ -135,7 +143,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
 
     function _setApprovalForAll(address account, address operator, bool approved) internal {
         require(account != operator, "invalid operator");
-        _accounts[account].approvedOperator[operator] = approved;
+        _permissions[operator][Actions.TRANSFER_TOKEN_FOR][uint256(uint160(account))] = approved;
         emit ApprovalForAll(account, operator, approved);
     }
 
@@ -148,7 +156,7 @@ contract MultiToken is IERC165, IERC1155, IERC1155Metadata, StringUtils, Chargea
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address account, address operator) public view override returns (bool) {
-        if (_accounts[account].approvedOperator[operator]) return true;
+        if (_permissions[operator][Actions.TRANSFER_TOKEN_FOR][uint256(uint160(account))]) return true;
 
         if (_config.proxyRegistryAccount != address(0)) {
             if (address(ProxyRegistry(_config.proxyRegistryAccount).proxies(account)) == operator) {

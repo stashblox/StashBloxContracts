@@ -22,17 +22,6 @@ contract Mintable is MultiToken {
 
 
     /****************************
-    MODIFIERS
-    *****************************/
-
-
-    modifier onlyMaintener(uint256 id) {
-        require(_isMaintener(id, _msgSender()), "Insufficient permission");
-        _;
-    }
-
-
-    /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
@@ -46,15 +35,15 @@ contract Mintable is MultiToken {
      * @param properties Token information
      * @param values Token information
     */
-    function createTokens(address recipient,
-                          uint256[] memory ids,
-                          uint256 supply,
-                          string[] memory properties,
-                          uint256[] memory values)
-    external {
-        address account = _msgSender();
-        require((account == _config.tokenizer) || (account == _config.owner), "Insufficient permission");
-
+    function createTokens(
+        address recipient,
+        uint256[] memory ids,
+        uint256 supply,
+        string[] memory properties,
+        uint256[] memory values
+    )
+        external onlyAuthorized(_msgSender(), Actions.CREATE_TOKEN, 0)
+    {
         for (uint256 i = 0; i < ids.length; i++) {
             _createToken(recipient, ids[i], supply, properties, values);
             emit TransferSingle(_msgSender(), address(0), recipient, ids[i], supply);
@@ -62,13 +51,35 @@ contract Mintable is MultiToken {
     }
 
 
-    function updateToken(uint256 id, string[] memory properties, uint256[] memory values) external onlyMaintener(id) {
+    function updateToken(
+        uint256 id,
+        string[] memory properties,
+        uint256[] memory values
+    )
+        external onlyAuthorized(_msgSender(), Actions.UPDATE_TOKEN, id)
+    {
         require(properties.length == values.length, "invalid arguments");
 
         for (uint256 i = 0; i < properties.length; i++) {
             _setTokenProperty(id, properties[i], values[i]);
         }
         emit TokenUpdated(id, _tokens[id].metadataHash);
+    }
+    
+
+    /**
+     * @dev Function to approve holder for a private token.
+     * @param id the token id
+     * @param account The authorized address
+     */
+    function setAccountApproval(
+        uint256 id,
+        address account,
+        bool isApproved
+    )
+        external onlyAuthorized(_msgSender(), Actions.UPDATE_TOKEN, id)
+    {
+        _permissions[account][Actions.HOLD_PRIVATE_TOKEN][id] = isApproved;
     }
 
 
@@ -128,12 +139,9 @@ contract Mintable is MultiToken {
         _tokens[id].supply = supply;
         _setTokenProperties(id, properties, values);
 
-        _accounts[recipient].tokens[id].isApproved = true;
+        _permissions[recipient][Actions.UPDATE_TOKEN][id] = true;
+        _permissions[recipient][Actions.HOLD_PRIVATE_TOKEN][id] = true;
         _addToBalance(recipient, id, supply);
-    }
-
-    function _isMaintener(uint256 id, address account) internal view returns (bool) {
-        return _tokens[id].maintener == account || _config.owner == account;
     }
 
 }

@@ -19,10 +19,8 @@ contract StashBlox is Lockable, Withdrawable, Configurable {
      * @dev Initializes the contract setting the deployer as the initial owner.
      */
     constructor (bytes32 salt) {
-        _config.callbackAutoExecuteMaxAccounts = 50;
         _config.baseURI = "http://stashblox.com/tokens/";
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
-        _config.tokenizer = msg.sender;
 
         _config.INTERFACE_SIGNATURE_ERC165 = 0x01ffc9a7;
         _config.INTERFACE_SIGNATURE_ERC1155 = 0xd9b67a26;

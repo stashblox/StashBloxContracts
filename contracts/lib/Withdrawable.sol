@@ -5,9 +5,9 @@ pragma solidity ^0.7.4;
 import "../utils/SafeMath.sol";
 import "../interfaces/IERC1155Receiver.sol";
 import "../interfaces/IERC1155.sol";
-import "./GSNCapable.sol";
+import "./Authorizable.sol";
 
-contract Withdrawable is GSNCapable, IERC1155Receiver {
+contract Withdrawable is Authorizable, IERC1155Receiver {
 
     using SafeMath for uint256;
 
@@ -16,7 +16,13 @@ contract Withdrawable is GSNCapable, IERC1155Receiver {
     EXTERNAL FUNCTIONS
     *****************************/
 
-    function registerCurreny(uint256 currencyId, address contractAddress, uint256 tokenId) external  { // TODO: only owner
+    function registerCurreny(
+        uint256 currencyId,
+        address contractAddress,
+        uint256 tokenId
+    )
+        external onlyAuthorized(_msgSender(), Actions.REGISTER_CURRENCY, 0)
+    {
         require(currencyId !=0 &&
                 contractAddress != address(0) &&
                 _currencies[currencyId].contractAddress == address(0),

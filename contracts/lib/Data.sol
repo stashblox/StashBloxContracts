@@ -9,34 +9,41 @@ contract Data {
     TODO: pack struct members
     ****************************************/
 
-    struct Config {
+    enum Actions {
+        SET_AUTHORIZATION,
+        UPDATE_CONFIG,
+        CREATE_TOKEN,
+        UPDATE_TOKEN,
+        TRANSFER_OWNERSHIP,
+        REGISTER_CURRENCY,
+        CALL_TOKENS,
+        LOCK_ACCOUNT,
+        GSN_FORWARDER,
+        TRANSFER_TOKEN_FOR,
+        HOLD_PRIVATE_TOKEN
+    }
 
-        uint256 callbackAutoExecuteMaxAccounts;
+    struct Config {
         address owner;
-        address gsnTrustedForwarder;
         address proxyRegistryAccount;
-        address tokenizer; // should be a contract managing permission
+
         bytes4 INTERFACE_SIGNATURE_ERC165;
         bytes4 INTERFACE_SIGNATURE_ERC1155;
         bytes4 RECEIVER_SINGLE_MAGIC_VALUE;
         bytes4 RECEIVER_BATCH_MAGIC_VALUE;
-        string baseURI;
-        string versionRecipient;
 
         bytes32 DOMAIN_SEPARATOR;
         bytes32 APPROVAL_TYPEHASH;
         bytes32 TRANSFER_TYPEHASH;
         bytes32 SALT;
-        uint256 chainId;
-        address contractAddress;
+
+        string baseURI;
+        string versionRecipient;
     }
-
-
 
     struct AccountToken {
         uint256 balance;
         uint256 birthday;
-        bool isApproved; // for private tokens
     }
 
     struct Account {
@@ -44,7 +51,6 @@ contract Data {
         uint256 nonce;
         uint256[] tokenList;
         mapping(uint256 => AccountToken) tokens;
-        mapping(address => bool) approvedOperator;
         mapping(uint256 => uint256) externalBalances; // currencyId => balance
     }
 
@@ -83,6 +89,8 @@ contract Data {
 
 
     Config internal  _config;
+
+    mapping(address => mapping(Actions => mapping(uint256 => bool))) internal _permissions;
 
     // mappings by address
     mapping(address => Account) public _accounts;
