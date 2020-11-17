@@ -2,10 +2,10 @@
 // (c) Copyright 2020 Stashblox, all rights reserved.
 pragma solidity ^0.7.4;
 
-import "../utils/SafeMath.sol";
-import "./GSNCapable.sol";
+import "../../utils/SafeMath.sol";
+import "../Core/Core.sol";
 
-contract ChargeableTransfer is GSNCapable {
+contract ChargeableTransfer is Core {
 
     using SafeMath for uint256;
 

@@ -2,7 +2,7 @@
 
 pragma solidity ^0.7.4;
 
-contract StringUtils {
+library StringUtils {
 
     /* bytes32 (fixed-size array) to bytes (dynamically-sized array) */
     function _bytes32ToBytes(bytes32 _bytes32) internal pure returns (bytes memory){

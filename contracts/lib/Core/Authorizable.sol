@@ -3,7 +3,7 @@
 pragma solidity ^0.7.4;
 
 import "./GSNCapable.sol";
-import "../interfaces/IERC173.sol";
+import "../../interfaces/IERC173.sol";
 /**
  * @dev Contract module which provides a basic access control mechanism, where
  * there is an account (an owner) that can be granted exclusive access to

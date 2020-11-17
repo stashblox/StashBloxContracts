@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.7.4;
 
-import "../lib/GSNCapable.sol";
+import "../lib/Core/GSNCapable.sol";
 
 contract GSNCapableMock is GSNCapable {
 

@@ -3,9 +3,9 @@
 pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
-import "./lib/Withdrawable.sol";
-import "./lib/Configurable.sol";
-import "./lib/Mintable.sol";
+import "./lib/Accounts.sol";
+import "./lib/Config.sol";
+import "./lib/Tokens/Tokens.sol";
 
 /**
     @title A simulator for trees
@@ -13,7 +13,7 @@ import "./lib/Mintable.sol";
     @notice You can use this contract for only the most basic simulation
     @dev All function calls are currently implemented without side effects
  */
-contract StashBlox is Mintable, Withdrawable, Configurable {
+contract StashBlox is Config, Accounts, Tokens {
 
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.

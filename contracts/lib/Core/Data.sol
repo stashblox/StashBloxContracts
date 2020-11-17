@@ -72,6 +72,15 @@ contract Data {
     }
 
 
+    event TransferSingle(address indexed _operator, address indexed _from, address indexed _to, uint256 _id, uint256 _value);
+    event TransferBatch(address indexed _operator, address indexed _from, address indexed _to, uint256[] _ids, uint256[] _values);
+    event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
+    event URI(string _value, uint256 indexed _id);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event AccountUpdated(address indexed _account, uint256 _documentHash);
+    event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
+    event ConfigUpdated();
+
     /***************************************
     GLOBAL VARIABLES
     ****************************************/

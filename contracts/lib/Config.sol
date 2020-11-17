@@ -3,9 +3,10 @@
 pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
-import "./Authorizable.sol";
+import "./Core/Core.sol";
+import "../interfaces/IERC165.sol";
 
-contract Configurable is Authorizable {
+contract Config is Core, IERC165 {
 
 
     /****************************
@@ -13,7 +14,7 @@ contract Configurable is Authorizable {
     *****************************/
 
 
-    event ConfigUpdated();
+
 
 
     /****************************
@@ -44,6 +45,15 @@ contract Configurable is Authorizable {
 
     function getConfig() public view returns (Config memory) {
         return _config;
+    }
+
+    /**
+     * @notice Query if a contract implements an interface
+     * @param _interfaceID  The interface identifier, as specified in ERC-165
+     * @return `true` if the contract implements `_interfaceID` and
+     */
+    function supportsInterface(bytes4 _interfaceID) external view override returns (bool) {
+        return _supportedInterfaces[_interfaceID];
     }
 
 }

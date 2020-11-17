@@ -5,13 +5,13 @@ pragma solidity ^0.7.4;
 import "../utils/SafeMath.sol";
 import "../interfaces/IERC1155Receiver.sol";
 import "../interfaces/IERC1155.sol";
-import "./Authorizable.sol";
+import "./Core/Core.sol";
 
-contract Withdrawable is Authorizable, IERC1155Receiver {
+contract Accounts is Core, IERC1155Receiver {
 
     using SafeMath for uint256;
 
-    event AccountUpdated(address indexed _account, uint256 _documentHash);
+
 
 
     /****************************
