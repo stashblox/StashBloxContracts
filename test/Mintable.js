@@ -10,7 +10,8 @@ const {
   accounts,
   random,
   expectRevert,
-  setTokenizerAuthorization
+  setTokenizerAuthorization,
+  Actions
 } = require("./lib/helpers.js");
 
 var STASHBLOX, DATA, tokenParams, propertiesNames;
@@ -24,29 +25,23 @@ describe("Mintable.sol", () => {
     propertiesNames = [
       "metadataHash",
       "isPrivate",
-      "minHoldingForCallback",
-      "legalAuthority",
       "standardFees",
       "lumpSumFees",
       "demurrageFees",
       "feesCurrencyId",
       "feesRecipient",
       "decimals",
-      "maintener",
       "locked"
     ];
     tokenParams = [
       DATA["token1"].metadataHash,
       DATA["token1"].isPrivate,
-      DATA["token1"].minHoldingForCallback,
-      DATA["token1"].legalAuthority,
       DATA["token1"].standardFees,
       DATA["token1"].lumpSumFees,
       DATA["token1"].demurrageFees,
       DATA["token1"].feesCurrencyId,
       DATA["token1"].feesRecipient,
       DATA["token1"].decimals,
-      DATA["token1"].maintener,
       DATA["token1"].locked
     ];
   });
@@ -54,13 +49,13 @@ describe("Mintable.sol", () => {
   describe("#authorizeTokenizer", () => {
 
     it("should authorize tokenizser", async () => {
-      let config = await STASHBLOX.getConfig.call();
-      assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
+      let authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["CREATE_TOKEN"], 0);
+      assert.equal(authorized, false, "invalid authorization");
 
       await setTokenizerAuthorization(accounts[5], true);
 
-      config = await STASHBLOX.getConfig.call();
-      assert.equal(config.tokenizer == accounts[5], true, "invalid authorization");
+      authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["CREATE_TOKEN"], 0);
+      assert.equal(authorized, true, "invalid authorization");
     });
 
     it("should be able to tokenize", async () => {
@@ -102,7 +97,7 @@ describe("Mintable.sol", () => {
                                   [tokenId],
                                   DATA["token1"].supply,
                                   propertiesNames,
-                                  tokenParams, {from: accounts[5]}), "Insufficient permission");
+                                  tokenParams, {from: accounts[5]}), "not authorized");
 
     });
   });
@@ -111,14 +106,14 @@ describe("Mintable.sol", () => {
   describe("#revokeTokenizer", () => {
 
     it("should revoke tokenizer", async () => {
-      let config = await STASHBLOX.getConfig.call();
-      assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
+      let authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["CREATE_TOKEN"], 0);
+      assert.equal(authorized, false, "invalid authorization");
 
       await setTokenizerAuthorization(accounts[5], true);
       await setTokenizerAuthorization(accounts[5], false);
 
-      config = await STASHBLOX.getConfig.call();
-      assert.equal(config.tokenizer == accounts[5], false, "invalid authorization");
+      authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["CREATE_TOKEN"], 0);
+      assert.equal(authorized, false, "invalid authorization");
     });
 
     it("should not be able to tokenize", async () => {
@@ -130,7 +125,7 @@ describe("Mintable.sol", () => {
       await expectRevert(STASHBLOX.createTokens(accounts[5],
                                   [tokenId],
                                   DATA["token1"].supply,
-                                  propertiesNames, tokenParams, {from: accounts[5]}), "Insufficient permission");
+                                  propertiesNames, tokenParams, {from: accounts[5]}), "not authorized");
 
     });
 

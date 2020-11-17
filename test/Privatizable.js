@@ -10,7 +10,8 @@ const {
   assert,
   defaultSender,
   ZERO_ADDRESS,
-  ZERO_BYTES32
+  ZERO_BYTES32,
+  Actions
 } = require("./lib/helpers.js");
 
 describe("Privatizable.sol", () => {
@@ -21,35 +22,18 @@ describe("Privatizable.sol", () => {
     propertiesNames = [
       "metadataHash",
       "isPrivate",
-      "minHoldingForCallback",
-      "legalAuthority",
       "standardFees",
       "lumpSumFees",
       "demurrageFees",
       "feesCurrencyId",
       "feesRecipient",
       "decimals",
-      "maintener",
       "locked"
     ];
   });
 
   const makePrivate = async () => {
-      await STASHBLOX.updateToken.send(DATA["token1"].id, propertiesNames,
-                                      [
-                                        DATA["token1"].metadataHash,
-                                        1,
-                                        DATA["token1"].minHoldingForCallback,
-                                        DATA["token1"].legalAuthority,
-                                        DATA["token1"].standardFees,
-                                        DATA["token1"].lumpSumFees,
-                                        DATA["token1"].demurrageFees,
-                                        DATA["token1"].feesCurrencyId,
-                                        DATA["token1"].feesRecipient,
-                                        DATA["token1"].decimals,
-                                        DATA["token1"].maintener,
-                                        DATA["token1"].locked
-                                      ]);
+      await STASHBLOX.updateToken.send(DATA["token1"].id, ["isPrivate"], [1]);
   }
 
   describe("#approveAccount", async () => {
@@ -57,12 +41,12 @@ describe("Privatizable.sol", () => {
     it("should approve account", async () => {
       await makePrivate()
 
-      let approved = await STASHBLOX.isApprovedAccount(DATA["token1"].id, accounts[2]);
+      let approved = await STASHBLOX.isAuthorized(accounts[2],  Actions["HOLD_PRIVATE_TOKEN"], DATA["token1"].id);
       assert.equal(approved, false, "invalid approval");
 
       await STASHBLOX.setAccountApproval.send(DATA["token1"].id, accounts[2], true);
 
-      approved = await STASHBLOX.isApprovedAccount(DATA["token1"].id, accounts[2]);
+      approved = await STASHBLOX.isAuthorized(accounts[2],  Actions["HOLD_PRIVATE_TOKEN"], DATA["token1"].id);
       assert.equal(approved, true, "invalid approval");
     });
 
@@ -96,13 +80,13 @@ describe("Privatizable.sol", () => {
     it("should revoke account", async () => {
       await makePrivate()
 
-      let approved = await STASHBLOX.isApprovedAccount(DATA["token1"].id, accounts[2]);
+      let approved = await STASHBLOX.isAuthorized(accounts[2],  Actions["HOLD_PRIVATE_TOKEN"], DATA["token1"].id);
       assert.equal(approved, false, "invalid approval");
 
       await STASHBLOX.setAccountApproval.send(DATA["token1"].id, accounts[2], true);
       await STASHBLOX.setAccountApproval.send(DATA["token1"].id, accounts[2], false);
 
-      approved = await STASHBLOX.isApprovedAccount(DATA["token1"].id, accounts[2]);
+      approved = await STASHBLOX.isAuthorized(accounts[2],  Actions["HOLD_PRIVATE_TOKEN"], DATA["token1"].id);
       assert.equal(approved, false, "invalid approval");
     });
 

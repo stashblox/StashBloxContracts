@@ -10,7 +10,8 @@ const {
   now,
   accounts,
   random,
-  expectRevert
+  expectRevert,
+  Actions
 } = require("./lib/helpers.js");
 
 var STASHBLOX, DATA, propertiesNames;
@@ -23,15 +24,12 @@ describe("Maintenable.sol", () => {
     propertiesNames = [
       "metadataHash",
       "isPrivate",
-      "minHoldingForCallback",
-      "legalAuthority",
       "standardFees",
       "lumpSumFees",
       "demurrageFees",
       "feesCurrencyId",
       "feesRecipient",
       "decimals",
-      "maintener",
       "locked"
     ];
   });
@@ -39,14 +37,12 @@ describe("Maintenable.sol", () => {
   describe("#authorizeMaintener", () => {
 
     it("should authorize maintener", async () => {
-      let token = await STASHBLOX._tokens.call(DATA["token1"].id);
-      let authorized = token.maintener == accounts[5];
+      let authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["UPDATE_TOKEN"], DATA["token1"].id);
       assert.equal(authorized, false, "invalid authorization");
 
       await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
 
-      token = await STASHBLOX._tokens.call(DATA["token1"].id);
-      authorized = token.maintener == accounts[5];
+      authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["UPDATE_TOKEN"], DATA["token1"].id);
       assert.equal(authorized, true, "invalid authorization");
     });
 
@@ -56,16 +52,14 @@ describe("Maintenable.sol", () => {
   describe("#revokeMaintener", () => {
 
     it("should revoke maintener", async () => {
-      let token = await STASHBLOX._tokens.call(DATA["token1"].id);
-      let authorized = token.maintener == accounts[5];
+      let authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["UPDATE_TOKEN"], DATA["token1"].id);
       assert.equal(authorized, false, "invalid authorization");
 
       await setMaintenerAuthorization(DATA["token1"].id, accounts[5], true);
       await setMaintenerAuthorization(DATA["token1"].id, accounts[5], false);
 
 
-      token = await STASHBLOX._tokens.call(DATA["token1"].id);
-      authorized = token.maintener == accounts[5];
+      authorized = await STASHBLOX.isAuthorized(accounts[5],  Actions["UPDATE_TOKEN"], DATA["token1"].id);
       assert.equal(authorized, false, "invalid authorization");
     });
 
@@ -82,7 +76,7 @@ describe("Maintenable.sol", () => {
       //   "locked"
       // ];
 
-      let fieldListUint256 = ["decimals", "metadataHash", "minHoldingForCallback", "lumpSumFees", "standardFees", "feesCurrencyId"];
+      let fieldListUint256 = ["decimals", "metadataHash", "lumpSumFees", "standardFees", "feesCurrencyId"];
       let originalToken = await STASHBLOX._tokens.call(DATA["token1"].id);
 
       for (var i = 0; i < fieldListUint256.length; i++) {
@@ -110,30 +104,24 @@ describe("Maintenable.sol", () => {
 
       let metadataHash = random();
       let isPrivate = 1;
-      let minHoldingForCallback = 5000;
-      let legalAuthority = accounts[5];
       let standardFees = 0;
       let lumpSumFees = 3;
       let demurrageFees = 1;
       let feesCurrencyId = 0;
       let feesRecipient = accounts[5];
       let decimals = 8;
-      let maintener = accounts[5];
       let locked = 0;
 
       let receipt = await STASHBLOX.updateToken.send(DATA["token1"].id, propertiesNames,
                                                     [
                                                       metadataHash,
                                                       isPrivate,
-                                                      minHoldingForCallback,
-                                                      legalAuthority,
                                                       standardFees,
                                                       lumpSumFees,
                                                       demurrageFees,
                                                       feesCurrencyId,
                                                       feesRecipient,
                                                       decimals,
-                                                      maintener,
                                                       locked
                                                     ], {from: accounts[5]});
 
@@ -145,27 +133,21 @@ describe("Maintenable.sol", () => {
       let token = await STASHBLOX._tokens.call(DATA["token1"].id);
       //console.log(token);
       assert.equal(token.metadataHash.toString(), metadataHash.toString(), "invalid value");
-      assert.equal(token.minHoldingForCallback.toString(), minHoldingForCallback.toString(), "invalid value");
       assert.equal(token.isPrivate, true, "invalid value");
-      assert.equal(token.legalAuthority.toString(), legalAuthority.toString(), "invalid value");
       assert.equal(token.lumpSumFees.toString(), lumpSumFees.toString(), "invalid value");
       assert.equal(token.standardFees.toString(), standardFees.toString(), "invalid value");
-
       assert.equal(token.feesCurrencyId.valueOf(), 0, "invalid value");
     });
 
     it("should not be able to update token", async () => {
       let metadataHash = random();
       let isPrivate = 1;
-      let minHoldingForCallback = 5000;
-      let legalAuthority = accounts[5];
       let standardFees = 0;
       let lumpSumFees = 3;
       let demurrageFees = 1;
       let feesCurrencyId = 0;
       let feesRecipient = accounts[5];
       let decimals = 8;
-      let maintener = accounts[5];
       let locked = 0;
 
       expectRevert(
@@ -174,26 +156,22 @@ describe("Maintenable.sol", () => {
           [
             metadataHash,
             isPrivate,
-            minHoldingForCallback,
-            legalAuthority,
             standardFees,
             lumpSumFees,
             demurrageFees,
             feesCurrencyId,
             feesRecipient,
             decimals,
-            maintener,
             locked
           ], {from: accounts[5]}),
-        "Insufficient permission"
+        "not authorized"
       );
 
       let token = await STASHBLOX._tokens.call(DATA["token1"].id);
       //console.log(token);
       assert.equal(token.metadataHash.toString(), DATA["token1"].metadataHash.toString(), "invalid value");
-      assert.equal(token.minHoldingForCallback.toString(), DATA["token1"].minHoldingForCallback.toString(), "invalid value");
       assert.equal(token.isPrivate, DATA["token1"].isPrivate > 0, "invalid value");
-      assert.equal(token.legalAuthority.toString(), DATA["token1"].legalAuthority.toString(), "invalid value");
+
       assert.equal(token.lumpSumFees.toString(), DATA["token1"].lumpSumFees.toString(), "invalid value");
       assert.equal(token.standardFees.toString(), DATA["token1"].standardFees.toString(), "invalid value");
 

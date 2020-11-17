@@ -27,13 +27,9 @@ describe("Proxyable.sol", () => {
 
   const setProxyRegistryAccount = async (address) => {
     return await STASHBLOX.updateConfig.send(
-      50,
       "baseURI",
       "versionRecipient",
-      defaultSender,
-      address,
-      address,
-      defaultSender
+      address
     );
   }
 

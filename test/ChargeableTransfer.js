@@ -40,29 +40,23 @@ describe("ChargeableTransfer.sol", () => {
                                         [
                                           "metadataHash",
                                           "isPrivate",
-                                          "minHoldingForCallback",
-                                          "legalAuthority",
                                           "standardFees",
                                           "lumpSumFees",
                                           "demurrageFees",
                                           "feesCurrencyId",
                                           "feesRecipient",
                                           "decimals",
-                                          "maintener",
                                           "locked"
                                         ],
                                         [
                                           DATA["token1"].metadataHash,
                                           DATA["token1"].isPrivate,
-                                          DATA["token1"].minHoldingForCallback,
-                                          DATA["token1"].legalAuthority,
                                           DATA["token1"].standardFees,
                                           DATA["token1"].lumpSumFees,
                                           DATA["token1"].demurrageFees,
                                           DATA["token1"].feesCurrencyId,
                                           DATA["token1"].feesRecipient,
                                           DATA["token1"].decimals,
-                                          DATA["token1"].maintener,
                                           DATA["token1"].locked
                                         ]);
 

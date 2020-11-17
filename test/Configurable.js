@@ -25,13 +25,9 @@ describe("Configurable.sol", () => {
       const newConfig = await STASHBLOX.getConfig.call();
       //console.log(newConfig);
 
-      assert.equal(newConfig.callbackAutoExecuteMaxAccounts, 50, "Invalid config value");
       assert.equal(newConfig.baseURI, "http://stashblox.com/tokens/", "Invalid config value");
       assert.equal(newConfig.versionRecipient, "1.0.0+opengsn.stashblox", "Invalid config value");
-      assert.equal(newConfig.owner, defaultSender, "Invalid config value");
-      assert.equal(newConfig.gsnTrustedForwarder,  ZERO_ADDRESS, "Invalid config value");
       assert.equal(newConfig.proxyRegistryAccount, ZERO_ADDRESS, "Invalid config value");
-      assert.equal(newConfig.tokenizer, defaultSender, "Invalid config value");
 
     });
 
@@ -46,13 +42,9 @@ describe("Configurable.sol", () => {
       const tokenizer = accounts[7];
 
       const receipt = await STASHBLOX.updateConfig.send(
-        callbackAutoExecuteMaxAccounts,
         baseURI,
         versionRecipient,
-        owner,
-        gsnTrustedForwarder,
-        proxyRegistryAccount,
-        tokenizer,
+        proxyRegistryAccount
       );
 
       //console.log(receipt);
@@ -61,13 +53,9 @@ describe("Configurable.sol", () => {
 
       const newConfig = await STASHBLOX.getConfig.call();
 
-      assert.equal(newConfig.callbackAutoExecuteMaxAccounts, callbackAutoExecuteMaxAccounts, "Invalid config value");
       assert.equal(newConfig.baseURI, baseURI, "Invalid config value");
       assert.equal(newConfig.versionRecipient, versionRecipient, "Invalid config value");
-      assert.equal(newConfig.owner, owner, "Invalid config value");
-      assert.equal(newConfig.gsnTrustedForwarder, gsnTrustedForwarder, "Invalid config value");
       assert.equal(newConfig.proxyRegistryAccount, proxyRegistryAccount, "Invalid config value");
-      assert.equal(newConfig.tokenizer, tokenizer, "Invalid config value");
     });
 
   });

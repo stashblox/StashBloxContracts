@@ -33,13 +33,9 @@ describe("GSNCapable.sol", () => {
     const proxyRegistryAccount = accounts[1];
     const tokenizer = accounts[5];
     const receipt = await STASHBLOX.updateConfig.send(
-      callbackAutoExecuteMaxAccounts,
       baseURI,
       versionRecipient,
-      owner,
-      TRUSTED_FORWARDER,
-      proxyRegistryAccount,
-      tokenizer
+      proxyRegistryAccount
     );
 
     GSN_RECIPIENT = await GSNCapableMock.new(TRUSTED_FORWARDER);

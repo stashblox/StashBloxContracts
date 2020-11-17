@@ -37,36 +37,28 @@ var DATA = {
       recipient: accounts[1],
       id: random(),
       supply: 1000 * 10**8,
-
       metadataHash: random(),
       isPrivate: 0,
-      minHoldingForCallback: 8000, //80%
-      legalAuthority: accounts[9],
       standardFees: 0,
       lumpSumFees: 4,
       demurrageFees: 1,
       feesCurrencyId: 0,
       feesRecipient: accounts[6],
       decimals: 8,
-      maintener: accounts[1],
       locked: 0
   },
   "token2": {
       recipient: accounts[2],
       id: random(),
       supply: 1000 * 10**8,
-
       metadataHash: random(),
       isPrivate: 0,
-      minHoldingForCallback: 8000, //80%
-      legalAuthority: accounts[9],
       standardFees: 0,
       lumpSumFees: 4,
       demurrageFees: 2,
       feesCurrencyId: 0,
       feesRecipient: accounts[7],
       decimals: 8,
-      maintener: accounts[2],
       locked: 0
   }
 }
@@ -100,29 +92,23 @@ const initFixtures = async() => {
                                                          [
                                                            "metadataHash",
                                                            "isPrivate",
-                                                           "minHoldingForCallback",
-                                                           "legalAuthority",
                                                            "standardFees",
                                                            "lumpSumFees",
                                                            "demurrageFees",
                                                            "feesCurrencyId",
                                                            "feesRecipient",
                                                            "decimals",
-                                                           "maintener",
                                                            "locked"
                                                          ],
                                                          [
                                                            DATA["token1"].metadataHash,
                                                            DATA["token1"].isPrivate,
-                                                           DATA["token1"].minHoldingForCallback,
-                                                           DATA["token1"].legalAuthority,
                                                            DATA["token1"].standardFees,
                                                            DATA["token1"].lumpSumFees,
                                                            DATA["token1"].demurrageFees,
                                                            DATA["token1"].feesCurrencyId,
                                                            DATA["token1"].feesRecipient,
                                                            DATA["token1"].decimals,
-                                                           DATA["token1"].maintener,
                                                            DATA["token1"].locked
                                                          ]);
     DATA["token1"].createdAt = await time.latest();
@@ -133,29 +119,23 @@ const initFixtures = async() => {
                                                          [
                                                            "metadataHash",
                                                            "isPrivate",
-                                                           "minHoldingForCallback",
-                                                           "legalAuthority",
                                                            "standardFees",
                                                            "lumpSumFees",
                                                            "demurrageFees",
                                                            "feesCurrencyId",
                                                            "feesRecipient",
                                                            "decimals",
-                                                           "maintener",
                                                            "locked"
                                                          ],
                                                          [
                                                            DATA["token2"].metadataHash,
                                                            DATA["token2"].isPrivate,
-                                                           DATA["token2"].minHoldingForCallback,
-                                                           DATA["token2"].legalAuthority,
                                                            DATA["token2"].standardFees,
                                                            DATA["token2"].lumpSumFees,
                                                            DATA["token2"].demurrageFees,
                                                            DATA["token2"].feesCurrencyId,
                                                            DATA["token2"].feesRecipient,
                                                            DATA["token2"].decimals,
-                                                           DATA["token1"].maintener,
                                                            DATA["token1"].locked
                                                          ]);
     DATA["token2"].createdAt = await time.latest();
@@ -238,83 +218,37 @@ const transferTokensBatch = async (params) => {
     return receipt;
 }
 
-const setTokenizerAuthorization = async (account, auhtorized) => {
-  let config = await STASHBLOX.getConfig.call();
-
-  return await STASHBLOX.updateConfig.send(
-    config.callbackAutoExecuteMaxAccounts,
-    config.baseURI,
-    config.versionRecipient,
-    config.owner,
-    config.gsnTrustedForwarder,
-    config.proxyRegistryAccount,
-    auhtorized ? account : ZERO_ADDRESS
-  );
+const Actions = {
+    "SET_AUTHORIZATION": 0,
+    "UPDATE_CONFIG": 1,
+    "CREATE_TOKEN": 2,
+    "UPDATE_TOKEN": 3,
+    "TRANSFER_OWNERSHIP": 4,
+    "REGISTER_CURRENCY": 5,
+    "CALL_TOKENS": 6,
+    "LOCK_ACCOUNT": 7,
+    "GSN_FORWARDER": 8,
+    "TRANSFER_TOKEN_FOR": 9,
+    "HOLD_PRIVATE_TOKEN": 10
 }
 
+const setTokenizerAuthorization = async (account, auhtorized) => {
+  await STASHBLOX.setAuthorization(account, Actions["CREATE_TOKEN"], 0, auhtorized);
+}
+
+
+
 const setMaintenerAuthorization = async (tokenId, account, auhtorized) => {
-
-    return await STASHBLOX.updateToken.send(tokenId,
-                                            [
-                                              "metadataHash",
-                                              "isPrivate",
-                                              "minHoldingForCallback",
-                                              "legalAuthority",
-                                              "standardFees",
-                                              "lumpSumFees",
-                                              "demurrageFees",
-                                              "feesCurrencyId",
-                                              "feesRecipient",
-                                              "decimals",
-                                              "maintener",
-                                              "locked"
-                                            ],
-                                            [
-                                              DATA["token1"].metadataHash,
-                                              DATA["token2"].isPrivate,
-                                              DATA["token1"].minHoldingForCallback,
-                                              DATA["token1"].legalAuthority,
-                                              DATA["token1"].standardFees,
-                                              DATA["token1"].lumpSumFees,
-                                              DATA["token1"].demurrageFees,
-                                              DATA["token1"].feesCurrencyId,
-                                              DATA["token1"].feesRecipient,
-                                              DATA["token1"].decimals,
-                                              auhtorized ? account : 0,
-                                              DATA["token1"].locked
-                                            ]);
-
+    return await STASHBLOX.setAuthorization(account, Actions["UPDATE_TOKEN"], tokenId, auhtorized);
 }
 
 const setTokenLock = async (tokenId, lock, docHash) => {
 
     return await STASHBLOX.updateToken.send(tokenId,
                                             [
-                                              "metadataHash",
-                                              "isPrivate",
-                                              "minHoldingForCallback",
-                                              "legalAuthority",
-                                              "standardFees",
-                                              "lumpSumFees",
-                                              "demurrageFees",
-                                              "feesCurrencyId",
-                                              "feesRecipient",
-                                              "decimals",
-                                              "maintener",
                                               "locked"
                                             ],
                                             [
-                                              DATA["token1"].metadataHash,
-                                              DATA["token2"].isPrivate,
-                                              DATA["token1"].minHoldingForCallback,
-                                              DATA["token1"].legalAuthority,
-                                              DATA["token1"].standardFees,
-                                              DATA["token1"].lumpSumFees,
-                                              DATA["token1"].demurrageFees,
-                                              DATA["token1"].feesCurrencyId,
-                                              DATA["token1"].feesRecipient,
-                                              DATA["token1"].decimals,
-                                              DATA["token1"].maintener,
                                               lock ? 1 : 0
                                             ]);
 
@@ -356,5 +290,6 @@ module.exports = exports = {
   GAS_LOGS,
   ecsign,
   SALT,
-  BN
+  BN,
+  Actions
 }
