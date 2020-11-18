@@ -3,7 +3,7 @@
 pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
-import "./lib/Accounts.sol";
+import "./lib/Accounts/Accounts.sol";
 import "./lib/Config.sol";
 import "./lib/Tokens/Tokens.sol";
 
