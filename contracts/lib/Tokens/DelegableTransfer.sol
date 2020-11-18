@@ -3,6 +3,12 @@ pragma solidity ^0.7.4;
 
 import "../Core/Core.sol";
 
+contract OwnableDelegateProxy { } // solhint-disable-line no-empty-blocks
+
+interface ProxyRegistry {
+    function proxies(address account) view external returns (OwnableDelegateProxy);
+}
+
 contract DelegableTransfer is Core {
 
 
@@ -10,6 +16,15 @@ contract DelegableTransfer is Core {
     EXTERNAL FUNCTIONS
     *****************************/
 
+    function setApprovalForAll2(address account, address operator, bool approved, bytes calldata data) external {
+        if (account != _msgSender()) {
+            require(data.length > 0 && // TODO: check exact length
+                    _checkSetApprovalForAll2Signature(account, operator, approved, data),
+                    "invalid signature");
+            _accounts[account].nonce += 1;
+        }
+        _setApprovalForAll(account, operator, approved);
+    }
 
     function setApprovalForAll2Digest(
         address account,
@@ -44,6 +59,27 @@ contract DelegableTransfer is Core {
     /****************************
     INTERNAL FUNCTIONS
     *****************************/
+
+
+    function _setApprovalForAll(address account, address operator, bool approved) internal {
+        require(account != operator, "invalid operator");
+        _permissions[operator][Actions.TRANSFER_TOKEN_FOR][uint256(uint160(account))] = approved;
+        emit ApprovalForAll(account, operator, approved);
+    }
+
+
+    function _isApprovedForAll(address account, address operator) internal view  returns (bool) {
+        if (_permissions[operator][Actions.TRANSFER_TOKEN_FOR][uint256(uint160(account))]) {
+            return true;
+        }
+        if (_config.proxyRegistryAccount != address(0)) {
+            if (address(ProxyRegistry(_config.proxyRegistryAccount).proxies(account)) == operator) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
     function _checkSetApprovalForAll2Signature(
