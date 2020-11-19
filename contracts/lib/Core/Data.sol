@@ -20,7 +20,8 @@ contract Data {
         LOCK_ACCOUNT,
         GSN_FORWARDER,
         TRANSFER_TOKEN_FOR,
-        HOLD_PRIVATE_TOKEN
+        HOLD_PRIVATE_TOKEN,
+        ESCROW_TOKENS
     }
 
     struct Config {
@@ -29,6 +30,7 @@ contract Data {
         bytes32 DOMAIN_SEPARATOR;
         bytes32 APPROVAL_TYPEHASH;
         bytes32 TRANSFER_TYPEHASH;
+        bytes32 ESCROW_TYPEHASH;
         bytes32 SALT;
         string baseURI;
         string versionRecipient;
@@ -104,5 +106,8 @@ contract Data {
     mapping(uint256 => Currency) internal _currencies;
 
     mapping(bytes4 => bool) internal _supportedInterfaces;
+
+    //_escrows[escrow][account][id] = amount
+    mapping(address => mapping(address => mapping(uint256 => uint256))) internal _escrows;
 
 }

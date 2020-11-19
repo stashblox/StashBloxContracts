@@ -2,8 +2,14 @@
 pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
+import "../../utils/SafeMath.sol";
+
 import "./ERC1155.sol";
 import "./Mintable.sol";
 import "./Updatable.sol";
+import "./Escrowable.sol";
 
-contract Tokens is ERC1155, Mintable, Updatable { } // solhint-disable-line no-empty-blocks
+contract Tokens is ERC1155, Mintable, Updatable, Escrowable {
+
+    
+}

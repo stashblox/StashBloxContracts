@@ -62,7 +62,7 @@ contract ERC1155Vault is Lockable, IERC1155Receiver {
         return 0xbc197c81; //RECEIVER_BATCH_MAGIC_VALUE
     }
 
-    function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external  onlyUnlockedAccount(account) {
+    function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external onlyUnlockedAccount(account) {
         uint256 currencyId = _currencyIDs[erc1155Address][tokenId];
         require(currencyId > 0, "unknown erc1155");
 
