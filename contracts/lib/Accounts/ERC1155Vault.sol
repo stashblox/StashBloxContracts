@@ -5,9 +5,9 @@ pragma solidity ^0.7.4;
 import "../../utils/SafeMath.sol";
 import "../../interfaces/IERC1155Receiver.sol";
 import "../../interfaces/IERC1155.sol";
-import "../Core/Core.sol";
+import "./Lockable.sol";
 
-contract ERC1155Vault is Core, IERC1155Receiver {
+contract ERC1155Vault is Lockable, IERC1155Receiver {
 
     using SafeMath for uint256;
 
@@ -22,7 +22,9 @@ contract ERC1155Vault is Core, IERC1155Receiver {
                                uint256 id,
                                uint256 value,
                                bytes calldata data)
-    external override returns(bytes4) {
+    external override onlyUnlockedAccount(from) returns(bytes4) {
+        require(!_accounts[from].isLocked, "account locked");
+
         // here msg.sender is the ERC1155 contract
         uint256 currencyId = _currencyIDs[_msgSender()][id];
         require(currencyId > 0, "unknown erc1155");
@@ -49,7 +51,7 @@ contract ERC1155Vault is Core, IERC1155Receiver {
                                     uint256[] calldata ids,
                                     uint256[] calldata values,
                                     bytes calldata data)
-    external override returns(bytes4) {
+    external override onlyUnlockedAccount(from) returns(bytes4) {
         // here msg.sender is the ERC1155 contract
         address sender = _msgSender();
         for (uint256 i = 0; i < ids.length; i++) {
@@ -60,7 +62,7 @@ contract ERC1155Vault is Core, IERC1155Receiver {
         return 0xbc197c81; //RECEIVER_BATCH_MAGIC_VALUE
     }
 
-    function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external {
+    function withdrawERC1155(address erc1155Address, uint256 tokenId, address account, uint256 amount) external  onlyUnlockedAccount(account) {
         uint256 currencyId = _currencyIDs[erc1155Address][tokenId];
         require(currencyId > 0, "unknown erc1155");
 
