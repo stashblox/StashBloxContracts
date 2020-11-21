@@ -59,9 +59,9 @@ describe("MultiToken.sol", () => {
         //console.log(sign);
 
         let data = web3.eth.abi.encodeParameters(
-            ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
             [
-                true, // prefixed
+                1, // prefixed
                 nonce.toString(),
                 expiry.toString(),
                 sign.v,
@@ -102,9 +102,9 @@ describe("MultiToken.sol", () => {
         //console.log(sign);
 
         let data = web3.eth.abi.encodeParameters(
-            ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+            ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
             [
-                false, // prefixed
+                0, // not prefixed
                 nonce.toString(),
                 expiry.toString(),
                 sign.v,
@@ -156,7 +156,7 @@ describe("MultiToken.sol", () => {
         let data = web3.eth.abi.encodeParameters(
             ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
             [
-                true, // prefixed
+                1, // prefixed
                 nonce.toString(),
                 expiry.toString(),
                 sign.v,
@@ -215,7 +215,7 @@ describe("MultiToken.sol", () => {
         let data = web3.eth.abi.encodeParameters(
             ['bool', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
             [
-                false, // prefixed
+                0, // non prefixed
                 nonce.toString(),
                 expiry.toString(),
                 sign.v,

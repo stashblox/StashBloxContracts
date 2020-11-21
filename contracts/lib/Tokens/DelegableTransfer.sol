@@ -36,7 +36,7 @@ contract DelegableTransfer is Core {
     {
         return (
             _accounts[account].nonce + 1,
-            _setApprovalForAll2Digest(account, operator, approved, false, _accounts[account].nonce + 1, expiry)
+            _setApprovalForAll2Digest(account, operator, approved, 0, _accounts[account].nonce + 1, expiry)
         );
     }
 
@@ -51,7 +51,7 @@ contract DelegableTransfer is Core {
     {
         return (
             _accounts[from].nonce + 1,
-            _safeTransferFromDigest(from, to, id, value, false, _accounts[from].nonce + 1, expiry)
+            _safeTransferFromDigest(from, to, id, value, 0, _accounts[from].nonce + 1, expiry)
         );
     }
 
@@ -91,14 +91,14 @@ contract DelegableTransfer is Core {
         internal returns (bool)
     {
         (
-            bool prefixed,
+            uint256 format,
             uint256 nonce,
             uint256 expiry,
             uint8 v,
             bytes32 r,
             bytes32 s
-        ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
-        bytes32 digest = _setApprovalForAll2Digest(account, operator, approved, prefixed, nonce, expiry);
+        ) = abi.decode(data, (uint256, uint256, uint256, uint8, bytes32, bytes32));
+        bytes32 digest = _setApprovalForAll2Digest(account, operator, approved, format, nonce, expiry);
 
         return _requireValidSignature(account, digest, nonce, expiry, v, r, s);
     }
@@ -113,14 +113,14 @@ contract DelegableTransfer is Core {
         internal returns (bool)
     {
         (
-            bool prefixed,
+            uint256 format,
             uint256 nonce,
             uint256 expiry,
             uint8 v,
             bytes32 r,
             bytes32 s
-        ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
-        bytes32 digest = _safeTransferFromDigest(from, to, id, value, prefixed, nonce, expiry);
+        ) = abi.decode(data, (uint256, uint256, uint256, uint8, bytes32, bytes32));
+        bytes32 digest = _safeTransferFromDigest(from, to, id, value, format, nonce, expiry);
 
         return _requireValidSignature(from, digest, nonce, expiry, v, r, s);
     }
@@ -130,7 +130,7 @@ contract DelegableTransfer is Core {
         address account,
         address operator,
         bool approved,
-        bool prefixed,
+        uint256 format,
         uint256 nonce,
         uint256 expiry
     )
@@ -140,7 +140,7 @@ contract DelegableTransfer is Core {
             _config.APPROVAL_TYPEHASH,
             account, operator, approved
         ));
-        return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
+        return _callFunctionDigest(functionHash, format, nonce, expiry);
     }
 
     function _safeTransferFromDigest(
@@ -148,7 +148,7 @@ contract DelegableTransfer is Core {
         address to,
         uint256 id,
         uint256 value,
-        bool prefixed,
+        uint256 format,
         uint256 nonce,
         uint256 expiry
     )
@@ -158,9 +158,9 @@ contract DelegableTransfer is Core {
             _config.TRANSFER_TYPEHASH,
             from, to, id, value
         ));
-        return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
+        return _callFunctionDigest(functionHash, format, nonce, expiry);
     }
 
-    
+
 
 }

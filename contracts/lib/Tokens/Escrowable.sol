@@ -65,7 +65,7 @@ contract Escrowable is Core {
     {
         return (
             _accounts[account].nonce + 1,
-            _setEscrowAuthorizationDigest(escrow, account, id, authorized, false, _accounts[account].nonce + 1, expiry)
+            _setEscrowAuthorizationDigest(escrow, account, id, authorized, 0, _accounts[account].nonce + 1, expiry)
         );
     }
 
@@ -80,14 +80,14 @@ contract Escrowable is Core {
         internal returns (bool)
     {
         (
-            bool prefixed,
+            uint256 format,
             uint256 nonce,
             uint256 expiry,
             uint8 v,
             bytes32 r,
             bytes32 s
-        ) = abi.decode(data, (bool, uint256, uint256, uint8, bytes32, bytes32));
-        bytes32 digest = _setEscrowAuthorizationDigest(escrow, account, id, authorized, prefixed, nonce, expiry);
+        ) = abi.decode(data, (uint256, uint256, uint256, uint8, bytes32, bytes32));
+        bytes32 digest = _setEscrowAuthorizationDigest(escrow, account, id, authorized, format, nonce, expiry);
 
         return _requireValidSignature(account, digest, nonce, expiry, v, r, s);
     }
@@ -97,7 +97,7 @@ contract Escrowable is Core {
         address account,
         uint256 id,
         bool authorized,
-        bool prefixed,
+        uint256 format,
         uint256 nonce,
         uint256 expiry
     )
@@ -107,6 +107,6 @@ contract Escrowable is Core {
             _config.ESCROW_TYPEHASH,
             escrow, account, id, authorized
         ));
-        return _callFunctionDigest(functionHash, prefixed, nonce, expiry);
+        return _callFunctionDigest(functionHash, format, nonce, expiry);
     }
 }

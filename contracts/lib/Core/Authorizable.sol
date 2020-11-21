@@ -92,7 +92,7 @@ contract Authorizable is IERC173, GSNCapable {
 
     function _callFunctionDigest(
         bytes32 functionHash,
-        bool prefixed,
+        uint256 format,
         uint256 nonce,
         uint256 expiry
     )
@@ -104,12 +104,17 @@ contract Authorizable is IERC173, GSNCapable {
             functionHash,
             keccak256(abi.encode(nonce, expiry))
         ));
-        return prefixed ? _prefixed(digest) : digest;
+        return _formatDigest(digest, format);
     }
 
-
-    function _prefixed(bytes32 hash) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
+    function _formatDigest(bytes32 digest, uint256 format) internal pure returns (bytes32) {
+        if (format == 0) // sign = ecsign(digest)
+            return digest;
+        if (format == 1) // sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))
+            return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", digest));
+        if (format == 2) // sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))
+            return sha256(abi.encodePacked("\x19Ethereum Signed Message:\n32", digest));
+        revert("invalid format");
     }
 
 
