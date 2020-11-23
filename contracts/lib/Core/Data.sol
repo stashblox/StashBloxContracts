@@ -110,4 +110,6 @@ contract Data {
     //_escrows[escrow][account][id] = amount
     mapping(address => mapping(address => mapping(uint256 => uint256))) internal _escrows;
 
+    //_erc20Allowance[operator][account][id] = amount
+    mapping(address => mapping(address => mapping(uint256 => uint256))) internal _erc20Allowance;
 }

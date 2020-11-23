@@ -56,6 +56,30 @@ contract DelegableTransfer is Core {
     }
 
 
+    function increaseAllowance(
+        address account,
+        address operator,
+        uint256 id,
+        uint256 amount
+    )
+        external onlyAuthorized(_msgSender(), Actions.SET_ALLOWANCE, id)
+    {
+        _erc20Allowance[operator][account][id] = _erc20Allowance[operator][account][id].add(amount);
+    }
+    
+
+    function decreaseAllowance(
+        address account,
+        address operator,
+        uint256 id,
+        uint256 amount
+    )
+        external onlyAuthorized(_msgSender(), Actions.SET_ALLOWANCE, id)
+    {
+        _erc20Allowance[operator][account][id] = _erc20Allowance[operator][account][id].sub(amount);
+    }
+
+
     /****************************
     INTERNAL FUNCTIONS
     *****************************/
@@ -80,6 +104,10 @@ contract DelegableTransfer is Core {
         return false;
     }
 
+
+    function _isAllowedFor(address account, address operator, uint256 id, uint256 amount) internal view  returns (bool) {
+        return _erc20Allowance[operator][account][id] >= amount;
+    }
 
 
     function _checkSetApprovalForAll2Signature(

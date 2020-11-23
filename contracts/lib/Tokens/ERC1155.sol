@@ -125,12 +125,15 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         address operator = _msgSender();
 
         require(to != address(0), "invalid recipient");
-        require(
-            from == operator ||
-            _isApprovedForAll(from, operator) == true ||
-            (data.length == 192 && _checkSafeTransferFromSignature(from, to, id, value, data)),
-            "operator not approved"
-        );
+        bool approved = from == operator ||
+                        _isApprovedForAll(from, operator) == true ||
+                        (data.length == 192 && _checkSafeTransferFromSignature(from, to, id, value, data));
+        bool allowed;
+        if (!approved) {
+            allowed = _isAllowedFor(from, operator, id, value);
+        }
+        require(allowed || approved, "operator not approved");
+
         // increase ETH balance
         _accounts[operator].externalBalances[0] = _accounts[operator].externalBalances[0].add(msg.value);
 
@@ -139,6 +142,10 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         emit TransferSingle(operator, from, to, id, value);
 
         _doSafeTransferAcceptanceCheck(operator, from, to, id, value, data);
+
+        if (allowed) {
+            _erc20Allowance[operator][from][id] = _erc20Allowance[operator][from][id].sub(value);
+        }
     }
 
     /**
