@@ -4,6 +4,7 @@ pragma solidity ^0.7.4;
 
 import "../../utils/SafeMath.sol";
 import "../Core/Core.sol";
+import "../../interfaces/IERC20.sol";
 
 contract ChargeableTransfer is Core {
 
@@ -128,7 +129,16 @@ contract ChargeableTransfer is Core {
                 _accounts[operator].externalBalances[_tokens[id].feesCurrencyId].sub(fees, "Insufficient erc1155 tokens");
             // distribute fees to beneficiary
             _accounts[_tokens[id].feesRecipient].externalBalances[_tokens[id].feesCurrencyId] += fees;
-        } else { // eth
+        }
+        else if (_currencies[_tokens[id].feesCurrencyId].currencyType == 1) { // erc20
+          // contract should be allowed to transfer token `operator`
+          require(
+              IERC20(_currencies[_tokens[id].feesCurrencyId].contractAddress).transferFrom(operator, _tokens[id].feesRecipient, fees),
+              "erc20 payment failed"
+          );
+
+        }
+        else { // eth
             // remove fees from operator balance
             _accounts[operator].externalBalances[0] = _accounts[operator].externalBalances[0].sub(fees, "Insufficient ETH");
             // distribute fees to beneficiary
