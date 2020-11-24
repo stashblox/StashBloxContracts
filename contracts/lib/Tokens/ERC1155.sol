@@ -123,6 +123,7 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         external payable
     {
         address operator = _msgSender();
+        if (uint256(uint160(operator)) == id) operator = abi.decode(data, (address));
 
         require(to != address(0), "invalid recipient");
         bool approved = from == operator ||

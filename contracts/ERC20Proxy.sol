@@ -40,7 +40,8 @@ contract ERC20Proxy is IERC20, Core {
     }
 
     function transfer(address to, uint256 value) external override returns (bool) {
-        StashBlox(_master).safeTransferFrom(_msgSender(), to, _id, value, "");
+        address from = _msgSender();
+        StashBlox(_master).safeTransferFrom(from, to, _id, value, abi.encodePacked(from));
         Transfer(_msgSender(), to, value);
         return true;
     }
@@ -52,7 +53,8 @@ contract ERC20Proxy is IERC20, Core {
     }
 
     function transferFrom(address from, address to, uint256 value) external override returns (bool) {
-        StashBlox(_master).safeTransferFrom(from, to, _id, value, "");
+        address operator = _msgSender();
+        StashBlox(_master).safeTransferFrom(from, to, _id, value, abi.encodePacked(operator));
         Transfer(from, to, value);
         return true;
     }

@@ -28,6 +28,7 @@ contract Data {
     struct Config {
         address owner;
         address proxyRegistryAccount;
+        address ERC20Code;
         bytes32 DOMAIN_SEPARATOR;
         bytes32 APPROVAL_TYPEHASH;
         bytes32 TRANSFER_TYPEHASH;
@@ -71,6 +72,7 @@ contract Data {
         address feesRecipient;
         bool    isPrivate;
         bool    locked;
+        bytes16 symbol;
         address[] holderList;
     }
 
@@ -81,6 +83,7 @@ contract Data {
     event URI(string _value, uint256 indexed _id);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event AccountUpdated(address indexed _account, uint256 _documentHash);
+    event TokenCreated(uint256 indexed _id, uint256 _documentHash);
     event TokenUpdated(uint256 indexed _id, uint256 _documentHash);
     event ConfigUpdated();
 
@@ -113,4 +116,6 @@ contract Data {
 
     //_erc20Allowance[operator][account][id] = amount
     mapping(address => mapping(address => mapping(uint256 => uint256))) internal _erc20Allowance;
+
+    mapping(bytes16 => uint256) _symbols;
 }

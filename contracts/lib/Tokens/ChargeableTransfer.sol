@@ -37,6 +37,7 @@ contract ChargeableTransfer is Core {
     }
 
 
+
     /****************************
     INTERNAL FUNCTIONS
     *****************************/

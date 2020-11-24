@@ -11,7 +11,8 @@ const {
   random,
   expectRevert,
   setTokenizerAuthorization,
-  Actions
+  Actions,
+  web3
 } = require("./lib/helpers.js");
 
 var STASHBLOX, DATA, tokenParams, propertiesNames;
@@ -23,7 +24,6 @@ describe("Mintable.sol", () => {
     STASHBLOX = await initContract();
     DATA = await initFixtures();
     propertiesNames = [
-      "metadataHash",
       "isPrivate",
       "standardFees",
       "lumpSumFees",
@@ -34,7 +34,6 @@ describe("Mintable.sol", () => {
       "locked"
     ];
     tokenParams = [
-      DATA["token1"].metadataHash,
       DATA["token1"].isPrivate,
       DATA["token1"].standardFees,
       DATA["token1"].lumpSumFees,
@@ -61,7 +60,7 @@ describe("Mintable.sol", () => {
     it("should be able to tokenize", async () => {
       await setTokenizerAuthorization(accounts[5], true);
 
-      const tokenId = random();
+
 
       /*
       [0]: metadataHash
@@ -80,12 +79,16 @@ describe("Mintable.sol", () => {
      [13]: locked
       */
 
-      await STASHBLOX.createTokens.send(accounts[5],
-                                       [tokenId],
-                                       DATA["token1"].supply,
-                                       propertiesNames,
-                                       tokenParams, {from: accounts[5]});
-
+      let receipt = await STASHBLOX.createTokens.send(
+          accounts[5],
+          DATA["token1"].supply,
+          [DATA["token1"].metadataHash],
+          [web3.utils.asciiToHex("TOKEN3")],
+          propertiesNames,
+          tokenParams,
+          {from: accounts[5]}
+      );
+      let tokenId = receipt.logs[0].args._id;
       const balance = await STASHBLOX.balanceOf.call(accounts[5], tokenId);
       assert.equal(balance.valueOf(), DATA["token1"].supply, "token wasn't in the first account");
     });
@@ -94,8 +97,9 @@ describe("Mintable.sol", () => {
       const tokenId = random();
 
       await expectRevert(STASHBLOX.createTokens(accounts[5],
-                                  [tokenId],
-                                  DATA["token1"].supply,
+                                        DATA["token1"].supply,
+                                        [DATA["token1"].metadataHash],
+                                        [web3.utils.asciiToHex("TOKEN3")],
                                   propertiesNames,
                                   tokenParams, {from: accounts[5]}), "not authorized");
 
@@ -123,8 +127,9 @@ describe("Mintable.sol", () => {
       const tokenId = random();
 
       await expectRevert(STASHBLOX.createTokens(accounts[5],
-                                  [tokenId],
-                                  DATA["token1"].supply,
+                                        DATA["token1"].supply,
+                                        [DATA["token1"].metadataHash],
+                                        [web3.utils.asciiToHex("TOKEN3")],
                                   propertiesNames, tokenParams, {from: accounts[5]}), "not authorized");
 
     });
@@ -178,32 +183,40 @@ describe("Mintable.sol", () => {
   describe("#cloneToken", () => {
     it("should create 10 tokens in batch", async () => {
 
-      var ids = [];
+      var symbols = [];
       var metadataHashes = [];
       for (var i = 0; i < 10; i++) {
-        ids.push(random());
+        symbols.push(web3.utils.asciiToHex("TOKEN" + (i+3)));
         metadataHashes.push(random());
       }
 
       const receipt = await STASHBLOX.createTokens.send(
-          accounts[5],
-          ids,
-          DATA["token1"].supply,
+        accounts[5],
+        DATA["token1"].supply,
+        metadataHashes,
+        symbols,
           propertiesNames,
           tokenParams
       );
+
+      var ids = [];
+      for (var j = 0; j < receipt.logs.length; j++) {
+        if (receipt.logs[j].event == "TransferSingle") {
+          ids.push(receipt.logs[j].args._id);
+        }
+      }
 
       for (var i = 0; i < 10; i++) {
         expectEvent(receipt, "TransferSingle", {
           _operator: await STASHBLOX.owner.call(),
           _from: ZERO_ADDRESS,
           _to: accounts[5],
-          _id: ids[i],
+          //_id: ids[i],
           _value: bigN(DATA["token1"].supply)
         });
 
         const token = await STASHBLOX._tokens.call(ids[i]);
-        assert.equal(token.metadataHash.toString(), tokenParams[0].toString(), "invalid metadataHash");
+        assert.equal(token.metadataHash.toString(), metadataHashes[i].toString(), "invalid metadataHash");
 
         const balance = await STASHBLOX.balanceOf.call(accounts[5], ids[i]);
         assert.equal(balance.valueOf(), DATA["token1"].supply, "token wasn't in the first account");

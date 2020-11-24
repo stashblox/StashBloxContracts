@@ -8,6 +8,7 @@ const { BN, constants, expectEvent, expectRevert, time, balance, send } = requir
 const random = () => { return new BN(crypto.randomBytes(20)); }
 const bigN = (value) => { return new BN(value); }
 const StashBloxClass = contract.fromArtifact('StashBlox');
+const ERC20ProxyClass = contract.fromArtifact('ERC20Proxy');
 const ZERO_ADDRESS = constants.ZERO_ADDRESS;
 const ZERO_BYTES32 = constants.ZERO_BYTES32;
 
@@ -35,7 +36,6 @@ var SALT = crypto.randomBytes(32);
 var DATA = {
   "token1": {
       recipient: accounts[1],
-      id: random(),
       supply: 1000 * 10**8,
       metadataHash: random(),
       isPrivate: 0,
@@ -45,11 +45,11 @@ var DATA = {
       feesCurrencyId: 0,
       feesRecipient: accounts[6],
       decimals: 8,
-      locked: 0
+      locked: 0,
+      symbol: web3.utils.asciiToHex("TOKEN1")
   },
   "token2": {
       recipient: accounts[2],
-      id: random(),
       supply: 1000 * 10**8,
       metadataHash: random(),
       isPrivate: 0,
@@ -59,12 +59,14 @@ var DATA = {
       feesCurrencyId: 0,
       feesRecipient: accounts[7],
       decimals: 8,
-      locked: 0
+      locked: 0,
+      symbol: web3.utils.asciiToHex("TOKEN2")
   }
 }
 
 const initContract =  async() => {
-    STASHBLOX = await StashBloxClass.new(SALT);
+    ERC20PROXY = await ERC20ProxyClass.new();
+    STASHBLOX = await StashBloxClass.new(SALT, ERC20PROXY.address);
 
     for (var i = 0; i < STASHBLOX.abi.length; i++) {
       if (["payable", "nonpayable"].indexOf(STASHBLOX.abi[i].stateMutability) != -1 && STASHBLOX.abi[i].type == "function") {
@@ -86,59 +88,62 @@ const initContract =  async() => {
 
 const initFixtures = async() => {
 
-    DATA["token1"].receipt = await STASHBLOX.createTokens.send(DATA["token1"].recipient,
-                                                         [DATA["token1"].id],
-                                                         DATA["token1"].supply,
-                                                         [
-                                                           "metadataHash",
-                                                           "isPrivate",
-                                                           "standardFees",
-                                                           "lumpSumFees",
-                                                           "demurrageFees",
-                                                           "feesCurrencyId",
-                                                           "feesRecipient",
-                                                           "decimals",
-                                                           "locked"
-                                                         ],
-                                                         [
-                                                           DATA["token1"].metadataHash,
-                                                           DATA["token1"].isPrivate,
-                                                           DATA["token1"].standardFees,
-                                                           DATA["token1"].lumpSumFees,
-                                                           DATA["token1"].demurrageFees,
-                                                           DATA["token1"].feesCurrencyId,
-                                                           DATA["token1"].feesRecipient,
-                                                           DATA["token1"].decimals,
-                                                           DATA["token1"].locked
-                                                         ]);
+    DATA["token1"].receipt = await STASHBLOX.createTokens.send(
+        DATA["token1"].recipient,
+        DATA["token1"].supply,
+        [DATA["token1"].metadataHash],
+        [DATA["token1"].symbol],
+        [
+         "isPrivate",
+         "standardFees",
+         "lumpSumFees",
+         "demurrageFees",
+         "feesCurrencyId",
+         "feesRecipient",
+         "decimals",
+         "locked"
+        ],
+        [
+         DATA["token1"].isPrivate,
+         DATA["token1"].standardFees,
+         DATA["token1"].lumpSumFees,
+         DATA["token1"].demurrageFees,
+         DATA["token1"].feesCurrencyId,
+         DATA["token1"].feesRecipient,
+         DATA["token1"].decimals,
+         DATA["token1"].locked
+        ]);
     DATA["token1"].createdAt = await time.latest();
+    DATA["token1"].id = DATA["token1"].receipt.logs[0].args._id;
 
-    DATA["token2"].receipt = await STASHBLOX.createTokens.send(DATA["token2"].recipient,
-                                                         [DATA["token2"].id],
-                                                         DATA["token2"].supply,
-                                                         [
-                                                           "metadataHash",
-                                                           "isPrivate",
-                                                           "standardFees",
-                                                           "lumpSumFees",
-                                                           "demurrageFees",
-                                                           "feesCurrencyId",
-                                                           "feesRecipient",
-                                                           "decimals",
-                                                           "locked"
-                                                         ],
-                                                         [
-                                                           DATA["token2"].metadataHash,
-                                                           DATA["token2"].isPrivate,
-                                                           DATA["token2"].standardFees,
-                                                           DATA["token2"].lumpSumFees,
-                                                           DATA["token2"].demurrageFees,
-                                                           DATA["token2"].feesCurrencyId,
-                                                           DATA["token2"].feesRecipient,
-                                                           DATA["token2"].decimals,
-                                                           DATA["token1"].locked
-                                                         ]);
+    DATA["token2"].receipt = await STASHBLOX.createTokens.send(
+        DATA["token2"].recipient,
+        DATA["token2"].supply,
+        [DATA["token2"].metadataHash],
+        [DATA["token2"].symbol],
+        [
+           "isPrivate",
+           "standardFees",
+           "lumpSumFees",
+           "demurrageFees",
+           "feesCurrencyId",
+           "feesRecipient",
+           "decimals",
+           "locked"
+        ],
+        [
+           DATA["token2"].isPrivate,
+           DATA["token2"].standardFees,
+           DATA["token2"].lumpSumFees,
+           DATA["token2"].demurrageFees,
+           DATA["token2"].feesCurrencyId,
+           DATA["token2"].feesRecipient,
+           DATA["token2"].decimals,
+           DATA["token1"].locked
+       ]
+    );
     DATA["token2"].createdAt = await time.latest();
+    DATA["token2"].id = DATA["token2"].receipt.logs[0].args._id;
 
     return DATA;
 }

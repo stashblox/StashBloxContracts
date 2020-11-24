@@ -23,23 +23,25 @@ contract Mintable is ChargeableTransfer
      * @notice create token
      * @dev Function to mint an amount of a token with the given ID.
      * @param recipient The address that will own the minted tokens
-     * @param ids ID of the token to be minted
      * @param supply Amount of the token to be minted
      * @param properties Token information
      * @param values Token information
     */
     function createTokens(
         address recipient,
-        uint256[] memory ids,
         uint256 supply,
+        uint256[] memory metadataHashes,
+        bytes16[] memory symbols,
         string[] memory properties,
         uint256[] memory values
     )
         external onlyAuthorized(_msgSender(), Actions.CREATE_TOKEN, 0)
     {
-        for (uint256 i = 0; i < ids.length; i++) {
-            _createToken(recipient, ids[i], supply, properties, values);
-            emit TransferSingle(_msgSender(), address(0), recipient, ids[i], supply);
+        require(metadataHashes.length == symbols.length, "invalid arguments");
+
+        for (uint256 i = 0; i < metadataHashes.length; i++) {
+            uint256 newId = _createToken(recipient, supply, metadataHashes[i], symbols[i], properties, values);
+            emit TransferSingle(_msgSender(), address(0), recipient, newId, supply);
         }
     }
 
@@ -109,11 +111,17 @@ contract Mintable is ChargeableTransfer
     }
 
     function _createToken(address recipient,
-                          uint256 id,
                           uint256 supply,
+                          uint256 metadataHash,
+                          bytes16 symbol,
                           string[] memory properties,
                           uint256[] memory values)
-    internal {
+    internal returns (uint256) {
+        require(_symbols[symbol] == 0, "symbol already used");
+
+        address erc20Clone = createClone(_config.ERC20Code);
+        uint256 id = uint256((erc20Clone));
+
         require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
 
         _tokens[id].supply = supply;
@@ -122,6 +130,13 @@ contract Mintable is ChargeableTransfer
         _permissions[recipient][Actions.UPDATE_TOKEN][id] = true;
         _permissions[recipient][Actions.HOLD_PRIVATE_TOKEN][id] = true;
         _addToBalance(recipient, id, supply);
+
+        _tokens[id].metadataHash = metadataHash;
+        _tokens[id].symbol = symbol;
+        _symbols[symbol] = id;
+        emit TokenCreated(id, metadataHash);
+
+        return id;
     }
 
 
