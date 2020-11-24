@@ -77,7 +77,7 @@ contract Escrowable is Core {
         bool authorized,
         bytes calldata data
     )
-        internal returns (bool)
+        internal view returns (bool)
     {
         (
             uint256 format,

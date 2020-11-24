@@ -21,7 +21,8 @@ contract Data {
         GSN_FORWARDER,
         TRANSFER_TOKEN_FOR,
         HOLD_PRIVATE_TOKEN,
-        ESCROW_TOKENS
+        ESCROW_TOKENS,
+        SET_ALLOWANCE
     }
 
     struct Config {

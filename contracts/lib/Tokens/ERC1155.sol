@@ -130,7 +130,7 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
                         (data.length == 192 && _checkSafeTransferFromSignature(from, to, id, value, data));
         bool allowed;
         if (!approved) {
-            allowed = _isAllowedFor(from, operator, id, value);
+            allowed = allowance(from, operator, id) >= value;
         }
         require(allowed || approved, "operator not approved");
 

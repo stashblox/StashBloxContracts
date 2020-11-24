@@ -75,12 +75,7 @@ contract Mintable is ChargeableTransfer
 
     function _setTokenProperty(uint256 id, string memory property, uint256 value) internal {
         Token memory token = _tokens[id];
-
-        bytes32 key;
-        assembly { key := mload(add(property, 32)) }
-
-        uint8 index = tokenStructMap[key];
-        require(index > 0, "invalid property name");
+        uint8 index = _getPropertyIndex(property);
 
         if (index == 100) {
             _demurrageFees[id].push(DemurrageFees(block.timestamp, value));
@@ -88,6 +83,29 @@ contract Mintable is ChargeableTransfer
             assembly { mstore(add(token, mul(32, index)), value) }
             _tokens[id] = token;
         }
+    }
+
+    function getTokenProperty(uint256 id, string memory property) public view returns (uint256) {
+        Token memory token = _tokens[id];
+        uint8 index = _getPropertyIndex(property);
+        uint256 value;
+
+        if (index == 100) {
+            value = _demurrageFees[id][_demurrageFees[id].length - 1].price;
+        } else {
+            assembly { value := mload(add(token, mul(32, index))) }
+        }
+
+        return value;
+    }
+
+    function _getPropertyIndex(string memory property) internal view returns (uint8) {
+        bytes32 key;
+        assembly { key := mload(add(property, 32)) }
+
+        require(tokenStructMap[key] > 0, "invalid property name");
+
+        return tokenStructMap[key];
     }
 
     function _createToken(address recipient,

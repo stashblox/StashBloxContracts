@@ -2,6 +2,7 @@
 pragma solidity ^0.7.4;
 
 import "../Core/Core.sol";
+import "../../utils/SafeMath.sol";
 
 contract OwnableDelegateProxy { } // solhint-disable-line no-empty-blocks
 
@@ -11,6 +12,7 @@ interface ProxyRegistry {
 
 contract DelegableTransfer is Core {
 
+    using SafeMath for uint256;
 
     /****************************
     EXTERNAL FUNCTIONS
@@ -55,8 +57,7 @@ contract DelegableTransfer is Core {
         );
     }
 
-
-    function increaseAllowance(
+    function setAllowance(
         address account,
         address operator,
         uint256 id,
@@ -64,19 +65,12 @@ contract DelegableTransfer is Core {
     )
         external onlyAuthorized(_msgSender(), Actions.SET_ALLOWANCE, id)
     {
-        _erc20Allowance[operator][account][id] = _erc20Allowance[operator][account][id].add(amount);
+        require(amount == 0 || _erc20Allowance[operator][account][id] == 0, "allowance not zero");
+        _erc20Allowance[operator][account][id] = amount;
     }
-    
 
-    function decreaseAllowance(
-        address account,
-        address operator,
-        uint256 id,
-        uint256 amount
-    )
-        external onlyAuthorized(_msgSender(), Actions.SET_ALLOWANCE, id)
-    {
-        _erc20Allowance[operator][account][id] = _erc20Allowance[operator][account][id].sub(amount);
+    function allowance(address account, address operator, uint256 id) public view  returns (uint256) {
+        return _erc20Allowance[operator][account][id];
     }
 
 
@@ -105,18 +99,13 @@ contract DelegableTransfer is Core {
     }
 
 
-    function _isAllowedFor(address account, address operator, uint256 id, uint256 amount) internal view  returns (bool) {
-        return _erc20Allowance[operator][account][id] >= amount;
-    }
-
-
     function _checkSetApprovalForAll2Signature(
           address account,
           address operator,
           bool approved,
           bytes calldata data
     )
-        internal returns (bool)
+        internal view returns (bool)
     {
         (
             uint256 format,
@@ -138,7 +127,7 @@ contract DelegableTransfer is Core {
         uint256 value,
         bytes calldata data
     )
-        internal returns (bool)
+        internal view returns (bool)
     {
         (
             uint256 format,

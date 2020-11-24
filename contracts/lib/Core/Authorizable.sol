@@ -126,7 +126,7 @@ contract Authorizable is IERC173, GSNCapable {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) internal returns (bool) {
+    ) internal view returns (bool) {
         return (account == ecrecover(digest, v, r, s) &&
                 expiry == 0 || block.timestamp <= expiry &&
                 nonce ==  _accounts[account].nonce + 1);
