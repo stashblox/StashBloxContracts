@@ -15,11 +15,11 @@ contract Config is Core, IERC165 {
 
 
     /**
-     * @dev Function to update the contract configuration
-     * @param baseURI base URI for the metadata URLs
-     * @param versionRecipient version needed by GSN relay
-     * @param proxyRegistryAccount trusted delegate proxy
-     */
+        @dev Function to update the contract configuration
+        @param baseURI base URI for the metadata URLs
+        @param versionRecipient version needed by GSN relay
+        @param proxyRegistryAccount trusted delegate proxy
+    */
     function updateConfig(
         string calldata baseURI,
         string calldata versionRecipient,
@@ -35,36 +35,33 @@ contract Config is Core, IERC165 {
         emit ConfigUpdated();
     }
 
+    /**
+        @dev Function get the current configuration
+        @return return a Config struct containing the following meembers:<br />
+        <br />
+            address owner;<br />
+            address proxyRegistryAccount;<br />
+            address ERC20Code;<br />
+            bytes32 DOMAIN_SEPARATOR;<br />
+            bytes32 APPROVAL_TYPEHASH;<br />
+            bytes32 TRANSFER_TYPEHASH;<br />
+            bytes32 ESCROW_TYPEHASH;<br />
+            bytes32 SALT;<br />
+            string baseURI;<br />
+            string versionRecipient;<br />
+        <br />
+    */
     function getConfig() public view returns (Config memory) {
         return _config;
     }
 
     /**
-     * @notice Query if a contract implements an interface
-     * @param _interfaceID  The interface identifier, as specified in ERC-165
-     * @return `true` if the contract implements `_interfaceID` and
-     */
-    function supportsInterface(bytes4 _interfaceID) external view override returns (bool) {
-        return _supportedInterfaces[_interfaceID];
+       @notice Query if a contract implements an interface
+       @param interfaceID  The interface identifier, as specified in ERC-165
+       @return `true` if the contract implements `interfaceID` and
+    */
+    function supportsInterface(bytes4 interfaceID) external view override returns (bool) {
+        return _supportedInterfaces[interfaceID];
     }
 
-
-    function registerCurreny(
-        uint256 currencyId,
-        address contractAddress,
-        uint256 tokenId
-    )
-        external onlyAuthorized(_msgSender(), Actions.REGISTER_CURRENCY, 0)
-    {
-        require(currencyId !=0 &&
-                contractAddress != address(0) &&
-                _currencies[currencyId].contractAddress == address(0),
-                "invalid arguments");
-
-        _currencies[currencyId] = Currency(
-            tokenId == 0 ? 1 : 2, // erc20 if no tokenId, else erc1155
-            tokenId,
-            contractAddress
-        );
-    }
 }

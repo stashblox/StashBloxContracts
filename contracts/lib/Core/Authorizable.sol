@@ -4,15 +4,7 @@ pragma solidity ^0.7.4;
 
 import "./GSNCapable.sol";
 import "../../interfaces/IERC173.sol";
-/**
- * @dev Contract module which provides a basic access control mechanism, where
- * there is an account (an owner) that can be granted exclusive access to
- * specific functions.
- *
- * This module is used through inheritance. It will make available the modifier
- * `onlyOwner`, which can be applied to your functions to restrict their use to
- * the owner.
- */
+
 contract Authorizable is IERC173, GSNCapable {
 
 
@@ -20,15 +12,38 @@ contract Authorizable is IERC173, GSNCapable {
     MODIFIERS
     *****************************/
 
+
     modifier onlyAuthorized(address account, Actions action, uint256 objectId) {
         require(isAuthorized(account, action, objectId), "not authorized");
         _;
     }
 
+
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
+    /**
+        @dev Function to authorize an account to perform an operation on an object.
+        @param account      The address to set for an authorization
+        @param action       The index of the action. Should be one of the following:<br /><br />
+                            0: SET_AUTHORIZATION<br />
+                            1: UPDATE_CONFIG<br />
+                            2: CREATE_TOKEN<br />
+                            3: UPDATE_TOKEN<br />
+                            4: TRANSFER_OWNERSHIP<br />
+                            5: REGISTER_CURRENCY<br />
+                            6: CALL_TOKENS<br />
+                            7: LOCK_ACCOUNT<br />
+                            8: GSN_FORWARDER<br />
+                            9: TRANSFER_TOKEN_FOR<br />
+                            10: HOLD_PRIVATE_TOKEN<br />
+                            11: ESCROW_TOKENS<br />
+                            12: SET_ALLOWANCE<br />
+                            <br />
+        @param objectId     The ID of the object for which to set the authorization
+        @param authorized   `True` to authorize, `False` to revoke authorization
+    */
     function setAuthorization(
         address account,
         Actions action,
@@ -40,7 +55,13 @@ contract Authorizable is IERC173, GSNCapable {
         _permissions[account][action][objectId] = authorized;
     }
 
-
+    /**
+        @dev Function to check if an address has the given authorization
+        @param account    The address to check
+        @param action     The index of the action. See `setAuthorization` documentation.
+        @param objectId   The ID of the object for which the authorization is set
+        @return `True` if `account` is authorized to perform `action` on `objectId`.
+    */
     function isAuthorized(
         address account,
         Actions action,
@@ -54,16 +75,15 @@ contract Authorizable is IERC173, GSNCapable {
 
 
     /**
-     * @dev Returns the address of the current owner.
+        @dev Returns the address of the current owner.
      */
     function owner() public view override returns (address) {
         return _config.owner;
     }
 
     /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     * @param account address of the new owner
-     * Can only be called by the current owner.
+        @dev Transfers ownership of the contract to a new account (`account`).
+        @param account address of the new owner
      */
     function transferOwnership(
         address account
@@ -79,16 +99,11 @@ contract Authorizable is IERC173, GSNCapable {
     *****************************/
 
 
-    /**
-     * @dev Transfers ownership of the contract to a new account (`newOwner`).
-     */
     function _transferOwnership(address account) internal {
         require(account != address(0), "invalid account");
         emit OwnershipTransferred(_config.owner, account);
         _config.owner = account;
     }
-
-
 
     function _callFunctionDigest(
         bytes32 functionHash,
@@ -117,7 +132,6 @@ contract Authorizable is IERC173, GSNCapable {
         revert("invalid format");
     }
 
-
     function _requireValidSignature(
         address account,
         bytes32 digest,
@@ -131,7 +145,6 @@ contract Authorizable is IERC173, GSNCapable {
                 expiry == 0 || block.timestamp <= expiry &&
                 nonce ==  _accounts[account].nonce + 1);
     }
-
 
     function _initGasLessTransactions(bytes32 salt) internal {
         uint256 chainId;

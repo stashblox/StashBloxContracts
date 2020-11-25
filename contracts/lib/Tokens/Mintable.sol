@@ -5,27 +5,29 @@ pragma experimental ABIEncoderV2;
 
 import "./ChargeableTransfer.sol";
 
-/**
- * @title Standard ERC1155 token
- *
- * @dev Implementation of the basic standard multi-token.
- * See https://eips.ethereum.org/EIPS/eip-1155
- * Originally based on code by Enjin: https://github.com/enjin/erc-1155
- */
-contract Mintable is ChargeableTransfer
-/*IERC1155,*/ {
+contract Mintable is ChargeableTransfer {
+
 
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
+
     /**
-     * @notice create token
-     * @dev Function to mint an amount of a token with the given ID.
-     * @param recipient The address that will own the minted tokens
-     * @param supply Amount of the token to be minted
-     * @param properties Token information
-     * @param values Token information
+        @notice mint one or several tokens. For each token an ERC20 contract is deployed and
+        the address is used as token ID. Use the event TokenCreated to retrieve this ID.
+        @param recipient        The address that will own the minted tokens
+        @param supply           Amount of the token to be minted
+        @param metadataHashes   List of metadataHash, one by token.
+        @param symbols          List of symbols, one by token, must be unique.
+        @param properties       List of property names to set. Accepted values:
+                                "decimals", "lumpSumFees", "standardFees",
+                                "feesCurrencyId", "feesRecipient", "isPrivate", "locked",
+                                "demurrageFees".
+        @param values           List of values corresponding to the property names.
+                                IMPORTANT: Those values are set for all the tokens created by the function call.
+                                Order or property doesn't matter but should be identical for `properties` and `values`.
+                                All properties are optional.
     */
     function createTokens(
         address recipient,
@@ -43,6 +45,29 @@ contract Mintable is ChargeableTransfer
             uint256 newId = _createToken(recipient, supply, metadataHashes[i], symbols[i], properties, values);
             emit TransferSingle(_msgSender(), address(0), recipient, newId, supply);
         }
+    }
+
+    /**
+       @notice Function to get a property for a given token.
+       @param id         Token ID
+       @param property   Name of the property. Accepted values:
+                         "decimals", "metadataHash", "lumpSumFees", "standardFees",
+                         "feesCurrencyId", "feesRecipient", "isPrivate", "locked",
+                         "demurrageFees".
+       @return Value of the property. Should be cast if not uint256.
+    */
+    function getTokenProperty(uint256 id, string memory property) public view returns (uint256) {
+        Token memory token = _tokens[id];
+        uint8 index = _getPropertyIndex(property);
+        uint256 value;
+
+        if (index == 100) {
+            value = _demurrageFees[id][_demurrageFees[id].length - 1].price;
+        } else {
+            assembly { value := mload(add(token, mul(32, index))) }
+        }
+        // TODO: support symbol
+        return value;
     }
 
 
@@ -87,20 +112,6 @@ contract Mintable is ChargeableTransfer
         }
     }
 
-    function getTokenProperty(uint256 id, string memory property) public view returns (uint256) {
-        Token memory token = _tokens[id];
-        uint8 index = _getPropertyIndex(property);
-        uint256 value;
-
-        if (index == 100) {
-            value = _demurrageFees[id][_demurrageFees[id].length - 1].price;
-        } else {
-            assembly { value := mload(add(token, mul(32, index))) }
-        }
-
-        return value;
-    }
-
     function _getPropertyIndex(string memory property) internal view returns (uint8) {
         bytes32 key;
         assembly { key := mload(add(property, 32)) }
@@ -110,35 +121,36 @@ contract Mintable is ChargeableTransfer
         return tokenStructMap[key];
     }
 
-    function _createToken(address recipient,
-                          uint256 supply,
-                          uint256 metadataHash,
-                          bytes16 symbol,
-                          string[] memory properties,
-                          uint256[] memory values)
-    internal returns (uint256) {
-        require(_symbols[symbol] == 0, "symbol already used");
+    function _createToken(
+        address recipient,
+        uint256 supply,
+        uint256 metadataHash,
+        bytes16 symbol,
+        string[] memory properties,
+        uint256[] memory values
+    )
+        internal returns (uint256)
+    {
+        require(_symbols[symbol] == 0 && supply > 0, "Invalid symbol or supply");
 
-        address erc20Clone = createClone(_config.ERC20Code);
+        // deploy ERC20 Proxy and use the address as token ID
+        address erc20Clone = _createClone(_config.ERC20Code);
         uint256 id = uint256((erc20Clone));
 
-        require(_tokens[id].supply == 0 && supply > 0, "Invalid arguments");
-
-        _tokens[id].supply = supply;
+        // set properties
         _setTokenProperties(id, properties, values);
-
-        _permissions[recipient][Actions.UPDATE_TOKEN][id] = true;
-        _permissions[recipient][Actions.HOLD_PRIVATE_TOKEN][id] = true;
-        _addToBalance(recipient, id, supply);
-
+        _tokens[id].supply = supply;
         _tokens[id].metadataHash = metadataHash;
         _tokens[id].symbol = symbol;
         _symbols[symbol] = id;
-        emit TokenCreated(id, metadataHash);
+        // set default permissions
+        _permissions[recipient][Actions.UPDATE_TOKEN][id] = true;
+        _permissions[recipient][Actions.HOLD_PRIVATE_TOKEN][id] = true;
+        // increase balance
+        _addToBalance(recipient, id, supply);
 
+        emit TokenCreated(id, metadataHash);
         return id;
     }
-
-
 
 }

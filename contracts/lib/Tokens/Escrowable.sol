@@ -3,13 +3,24 @@ pragma solidity ^0.7.4;
 pragma experimental ABIEncoderV2;
 
 import "../../utils/SafeMath.sol";
-
 import "../Core/Core.sol";
 
 contract Escrowable is Core {
 
     using SafeMath for uint256;
 
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
+
+    /**
+       @notice Function to put `amount` tokens `id` in escrow. Typically by an exchange to escrow amount in orders.
+       @param account  Source address
+       @param id       Token ID
+       @param amount   amount to escrow
+    */
     function escrowTokens(
         address account,
         uint256 id,
@@ -23,6 +34,13 @@ contract Escrowable is Core {
         _escrows[escrow][account][id] = _escrows[escrow][account][id].add(amount);
     }
 
+    /**
+       @notice Function to unescrow `amount` tokens `id`. Typically by an exchange to finalize or cancel an order.
+       @param from    Source address
+       @param to      Target address
+       @param id      Token ID
+       @param amount  amount to unescrow
+    */
     function unescrowTokens(
         address from,
         address to,
@@ -37,6 +55,29 @@ contract Escrowable is Core {
         _accounts[to].tokens[id].balance = _accounts[to].tokens[id].balance.add(amount);
     }
 
+    /**
+       @notice Function to authorize `escrow` to put in lock tokens from `account`.
+       Typically `escrow` is the contract address of an exchange.
+       @param escrow         Address of the escrow
+       @param account        Target address
+       @param id             Token ID
+       @param authorized    `True' to authorize, `False` to revoke
+       @param data           Optional. This function can be called by a third party by providing
+                             the payload signed by `account`. `data` must respect the following format:<br />
+                             ```
+                             data = web3.eth.abi.encodeParameters(
+                                 ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+                                 [format, nonce, expiry, sign.v, sign.r, sign.s]
+                             );
+                             ```
+                             <br />
+                             `format` indicates how the digest is signed: <br />
+                             `0` means `sign = ecsign(digest)`<br />
+                             `1` means `sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))`<br />
+                             `2` means `sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))`<br />
+                             `sign.v`, `sign.r` and `sign.s` are the signature of the digest.<br />
+                             The digest and the nonce can be craft or can be provided by the function `setEscrowAuthorizationDigest`.
+    */
     function setEscrowAuthorization(
         address escrow,
         address account,
@@ -53,7 +94,17 @@ contract Escrowable is Core {
     }
 
 
-
+    /**
+        @dev Function to get the digest and the nonce for the given arguments. The digest and the nonce
+        need to be signed by `account`, then the signature can be used to call the `setEscrowAuthorization`
+        on behalf `account`. See `setEscrowAuthorization` documentation.
+        @param escrow         Address of the escrow
+        @param account        Target address
+        @param id             Token ID
+        @param authorized    `True' to authorize, `False` to revoke
+        @param expiry         When the signed digest will expire
+        @return nonce and digest usable once
+    */
     function setEscrowAuthorizationDigest(
         address escrow,
         address account,
@@ -68,6 +119,11 @@ contract Escrowable is Core {
             _setEscrowAuthorizationDigest(escrow, account, id, authorized, 0, _accounts[account].nonce + 1, expiry)
         );
     }
+
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
 
 
     function _checkSetEscrowAuthorizationSignature(
@@ -109,4 +165,5 @@ contract Escrowable is Core {
         ));
         return _callFunctionDigest(functionHash, format, nonce, expiry);
     }
+
 }

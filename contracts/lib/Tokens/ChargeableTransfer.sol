@@ -17,26 +17,36 @@ contract ChargeableTransfer is Core {
 
 
     /**
-     * @dev Function to get the transaction price to transfer tokens.
-     * @param account the address from where to transfer the tokens
-     * @param id The token ID
-     * @param value The amount to transfer
-     * @return transfer price
-     */
-    function transactionFees(address account, uint256 id, uint256 value) public view returns (uint256) {
+        @dev Function to get the transaction price to transfer tokens.
+        @param account  The address from where to transfer the tokens
+        @param id       The token ID
+        @param value    The amount to transfer
+        @return Transfer price
+    */
+    function transactionFees(
+        address account,
+        uint256 id,
+        uint256 value
+    )
+        public view returns (uint256)
+    {
         return _transactionFees(account, id, value);
     }
 
     /**
-     * @dev Function to get the average age of the token hold by the given address.
-     * @param account the address from where to transfer the tokens
-     * @param id The token ID
-     * @return average age in seconds
-     */
-    function averageAge(address account, uint256 id) public view returns (uint256) {
+        @dev Function to get the average age of the token hold by the given address.
+        @param account  The address from where to transfer the tokens
+        @param id       The token ID
+        @return Average age in seconds
+    */
+    function averageAge(
+        address account,
+        uint256 id
+    )
+        public view returns (uint256)
+    {
         return block.timestamp.sub(_accounts[account].tokens[id].birthday);
     }
-
 
 
     /****************************
@@ -82,32 +92,23 @@ contract ChargeableTransfer is Core {
         uint256 timeCursor = block.timestamp;
         // pay demurrage for a full token
         uint256 paidValue = _tokens[id].decimals != 0 ? _ceilDiv(value, 10**_tokens[id].decimals) : value;
-
+        // loop throught _demurrageFees starting by the most recent
         for (uint i = _demurrageFees[id].length - 1; i >= 0; i--) {
-
             uint256 costStartAt = _demurrageFees[id][i].startAt;
             uint256 demurrageDays;
-
+            // check if birthday is included in the price period
             if (_accounts[account].tokens[id].birthday >= costStartAt) {
-
                 demurrageDays = (timeCursor.sub(_accounts[account].tokens[id].birthday)).div(86400);
-
                 if (demurrageDays == 0) demurrageDays = 1; // TODO: test this case!
                 totalCost += (demurrageDays.mul(_demurrageFees[id][i].price)).mul(paidValue);
-
-                break;
-
+                break; // last period
             } else {
-
                 demurrageDays = (timeCursor.sub(costStartAt)).div(86400);
                 timeCursor = costStartAt;
-
                 if (demurrageDays == 0) demurrageDays = 1;
                 totalCost += (demurrageDays.mul(_demurrageFees[id][i].price)).mul(paidValue);
-
             }
         }
-
         return totalCost;
     }
 
@@ -122,7 +123,6 @@ contract ChargeableTransfer is Core {
     }
 
     function _payFees(uint256 id, address operator, uint256 fees) internal {
-
         if (_currencies[_tokens[id].feesCurrencyId].currencyType == 2) { // erc1155
             // remove fees from operator balance
             _accounts[operator].externalBalances[_tokens[id].feesCurrencyId] =
@@ -131,12 +131,11 @@ contract ChargeableTransfer is Core {
             _accounts[_tokens[id].feesRecipient].externalBalances[_tokens[id].feesCurrencyId] += fees;
         }
         else if (_currencies[_tokens[id].feesCurrencyId].currencyType == 1) { // erc20
-          // contract should be allowed to transfer token `operator`
+          // contract should be allowed to transfer token fron `operator`
           require(
               IERC20(_currencies[_tokens[id].feesCurrencyId].contractAddress).transferFrom(operator, _tokens[id].feesRecipient, fees),
               "erc20 payment failed"
           );
-
         }
         else { // eth
             // remove fees from operator balance
@@ -144,7 +143,6 @@ contract ChargeableTransfer is Core {
             // distribute fees to beneficiary
             _accounts[_tokens[id].feesRecipient].externalBalances[0] += fees;
         }
-
     }
 
     // Used by ERC1155 implementation in safeTransferFrom
@@ -158,7 +156,6 @@ contract ChargeableTransfer is Core {
         fees = _transactionFees(from, id, value);
         // pay fees
         _payFees(id, operator, fees);
-
         return fees;
     }
 

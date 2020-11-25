@@ -11,11 +11,24 @@ contract Updatable is Mintable {
 
     using SafeMath for uint256;
 
+
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
 
+    /**
+        @notice Update an arbitrary number of properties of a token.
+        @param id               Token ID
+        @param properties       List of property names to set. Accepted values:
+                                "decimals", "metadataHash", "lumpSumFees", "standardFees",
+                                "feesCurrencyId", "feesRecipient", "isPrivate", "locked",
+                                "demurrageFees".
+        @param values           List of values corresponding to the property names.
+                                IMPORTANT: Those values are set for all the tokens created by the function call.
+                                Order or property doesn't matter but should be identical for `properties` and `values`.
+                                All properties are optional.
+    */
     function updateToken(
         uint256 id,
         string[] memory properties,
@@ -35,12 +48,13 @@ contract Updatable is Mintable {
         }
     }
 
-
     /**
-     * @dev Function to approve holder for a private token.
-     * @param id the token id
-     * @param account The authorized address
-     */
+        @dev Function to approve holder for a private token: only approved accounts
+        are able to hold private token.
+        @param id          The token id
+        @param account     The authorized address
+        @param isApproved  `True` to approve, `False` to remove approval
+    */
     function setAccountApproval(
         uint256 id,
         address account,
@@ -51,7 +65,15 @@ contract Updatable is Mintable {
         _permissions[account][Actions.HOLD_PRIVATE_TOKEN][id] = isApproved;
     }
 
-
+    /**
+        @dev Function to call tokens from holders. Typically a contract containing
+        all the business logic will be authorized to use this function.
+        @param caller       Address of the caller
+        @param callees      Addresses of the callees
+        @param id           Token ID
+        @param price        Price paid by token
+        @param currencyId   Currency of the price
+    */
     function callTokens(
         address caller,
         address[] calldata callees,
@@ -71,6 +93,5 @@ contract Updatable is Mintable {
             _accounts[callees[i]].externalBalances[currencyId] = _accounts[callees[i]].externalBalances[currencyId].add(totalPrice);
         }
     }
-
 
 }

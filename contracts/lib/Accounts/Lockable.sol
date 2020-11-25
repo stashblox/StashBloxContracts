@@ -8,19 +8,26 @@ import "../Core/Core.sol";
 contract Lockable is Core {
 
 
+    /****************************
+    MODIFIERS
+    *****************************/
+
+
     modifier onlyUnlockedAccount(address account) {
         require(!_accounts[account].isLocked, "account locked");
         _;
     }
 
+
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
+
     /**
-     * @dev Function to unlock an address.
-     * @param account The address to unlock
-     */
+        @dev Function to unlock an address
+        @param account The address to unlock
+    */
     function setAccountLock(
         address account,
         bool lock,
@@ -33,12 +40,11 @@ contract Lockable is Core {
     }
 
     /**
-     * @dev Function to check if an address is lockec.
-     * @param account The address to check
-     */
-    function isLockedAccount(address account) external view returns (bool){
+        @dev Function to check if an address is locked
+        @param account The address to check
+    */
+    function isLockedAccount(address account) external view returns (bool) {
         return _accounts[account].isLocked;
     }
-
 
 }

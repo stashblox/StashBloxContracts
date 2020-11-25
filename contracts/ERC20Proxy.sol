@@ -5,12 +5,7 @@ pragma solidity ^0.7.4;
 import "./interfaces/IERC20.sol";
 import "./StashBlox.sol";
 import "./lib/Core/Core.sol";
-/**
-    @title A simulator for trees
-    @author Larry A. Gardner
-    @notice You can use this contract for only the most basic simulation
-    @dev All function calls are currently implemented without side effects
- */
+
 contract ERC20Proxy is IERC20, Core {
 
     address payable _master;

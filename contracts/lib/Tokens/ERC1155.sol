@@ -36,13 +36,10 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
 
     /**
         @dev Get the specified address' balance for token with specified ID.
-
-        Attempting to query the zero account for a balance will result in a revert.
-
-        @param account The address of the token holder
-        @param id ID of the token
+        @param account  The address of the token holder
+        @param id       ID of the token
         @return The account's balance of the token type requested
-     */
+    */
     function balanceOf(address account, uint256 id) public view  returns (uint256) {
         require(account != address(0), "invalid account");
         return _accounts[account].tokens[id].balance;
@@ -50,11 +47,8 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
 
     /**
         @dev Get the balance of multiple account/token pairs.
-
-        If any of the query accounts is the zero account, this query will revert.
-
-        @param accounts The addresses of the token holders
-        @param ids IDs of the tokens
+        @param accounts   The addresses of the token holders
+        @param ids        IDs of the tokens
         @return Balances for each account and token id pair
      */
     function balanceOfBatch(
@@ -78,15 +72,9 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
     }
 
     /**
-     * @dev Sets or unsets the approval of a given operator.
-     *
-     * An operator is allowed to transfer all tokens of the sender on their behalf.
-     *
-     * Because an account already has operator privileges for itself, this function will revert
-     * if the account attempts to set the approval status for itself.
-     *
-     * @param operator address to set the approval
-     * @param approved representing the status of the approval to be set
+       @dev Sets or unsets the approval of a given operator. An operator is allowed to transfer all tokens of the sender on their behalf.
+       @param operator  address to set the approval
+       @param approved  representing the status of the approval to be set
      */
     function setApprovalForAll(address operator, bool approved) external  {
         _setApprovalForAll(_msgSender(), operator, approved);
@@ -95,8 +83,8 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
 
     /**
         @notice Queries the approval status of an operator for a given account.
-        @param account   The account of the Tokens
-        @param operator  Address of authorized operator
+        @param account    The account of the Tokens
+        @param operator   Address of authorized operator
         @return           True if the operator is approved, false if not
     */
     function isApprovedForAll(address account, address operator) public view  returns (bool) {
@@ -107,11 +95,26 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         @dev Transfers `value` amount of an `id` from the `from` address to the `to` address specified.
         Caller must be approved to manage the tokens being transferred out of the `from` account.
         If `to` is a smart contract, will call `onERC1155Received` on `to` and act appropriately.
-        @param from Source address
-        @param to Target address
-        @param id ID of the token type
-        @param value Transfer amount
-        @param data Data forwarded to `onERC1155Received` if `to` is a contract receiver
+        @param from   Source address
+        @param to     Target address
+        @param id     ID of the token type
+        @param value  Transfer amount
+        @param data   Optional. This function can be called by a third party by providing
+                      the payload signed by `from`. `data` must respect the following format:<br />
+                      ```
+                      data = web3.eth.abi.encodeParameters(
+                          ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+                          [format, nonce, expiry, sign.v, sign.r, sign.s]
+                      );
+                      ```
+                      <br />
+                      `format` indicates how the digest is signed: <br />
+                      `0` means `sign = ecsign(digest)`<br />
+                      `1` means `sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))`<br />
+                      `2` means `sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))`<br />
+                      `sign.v`, `sign.r` and `sign.s` are the signature of the digest.<br />
+                      The digest and the nonce can be craft or can be provided by the function `safeTransferFromDigest`.
+                      Data is forwarded to `onERC1155Received` if `to` is a contract receiver
     */
     function safeTransferFrom(
         address from,
@@ -123,9 +126,9 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         external payable
     {
         address operator = _msgSender();
+        // transaction from erc20 proxy
         if (uint256(uint160(operator)) == id) operator = abi.decode(data, (address));
 
-        require(to != address(0), "invalid recipient");
         bool approved = from == operator ||
                         _isApprovedForAll(from, operator) == true ||
                         (data.length == 192 && _checkSafeTransferFromSignature(from, to, id, value, data));
@@ -133,7 +136,7 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         if (!approved) {
             allowed = allowance(from, operator, id) >= value;
         }
-        require(allowed || approved, "operator not approved");
+        require(to != address(0) && (allowed || approved), "operator not approved or zero address");
 
         // increase ETH balance
         _accounts[operator].externalBalances[0] = _accounts[operator].externalBalances[0].add(msg.value);
@@ -154,11 +157,11 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         `to` address specified. Caller must be approved to manage the tokens being
         transferred out of the `from` account. If `to` is a smart contract, will
         call `onERC1155BatchReceived` on `to` and act appropriately.
-        @param from Source address
-        @param to Target address
-        @param ids IDs of each token type
-        @param values Transfer amounts per token type
-        @param data Data forwarded to `onERC1155Received` if `to` is a contract receiver
+        @param from     Source address
+        @param to       Target address
+        @param ids      IDs of each token type
+        @param values   Transfer amounts per token type
+        @param data     Data forwarded to `onERC1155Received` if `to` is a contract receiver
     */
     function safeBatchTransferFrom(
         address from,
@@ -188,9 +191,10 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
     }
 
     /**
-     * @param id Token ID
-     * @return URI string
-     */
+       @notice Function to get token's metadata URL
+       @param id  Token ID
+       @return URI string
+    */
     function uri(uint256 id) public view override returns (string memory) {
         return StringUtils._strConcat(_config.baseURI, StringUtils._toHexString(id));
     }
@@ -238,4 +242,5 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
             );
         }
     }
+
 }

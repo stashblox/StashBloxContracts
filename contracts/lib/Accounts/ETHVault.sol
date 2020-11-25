@@ -18,28 +18,30 @@ contract ETHVault is Lockable {
 
 
     /**
-     * @dev Function to withdraw ETH from the contract. TODO: Add permission ??
-     * @param account recipent address
-     * @param amount amount to withdraw
-     */
-    function withdraw(address account, uint256 amount) external onlyUnlockedAccount(account) {
+        @dev Function to withdraw ETH hold by the contract.
+        @param account Address of the holder
+        @param amount  Amount to withdraw
+    */
+    function withdrawETH(address account, uint256 amount) external onlyUnlockedAccount(account) {
+        require(account == _msgSender() || _config.owner == _msgSender(), "insufficient permission");
         _accounts[account].externalBalances[0] = _accounts[account].externalBalances[0].sub(amount, "Insufficient balance");
         (bool success, ) = account.call{value: amount}(""); // solhint-disable-line avoid-low-level-calls
         require(success, "Withdrawal failed");
     }
 
     /**
-     * @dev Function to make an ETH deposit that can be used to pay token transfer .
-     * @param account recipent address
-     */
+        @dev Function to make an ETH deposit that can be used to pay token transfer .
+        @param account recipent address
+    */
     function deposit(address account) external payable onlyUnlockedAccount(account) {
         _accounts[account].externalBalances[0] = _accounts[account].externalBalances[0].add(msg.value);
     }
 
     /**
-     * @dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()).
-     */
+        @dev Receive Ether Function:this is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()).
+    */
     receive() external payable onlyUnlockedAccount(_msgSender()) {
         _accounts[_msgSender()].externalBalances[0] = _accounts[_msgSender()].externalBalances[0].add(msg.value);
     }
+
 }

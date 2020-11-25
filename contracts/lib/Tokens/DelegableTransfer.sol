@@ -14,21 +14,62 @@ contract DelegableTransfer is Core {
 
     using SafeMath for uint256;
 
+
     /****************************
     EXTERNAL FUNCTIONS
     *****************************/
 
-    function setApprovalForAll2(address account, address operator, bool approved, bytes calldata data) external {
+
+    /**
+        @dev Sets or unsets the approval of a given operator.
+        @param account    Address to set the approval
+        @param operator   Address of the operator
+        @param approved   Representing the status of the approval to be set
+        @param data       Optional. This function can be called by a third party by providing
+                          the payload signed by `account`. `data` must respect the following format:<br />
+                          ```
+                          data = web3.eth.abi.encodeParameters(
+                              ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+                              [format, nonce, expiry, sign.v, sign.r, sign.s]
+                          );
+                          ```
+                          <br />
+                          `format` indicates how the digest is signed: <br />
+                          `0` means `sign = ecsign(digest)`<br />
+                          `1` means `sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))`<br />
+                          `2` means `sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))`<br />
+                          `sign.v`, `sign.r` and `sign.s` are the signature of the digest.<br />
+                          The digest and the nonce can be craft or can be provided by the function `setApprovalForAllDigest`.
+
+    */
+    function setApprovalForAll(
+        address account,
+        address operator,
+        bool approved,
+        bytes calldata data
+    )
+        external
+    {
         if (account != _msgSender()) {
             require(data.length > 0 && // TODO: check exact length
-                    _checkSetApprovalForAll2Signature(account, operator, approved, data),
+                    _checkSetApprovalForAllSignature(account, operator, approved, data),
                     "invalid signature");
             _accounts[account].nonce += 1;
         }
         _setApprovalForAll(account, operator, approved);
     }
 
-    function setApprovalForAll2Digest(
+    /**
+        @dev Function to get the digest and the nonce for the given arguments. The digest and the nonce
+        need to be signed by `account`, then the signature can be used to call the `setApprovalForAll`
+        on behalf `account`. See `setApprovalForAll` documentation.
+        @param account    The `account` that will sign the transaction
+        @param operator   The operator who can transfer tokens on behalf `account`
+        @param approved   `True` to authorize the operator, `False` to revoke the authorization.
+        @param expiry     When the signed digest will expire
+        @return nonce and digest usable once
+    */
+    function setApprovalForAllDigest(
         address account,
         address operator,
         bool approved,
@@ -38,10 +79,21 @@ contract DelegableTransfer is Core {
     {
         return (
             _accounts[account].nonce + 1,
-            _setApprovalForAll2Digest(account, operator, approved, 0, _accounts[account].nonce + 1, expiry)
+            _setApprovalForAllDigest(account, operator, approved, 0, _accounts[account].nonce + 1, expiry)
         );
     }
 
+    /**
+        @dev Function to get the digest and the nonce for the given arguments. The digest and the nonce
+        need to be signed by `account`, then the signature can be used to call the `safeTransferFrom`
+        on behalf `from`. See `safeTransferFrom` documentation.
+        @param from   Source address
+        @param to     Target address
+        @param id     ID of the token type
+        @param value  Transfer amount
+        @param expiry When the signed digest will expire
+        @return nonce and digest usable once
+    */
     function safeTransferFromDigest(
         address from,
         address to,
@@ -57,6 +109,13 @@ contract DelegableTransfer is Core {
         );
     }
 
+    /**
+        @dev Function to authorize `operator` to spent `amount` on behalf `account`
+        @param account    The source address
+        @param operator   Address to set the allowance
+        @param id         Token ID
+        @param amount     Maximun amount that `operator` can spent
+    */
     function setAllowance(
         address account,
         address operator,
@@ -69,7 +128,20 @@ contract DelegableTransfer is Core {
         _erc20Allowance[operator][account][id] = amount;
     }
 
-    function allowance(address account, address operator, uint256 id) public view  returns (uint256) {
+    /**
+        @dev Function to get the amount that `operator` can spent  on behalf `account`
+        @param account    The source address
+        @param operator   Address with the allowance
+        @param id         Token ID
+        @return Maximun amount that `operator` can spent
+    */
+    function allowance(
+        address account,
+        address operator,
+        uint256 id
+    )
+        public view  returns (uint256)
+    {
         return _erc20Allowance[operator][account][id];
     }
 
@@ -85,7 +157,6 @@ contract DelegableTransfer is Core {
         emit ApprovalForAll(account, operator, approved);
     }
 
-
     function _isApprovedForAll(address account, address operator) internal view  returns (bool) {
         if (_permissions[operator][Actions.TRANSFER_TOKEN_FOR][uint256(uint160(account))]) {
             return true;
@@ -98,8 +169,7 @@ contract DelegableTransfer is Core {
         return false;
     }
 
-
-    function _checkSetApprovalForAll2Signature(
+    function _checkSetApprovalForAllSignature(
           address account,
           address operator,
           bool approved,
@@ -115,7 +185,7 @@ contract DelegableTransfer is Core {
             bytes32 r,
             bytes32 s
         ) = abi.decode(data, (uint256, uint256, uint256, uint8, bytes32, bytes32));
-        bytes32 digest = _setApprovalForAll2Digest(account, operator, approved, format, nonce, expiry);
+        bytes32 digest = _setApprovalForAllDigest(account, operator, approved, format, nonce, expiry);
 
         return _requireValidSignature(account, digest, nonce, expiry, v, r, s);
     }
@@ -142,8 +212,7 @@ contract DelegableTransfer is Core {
         return _requireValidSignature(from, digest, nonce, expiry, v, r, s);
     }
 
-
-    function _setApprovalForAll2Digest(
+    function _setApprovalForAllDigest(
         address account,
         address operator,
         bool approved,
@@ -177,7 +246,5 @@ contract DelegableTransfer is Core {
         ));
         return _callFunctionDigest(functionHash, format, nonce, expiry);
     }
-
-
 
 }

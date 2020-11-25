@@ -7,26 +7,46 @@ import "../../interfaces/IRelayRecipient.sol";
 import "./Data.sol";
 
 /**
- * A base contract to be inherited by any contract that want to receive relayed transactions
- * A subclass must use "_msgSender()" instead of "msg.sender"
- */
+    A base contract to be inherited by any contract that want to receive relayed transactions
+    A subclass must use "_msgSender()" instead of "msg.sender"
+*/
 abstract contract GSNCapable is IRelayRecipient, Data {
 
+
+    /****************************
+    EXTERNAL FUNCTIONS
+    *****************************/
+
+
+    /**
+        @dev Function to check if an address is a trusted GSN forwarder
+        @param account The address to check
+        @return `True` if `account` is a trusted forwarder
+    */
     function isTrustedForwarder(address account) public override view returns(bool) {
         return _permissions[account][Actions.GSN_FORWARDER][0];
     }
 
+    /**
+        @dev Function get the version of the contract (Used by GSN relays)
+        @return contract version
+    */
     function versionRecipient() external override view returns (string memory) {
-        //return "1.0.0+opengsn.stashblox";
         return _config.versionRecipient;
     }
 
+
+    /****************************
+    INTERNAL FUNCTIONS
+    *****************************/
+
+
     /**
-     * return the sender of this call.
-     * if the call came through our trusted forwarder, return the original sender.
-     * otherwise, return `msg.sender`.
-     * should be used in the contract anywhere instead of msg.sender
-     */
+       return the sender of this call.
+       if the call came through our trusted forwarder, return the original sender.
+       otherwise, return `msg.sender`.
+       should be used in the contract anywhere instead of msg.sender
+    */
     function _msgSender() internal override virtual view returns (address payable account) {
         if (msg.data.length >= 24 && isTrustedForwarder(msg.sender)) {
             // At this point we know that the sender is a trusted forwarder,
@@ -41,13 +61,13 @@ abstract contract GSNCapable is IRelayRecipient, Data {
     }
 
     /**
-     * return the msg.data of this call.
-     * if the call came through our trusted forwarder, then the real sender was appended as the last 20 bytes
-     * of the msg.data - so this method will strip those 20 bytes off.
-     * otherwise, return `msg.data`
-     * should be used in the contract instead of msg.data, where the difference matters (e.g. when explicitly
-     * signing or hashing the
-     */
+       return the msg.data of this call.
+       if the call came through our trusted forwarder, then the real sender was appended as the last 20 bytes
+       of the msg.data - so this method will strip those 20 bytes off.
+       otherwise, return `msg.data`
+       should be used in the contract instead of msg.data, where the difference matters (e.g. when explicitly
+       signing or hashing the
+    */
     function _msgData() internal override virtual view returns (bytes memory account) {
         if (msg.data.length >= 24 && isTrustedForwarder(msg.sender)) {
             // At this point we know that the sender is a trusted forwarder,
@@ -66,4 +86,5 @@ abstract contract GSNCapable is IRelayRecipient, Data {
             return msg.data;
         }
     }
+
 }

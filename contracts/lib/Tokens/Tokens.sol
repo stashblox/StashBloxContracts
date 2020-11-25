@@ -9,7 +9,4 @@ import "./Mintable.sol";
 import "./Updatable.sol";
 import "./Escrowable.sol";
 
-contract Tokens is ERC1155, Mintable, Updatable, Escrowable {
-
-    
-}
+contract Tokens is ERC1155, Mintable, Updatable, Escrowable {}

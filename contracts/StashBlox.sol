@@ -8,16 +8,18 @@ import "./lib/Config.sol";
 import "./lib/Tokens/Tokens.sol";
 
 /**
-    @title A simulator for trees
-    @author Larry A. Gardner
-    @notice You can use this contract for only the most basic simulation
-    @dev All function calls are currently implemented without side effects
+    @title Stashblox contract
+    @author Ouziel Slama
+    @notice The ultimate token factory
  */
 contract StashBlox is Config, Accounts, Tokens {
 
     /**
-     * @dev Initializes the contract setting the deployer as the initial owner.
-     */
+        @dev Initializes the contract setting the deployer as the initial owner.
+        @param salt       The salt used to generate the ERC712 DOMAIN_SEPARATOR
+        @param ERC20Code  Addresss of the ERC20 master contract. This contract is
+                          "cloned" for each new token.
+    */
     constructor (bytes32 salt, address ERC20Code) {
         _config.baseURI = "http://stashblox.com/tokens/";
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
