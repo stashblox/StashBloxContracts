@@ -68,11 +68,23 @@ const initContract =  async() => {
     ERC20PROXY = await ERC20ProxyClass.new();
     STASHBLOX = await StashBloxClass.new(SALT, ERC20PROXY.address);
 
+    let initialized  = {};
+
     for (var i = 0; i < STASHBLOX.abi.length; i++) {
       if (["payable", "nonpayable"].indexOf(STASHBLOX.abi[i].stateMutability) != -1 && STASHBLOX.abi[i].type == "function") {
-        const functionName = STASHBLOX.abi[i].name;
+        let functionName = STASHBLOX.abi[i].name;
+        const longFonctionName = functionName + "(" + STASHBLOX.abi[i].inputs.map((input) => {return input.type}).join(",") + ")";
+
+        if (initialized[functionName]) {
+          functionName = functionName + "2";
+          STASHBLOX[functionName] = {};
+        }
+        //console.log(longFonctionName, functionName);
+        initialized[functionName] = true;
         STASHBLOX[functionName].send = async (...args) => {
-          const receipt = await STASHBLOX[functionName](...args);
+
+
+          const receipt = await STASHBLOX.methods[longFonctionName](...args);
           GAS_LOGS.push({
             functionName: functionName,
             args: args,
