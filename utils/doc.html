@@ -1,0 +1,3173 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <title>StashBlox Contract Documentation</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="githubmd.css">
+
+    
+</head>
+<body>
+
+<h1>StashBlox</h1>
+<h2>Stashblox contract</h2>
+<div id="mainuUserDoc">The ultimate token factory</div>
+<div id="mainuUserDoc"></div>
+
+<pre>
+Author: Ouziel Slama
+Last update: 2020-11-27T08:47:36.027Z
+Compiler: solc 0.7.4+commit.3f05b770.Emscripten.clang
+</pre>
+
+<h2>API</h2>
+
+<table class="layout">
+    <tr>
+        <td style="background-color:#f6f8fa">
+            <ul>
+            
+                <li>special
+                
+                    
+                    <ul><a href="#constructor">constructor</a></ul>
+                
+                    
+                    <ul><a href="#receive">receive</a></ul>
+                
+                </li>
+            
+                <li>event
+                
+                    
+                    <ul><a href="#AccountUpdated">AccountUpdated</a></ul>
+                
+                    
+                    <ul><a href="#ApprovalForAll">ApprovalForAll</a></ul>
+                
+                    
+                    <ul><a href="#ConfigUpdated">ConfigUpdated</a></ul>
+                
+                    
+                    <ul><a href="#OwnershipTransferred">OwnershipTransferred</a></ul>
+                
+                    
+                    <ul><a href="#TokenCreated">TokenCreated</a></ul>
+                
+                    
+                    <ul><a href="#TokenUpdated">TokenUpdated</a></ul>
+                
+                    
+                    <ul><a href="#TransferBatch">TransferBatch</a></ul>
+                
+                    
+                    <ul><a href="#TransferSingle">TransferSingle</a></ul>
+                
+                    
+                    <ul><a href="#URI">URI</a></ul>
+                
+                </li>
+            
+                <li>view
+                
+                    
+                    <ul><a href="#_accounts">_accounts</a></ul>
+                
+                    
+                    <ul><a href="#_demurrageFees">_demurrageFees</a></ul>
+                
+                    
+                    <ul><a href="#_tokens">_tokens</a></ul>
+                
+                    
+                    <ul><a href="#allowance">allowance</a></ul>
+                
+                    
+                    <ul><a href="#averageAge">averageAge</a></ul>
+                
+                    
+                    <ul><a href="#balanceOf">balanceOf</a></ul>
+                
+                    
+                    <ul><a href="#balanceOfBatch">balanceOfBatch</a></ul>
+                
+                    
+                    <ul><a href="#getConfig">getConfig</a></ul>
+                
+                    
+                    <ul><a href="#getExternalBalance">getExternalBalance</a></ul>
+                
+                    
+                    <ul><a href="#getTokenProperty">getTokenProperty</a></ul>
+                
+                    
+                    <ul><a href="#isApprovedForAll">isApprovedForAll</a></ul>
+                
+                    
+                    <ul><a href="#isAuthorized">isAuthorized</a></ul>
+                
+                    
+                    <ul><a href="#isLockedAccount">isLockedAccount</a></ul>
+                
+                    
+                    <ul><a href="#isTrustedForwarder">isTrustedForwarder</a></ul>
+                
+                    
+                    <ul><a href="#owner">owner</a></ul>
+                
+                    
+                    <ul><a href="#safeTransferFromDigest">safeTransferFromDigest</a></ul>
+                
+                    
+                    <ul><a href="#setApprovalForAllDigest">setApprovalForAllDigest</a></ul>
+                
+                    
+                    <ul><a href="#setEscrowAuthorizationDigest">setEscrowAuthorizationDigest</a></ul>
+                
+                    
+                    <ul><a href="#supportsInterface">supportsInterface</a></ul>
+                
+                    
+                    <ul><a href="#transactionFees">transactionFees</a></ul>
+                
+                    
+                    <ul><a href="#uri">uri</a></ul>
+                
+                    
+                    <ul><a href="#versionRecipient">versionRecipient</a></ul>
+                
+                </li>
+            
+                <li>nonpayable
+                
+                    
+                    <ul><a href="#callTokens">callTokens</a></ul>
+                
+                    
+                    <ul><a href="#createTokens">createTokens</a></ul>
+                
+                    
+                    <ul><a href="#escrowTokens">escrowTokens</a></ul>
+                
+                    
+                    <ul><a href="#onERC1155BatchReceived">onERC1155BatchReceived</a></ul>
+                
+                    
+                    <ul><a href="#onERC1155Received">onERC1155Received</a></ul>
+                
+                    
+                    <ul><a href="#registerCurreny">registerCurreny</a></ul>
+                
+                    
+                    <ul><a href="#setAccountApproval">setAccountApproval</a></ul>
+                
+                    
+                    <ul><a href="#setAccountLock">setAccountLock</a></ul>
+                
+                    
+                    <ul><a href="#setAllowance">setAllowance</a></ul>
+                
+                    
+                    <ul><a href="#setApprovalForAll">setApprovalForAll</a></ul>
+                
+                    
+                    <ul><a href="#setApprovalForAll">setApprovalForAll</a></ul>
+                
+                    
+                    <ul><a href="#setAuthorization">setAuthorization</a></ul>
+                
+                    
+                    <ul><a href="#setEscrowAuthorization">setEscrowAuthorization</a></ul>
+                
+                    
+                    <ul><a href="#transferOwnership">transferOwnership</a></ul>
+                
+                    
+                    <ul><a href="#unescrowTokens">unescrowTokens</a></ul>
+                
+                    
+                    <ul><a href="#updateConfig">updateConfig</a></ul>
+                
+                    
+                    <ul><a href="#updateToken">updateToken</a></ul>
+                
+                    
+                    <ul><a href="#withdrawERC1155">withdrawERC1155</a></ul>
+                
+                    
+                    <ul><a href="#withdrawETH">withdrawETH</a></ul>
+                
+                </li>
+            
+                <li>payable
+                
+                    
+                    <ul><a href="#deposit">deposit</a></ul>
+                
+                    
+                    <ul><a href="#safeBatchTransferFrom">safeBatchTransferFrom</a></ul>
+                
+                    
+                    <ul><a href="#safeTransferFrom">safeTransferFrom</a></ul>
+                
+                </li>
+            
+            </ul>
+        </td>
+        <td>
+        
+            <h3>special</h3>
+            
+                
+
+                
+        <a name="constructor"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">constructor(bytes32,address)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>salt</td>
+                        <td>bytes32</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>ERC20Code</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="receive"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">receive()</td></tr>
+            
+                        
+
+        </table>
+
+    
+            
+        
+            <h3>event</h3>
+            
+                
+
+                
+        <a name="AccountUpdated"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">AccountUpdated(address,uint256)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>_account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_documentHash</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="ApprovalForAll"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">ApprovalForAll(address,address,bool)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>_owner</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_approved</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="ConfigUpdated"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">ConfigUpdated()</td></tr>
+            
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="OwnershipTransferred"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">OwnershipTransferred(address,address)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>previousOwner</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>newOwner</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="TokenCreated"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">TokenCreated(uint256,uint256)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>_id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_documentHash</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="TokenUpdated"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">TokenUpdated(uint256,uint256)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>_id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_documentHash</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="TransferBatch"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">TransferBatch(address,address,address,uint256[],uint256[])</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>_operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_to</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_ids</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_values</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="TransferSingle"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">TransferSingle(address,address,address,uint256,uint256)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>_operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_to</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_value</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="URI"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">URI(string,uint256)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>_value</td>
+                        <td>string</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>_id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+        
+            <h3>view</h3>
+            
+                
+
+                
+        <a name="_accounts"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">_accounts(address)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>isLocked</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>nonce</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="_demurrageFees"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">_demurrageFees(uint256,uint256)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>startAt</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>price</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="_tokens"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">_tokens(uint256)</td></tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>supply</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>decimals</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>metadataHash</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>lumpSumFees</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>standardFees</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>feesCurrencyId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>feesRecipient</td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>isPrivate</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>locked</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>symbol</td>
+                        <td>bytes16</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="allowance"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">allowance(address,address,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to get the amount that `operator` can spent  on behalf `account` <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The source address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address with the allowance
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Maximun amount that `operator` can spent
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="averageAge"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">averageAge(address,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to get the average age of the token hold by the given address. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address from where to transfer the tokens
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The token ID
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Average age in seconds
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="balanceOf"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">balanceOf(address,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Get the specified address' balance for token with specified ID. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address of the token holder
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            ID of the token
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The account's balance of the token type requested
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="balanceOfBatch"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">balanceOfBatch(address[],uint256[])</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Get the balance of multiple account/token pairs. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>accounts</td>
+                        <td>address[]</td>
+                        <td>
+                            
+                            The addresses of the token holders
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>ids</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            IDs of the tokens
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            Balances for each account and token id pair
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="getConfig"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">getConfig()</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function get the current configuration <br />                </td>
+            </tr>
+            
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>tuple</td>
+                        <td>
+                            
+                            return a Config struct containing the following meembers:<br /> <br /> address owner;<br /> address proxyRegistryAccount;<br /> address ERC20Code;<br /> bytes32 DOMAIN_SEPARATOR;<br /> bytes32 APPROVAL_TYPEHASH;<br /> bytes32 TRANSFER_TYPEHASH;<br /> bytes32 ESCROW_TYPEHASH;<br /> bytes32 SALT;<br /> string baseURI;<br /> string versionRecipient;<br /> <br />
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="getExternalBalance"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">getExternalBalance(address,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Get the balance of ETH and external ERC1155 stored by the contract. These balances can be used to pay transfer fees and withdrawed with the functions `withdrawETH` and `withdrawERC1155`. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address of the holder
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>currencyId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The ID of the currency
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The account's balance of the currency requested
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="getTokenProperty"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">getTokenProperty(uint256,string)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Function to get a property for a given token. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>property</td>
+                        <td>string</td>
+                        <td>
+                            
+                            Name of the property. Accepted values: "decimals", "metadataHash", "lumpSumFees", "standardFees", "feesCurrencyId", "feesRecipient", "isPrivate", "locked", "demurrageFees".
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Value of the property. Should be cast if not uint256.
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="isApprovedForAll"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">isApprovedForAll(address,address)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Queries the approval status of an operator for a given account. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The account of the Tokens
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address of authorized operator
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bool</td>
+                        <td>
+                            
+                            True if the operator is approved, false if not
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="isAuthorized"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">isAuthorized(address,uint8,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to check if an address has the given authorization <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address to check
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>action</td>
+                        <td>uint8</td>
+                        <td>
+                            
+                            The index of the action. See `setAuthorization` documentation.
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>objectId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The ID of the object for which the authorization is set
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `True` if `account` is authorized to perform `action` on `objectId`.
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="isLockedAccount"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">isLockedAccount(address)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to check if an address is locked <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address to check
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bool</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="isTrustedForwarder"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">isTrustedForwarder(address)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to check if an address is a trusted GSN forwarder <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address to check
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `True` if `account` is a trusted forwarder
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="owner"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">owner()</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Returns the address of the current owner. <br />                </td>
+            </tr>
+            
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>address</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="safeTransferFromDigest"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">safeTransferFromDigest(address,address,uint256,uint256,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to get the digest and the nonce for the given arguments. The digest and the nonce need to be signed by `account`, then the signature can be used to call the `safeTransferFrom` on behalf `from`. See `safeTransferFrom` documentation. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Source address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>to</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Target address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            ID of the token type
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>value</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Transfer amount
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>expiry</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            When the signed digest will expire
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            nonce and digest usable once
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bytes32</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setApprovalForAllDigest"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setApprovalForAllDigest(address,address,bool,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to get the digest and the nonce for the given arguments. The digest and the nonce need to be signed by `account`, then the signature can be used to call the `setApprovalForAll` on behalf `account`. See `setApprovalForAll` documentation. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The `account` that will sign the transaction
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The operator who can transfer tokens on behalf `account`
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>approved</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `True` to authorize the operator, `False` to revoke the authorization.
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>expiry</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            When the signed digest will expire
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            nonce and digest usable once
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bytes32</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setEscrowAuthorizationDigest"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setEscrowAuthorizationDigest(address,address,uint256,bool,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to get the digest and the nonce for the given arguments. The digest and the nonce need to be signed by `account`, then the signature can be used to call the `setEscrowAuthorization` on behalf `account`. See `setEscrowAuthorization` documentation. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>escrow</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address of the escrow
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Target address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>authorized</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `True' to authorize, `False` to revoke
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>expiry</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            When the signed digest will expire
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            nonce and digest usable once
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bytes32</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="supportsInterface"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">supportsInterface(bytes4)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Query if a contract implements an interface <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>interfaceID</td>
+                        <td>bytes4</td>
+                        <td>
+                            
+                            The interface identifier, as specified in ERC-165
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `true` if the contract implements `interfaceID` and
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="transactionFees"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">transactionFees(address,uint256,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to get the transaction price to transfer tokens. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address from where to transfer the tokens
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>value</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The amount to transfer
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Transfer price
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="uri"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">uri(uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Function to get token's metadata URL <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>string</td>
+                        <td>
+                            
+                            URI string
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="versionRecipient"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">versionRecipient()</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function get the version of the contract (Used by GSN relays) <br />                </td>
+            </tr>
+            
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>string</td>
+                        <td>
+                            
+                            contract version
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+        
+            <h3>nonpayable</h3>
+            
+                
+
+                
+        <a name="callTokens"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">callTokens(address,address[],uint256,uint256,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to call tokens from holders. Typically a contract containing all the business logic will be authorized to use this function. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>caller</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address of the caller
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>callees</td>
+                        <td>address[]</td>
+                        <td>
+                            
+                            Addresses of the callees
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>price</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Price paid by token
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>currencyId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Currency of the price
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="createTokens"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">createTokens(address,uint256,uint256[],bytes16[],string[],uint256[])</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                mint one or several tokens. For each token an ERC20 contract is deployed and the address is used as token ID. Use the event TokenCreated to retrieve this ID. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>recipient</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address that will own the minted tokens
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>supply</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Amount of the token to be minted
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>metadataHashes</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            List of metadataHash, one by token.
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>symbols</td>
+                        <td>bytes16[]</td>
+                        <td>
+                            
+                            List of symbols, one by token, must be unique.
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>properties</td>
+                        <td>string[]</td>
+                        <td>
+                            
+                            List of property names to set. Accepted values: "decimals", "lumpSumFees", "standardFees", "feesCurrencyId", "feesRecipient", "isPrivate", "locked", "demurrageFees".
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>values</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            List of values corresponding to the property names. IMPORTANT: Those values are set for all the tokens created by the function call. Order or property doesn't matter but should be identical for `properties` and `values`. All properties are optional.
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="escrowTokens"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">escrowTokens(address,uint256,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Function to put `amount` tokens `id` in escrow. Typically by an exchange to escrow amount in orders. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Source address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>amount</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            amount to escrow
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="onERC1155BatchReceived"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Handle the receipt of multiple ERC1155 token types <br />                An ERC1155-compliant smart contract MUST call this function on the token recipient contract, at the end of a `safeBatchTransferFrom` after the balances have been updated This function MAY throw to revert and reject the transfer Return of other amount than the magic value WILL result in the transaction being reverted Note: The token contract address is always the message sender <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address which called the `safeBatchTransferFrom` function
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address which previously owned the token
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>ids</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            An array containing ids of each token being transferred
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>values</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            An array containing amounts of each token being transferred
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>data</td>
+                        <td>bytes</td>
+                        <td>
+                            
+                            Additional data with no specified format
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bytes4</td>
+                        <td>
+                            
+                            `bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"))`
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="onERC1155Received"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">onERC1155Received(address,address,uint256,uint256,bytes)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Handle the receipt of a single ERC1155 token type, increase the recipient's balance hold by the contract. <br />                An ERC1155-compliant smart contract MUST call this function on the token recipient contract, at the end of a `safeTransferFrom` after the balance has been updated This function MAY throw to revert and reject the transfer Return of other amount than the magic value MUST result in the transaction being reverted Note: The token contract address is always the message sender <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address which called the `safeTransferFrom` function
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address which previously owned the token
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The id of the token being transferred
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>value</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The amount of tokens being transferred
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>data</td>
+                        <td>bytes</td>
+                        <td>
+                            
+                            Additional data with no specified format. If the length of the data is 356, this function will use it to call a safeTransferFrom. This functionnality makes one able to pay erc1155 transfer fees with only one transaction.
+                        </td>
+                    </tr>
+                
+                        
+                <tr><th colspan="3" class="th2">Returns</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td></td>
+                        <td>bytes4</td>
+                        <td>
+                            
+                            `bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"))`
+                        </td>
+                    </tr>
+                
+            
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="registerCurreny"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">registerCurreny(uint256,address,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to register a currency that can be used to pay chargeable transfer <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>currencyId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            ID of the new currency
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>contractAddress</td>
+                        <td>address</td>
+                        <td>
+                            
+                            contract address for erc20 and erc1155 tokens
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>tokenId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            ID of the erc1155 token
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setAccountApproval"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setAccountApproval(uint256,address,bool)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to approve holder for a private token: only approved accounts are able to hold private token. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The token id
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The authorized address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>isApproved</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `True` to approve, `False` to remove approval
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setAccountLock"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setAccountLock(address,bool,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to unlock an address <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address to unlock
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>lock</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>documentHash</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setAllowance"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setAllowance(address,address,uint256,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to authorize `operator` to spent `amount` on behalf `account` <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The source address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address to set the allowance
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>amount</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Maximun amount that `operator` can spent
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setApprovalForAll"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setApprovalForAll(address,address,bool,bytes)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Sets or unsets the approval of a given operator. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address to set the approval
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address of the operator
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>approved</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            Representing the status of the approval to be set
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>data</td>
+                        <td>bytes</td>
+                        <td>
+                            
+                            Optional. This function can be called by a third party by providing the payload signed by `account`. `data` must respect the following format:<br /> ``` data = web3.eth.abi.encodeParameters( ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'], [format, nonce, expiry, sign.v, sign.r, sign.s] ); ``` <br /> `format` indicates how the digest is signed: <br /> `0` means `sign = ecsign(digest)`<br /> `1` means `sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))`<br /> `2` means `sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))`<br /> `sign.v`, `sign.r` and `sign.s` are the signature of the digest.<br /> The digest and the nonce can be craft or can be provided by the function `setApprovalForAllDigest`.
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setApprovalForAll"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setApprovalForAll(address,bool)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Sets or unsets the approval of a given operator. An operator is allowed to transfer all tokens of the sender on their behalf. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>operator</td>
+                        <td>address</td>
+                        <td>
+                            
+                            address to set the approval
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>approved</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            representing the status of the approval to be set
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setAuthorization"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setAuthorization(address,uint8,uint256,bool)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to authorize an account to perform an operation on an object. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            The address to set for an authorization
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>action</td>
+                        <td>uint8</td>
+                        <td>
+                            
+                            The index of the action. Should be one of the following:<br /><br /> 0: SET_AUTHORIZATION<br /> 1: UPDATE_CONFIG<br /> 2: CREATE_TOKEN<br /> 3: UPDATE_TOKEN<br /> 4: TRANSFER_OWNERSHIP<br /> 5: REGISTER_CURRENCY<br /> 6: CALL_TOKENS<br /> 7: LOCK_ACCOUNT<br /> 8: GSN_FORWARDER<br /> 9: TRANSFER_TOKEN_FOR<br /> 10: HOLD_PRIVATE_TOKEN<br /> 11: ESCROW_TOKENS<br /> 12: SET_ALLOWANCE<br /> <br />
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>objectId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The ID of the object for which to set the authorization
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>authorized</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `True` to authorize, `False` to revoke authorization
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="setEscrowAuthorization"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">setEscrowAuthorization(address,address,uint256,bool,bytes)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Function to authorize `escrow` to put in lock tokens from `account`. Typically `escrow` is the contract address of an exchange. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>escrow</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address of the escrow
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Target address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>authorized</td>
+                        <td>bool</td>
+                        <td>
+                            
+                            `True' to authorize, `False` to revoke
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>data</td>
+                        <td>bytes</td>
+                        <td>
+                            
+                            Optional. This function can be called by a third party by providing the payload signed by `account`. `data` must respect the following format:<br /> ``` data = web3.eth.abi.encodeParameters( ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'], [format, nonce, expiry, sign.v, sign.r, sign.s] ); ``` <br /> `format` indicates how the digest is signed: <br /> `0` means `sign = ecsign(digest)`<br /> `1` means `sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))`<br /> `2` means `sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))`<br /> `sign.v`, `sign.r` and `sign.s` are the signature of the digest.<br /> The digest and the nonce can be craft or can be provided by the function `setEscrowAuthorizationDigest`.
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="transferOwnership"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">transferOwnership(address)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Transfers ownership of the contract to a new account (`account`). <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            address of the new owner
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="unescrowTokens"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">unescrowTokens(address,address,uint256,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Function to unescrow `amount` tokens `id`. Typically by an exchange to finalize or cancel an order. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Source address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>to</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Target address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>amount</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            amount to unescrow
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="updateConfig"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">updateConfig(string,string,address)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to update the contract configuration <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>baseURI</td>
+                        <td>string</td>
+                        <td>
+                            
+                            base URI for the metadata URLs
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>versionRecipient</td>
+                        <td>string</td>
+                        <td>
+                            
+                            version needed by GSN relay
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>proxyRegistryAccount</td>
+                        <td>address</td>
+                        <td>
+                            
+                            trusted delegate proxy
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="updateToken"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">updateToken(uint256,string[],uint256[])</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Update an arbitrary number of properties of a token. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Token ID
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>properties</td>
+                        <td>string[]</td>
+                        <td>
+                            
+                            List of property names to set. Accepted values: "decimals", "metadataHash", "lumpSumFees", "standardFees", "feesCurrencyId", "feesRecipient", "isPrivate", "locked", "demurrageFees".
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>values</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            List of values corresponding to the property names. IMPORTANT: Those values are set for all the tokens created by the function call. Order or property doesn't matter but should be identical for `properties` and `values`. All properties are optional.
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="withdrawERC1155"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">withdrawERC1155(uint256,address,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                Use to withdraw ERC1155 tokens hold by the contract. <br />                                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>currencyId</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Id of the currency to withdraw
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address of the holder
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>amount</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            The amount to withdraw
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="withdrawETH"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">withdrawETH(address,uint256)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to withdraw ETH hold by the contract. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Address of the holder
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>amount</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Amount to withdraw
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+        
+            <h3>payable</h3>
+            
+                
+
+                
+        <a name="deposit"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">deposit(address)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Function to make an ETH deposit that can be used to pay token transfer . <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>account</td>
+                        <td>address</td>
+                        <td>
+                            
+                            recipent address
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="safeBatchTransferFrom"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Transfers `values` amount(s) of `ids` from the `from` address to the `to` address specified. Caller must be approved to manage the tokens being transferred out of the `from` account. If `to` is a smart contract, will call `onERC1155BatchReceived` on `to` and act appropriately. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Source address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>to</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Target address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>ids</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            IDs of each token type
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>values</td>
+                        <td>uint256[]</td>
+                        <td>
+                            
+                            Transfer amounts per token type
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>data</td>
+                        <td>bytes</td>
+                        <td>
+                            
+                            Data forwarded to `onERC1155Received` if `to` is a contract receiver
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+                
+
+                
+        <a name="safeTransferFrom"></a>
+        <table class="functionSpec">
+            <tr><td colspan="3" class="functionSign">safeTransferFrom(address,address,uint256,uint256,bytes)</td></tr>
+            
+            <tr>
+                <td colspan="3" class="functionDesc">
+                                Transfers `value` amount of an `id` from the `from` address to the `to` address specified. Caller must be approved to manage the tokens being transferred out of the `from` account. If `to` is a smart contract, will call `onERC1155Received` on `to` and act appropriately. <br />                </td>
+            </tr>
+            
+            
+
+                <tr><th colspan="3" class="th2">Arguments</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+                
+                    <tr>
+                        <td>from</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Source address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>to</td>
+                        <td>address</td>
+                        <td>
+                            
+                            Target address
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>id</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            ID of the token type
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>value</td>
+                        <td>uint256</td>
+                        <td>
+                            
+                            Transfer amount
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>data</td>
+                        <td>bytes</td>
+                        <td>
+                            
+                            Optional. This function can be called by a third party by providing the payload signed by `from`. `data` must respect the following format:<br /> ``` data = web3.eth.abi.encodeParameters( ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'], [format, nonce, expiry, sign.v, sign.r, sign.s] ); ``` <br /> `format` indicates how the digest is signed: <br /> `0` means `sign = ecsign(digest)`<br /> `1` means `sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))`<br /> `2` means `sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))`<br /> `sign.v`, `sign.r` and `sign.s` are the signature of the digest.<br /> The digest and the nonce can be craft or can be provided by the function `safeTransferFromDigest`. Data is forwarded to `onERC1155Received` if `to` is a contract receiver
+                        </td>
+                    </tr>
+                
+                        
+
+        </table>
+
+    
+            
+        
+        </td>
+    </tr>
+<table>
+
+</body>
+</html>
+

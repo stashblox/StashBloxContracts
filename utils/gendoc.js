@@ -24,12 +24,14 @@ const generateDoc = (data) => {
 
   for (var index = 0; index < data.abi.length; index++) {
     let item = data.abi[index];
-
+    item.name = item.name || item.type;
     let sign = item.name + "(";
     let types = [];
     if (item.inputs !== undefined) for (var i = 0; i < item.inputs.length; i++)
       types.push(item.inputs[i].type);
     sign += types.join(",") + ")";
+    //console.log(sign);
+    item.sign = sign;
 
     const userdocList = item.type == "event" ? data.userdoc.events : data.userdoc.methods;
     if (userdocList !== undefined && sign in userdocList) {
@@ -69,24 +71,24 @@ const generateDoc = (data) => {
 
     if (apiList[itemType] === undefined) apiList[itemType] = [];
     //console.log(apiList[itemType]);
-    apiList[itemType].push(item.name || item.type);
-    documentedABI[item.name || item.type] = item;
+    apiList[itemType].push(item.sign);
+    documentedABI[item.sign] = item;
   }
   contractDoc.api = documentedABI;
   contractDoc.apiList = apiList;
   return contractDoc;
 }
 
-const functionGroups = {
-  "event": "Events",
-  "payable": "Payable functions",
-  "nonpayable": "Non payable functions",
-  "views": "Views"
-}
-const doc = generateDoc(StashBloxData);
+// const functionGroups = {
+//   "event": "Events",
+//   "payable": "Payable functions",
+//   "nonpayable": "Non payable functions",
+//   "views": "Views"
+// }
+// const doc = generateDoc(StashBloxData);
 //console.log(doc.apiList);
 
-ejs.renderFile("./utils/doctemplate.md", generateDoc(StashBloxData), {outputFunctionName: "echo"}, function(err, str) {
+ejs.renderFile("./utils/doctemplate.html", generateDoc(StashBloxData), {outputFunctionName: "echo"}, function(err, str) {
     if (err !== undefined && err !== null) {
 
       console.log("ERROR", err);
