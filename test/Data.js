@@ -26,11 +26,11 @@ describe("Data.sol", () => {
       assert.equal(token.supply.valueOf(), DATA["token1"].supply, "invalid token");
     });
 
-    it("_accounts should have free getter", async () => {
-      await STASHBLOX.setAccountLock.send(DATA["token1"].recipient, true, random());
-      const account = await STASHBLOX._accounts(DATA["token1"].recipient);
-      assert.equal(account.isLocked, true, "invalid account");
-    });
+    // it("_accounts should have free getter", async () => {
+    //   await STASHBLOX.setAccountLock.send(DATA["token1"].recipient, true, random());
+    //   const account = await STASHBLOX._accounts(DATA["token1"].recipient);
+    //   assert.equal(account.isLocked, true, "invalid account");
+    // });
 
 
   });

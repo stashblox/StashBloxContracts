@@ -23,8 +23,6 @@ describe("Configurable.sol", () => {
 
     it("should have correct initial config", async () => {
       const newConfig = await STASHBLOX.getConfig.call();
-      //console.log(newConfig);
-
       assert.equal(newConfig.baseURI, "http://stashblox.com/tokens/", "Invalid config value");
       assert.equal(newConfig.versionRecipient, "1.0.0+opengsn.stashblox", "Invalid config value");
       assert.equal(newConfig.proxyRegistryAccount, ZERO_ADDRESS, "Invalid config value");

@@ -97,7 +97,7 @@ contract Data {
     mapping(address => mapping(Actions => mapping(uint256 => bool))) internal _permissions;
 
     // mappings by address
-    mapping(address => Account) public _accounts;
+    mapping(address => Account) internal _accounts;
 
     // mappings by tokenId
     mapping(uint256 => Token) public _tokens;

@@ -13,6 +13,9 @@ contract Accounts is ERC1155Vault, ETHVault {
     EXTERNAL FUNCTIONS
     *****************************/
 
+    function getAccount(address account) public view returns (bool, uint256, uint256[] memory) {
+        return (_accounts[account].isLocked, _accounts[account].nonce, _accounts[account].tokenList);
+    }
 
     /**
         @notice Get the balance of ETH and external ERC1155 stored by the contract. These balances can be

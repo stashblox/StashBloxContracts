@@ -342,7 +342,7 @@ describe("MultiToken.sol", () => {
         expectRevert(STASHBLOX.safeTransferFrom(
           accounts[1], ZERO_ADDRESS, DATA["token1"].id, 50, ZERO_BYTES32,
           {from: accounts[1]}
-        ), "operator not approved or zero address");
+        ), "invalid operator or 0 address");
       });
 
       it("should revert when operator is not approved", async () => {

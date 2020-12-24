@@ -136,7 +136,7 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         if (!approved) {
             allowed = allowance(from, operator, id) >= value;
         }
-        require(to != address(0) && (allowed || approved), "operator not approved or zero address");
+        require(to != address(0) && (allowed || approved), "invalid operator or 0 address");
 
         // increase ETH balance
         _accounts[operator].externalBalances[0] = _accounts[operator].externalBalances[0].add(msg.value);

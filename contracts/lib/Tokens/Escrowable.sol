@@ -28,7 +28,7 @@ contract Escrowable is Core {
     )
         external onlyAuthorized(_msgSender(), Actions.ESCROW_TOKENS, id)
     {
-        require(_tokens[id].supply > 0, "unknown token");
+        require(_tokens[id].supply > 0);
         address escrow = _msgSender();
         _accounts[account].tokens[id].balance = _accounts[account].tokens[id].balance.sub(amount, "Insufficient balance");
         _escrows[escrow][account][id] = _escrows[escrow][account][id].add(amount);
@@ -49,7 +49,7 @@ contract Escrowable is Core {
     )
         external onlyAuthorized(_msgSender(), Actions.ESCROW_TOKENS, id)
     {
-        require(_tokens[id].supply > 0, "unknown token");
+        require(_tokens[id].supply > 0);
         address escrow = _msgSender();
         _escrows[escrow][from][id] = _escrows[escrow][from][id].sub(amount, "Insufficient balance");
         _accounts[to].tokens[id].balance = _accounts[to].tokens[id].balance.add(amount);
