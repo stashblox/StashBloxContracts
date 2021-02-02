@@ -1,0 +1,39 @@
+/*
+https://stashblox.com/tokens/{tokenID}
+htpps://ipfs.infura.com/ipfs/{metadataHash}
+*/
+
+{
+  name: "400% Bearbrick Daft Punk Discovery Ver. 2 Set",
+  description: "Attention pièce(s) d'exception. Voici le set des deux Daft Punk en Bearbrick 400% et en habit colorés !\nGuy Manuel de Homem-Christo et Thomas Bangalter, les deux membres des Daft, habillés comme en 2001 pour l'album Discovery, sont disponibles en ours de 28 cm.\nFinition métallisée exceptionnelle pour ces deux Bearbrick avec leurs deux célèbres casques intégrés à la tête de l'ours.",
+  image: "http://stashblox.com/files/{tokenID}",
+  files: [
+    {
+      "url": "http://stashblox.com/files/{tokenID}/1",
+      "type": "image/png",
+      "hash": "hfhdkfhsfosofuisfiusosds"
+    }, {
+      "url": "http://stashblox.com/files/{tokenID}/2",
+      "type": "image/png",
+      "hash": "hfhdkfhsfosofuisfiusosds"
+    }, {
+      "url": "http://stashblox.com/files/{tokenID}/3",
+      "type": "application/pdf",
+      "hash": "hfhdkfhsfosofuisfiusosds"
+    }
+  ],
+  "attributes": {
+    "height": "28cm",
+    "packaging": "Window box",
+    "brand": "Medicom Toy",
+  },
+  token: {
+    "id": "{tokenID}",
+    "supply": 10000,
+    "decimals": 8
+    "symbol": "SBTK1",
+    "tx_hash": "0xa66767a67adsds67d7s",
+    "tokenized_at": "{timestamp}",
+    "tokenizer": "0x1232323232323232323232"
+  }
+}
