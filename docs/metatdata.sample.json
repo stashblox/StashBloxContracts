@@ -28,7 +28,6 @@ htpps://ipfs.infura.com/ipfs/{metadataHash}
     "brand": "Medicom Toy",
   },
   "token": {
-    "id": "{tokenID}",
     "supply": 10000,
     "decimals": 8,
     "symbol": "SBTK1",
