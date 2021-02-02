@@ -1,6 +1,5 @@
 /*
 https://stashblox.com/tokens/{tokenID}
-htpps://ipfs.infura.com/ipfs/{metadataHash}
 */
 
 {
@@ -31,8 +30,9 @@ htpps://ipfs.infura.com/ipfs/{metadataHash}
     "supply": 10000,
     "decimals": 8,
     "symbol": "SBTK1",
+    "tx_hash": "0xa66767a67adsds67d7s",
     "tokenized_at": "{timestamp}",
     "tokenizer": "0x1232323232323232323232",
-
+    "metadata_hash_url": "htpps://ipfs.infura.com/ipfs/{metadataHash}"
   }
 }
