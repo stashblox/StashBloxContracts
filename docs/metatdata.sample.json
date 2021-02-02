@@ -27,14 +27,14 @@ https://stashblox.com/tokens/{tokenID}
     "brand": "Medicom Toy",
   },
   "token": {
-    "price_by_token": 15,
-    "price_currency": "USD",
+    "price_by_token": 15, // Not in IPFS
+    "price_currency": "USD", // Not in IPFS
     "supply": 10000,
     "decimals": 8,
     "symbol": "SBTK1",
-    "tx_hash": "0xa66767a67adsds67d7s",
-    "tokenized_at": "{timestamp}",
+    "tx_hash": "0xa66767a67adsds67d7s", // Not in IPFS
+    "tokenized_at": "{timestamp}", // Not in IPFS
     "tokenizer": "0x1232323232323232323232",
-    "metadata_hash_url": "htpps://ipfs.infura.com/ipfs/{metadataHash}"
+    "metadata_hash_url": "htpps://ipfs.infura.com/ipfs/{metadataHash}" // Not in IPFS
   }
 }
