@@ -22,13 +22,13 @@ https://stashblox.com/tokens/{tokenID}
     }
   ],
   "attributes": {
-    "price_by_token": 15,
-    "price_currency": "USD",
     "height": "28cm",
     "packaging": "Window box",
     "brand": "Medicom Toy",
   },
   "token": {
+    "price_by_token": 15,
+    "price_currency": "USD",
     "supply": 10000,
     "decimals": 8,
     "symbol": "SBTK1",
