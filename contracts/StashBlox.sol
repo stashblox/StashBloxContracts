@@ -17,13 +17,10 @@ contract StashBlox is Config, Accounts, Tokens {
     /**
         @dev Initializes the contract setting the deployer as the initial owner.
         @param salt       The salt used to generate the ERC712 DOMAIN_SEPARATOR
-        @param ERC20Code  Addresss of the ERC20 master contract. This contract is
-                          "cloned" for each new token.
     */
-    constructor (bytes32 salt, address ERC20Code) {
+    constructor (bytes32 salt) {
         _config.baseURI = "http://stashblox.com/tokens/";
         _config.versionRecipient = "1.0.0+opengsn.stashblox";
-        _config.ERC20Code = ERC20Code;
 
         _supportedInterfaces[0x01ffc9a7] = true; // ERC165
         _supportedInterfaces[0xd9b67a26] = true; // ERC1155

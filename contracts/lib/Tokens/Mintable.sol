@@ -133,9 +133,8 @@ contract Mintable is ChargeableTransfer {
     {
         require(_symbols[symbol] == 0 && supply > 0, "Invalid symbol or supply");
 
-        // deploy ERC20 Proxy and use the address as token ID
-        address erc20Clone = _createClone(_config.ERC20Code);
-        uint256 id = uint256((erc20Clone));
+        uint256 id = nextTokenId;
+        nextTokenId++;
 
         // set properties
         _setTokenProperties(id, properties, values);

@@ -109,42 +109,6 @@ contract DelegableTransfer is Core {
         );
     }
 
-    /**
-        @dev Function to authorize `operator` to spent `amount` on behalf `account`
-        @param account    The source address
-        @param operator   Address to set the allowance
-        @param id         Token ID
-        @param amount     Maximun amount that `operator` can spent
-    */
-    function setAllowance(
-        address account,
-        address operator,
-        uint256 id,
-        uint256 amount
-    )
-        external onlyAuthorized(_msgSender(), Actions.SET_ALLOWANCE, id)
-    {
-        require(amount == 0 || _erc20Allowance[operator][account][id] == 0, "allowance not zero");
-        _erc20Allowance[operator][account][id] = amount;
-    }
-
-    /**
-        @dev Function to get the amount that `operator` can spent  on behalf `account`
-        @param account    The source address
-        @param operator   Address with the allowance
-        @param id         Token ID
-        @return Maximun amount that `operator` can spent
-    */
-    function allowance(
-        address account,
-        address operator,
-        uint256 id
-    )
-        public view  returns (uint256)
-    {
-        return _erc20Allowance[operator][account][id];
-    }
-
 
     /****************************
     INTERNAL FUNCTIONS

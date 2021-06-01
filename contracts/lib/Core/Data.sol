@@ -28,7 +28,6 @@ contract Data {
     struct Config {
         address owner;
         address proxyRegistryAccount;
-        address ERC20Code;
         bytes32 DOMAIN_SEPARATOR;
         bytes32 APPROVAL_TYPEHASH;
         bytes32 TRANSFER_TYPEHASH;
@@ -91,6 +90,7 @@ contract Data {
     GLOBAL VARIABLES
     ****************************************/
 
+    uint256 nextTokenId = 1;
 
     Config internal  _config;
 
@@ -113,9 +113,6 @@ contract Data {
 
     //_escrows[escrow][account][id] = amount
     mapping(address => mapping(address => mapping(uint256 => uint256))) internal _escrows;
-
-    //_erc20Allowance[operator][account][id] = amount
-    mapping(address => mapping(address => mapping(uint256 => uint256))) internal _erc20Allowance;
 
     mapping(bytes16 => uint256) _symbols;
 }
