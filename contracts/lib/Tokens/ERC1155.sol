@@ -100,21 +100,7 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
         @param id     ID of the token type
         @param value  Transfer amount
         @param data   Optional. This function can be called by a third party by providing
-                      the payload signed by `from`. `data` must respect the following format:<br />
-                      ```
-                      data = web3.eth.abi.encodeParameters(
-                          ['uint256', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
-                          [format, nonce, expiry, sign.v, sign.r, sign.s]
-                      );
-                      ```
-                      <br />
-                      `format` indicates how the digest is signed: <br />
-                      `0` means `sign = ecsign(digest)`<br />
-                      `1` means `sign = ecsign(keccak256("\x19Ethereum Signed Message:\n32" + digest))`<br />
-                      `2` means `sign = ecsign(sha256("\x19Ethereum Signed Message:\n32" + digest))`<br />
-                      `sign.v`, `sign.r` and `sign.s` are the signature of the digest.<br />
-                      The digest and the nonce can be craft or can be provided by the function `safeTransferFromDigest`.
-                      Data is forwarded to `onERC1155Received` if `to` is a contract receiver
+                      the payload signed by `from`.
     */
     function safeTransferFrom(
         address from,
@@ -127,9 +113,7 @@ contract ERC1155 is ChargeableTransfer, DelegableTransfer, IERC1155Metadata
     {
         address operator = _msgSender();
 
-        bool approved = from == operator ||
-                        _isApprovedForAll(from, operator) == true ||
-                        (data.length == 192 && _checkSafeTransferFromSignature(from, to, id, value, data));
+        bool approved = from == operator || _isApprovedForAll(from, operator);
    
         require(to != address(0) && approved, "invalid operator or 0 address");
 

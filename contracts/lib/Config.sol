@@ -44,7 +44,6 @@ contract Config is Core, IERC165 {
             address ERC20Code;<br />
             bytes32 DOMAIN_SEPARATOR;<br />
             bytes32 APPROVAL_TYPEHASH;<br />
-            bytes32 TRANSFER_TYPEHASH;<br />
             bytes32 ESCROW_TYPEHASH;<br />
             bytes32 SALT;<br />
             string baseURI;<br />

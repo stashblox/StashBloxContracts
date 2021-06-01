@@ -83,32 +83,6 @@ contract DelegableTransfer is Core {
         );
     }
 
-    /**
-        @dev Function to get the digest and the nonce for the given arguments. The digest and the nonce
-        need to be signed by `account`, then the signature can be used to call the `safeTransferFrom`
-        on behalf `from`. See `safeTransferFrom` documentation.
-        @param from   Source address
-        @param to     Target address
-        @param id     ID of the token type
-        @param value  Transfer amount
-        @param expiry When the signed digest will expire
-        @return nonce and digest usable once
-    */
-    function safeTransferFromDigest(
-        address from,
-        address to,
-        uint256 id,
-        uint256 value,
-        uint256 expiry
-    )
-        external view returns (uint256, bytes32)
-    {
-        return (
-            _accounts[from].nonce + 1,
-            _safeTransferFromDigest(from, to, id, value, 0, _accounts[from].nonce + 1, expiry)
-        );
-    }
-
 
     /****************************
     INTERNAL FUNCTIONS
@@ -154,28 +128,6 @@ contract DelegableTransfer is Core {
         return _requireValidSignature(account, digest, nonce, expiry, v, r, s);
     }
 
-    function _checkSafeTransferFromSignature(
-        address from,
-        address to,
-        uint256 id,
-        uint256 value,
-        bytes calldata data
-    )
-        internal view returns (bool)
-    {
-        (
-            uint256 format,
-            uint256 nonce,
-            uint256 expiry,
-            uint8 v,
-            bytes32 r,
-            bytes32 s
-        ) = abi.decode(data, (uint256, uint256, uint256, uint8, bytes32, bytes32));
-        bytes32 digest = _safeTransferFromDigest(from, to, id, value, format, nonce, expiry);
-
-        return _requireValidSignature(from, digest, nonce, expiry, v, r, s);
-    }
-
     function _setApprovalForAllDigest(
         address account,
         address operator,
@@ -189,24 +141,6 @@ contract DelegableTransfer is Core {
         bytes32 functionHash = keccak256(abi.encode(
             _config.APPROVAL_TYPEHASH,
             account, operator, approved
-        ));
-        return _callFunctionDigest(functionHash, format, nonce, expiry);
-    }
-
-    function _safeTransferFromDigest(
-        address from,
-        address to,
-        uint256 id,
-        uint256 value,
-        uint256 format,
-        uint256 nonce,
-        uint256 expiry
-    )
-        internal view returns (bytes32)
-    {
-        bytes32 functionHash = keccak256(abi.encode(
-            _config.TRANSFER_TYPEHASH,
-            from, to, id, value
         ));
         return _callFunctionDigest(functionHash, format, nonce, expiry);
     }

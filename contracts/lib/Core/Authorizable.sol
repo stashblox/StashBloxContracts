@@ -157,7 +157,6 @@ contract Authorizable is IERC173, GSNCapable {
             salt
         ));
         _config.APPROVAL_TYPEHASH = keccak256("SetApprovalForAll(address account,address operator,bool approved)");
-        _config.TRANSFER_TYPEHASH = keccak256("SafeTransferFrom(address from,address to,uint256 id,uint256 value)");
         _config.SALT = salt;
     }
 

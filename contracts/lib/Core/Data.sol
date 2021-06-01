@@ -28,7 +28,6 @@ contract Data {
         address proxyRegistryAccount;
         bytes32 DOMAIN_SEPARATOR;
         bytes32 APPROVAL_TYPEHASH;
-        bytes32 TRANSFER_TYPEHASH;
         bytes32 SALT;
         string baseURI;
         string versionRecipient;
